@@ -13,10 +13,10 @@ public class LobbyManager : NetworkLobbyManager {
         Lobby.SetActive(false);
     }
 
-    public override void OnStartHost()
+    public override void OnStartServer()
     {
-        base.OnStartHost();
-        Debug.Log("Host has created a game.");
+        base.OnStartServer();
+        Debug.Log("New game created.");
         Lobby.SetActive(true);
     }
 
