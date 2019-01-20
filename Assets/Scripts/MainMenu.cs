@@ -11,7 +11,7 @@ public class MainMenu : MonoBehaviour {
 
 	public void OnClickHost()
     {
-        lobbyManager.StartHost();
+        lobbyManager.StartServer();
     }
 
     public void OnClickJoin()

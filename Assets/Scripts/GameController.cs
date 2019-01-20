@@ -10,46 +10,34 @@ public class GameController : NetworkBehaviour {
     [SyncVar]
     public int score = 0;
 
-    SyncListBool instruction = new SyncListBool();
+    SyncListString activeInstructions = new SyncListString();
+
+    public int IDcount = 1;
 
     void Start()
     {
         var players = FindObjectsOfType<Player>();
         foreach (Player p in players) {
             p.SetGameController(this);
+            p.SetActionButtons(IDcount);
+            IDcount++;
         }
-        instruction.Add(false);
-        instruction.Add(false);
-        instruction.Add(false);
+        activeInstructions.Add("Chop Carrot");
+        activeInstructions.Add("Fry Burger");
+        activeInstructions.Add("Scramble Eggs");
+        activeInstructions.Add("Heat Oven");
     }
 
-    public void CheckEgg()
+    [Server]
+    public void CheckAction(string action)
     {
-        if (instruction[0] == false)
+        foreach (string instruction in activeInstructions)
         {
-            Debug.Log("Egg Completed");
-            score++;
-            instruction[0] = true;
+            if (action == instruction)
+            {
+                score++;
+            }
         }
     }
-
-    public void CheckFry()
-    {
-        if ((instruction[0] == true) && instruction[1]==false)  
-        {
-            score++;
-            instruction[1] = true;
-        }
-    }
-
-    public void CheckServe()
-    {
-        if (instruction[1] == true && instruction[2]==false) 
-        {
-            score++;
-            instruction[2] = true;
-        }
-    }
-
     
 }
