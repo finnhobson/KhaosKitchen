@@ -5,8 +5,8 @@ using UnityEngine.Networking;
 
 public class ShowLocalCanvas : NetworkBehaviour {
 
-	// Use this for initialization
 	void Start () {
+        //Only show the canvas of the local player.
         if (isLocalPlayer) GetComponentInChildren<Canvas>().enabled = true;
         else GetComponentInChildren<Canvas>().enabled = false;
     }

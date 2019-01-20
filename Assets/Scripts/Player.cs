@@ -15,12 +15,14 @@ public class Player : NetworkBehaviour {
 
     private void Start()
     {
+        //Link Player GameObject to GameController.
         gameController = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
     }
 
 
     private void Update()
     {
+        //Display score.
         scoreText.text = gameController.score.ToString();
     }
 
@@ -30,7 +32,7 @@ public class Player : NetworkBehaviour {
         gameController = controller;
     }
 
-
+    //Assign instructions to each player (NOTE: Currently only works for up to 2 players).
     public void SetActionButtons(int ID)
     {
         if (isLocalPlayer)
