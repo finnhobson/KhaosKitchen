@@ -46,8 +46,6 @@ public class GameController : NetworkBehaviour {
         instruction2.text = activeInstructions[1];
         instruction3.text = activeInstructions[2];
         instruction4.text = activeInstructions[3];
-
-
     }
 
     
@@ -55,12 +53,13 @@ public class GameController : NetworkBehaviour {
     public void CheckAction(string action)
     {
         //When an action button is pressed by a player-client, check if action matches an active instruction.
-        foreach (string instruction in activeInstructions)
+        for (int i = 0; i < activeInstructions.Count; i++)
         {
             //If match, increment score.
-            if (action == instruction)
+            if (action == activeInstructions[i])
             { 
                 score++;
+                activeInstructions[i] = "COMPLETE!";
             }
         }
     }
