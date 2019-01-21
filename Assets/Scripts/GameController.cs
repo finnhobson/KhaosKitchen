@@ -21,7 +21,7 @@ public class GameController : NetworkBehaviour {
     {
         //Show server display only on the server.
         if (isServer) GetComponentInChildren<Canvas>().enabled = true;
-
+//Test
         //Assign actions to each player.
         var players = FindObjectsOfType<Player>();
         foreach (Player p in players) {
