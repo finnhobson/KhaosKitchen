@@ -44,7 +44,6 @@ public class GameController : NetworkBehaviour
 //        burgerRecipe.Add("Chop Salad");
 //        burgerRecipe.Add("Cut Bun");
 //        burgerRecipe.Add("Wash Salad");
-//
 //    }
 
     //return random Stack as randomly ordered stack of instructions
