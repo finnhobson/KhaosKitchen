@@ -83,7 +83,7 @@ public class GameController : NetworkBehaviour
         burgerRecipe.Add("Chop Salad");
         burgerRecipe.Add("Cut Bun");
         burgerRecipe.Add("Wash Salad");
-
+       
 
 
         activeInstructions.Add(burgerRecipe[0]);
@@ -94,7 +94,10 @@ public class GameController : NetworkBehaviour
             burgerRecipeRandom.Add(item);
         }
         random = setRandom(burgerRecipeRandom);
-
+        for(int k = 0;k<playerCount;k++)
+        {
+            burgerRecipe.Add("Complete!");
+        }
         
 
 
@@ -114,11 +117,17 @@ public class GameController : NetworkBehaviour
                 p.SetActionButtons(random.Pop(), i);
 
             }
-
+            
         }
         //   playerList[0].SetInstruction(ordered.Pop());
 //       playerList[1].SetInstruction(ordered.Pop());
         //  playerList[1].instructionText.text = ordered.Pop();
+        
+        
+        for (int k = 0; k < burgerRecipe.Count; k++)
+        {
+            Debug.Log(k+" "+burgerRecipe[k]);
+        }
 
 
         Debug.Log(activeInstructions[0]);
@@ -170,9 +179,9 @@ public class GameController : NetworkBehaviour
                 activeInstructions[i] = burgerRecipe[playerCount+score];          
                 RpcUpdateInstructions(burgerRecipe[playerCount+score], i);
                 score++;
-                for (int j = 0; j < activeInstructions.Count; j++)
+                for (int j = 0; j < burgerRecipe.Count; j++)
                 {
-                    Debug.Log(j+" "+activeInstructions[j]);
+                    Debug.Log(j+" "+burgerRecipe[j]);
                 }
             }
         }
