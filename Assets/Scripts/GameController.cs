@@ -64,8 +64,7 @@ public class GameController : NetworkBehaviour
     {
         return new Stack<String>(list);
     }
-
-
+    
 
     void Start()
     {
@@ -94,6 +93,7 @@ public class GameController : NetworkBehaviour
             burgerRecipeRandom.Add(item);
         }
         random = setRandom(burgerRecipeRandom);
+        
         for(int k = 0;k<playerCount;k++)
         {
             burgerRecipe.Add("Complete!");
@@ -134,24 +134,28 @@ public class GameController : NetworkBehaviour
         Debug.Log(activeInstructions[1]);
 
     }
+    
+    private bool isRoundComplete()
+    {
+        foreach (var aI in activeInstructions)
+        {
+            if (aI != "Complete!") return false;
+        }
+        return true;
+    }
 
     private void Update()
     {
-//        for (int i = 0; i < playerCount; i++)
+//        if (isRoundComplete())
 //        {
-//            if (playerList[i].GetInstruction() == "")
-//            {
-//                //updateInstruction(ordered.Peek(),i);
-//                playerList[i].SetInstruction(ordered.Pop()); 
-//            }
+//            //Call reset function
+//            Debug.Log("ROUND COMPLETE MOTHERFUCKERS!!!!!!!!");
 //        }
 
         //Show score and active instructions on server display.
         scoreText.text = score.ToString();
-//        instruction1.text = activeInstructions[0];
-//        instruction2.text = activeInstructions[1];
-//        instruction3.text = activeInstructions[2];
-//        instruction4.text = activeInstructions[3];
+        
+
     }
 
     [ClientRpc]
@@ -175,15 +179,20 @@ public class GameController : NetworkBehaviour
             //If match, increment score.
             if (action == activeInstructions[i])
             {
-                
-                activeInstructions[i] = burgerRecipe[playerCount+score];          
-                RpcUpdateInstructions(burgerRecipe[playerCount+score], i);
                 score++;
+                activeInstructions[i] = burgerRecipe[playerCount+score-1];          
+                RpcUpdateInstructions(burgerRecipe[playerCount+score-1], i);
                 for (int j = 0; j < burgerRecipe.Count; j++)
                 {
                     Debug.Log(j+" "+burgerRecipe[j]);
                 }
             }
+        }
+
+        if (score == playerCount*numberOfButtons)
+        {
+            //Run Reset
+            Debug.Log("ROUND COMPLETE");
         }
     }
 }
