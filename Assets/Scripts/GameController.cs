@@ -5,6 +5,7 @@ using System.Linq;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.Experimental.UIElements;
 using UnityEngine.Networking;
 using UnityEngine.UI;
 
@@ -18,11 +19,14 @@ public class GameController : NetworkBehaviour
     SyncListString activeInstructions = new SyncListString();
 
     private List<String> burgerRecipe = new List<string>();
+    private List<String> burgerRecipeRandom = new List<string>();
+
     // private List<String> otherRecipe; 
 
     private Stack<String> random = new Stack<string>();
-    private Stack<String> ordered = new Stack<string>();
+   // private Stack<String> ordered = new Stack<string>();
     private int numberOfButtons = 4;
+    private int playerCount = 2;
 
     public List<Player> playerList = new List<Player>();
 
@@ -58,7 +62,6 @@ public class GameController : NetworkBehaviour
     //Return
     private Stack<String> setOrdered(List<String> list)
     {
-        list.Reverse();
         return new Stack<String>(list);
     }
 
@@ -82,31 +85,35 @@ public class GameController : NetworkBehaviour
         burgerRecipe.Add("Wash Salad");
 
 
+
         activeInstructions.Add(burgerRecipe[0]);
         activeInstructions.Add(burgerRecipe[1]);
 
-        ordered = setOrdered(burgerRecipe);
-        random = setRandom(burgerRecipe);
+        foreach (var item in burgerRecipe)
+        {
+            burgerRecipeRandom.Add(item);
+        }
+        random = setRandom(burgerRecipeRandom);
 
-
+        
 
 
 
         //Assign actions to each player.
         var players = FindObjectsOfType<Player>();
-
+        int j = 0;
         foreach (Player p in players)
         {
             playerList.Add(p);
             p.SetGameController(this);
+            p.setPlayerId(j);
+            p.SetInstruction(burgerRecipe[j]);
+            j++;
             for (int i = 0; i < numberOfButtons; i++)
             {
-                Console.WriteLine(random.Peek());
                 p.SetActionButtons(random.Pop(), i);
 
             }
-
-            p.SetInstruction(ordered.Pop());
 
         }
         //   playerList[0].SetInstruction(ordered.Pop());
@@ -121,6 +128,15 @@ public class GameController : NetworkBehaviour
 
     private void Update()
     {
+//        for (int i = 0; i < playerCount; i++)
+//        {
+//            if (playerList[i].GetInstruction() == "")
+//            {
+//                //updateInstruction(ordered.Peek(),i);
+//                playerList[i].SetInstruction(ordered.Pop()); 
+//            }
+//        }
+
         //Show score and active instructions on server display.
         scoreText.text = score.ToString();
 //        instruction1.text = activeInstructions[0];
@@ -134,10 +150,15 @@ public class GameController : NetworkBehaviour
     {
         playerList[playerID].SetInstruction(newInstruction);
     }
+    
+    public void updateInstruction(string instruction, int instructionNumber)
+    {
+        activeInstructions[instructionNumber] = instruction;
+    }
 
 
     [Server]
-    public void CheckAction(string action)
+    public void CheckAction(string action, int playerId)
     {
         //When an action button is pressed by a player-client, check if action matches an active instruction.
         for (int i = 0; i < activeInstructions.Count; i++)
@@ -145,9 +166,14 @@ public class GameController : NetworkBehaviour
             //If match, increment score.
             if (action == activeInstructions[i])
             {
+                
+                activeInstructions[i] = burgerRecipe[playerCount+score];          
+                RpcUpdateInstructions(burgerRecipe[playerCount+score], i);
                 score++;
-                activeInstructions[i] = ordered.Peek();
-                RpcUpdateInstructions(ordered.Pop(), i);
+                for (int j = 0; j < activeInstructions.Count; j++)
+                {
+                    Debug.Log(j+" "+activeInstructions[j]);
+                }
             }
         }
     }

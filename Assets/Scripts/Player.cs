@@ -12,9 +12,19 @@ public class Player : NetworkBehaviour {
     public Button button1, button2, button3, button4;
 
     public Text scoreText, instructionText;
+
+    public int playerId;
     
 //    public Button[] buttons = new Button[4];
+    public void setPlayerId(int assignedId)
+    {
+        playerId = assignedId;
+    }
 
+    public int getPlayerId()
+    {
+        return playerId;
+    }
 
     private void Start()
     {
@@ -86,11 +96,16 @@ public class Player : NetworkBehaviour {
         instructionText.text = d;
     }
 
+    public string GetInstruction()
+    {
+        return instructionText.text;
+    }
+
 
     [Command]
     public void CmdAction(string action)
     {
-        gameController.CheckAction(action);
+        gameController.CheckAction(action, getPlayerId());
     }
 
 
