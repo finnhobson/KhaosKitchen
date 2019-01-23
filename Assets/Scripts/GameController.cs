@@ -17,9 +17,23 @@ public class GameController : NetworkBehaviour
 
     [SyncVar] public int score = 0;
     SyncListString activeInstructions = new SyncListString();
+    
+    private static List<String> burgerRecipe = new List<string>(new string[] { "Grab Meat", "Grab Salad", "Grab Buns", "Grab Cheese", "Grind Meat", "Chop Salad", "Cut Bun", "Wash Salad" });
+    private static List<String> pastaRecipe = new List<string>(new string[] { "Grab Pasta", "Grab Salad", "Grab Sauce", "Grab Cheese", "Boil Pasta", "Chop Salad", "Mix-in Sauce", "Serve" });
 
-    private List<String> burgerRecipe = new List<string>();
+    
     private List<String> burgerRecipeRandom = new List<string>();
+
+    private HashSet<List<String>> setOfRecipes = new HashSet<List<String>>()
+    {
+        burgerRecipe, pastaRecipe
+    };
+    
+    private Dictionary<String, List<String>> listOfRecipes = new Dictionary<string, List<string>>()
+        {
+            {"BurgerRecipe", burgerRecipe},
+            {"PastaRecipe", pastaRecipe}
+        };
     
     private List<String> genericRecipe = new List<string>();
     private List<String> genericRecipeRandom = new List<string>();
@@ -33,18 +47,17 @@ public class GameController : NetworkBehaviour
 
     public List<Player> playerList = new List<Player>();
 
-//    private void ChooseRecipe()
-//    {
-//        //This is where we choose recipe
-//        burgerRecipe.Add("Grab Meat");
-//        burgerRecipe.Add("Grab Salad");
-//        burgerRecipe.Add("Grab Buns");
-//        burgerRecipe.Add("Grab Cheese");
-//        burgerRecipe.Add("Grind Meat");
-//        burgerRecipe.Add("Chop Salad");
-//        burgerRecipe.Add("Cut Bun");
-//        burgerRecipe.Add("Wash Salad");
-//    }
+    private void ChooseRecipe()
+    {
+        Debug.Log("IN CHOOSE RECIPE");
+        genericRecipe.Clear();
+        genericRecipeRandom.Clear();
+        activeInstructions.Clear();
+        System.Random rnd = new System.Random();
+        int k = rnd.Next(0, 1);
+        Debug.Log(k);
+        genericRecipe = setOfRecipes.ElementAt(k);
+    }
 
     //return random Stack as randomly ordered stack of instructions
     private void setRandom(List<String> list)
@@ -59,41 +72,27 @@ public class GameController : NetworkBehaviour
         }
     }
 
-    //Return
-    private Stack<String> setOrdered(List<String> list)
+    void ResetRound()
     {
-        return new Stack<String>(list);
-    }
+        Debug.Log("ResetStart");
 
-    [ClientRpc]
-    void RpcResetRound()
-    {
-        burgerRecipe.Clear();
-        burgerRecipeRandom.Clear();
+        ChooseRecipe();
+        Debug.Log("Recipe Rechosen");
         
-        
-        burgerRecipe.Add("1");
-        burgerRecipe.Add("2");
-        burgerRecipe.Add("3");
-        burgerRecipe.Add("4");
-        burgerRecipe.Add("5");
-        burgerRecipe.Add("6");
-        burgerRecipe.Add("7");
-        burgerRecipe.Add("8");
 
-        activeInstructions.Add(burgerRecipe[0]);
-        activeInstructions.Add(burgerRecipe[1]);
+        activeInstructions.Add(genericRecipe[0]);
+        activeInstructions.Add(genericRecipe[1]);
 
-        foreach (var item in burgerRecipe)
+        foreach (var VARIABLE in genericRecipe)
         {
-            burgerRecipeRandom.Add(item);
+            genericRecipeRandom.Add(VARIABLE);
         }
         
-        setRandom(burgerRecipeRandom);
+        setRandom(genericRecipeRandom);
         
         for(int k = 0;k<playerCount;k++)
         {
-            burgerRecipe.Add("Complete!");
+            genericRecipe.Add("Complete!");
         }
         
         var players = FindObjectsOfType<Player>();
@@ -102,54 +101,46 @@ public class GameController : NetworkBehaviour
         foreach (Player p in players)
         {
             Debug.Log("in");
-            p.SetInstruction(burgerRecipe[p.getPlayerId()]);
+            RpcUpdateInstructions(genericRecipe[p.getPlayerId()], j);
             for (int i = 0; i < numberOfButtons; i++)
             {
-                p.SetActionButtons(burgerRecipeRandom[b], i);
+                p.SetActionButtons(genericRecipeRandom[b], i);
                 b++;
             }
 
             j++;
         } 
         
-        for (int k = 0; k < burgerRecipe.Count; k++)
-        {
-            Debug.Log(k+" "+burgerRecipe[k]);
-        }
+//        for (int k = 0; k < genericRecipe.Count; k++)
+//        {
+//            Debug.Log(k+" "+genericRecipe[k]);
+//        }
         
 
     }
-    
 
     void Start()
     {
         //Show server display only on the server.
         if (isServer) GetComponentInChildren<Canvas>().enabled = true;
         
-        burgerRecipe.Add("Grab Meat");
-        burgerRecipe.Add("Grab Salad");
-        burgerRecipe.Add("Grab Buns");
-        burgerRecipe.Add("Grab Cheese");
-        burgerRecipe.Add("Grind Meat");
-        burgerRecipe.Add("Chop Salad");
-        burgerRecipe.Add("Cut Bun");
-        burgerRecipe.Add("Wash Salad");
-        
-        activeInstructions.Add(burgerRecipe[0]);
-        activeInstructions.Add(burgerRecipe[1]);
+        ChooseRecipe();
 
-        foreach (var item in burgerRecipe)
+        activeInstructions.Add(genericRecipe[0]);
+        activeInstructions.Add(genericRecipe[1]);
+
+        foreach (var VARIABLE in genericRecipe)
         {
-            burgerRecipeRandom.Add(item);
+            genericRecipeRandom.Add(VARIABLE);
         }
-        
-        setRandom(burgerRecipeRandom);
-        
-        for(int k = 0;k<playerCount;k++)
+
+        setRandom(genericRecipeRandom);
+
+        for (int k = 0; k < playerCount; k++)
         {
-            burgerRecipe.Add("Complete!");
+            genericRecipe.Add("Complete!");
         }
-        
+
         //Assign actions to each player.
         var players = FindObjectsOfType<Player>();
         int j = 0;
@@ -159,43 +150,21 @@ public class GameController : NetworkBehaviour
             playerList.Add(p);
             p.SetGameController(this);
             p.setPlayerId(j);
-            p.SetInstruction(burgerRecipe[j]);
+            p.SetInstruction(genericRecipe[j]);
             for (int i = 0; i < numberOfButtons; i++)
             {
-                p.SetActionButtons(burgerRecipeRandom[b], i);
+                p.SetActionButtons(genericRecipeRandom[b], i);
                 b++;
             }
+
             j++;
         }
-        //   playerList[0].SetInstruction(ordered.Pop());
-//       playerList[1].SetInstruction(ordered.Pop());
-        //  playerList[1].instructionText.text = ordered.Pop();
-        
-//        
-//        for (int k = 0; k < burgerRecipe.Count; k++)
-//        {
-//            Debug.Log(k+" "+burgerRecipe[k]);
-//            
-//        }
-//
-//
-//        Debug.Log(activeInstructions[0]);
-//        Debug.Log(activeInstructions[1]);
-
     }
 
     private void Update()
     {
-//        if (isRoundComplete())
-//        {
-//            //Call reset function
-//            Debug.Log("ROUND COMPLETE MOTHERFUCKERS!!!!!!!!");
-//        }
-
         //Show score and active instructions on server display.
         scoreText.text = score.ToString();
-        
-
     }
 
     [ClientRpc]
@@ -220,12 +189,8 @@ public class GameController : NetworkBehaviour
             if (action == activeInstructions[i])
             {
                 score++;
-                activeInstructions[i] = burgerRecipe[playerCount+score-1];          
-                RpcUpdateInstructions(burgerRecipe[playerCount+score-1], i);
-//                for (int j = 0; j < burgerRecipe.Count; j++)
-//                {
-//                    Debug.Log(j+" "+burgerRecipe[j]);
-//                }
+                activeInstructions[i] = genericRecipe[playerCount+score-1];          
+                RpcUpdateInstructions(genericRecipe[playerCount+score-1], i);
             }
         }
 
@@ -233,7 +198,7 @@ public class GameController : NetworkBehaviour
         {
             //Run Reset
             Debug.Log("ROUND COMPLETE");
-            RpcResetRound();
+            ResetRound();
             score = 0;
         }
     }
