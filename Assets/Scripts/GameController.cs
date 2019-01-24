@@ -18,8 +18,8 @@ public class GameController : NetworkBehaviour
     [SyncVar] public int score = 0;
     SyncListString activeInstructions = new SyncListString();
     
-    private static List<String> burgerRecipe = new List<string>(new string[] { "Grab Meat", "Grab Salad", "Grab Buns", "Grab Cheese", "Grind Meat", "Chop Salad", "Cut Bun", "Wash Salad" });
-    private static List<String> pastaRecipe = new List<string>(new string[] { "Grab Pasta", "Grab Salad", "Grab Sauce", "Grab Cheese", "Boil Pasta", "Chop Salad", "Mix-in Sauce", "Serve" });
+    private static List<String> burgerRecipe = new List<string>(new string[] { "Grab Meat", "Grab Salad", "Grab Buns", "Grab Cheese", "Grind Meat", "Chop Salad", "Cut Bun", "Wash Salad" , "1","2","3","4"});
+    private static List<String> pastaRecipe = new List<string>(new string[] { "Grab Pasta", "Grab Salad", "Grab Sauce", "Grab Cheese", "Boil Pasta", "Chop Salad", "Mix-in Sauce", "Serve","uno","dos","tres","quattro" });
     
     private List<String> burgerRecipeRandom = new List<string>();
 
@@ -38,7 +38,7 @@ public class GameController : NetworkBehaviour
     SyncListString genericRecipeRandom = new SyncListString();
 
     private int numberOfButtons = 4;
-    private int playerCount = 2;
+    [SyncVar] public int playerCount = 3;
     private int currentRecipe = 1;
 
     public List<Player> playerList = new List<Player>();
@@ -83,9 +83,14 @@ public class GameController : NetworkBehaviour
         if (isServer)
         {
             ChooseRecipe();
+            var players = FindObjectsOfType<Player>();
+            for (int i = 0; i < playerCount; i++)
+            {
+                activeInstructions.Add(genericRecipe[i]);
 
-            activeInstructions.Add(genericRecipe[0]);
-            activeInstructions.Add(genericRecipe[1]);
+            }
+
+
 
             foreach (var VARIABLE in genericRecipe)
             {
@@ -100,12 +105,11 @@ public class GameController : NetworkBehaviour
             }
 
 
-            Debug.Log("Recipe Rechosen");
 
-            Debug.Log(genericRecipe[0]);
-            Debug.Log(genericRecipe[1]);
+           // Debug.Log(genericRecipe[0]);
+           // Debug.Log(genericRecipe[1]);
 
-            var players = FindObjectsOfType<Player>();
+            
             int j = 0;
             int b = 0;
             int a = 0;
@@ -113,12 +117,12 @@ public class GameController : NetworkBehaviour
 
             foreach (Player p in players)
             {
-                Debug.Log("in");
+             //   Debug.Log("in");
                 RpcUpdateInstructions(genericRecipe[a], j);
                 for (int i = 0; i < numberOfButtons; i++)
                 {
                     RpcUpdateButtons(genericRecipeRandom[b], a, i);
-                    Debug.Log(genericRecipeRandom[b]);
+                  //  Debug.Log(genericRecipeRandom[b]);
                     b++;
                 }
 
@@ -133,13 +137,18 @@ public class GameController : NetworkBehaviour
     {
         //Show server display only on the server.
         if (isServer) GetComponentInChildren<Canvas>().enabled = true;
-
+        var players = FindObjectsOfType<Player>();
+        
         if (isServer)
         {
             ChooseRecipe();
-            
-            activeInstructions.Add(genericRecipe[0]);
-            activeInstructions.Add(genericRecipe[1]);
+          //  playerCount = players.Length;
+            for (int i = 0; i < playerCount; i++)
+            {
+                activeInstructions.Add(genericRecipe[i]);
+
+            }
+
             
             foreach (var VARIABLE in genericRecipe)
             {
@@ -155,7 +164,6 @@ public class GameController : NetworkBehaviour
         }
         
         //Assign actions to each player.
-        var players = FindObjectsOfType<Player>();
         int j = 0;
         int b = 0;
         foreach (Player p in players)
@@ -218,6 +226,7 @@ public class GameController : NetworkBehaviour
         {
             //Run Reset
             Debug.Log("ROUND COMPLETE");
+            Debug.Log(playerCount);
             score = 0;
             ResetRound();
         }
