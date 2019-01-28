@@ -16,7 +16,7 @@ public class ShakeListener : MonoBehaviour
     float lowPassFilterFactor;
     Vector3 lowPassValue;
 
-    private bool shaking = false;
+    public static bool shaking = false;
 
     void Start()
     {

@@ -16,7 +16,8 @@ public class MainMenu : MonoBehaviour {
 
     public void OnClickJoin()
     {
-        lobbyManager.networkAddress = "127.0.0.1";
+        lobbyManager.networkAddress = "192.168.43.50";
+
         lobbyManager.StartClient();
         Lobby.SetActive(true);
     }

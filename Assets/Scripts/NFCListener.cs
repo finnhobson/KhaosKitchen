@@ -10,21 +10,21 @@ using System.Reflection;
 public class NFCListener : MonoBehaviour
 {
 
-    private string nfc;
+    public static string nfc = "none";
 
-    public bool read = false;
+    //public bool read = false;
 
     private AndroidJavaObject mActivity;
     private AndroidJavaObject mIntent;
     private string sAction;
 
 
-    public string GetValue()
+    public static string GetValue()
     {
         return nfc;
     }
 
-    public void SetValue(string val)
+    public static void SetValue(string val)
     {
         nfc = val;
     }

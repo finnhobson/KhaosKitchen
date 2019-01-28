@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -15,11 +16,10 @@ public class Player : NetworkBehaviour {
 
     public int playerId;
     
-    public NFCListener nfcListener;
-
-    public ShakeListener shakeListener;
-
-    public MicListener micListener;
+    
+    private string nfcValue = "";
+    
+    private HashSet<String> validNfc = new HashSet<String>{"Grab Meat","Grab Pasta"};
 
 
     //    public Button[] buttons = new Button[4];
@@ -53,10 +53,37 @@ public class Player : NetworkBehaviour {
         if(MicListener.MicLoudness > 0.15f){
             scoreText.text = "Noise";
         }
-        else{
-            scoreText.text = "No Noise";
+
+        nfcValue = nfcCheck();
+        scoreText.text = nfcValue;
+        if (validNfc.Contains(nfcValue))
+        {
+            nfcClick(nfcValue);
         }
 
+        if (ShakeListener.shaking)
+        {
+            scoreText.text = "shaking";
+        }
+    }
+    
+    private string nfcCheck()
+    {
+        string value = NFCListener.GetValue();
+        if (value == "BPO/2m8/gA==")
+        {
+            
+            NFCListener.SetValue("");
+            return "Grab Meat";
+        } else if (value == "BPjA2m8/gA==")
+        {
+            NFCListener.SetValue("");
+            return "Grab Pasta";
+        }
+        else
+        {
+            return value;
+        }
     }
 
 
@@ -157,6 +184,14 @@ public class Player : NetworkBehaviour {
         if (isLocalPlayer)
         {
             CmdAction(button4.GetComponentInChildren<Text>().text);
+        }
+    }
+    
+    public void nfcClick(String nfcString)
+    {
+        if (isLocalPlayer)
+        {
+            CmdAction(nfcString);
         }
     }
 
