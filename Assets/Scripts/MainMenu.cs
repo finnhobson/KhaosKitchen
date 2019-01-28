@@ -14,7 +14,7 @@ public class MainMenu : MonoBehaviour {
 
     private void Start()
     {
-        NetworkServer.Reset();
+        //NetworkServer.Reset();
         networkDiscovery.Initialize();
         networkDiscovery.StartAsClient();
         Debug.Log("Listening for IP Addresses...");
