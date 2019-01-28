@@ -4,13 +4,11 @@
     <Files>
       <File FileName="Assets/Scripts/MainMenu.cs" Line="1" Column="1" />
       <File FileName="Assets/Scripts/GameController.cs" Line="140" Column="41" />
-      <File FileName="Assets/Scripts/Player.cs" Line="21" Column="5" />
-      <File FileName="Assets/Scripts/MicListener.cs" Line="18" Column="5" />
-      <File FileName="Assets/Scripts/ShakeListener.cs" Line="15" Column="5" />
-      <File FileName="Assets/Scripts/NFCListener.cs" Line="13" Column="24" />
+      <File FileName="Assets/Scripts/Player.cs" Line="51" Column="25" />
+      <File FileName="Assets/Scripts/MicListener.cs" Line="1" Column="1" />
       <File FileName="Assets/Scripts/ShowLocalCanvas.cs" Line="1" Column="1" />
       <File FileName="Assets/Scripts/LobbyManager.cs" Line="1" Column="1" />
-      <File FileName="../SinglePlayerInstructions/Assets/Scripts/GameController.cs" Line="46" Column="39" />
+      <File FileName="../SinglePlayerInstructions/Assets/Scripts/GameController.cs" Line="89" Column="15" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
