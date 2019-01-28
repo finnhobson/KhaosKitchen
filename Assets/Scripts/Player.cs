@@ -15,7 +15,14 @@ public class Player : NetworkBehaviour {
 
     public int playerId;
     
-//    public Button[] buttons = new Button[4];
+    public NFCListener nfcListener;
+
+    public ShakeListener shakeListener;
+
+    public MicListener micListener;
+
+
+    //    public Button[] buttons = new Button[4];
     public void setPlayerId(int assignedId)
     {
         playerId = assignedId;
@@ -30,17 +37,26 @@ public class Player : NetworkBehaviour {
     {
         //Link Player GameObject to GameController.
         gameController = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
-//        buttons[0] = button1;
-//        buttons[1] = button2;
-//        buttons[2] = button3;
-//        buttons[3] = button4;
+        //        buttons[0] = button1;
+        //        buttons[1] = button2;
+        //        buttons[2] = button3;
+        //        buttons[3] = button4;
+
+
     }
 
 
     private void Update()
     {
         //Display score.
-        scoreText.text = gameController.score.ToString();
+        //scoreText.text = gameController.score.ToString();
+        if(MicListener.MicLoudness > 0.15f){
+            scoreText.text = "Noise";
+        }
+        else{
+            scoreText.text = "No Noise";
+        }
+
     }
 
 

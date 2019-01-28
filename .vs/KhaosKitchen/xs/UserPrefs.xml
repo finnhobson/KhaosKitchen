@@ -1,0 +1,22 @@
+﻿<Properties StartupConfiguration="{5AAD9717-E92E-BFD1-71EB-1C3207432BAB}|">
+  <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="Unity.Editor" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Player.cs">
+    <Files>
+      <File FileName="Assets/Scripts/MainMenu.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/GameController.cs" Line="140" Column="41" />
+      <File FileName="Assets/Scripts/Player.cs" Line="21" Column="5" />
+      <File FileName="Assets/Scripts/MicListener.cs" Line="18" Column="5" />
+      <File FileName="Assets/Scripts/ShakeListener.cs" Line="15" Column="5" />
+      <File FileName="Assets/Scripts/NFCListener.cs" Line="13" Column="24" />
+      <File FileName="Assets/Scripts/ShowLocalCanvas.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/LobbyManager.cs" Line="1" Column="1" />
+      <File FileName="../SinglePlayerInstructions/Assets/Scripts/GameController.cs" Line="46" Column="39" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MultiItemStartupConfigurations />
+</Properties>
