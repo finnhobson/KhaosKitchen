@@ -12,7 +12,7 @@ public class Player : NetworkBehaviour {
 
     public Button button1, button2, button3, button4;
 
-    public Text scoreText, instructionText;
+    public Text scoreText, instructionText, timerText;
 
     public int playerId;
     
@@ -20,6 +20,18 @@ public class Player : NetworkBehaviour {
     private string nfcValue = "";
     
     private HashSet<String> validNfc = new HashSet<String>{"Grab Meat","Grab Pasta"};
+
+
+    public MicListener micListener;
+
+    public GameObject countdownBar;
+
+    public float timeLeft, startTime;
+
+    public void GameOver()
+    {
+    
+    }
 
 
     //    public Button[] buttons = new Button[4];
@@ -41,7 +53,7 @@ public class Player : NetworkBehaviour {
         //        buttons[1] = button2;
         //        buttons[2] = button3;
         //        buttons[3] = button4;
-
+        StartTimer();
 
     }
 
@@ -61,6 +73,14 @@ public class Player : NetworkBehaviour {
             nfcClick(nfcValue);
         }
 
+        UpdateTimeLeft();
+        if (timeLeft < 0) {
+            GameOver();
+            SetTimerText("0");
+        }
+        else {
+            SetTimerText(timeLeft.ToString("F2"));
+        }
         if (ShakeListener.shaking)
         {
             scoreText.text = "shaking";
@@ -195,4 +215,24 @@ public class Player : NetworkBehaviour {
         }
     }
 
+    public void StartTimer()
+    {
+        startTime = 90;
+        timeLeft = startTime; 
+    }
+
+    private void UpdateTimeLeft() 
+    {
+        timeLeft -= Time.deltaTime;
+        countdownBar.GetComponent<Image>().fillAmount = timeLeft / startTime; 
+    }
+
+    private void SetTimerText(string text)
+    {
+        timerText.text = text;
+    }
+
 }
+
+
+
