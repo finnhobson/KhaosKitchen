@@ -16,7 +16,7 @@ public class LobbyManager : NetworkLobbyManager {
     public override void OnStartServer()
     {
         base.OnStartServer();
-        Debug.Log("New game created.");
+        Debug.Log("New game created at " + networkAddress);
         Lobby.SetActive(true);
     }
 
