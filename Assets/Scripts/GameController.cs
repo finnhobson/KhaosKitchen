@@ -15,37 +15,92 @@ public class GameController : NetworkBehaviour
 
     public Text scoreText, instruction1, instruction2, instruction3, instruction4;
 
-    [SyncVar] public int score = 0;
+    [SyncVar]
+    public int score = 0;
+
     SyncListString activeInstructions = new SyncListString();
     
     private static List<String> burgerRecipe = new List<string>(new string[] { "Grab Meat", "Grab Salad", "Grab Buns", "Grab Cheese", "Grind Meat", "Chop Salad", "Cut Bun", "Wash Salad" , "Mash Potato", "Grill Meat", "Flip Pancake", "Roast Chicken"});
-    private static List<String> pastaRecipe = new List<string>(new string[] { "Grab Pasta", "Grab Salad", "Grab Sauce", "Grab Cheese", "Boil Pasta", "Chop Salad", "Mix-in Sauce", "Serve","uno","dos","tres","quattro" });
-    
-    private List<String> burgerRecipeRandom = new List<string>();
+    private static List<String> pastaRecipe = new List<string>(new string[] { "Grab Pasta", "Grab Salad", "Grab Sauce", "Grab Cheese", "Boil Pasta", "Chop Salad", "Mix-in Sauce", "Serve Pasta","Grate Parmesan","Grind Pepper","Drain Pasta","Cook Beef" });
 
     private HashSet<List<String>> setOfRecipes = new HashSet<List<String>>()
     {
         burgerRecipe, pastaRecipe
     };
     
-    private Dictionary<String, List<String>> listOfRecipes = new Dictionary<string, List<string>>()
-        {
-            {"BurgerRecipe", burgerRecipe},
-            {"PastaRecipe", pastaRecipe}
-        };
-    
     SyncListString genericRecipe = new SyncListString();
     SyncListString genericRecipeRandom = new SyncListString();
 
     private int numberOfButtons = 4;
-    [SyncVar] public int playerCount = 3;
+
+    [SyncVar]
+    public int playerCount = 3;
+
     private int currentRecipe = 1;
 
     public List<Player> playerList = new List<Player>();
 
+
+
+    void Start()
+    {
+        //Show server display only on the server.
+        if (isServer) GetComponentInChildren<Canvas>().enabled = true;
+
+        //Find players
+        var players = FindObjectsOfType<Player>();
+        //playerCount = players.Length;
+
+        if (isServer)
+        {
+            ChooseRecipe();
+
+            for (int i = 0; i < playerCount; i++)
+            {
+                activeInstructions.Add(genericRecipe[i]);
+            }
+
+            foreach (var VARIABLE in genericRecipe)
+            {
+                genericRecipeRandom.Add(VARIABLE);
+            }
+
+            setRandom(genericRecipeRandom);
+
+            for (int k = 0; k < playerCount; k++)
+            {
+                genericRecipe.Add("Complete!");
+            }
+        }
+
+        //Assign actions to each player.
+        int playerIndex = 0;
+        foreach (Player p in players)
+        {
+            playerList.Add(p);
+            p.SetGameController(this);
+            p.SetInstruction(genericRecipe[playerIndex]);
+            p.setPlayerId(playerIndex);
+
+            for (int i = 0; i < numberOfButtons; i++)
+            {
+                p.SetActionButtons(genericRecipeRandom[playerIndex*numberOfButtons + i], i);
+            }
+            playerIndex++;
+        }
+    }
+
+
+    private void Update()
+    {
+        //Show score and active instructions on server display.
+        scoreText.text = score.ToString();
+    }
+
+
     private void ChooseRecipe()
     {
-        Debug.Log("IN CHOOSE RECIPE");
+        //Debug.Log("IN CHOOSE RECIPE");
         genericRecipe.Clear();
         genericRecipeRandom.Clear();
         activeInstructions.Clear();
@@ -63,6 +118,7 @@ public class GameController : NetworkBehaviour
 //        genericRecipe = setOfRecipes.ElementAt(k);
     }
 
+
     //return random Stack as randomly ordered stack of instructions
     private void setRandom(SyncListString list)
     {
@@ -75,6 +131,7 @@ public class GameController : NetworkBehaviour
             list[i] = value;
         }
     }
+
 
     void ResetRound()
     {
@@ -89,8 +146,6 @@ public class GameController : NetworkBehaviour
                 activeInstructions.Add(genericRecipe[i]);
 
             }
-
-
 
             foreach (var VARIABLE in genericRecipe)
             {
@@ -133,61 +188,7 @@ public class GameController : NetworkBehaviour
         }
     }
 
-    void Start()
-    {
-        //Show server display only on the server.
-        if (isServer) GetComponentInChildren<Canvas>().enabled = true;
-        var players = FindObjectsOfType<Player>();
-        
-        if (isServer)
-        {
-            ChooseRecipe();
-          //  playerCount = players.Length;
-            for (int i = 0; i < playerCount; i++)
-            {
-                activeInstructions.Add(genericRecipe[i]);
-
-            }
-
-            
-            foreach (var VARIABLE in genericRecipe)
-            {
-                genericRecipeRandom.Add(VARIABLE);
-            }
-            
-            setRandom(genericRecipeRandom);
-
-            for (int k = 0; k < playerCount; k++)
-            {
-                genericRecipe.Add("Complete!");
-            }
-        }
-        
-        //Assign actions to each player.
-        int j = 0;
-        int b = 0;
-        foreach (Player p in players)
-        {
-            playerList.Add(p);
-            p.SetGameController(this);
-            p.setPlayerId(j);
-            
-            p.SetInstruction(genericRecipe[j]);
-            for (int i = 0; i < numberOfButtons; i++)
-            {
-                p.SetActionButtons(genericRecipeRandom[b], i);
-                b++;
-            }
-
-            j++;
-        }
-    }
-
-    private void Update()
-    {
-        //Show score and active instructions on server display.
-        scoreText.text = score.ToString();
-    }
+    
 
     [ClientRpc]
     public void RpcUpdateInstructions(String newInstruction, int playerID)
@@ -222,12 +223,10 @@ public class GameController : NetworkBehaviour
             }
         }
 
-        if (score == playerCount*numberOfButtons)
+        if (score == playerCount*4)
         {
             //Run Reset
             Debug.Log("ROUND COMPLETE");
-            Debug.Log(playerCount);
-            score = 0;
             ResetRound();
         }
     }

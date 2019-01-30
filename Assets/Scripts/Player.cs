@@ -28,33 +28,13 @@ public class Player : NetworkBehaviour {
 
     public float timeLeft, startTime;
 
-    public void GameOver()
-    {
-    
-    }
-
-
-    //    public Button[] buttons = new Button[4];
-    public void setPlayerId(int assignedId)
-    {
-        playerId = assignedId;
-    }
-
-    public int getPlayerId()
-    {
-        return playerId;
-    }
 
     private void Start()
     {
         //Link Player GameObject to GameController.
         gameController = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
-        //        buttons[0] = button1;
-        //        buttons[1] = button2;
-        //        buttons[2] = button3;
-        //        buttons[3] = button4;
-        StartTimer();
 
+        StartTimer();
     }
 
 
@@ -91,6 +71,27 @@ public class Player : NetworkBehaviour {
             scoreText.text = "shaking";
         }*/
     }
+
+
+    public void GameOver()
+    {
+        
+    }
+
+    public void setPlayerId(int assignedId)
+    {
+        playerId = assignedId;
+    }
+
+    public int getPlayerId()
+    {
+        return playerId;
+    }
+
+
+
+
+    
     
     /*private string nfcCheck()
     {
