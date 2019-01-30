@@ -61,8 +61,20 @@ public class Player : NetworkBehaviour {
     private void Update()
     {
         //Display score.
-        //scoreText.text = gameController.score.ToString();
-        if(MicListener.MicLoudness > 0.15f){
+        scoreText.text = gameController.score.ToString();
+
+        UpdateTimeLeft();
+        if (timeLeft < 0)
+        {
+            GameOver();
+            SetTimerText("0");
+        }
+        else
+        {
+            SetTimerText(timeLeft.ToString("F2"));
+        }
+
+        /*if(MicListener.MicLoudness > 0.15f){
             scoreText.text = "Noise";
         }
 
@@ -73,21 +85,14 @@ public class Player : NetworkBehaviour {
             nfcClick(nfcValue);
         }
 
-        UpdateTimeLeft();
-        if (timeLeft < 0) {
-            GameOver();
-            SetTimerText("0");
-        }
-        else {
-            SetTimerText(timeLeft.ToString("F2"));
-        }
+        
         if (ShakeListener.shaking)
         {
             scoreText.text = "shaking";
-        }
+        }*/
     }
     
-    private string nfcCheck()
+    /*private string nfcCheck()
     {
         string value = NFCListener.GetValue();
         if (value == "BPO/2m8/gA==")
@@ -104,7 +109,7 @@ public class Player : NetworkBehaviour {
         {
             return value;
         }
-    }
+    }*/
 
 
     public void SetGameController(GameController controller)
