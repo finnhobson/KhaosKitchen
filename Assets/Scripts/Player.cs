@@ -16,11 +16,9 @@ public class Player : NetworkBehaviour {
 
     public int playerId;
     
-    
     private string nfcValue = "";
     
     private HashSet<String> validNfc = new HashSet<String>{"Grab Meat","Grab Pasta"};
-
 
     public MicListener micListener;
 
@@ -60,7 +58,7 @@ public class Player : NetworkBehaviour {
         }
 
         nfcValue = nfcCheck();
-        scoreText.text = nfcValue;
+        //scoreText.text = nfcValue;
         if (validNfc.Contains(nfcValue))
         {
             nfcClick(nfcValue);
@@ -90,10 +88,6 @@ public class Player : NetworkBehaviour {
         return playerId;
     }
 
-
-
-
-    
     private string nfcCheck()
     {
         string value = NFCListener.GetValue();
@@ -143,22 +137,6 @@ public class Player : NetworkBehaviour {
                     break;
             }
         }
-//        {
-//            if (ID == 1)
-//            {
-//                button1.GetComponentInChildren<Text>().text = "Chop Carrot";
-//                button2.GetComponentInChildren<Text>().text = "Wash Dishes";
-//                button3.GetComponentInChildren<Text>().text = "Blend Smoothie";
-//                button4.GetComponentInChildren<Text>().text = "Fry Burger";
-//            }
-//            if (ID == 2)
-//            {
-//                button1.GetComponentInChildren<Text>().text = "Heat Oven";
-//                button2.GetComponentInChildren<Text>().text = "Chop Onion";
-//                button3.GetComponentInChildren<Text>().text = "Scramble Eggs";
-//                button4.GetComponentInChildren<Text>().text = "Slice Cheese";
-//            }
-//        }
     }
 
     public void SetInstruction(String d)
@@ -175,7 +153,7 @@ public class Player : NetworkBehaviour {
     [Command]
     public void CmdAction(string action)
     {
-        gameController.CheckAction(action, getPlayerId());
+        gameController.CheckAction(action);
     }
 
 

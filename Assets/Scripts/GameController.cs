@@ -19,58 +19,34 @@ public class GameController : NetworkBehaviour
     public int score = 0;
 
     SyncListString activeInstructions = new SyncListString();
-    
-    private static List<String> burgerRecipe = new List<string>(new string[] { "Grab Meat", "Grab Salad", "Grab Buns", "Grab Cheese", "Grind Meat", "Chop Salad", "Cut Bun", "Wash Salad" , "Mash Potato", "Grill Meat", "Flip Pancake", "Roast Chicken"});
-    private static List<String> pastaRecipe = new List<string>(new string[] { "Grab Pasta", "Grab Salad", "Grab Sauce", "Grab Cheese", "Boil Pasta", "Chop Salad", "Mix-in Sauce", "Serve Pasta","Grate Parmesan","Grind Pepper","Drain Pasta","Cook Beef" });
 
-    private HashSet<List<String>> setOfRecipes = new HashSet<List<String>>()
-    {
-        burgerRecipe, pastaRecipe
-    };
-    
-    SyncListString genericRecipe = new SyncListString();
-    SyncListString genericRecipeRandom = new SyncListString();
+    SyncListString activeActions = new SyncListString();
 
-    private int numberOfButtons = 4;
+    private static int numberOfButtons = 4;
 
-    [SyncVar]
-    public int playerCount = 3;
-
-    private int currentRecipe = 1;
+    public int playerCount;
 
     public List<Player> playerList = new List<Player>();
 
+    private static List<String> instructions = new List<string>(new string[] { "Grab Meat", "Grab Salad", "Grab Buns", "Grab Cheese", "Grind Meat", "Chop Salad", "Cut Bun", "Wash Salad", "Mash Potato",
+        "Grill Meat", "Flip Pancake", "Roast Chicken", "Grab Pasta", "Grab Salad", "Grab Sauce", "Grab Cheese", "Boil Pasta", "Chop Salad", "Mix-in Sauce", "Serve Pasta", "Grate Parmesan", "Grind Pepper",
+        "Drain Pasta", "Cook Beef" });
+
+    
 
 
     void Start()
     {
-        //Show server display only on the server.
-        if (isServer) GetComponentInChildren<Canvas>().enabled = true;
-
         //Find players
         var players = FindObjectsOfType<Player>();
-        //playerCount = players.Length;
+        playerCount = players.Length;
 
         if (isServer)
         {
-            ChooseRecipe();
-
-            for (int i = 0; i < playerCount; i++)
-            {
-                activeInstructions.Add(genericRecipe[i]);
-            }
-
-            foreach (var VARIABLE in genericRecipe)
-            {
-                genericRecipeRandom.Add(VARIABLE);
-            }
-
-            setRandom(genericRecipeRandom);
-
-            for (int k = 0; k < playerCount; k++)
-            {
-                genericRecipe.Add("Complete!");
-            }
+            //Show server display only on the server.
+            GetComponentInChildren<Canvas>().enabled = true;
+            SelectActions();
+            SetFirstInstructions(); 
         }
 
         //Assign actions to each player.
@@ -79,12 +55,12 @@ public class GameController : NetworkBehaviour
         {
             playerList.Add(p);
             p.SetGameController(this);
-            p.SetInstruction(genericRecipe[playerIndex]);
+            p.SetInstruction(activeInstructions[playerIndex]);
             p.setPlayerId(playerIndex);
 
             for (int i = 0; i < numberOfButtons; i++)
             {
-                p.SetActionButtons(genericRecipeRandom[playerIndex*numberOfButtons + i], i);
+                p.SetActionButtons(activeActions[playerIndex*numberOfButtons + i], i);
             }
             playerIndex++;
         }
@@ -98,103 +74,45 @@ public class GameController : NetworkBehaviour
     }
 
 
-    private void ChooseRecipe()
+    private void SelectActions()
     {
-        //Debug.Log("IN CHOOSE RECIPE");
-        genericRecipe.Clear();
-        genericRecipeRandom.Clear();
-        activeInstructions.Clear();
-
-        if (currentRecipe == 1) currentRecipe = 0;
-        else currentRecipe = 1;
-        
-//        System.Random rnd = new System.Random();
-//        int k = rnd.Next(0, 2);
-//        Debug.Log(k);
-        foreach (var VARIABLE in setOfRecipes.ElementAt(currentRecipe))
+        activeActions.Clear();
+        int randomIndex;
+        bool duplicate;
+        for (int i = 0; i < playerCount*4; i++)
         {
-            genericRecipe.Add(VARIABLE);
-        }
-//        genericRecipe = setOfRecipes.ElementAt(k);
-    }
-
-
-    //return random Stack as randomly ordered stack of instructions
-    private void setRandom(SyncListString list)
-    {
-        System.Random rnd = new System.Random();
-        for (int i = 0; i < list.Count; i++)
-        {
-            int k = rnd.Next(0, i);
-            String value = list[k];
-            list[k] = list[i];
-            list[i] = value;
-        }
-    }
-
-
-    void ResetRound()
-    {
-        Debug.Log("ResetStart");
-
-        if (isServer)
-        {
-            ChooseRecipe();
-            var players = FindObjectsOfType<Player>();
-            for (int i = 0; i < playerCount; i++)
+            duplicate = true;
+            while (duplicate)
             {
-                activeInstructions.Add(genericRecipe[i]);
-
-            }
-
-            foreach (var VARIABLE in genericRecipe)
-            {
-                genericRecipeRandom.Add(VARIABLE);
-            }
-
-            setRandom(genericRecipeRandom);
-
-            for (int k = 0; k < playerCount; k++)
-            {
-                genericRecipe.Add("Complete!");
-            }
-
-
-
-           // Debug.Log(genericRecipe[0]);
-           // Debug.Log(genericRecipe[1]);
-
-            
-            int j = 0;
-            int b = 0;
-            int a = 0;
-
-
-            foreach (Player p in players)
-            {
-             //   Debug.Log("in");
-                RpcUpdateInstructions(genericRecipe[a], j);
-                for (int i = 0; i < numberOfButtons; i++)
+                randomIndex = UnityEngine.Random.Range(0, instructions.Count);
+                if (activeActions.Contains(instructions[randomIndex]) == false)
                 {
-                    RpcUpdateButtons(genericRecipeRandom[b], a, i);
-                  //  Debug.Log(genericRecipeRandom[b]);
-                    b++;
+                    activeActions.Add(instructions[randomIndex]);
+                    duplicate = false;
                 }
-
-                a++;
-
-                j++;
             }
+        }
+    }
+
+
+    private void SetFirstInstructions()
+    {
+        activeInstructions.Clear();
+        for (int i = 0; i < playerCount; i++)
+        {
+            int randomIndex = UnityEngine.Random.Range(0, activeActions.Count);
+            activeInstructions.Add(activeActions[randomIndex]);
         }
     }
 
     
 
     [ClientRpc]
-    public void RpcUpdateInstructions(String newInstruction, int playerID)
+    public void RpcUpdateInstruction(String newInstruction, int playerID)
     {
         playerList[playerID].SetInstruction(newInstruction);
     }
+
     
     [ClientRpc]
     public void RpcUpdateButtons(String newbutton, int playerID, int buttonNumber)
@@ -202,14 +120,25 @@ public class GameController : NetworkBehaviour
         playerList[playerID].SetActionButtons(newbutton, buttonNumber);
     }
     
-    public void updateInstruction(string instruction, int instructionNumber)
+
+    private void PickNewInstruction(int index)
     {
-        activeInstructions[instructionNumber] = instruction;
+        bool duplicate = true;
+
+        while (duplicate)
+        {
+            int randomIndex = UnityEngine.Random.Range(0, activeActions.Count);
+            if (activeInstructions.Contains(activeActions[randomIndex]) == false)
+            {
+                activeInstructions[index] = activeActions[randomIndex];
+                duplicate = false;
+            } 
+        }
     }
 
 
     [Server]
-    public void CheckAction(string action, int playerId)
+    public void CheckAction(string action)
     {
         //When an action button is pressed by a player-client, check if action matches an active instruction.
         for (int i = 0; i < activeInstructions.Count; i++)
@@ -218,16 +147,16 @@ public class GameController : NetworkBehaviour
             if (action == activeInstructions[i])
             {
                 score++;
-                activeInstructions[i] = genericRecipe[playerCount+score-1];          
-                RpcUpdateInstructions(genericRecipe[playerCount+score-1], i);
+                PickNewInstruction(i);      
+                RpcUpdateInstruction(activeInstructions[i], i);
             }
         }
 
-        if (score == playerCount*4)
+        /*if (score == playerCount*4)
         {
             //Run Reset
             Debug.Log("ROUND COMPLETE");
             ResetRound();
-        }
+        }*/
     }
 }
