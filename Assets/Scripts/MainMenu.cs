@@ -8,16 +8,32 @@ public class MainMenu : MonoBehaviour {
 
     public LobbyManager lobbyManager;
     public GameObject Lobby;
+    public MyNetworkDiscovery networkDiscovery;
 
-	public void OnClickHost()
+    public string ipAddress;
+
+    private void Start()
     {
+        NetworkServer.Reset();
+        networkDiscovery.Initialize();
+        networkDiscovery.StartAsClient();
+        Debug.Log("Listening for IP Addresses...");
+    }
+
+    public void OnClickHost()
+    {
+        networkDiscovery.StopBroadcast();
+        Debug.Log("Stopped Listening.");
+        networkDiscovery.Initialize();
+        networkDiscovery.StartAsServer();
+        Debug.Log("Broadcasting IP Address...");
         lobbyManager.StartServer();
     }
 
     public void OnClickJoin()
     {
-        lobbyManager.networkAddress = "192.168.43.50";
-
+        //lobbyManager.networkAddress = "172.20.10.4";
+        Debug.Log("Joining Game using IP Address: " + lobbyManager.networkAddress);
         lobbyManager.StartClient();
         Lobby.SetActive(true);
     }
