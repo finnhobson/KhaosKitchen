@@ -32,7 +32,7 @@ public class MainMenu : MonoBehaviour {
 
     public void OnClickJoin()
     {
-        lobbyManager.networkAddress = "127.0.0.1";
+        lobbyManager.networkAddress = "172.20.10.4";
         Debug.Log("Joining Game using IP Address: " + lobbyManager.networkAddress);
         lobbyManager.StartClient();
         Lobby.SetActive(true);
