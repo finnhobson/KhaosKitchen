@@ -21,7 +21,6 @@ public class GameController : NetworkBehaviour
     private static List<String> burgerRecipe = new List<string>(new string[] { "Grab Meat", "Grab Salad", "Grab Buns", "Grab Cheese", "Grind Meat", "Chop Salad", "Cut Bun", "Wash Salad" , "Mash Potato", "Grill Meat", "Flip Pancake", "Roast Chicken"});
     private static List<String> pastaRecipe = new List<string>(new string[] { "Grab Pasta", "Grab Salad", "Grab Sauce", "Grab Cheese", "Boil Pasta", "Chop Salad", "Mix-in Sauce", "Serve","uno","dos","tres","quattro" });
     
-    private List<String> burgerRecipeRandom = new List<string>();
 
     private HashSet<List<String>> setOfRecipes = new HashSet<List<String>>()
     {

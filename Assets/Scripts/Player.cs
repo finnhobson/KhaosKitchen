@@ -49,10 +49,11 @@ public class Player : NetworkBehaviour {
     {
         //Link Player GameObject to GameController.
         gameController = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
+        Screen.orientation = ScreenOrientation.Portrait;
         //        buttons[0] = button1;
         //        buttons[1] = button2;
-        //        buttons[2] = button3;
-        //        buttons[3] = button4;
+//        buttons[2] = button3;
+//        buttons[3] = button4;
         StartTimer();
 
     }
@@ -74,8 +75,9 @@ public class Player : NetworkBehaviour {
             SetTimerText(timeLeft.ToString("F2"));
         }
 
-        /*if(MicListener.MicLoudness > 0.15f){
-            scoreText.text = "Noise";
+        if(MicListener.MicLoudness > 0.30f){
+            //shakeClick(Instruction text to be completed by shouting, matching that in activeInstructions);
+            shakeClick("Grab Salad");
         }
 
         nfcValue = nfcCheck();
@@ -88,11 +90,12 @@ public class Player : NetworkBehaviour {
         
         if (ShakeListener.shaking)
         {
-            scoreText.text = "shaking";
-        }*/
+            //shakeClick(Instruction text to be completed by shaking, matching that in activeInstructions);
+            shakeClick("Grab Buns");
+        }
     }
     
-    /*private string nfcCheck()
+    private string nfcCheck()
     {
         string value = NFCListener.GetValue();
         if (value == "BPO/2m8/gA==")
@@ -103,13 +106,13 @@ public class Player : NetworkBehaviour {
         } else if (value == "BPjA2m8/gA==")
         {
             NFCListener.SetValue("");
-            return "Grab Pasta";
+            return "Grab Meat";
         }
         else
         {
             return value;
         }
-    }*/
+    }
 
 
     public void SetGameController(GameController controller)
@@ -217,6 +220,22 @@ public class Player : NetworkBehaviour {
         if (isLocalPlayer)
         {
             CmdAction(nfcString);
+        }
+    }
+    
+    public void micClick(String micString)
+    {
+        if (isLocalPlayer)
+        {
+            CmdAction(micString);
+        }
+    }
+    
+    public void shakeClick(String shakeString)
+    {
+        if (isLocalPlayer)
+        {
+            CmdAction(shakeString);
         }
     }
 
