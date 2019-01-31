@@ -12,7 +12,7 @@ public class Player : NetworkBehaviour {
 
     public Button button1, button2, button3, button4;
 
-    public Text scoreText, instructionText, timerText;
+    public Text scoreText, instructionText, timerText, gpsText;
 
     public GameObject nfcPanel, micPanel, shakePanel, gameOverPanel;
 
@@ -74,6 +74,7 @@ public class Player : NetworkBehaviour {
                 CmdIncreaseScore();
             }
         }
+        
 
         
         if (ShakeListener.shaking)
@@ -85,6 +86,8 @@ public class Player : NetworkBehaviour {
                 CmdIncreaseScore();
             }
         }
+
+        gpsText.text = "Lat: " + GpsListener.latString + "\n Long: " + GpsListener.longString;
     }
 
 

@@ -9,6 +9,7 @@
       <e p="Assets" t="Include">
         <e p="Scripts" t="Include">
           <e p="GameController.cs" t="Include" />
+          <e p="GpsListener.cs" t="Include" />
           <e p="LobbyManager.cs" t="Include" />
           <e p="LobbyPlayer.cs" t="Include" />
           <e p="MainMenu.cs" t="Include" />
