@@ -37,7 +37,7 @@ public class GpsListener : MonoBehaviour
         }
         Input.location.Start();
         int maxWait = 0;
-        while (Input.location.status == LocationServiceStatus.Initializing && maxWait < 10)
+        while (Input.location.status == LocationServiceStatus.Initializing && maxWait < 100)
         {
             latString = "init " + Convert.ToString(maxWait);
             maxWait++;
@@ -45,7 +45,7 @@ public class GpsListener : MonoBehaviour
             
         }
 
-        if (maxWait >= 10)
+        if (maxWait >= 100)
         {
             Debug.Log("Timed out");
                 yield break;
