@@ -14,6 +14,8 @@ public class Player : NetworkBehaviour {
 
     public Text scoreText, instructionText, timerText;
 
+    public GameObject nfcPanel, micPanel, shakePanel, gameOverPanel;
+
     public int playerId;
     
     private string nfcValue = "";
@@ -52,30 +54,43 @@ public class Player : NetworkBehaviour {
             SetTimerText(timeLeft.ToString("F2"));
         }
 
-        if(MicListener.MicLoudness > 0.30f){
+        if(MicListener.MicLoudness > 0.2f){
             //shakeClick(Instruction text to be completed by shouting, matching that in activeInstructions);
-            shakeClick("Grab Salad");
+            if (micPanel.activeSelf)
+            {
+                micPanel.SetActive(false);
+                CmdIncreaseScore();
+            }
         }
 
         nfcValue = nfcCheck();
         //scoreText.text = nfcValue;
         if (validNfc.Contains(nfcValue))
         {
-            nfcClick(nfcValue);
+            //nfcClick(nfcValue);
+            if (nfcPanel.activeSelf)
+            {
+                nfcPanel.SetActive(false);
+                CmdIncreaseScore();
+            }
         }
 
         
         if (ShakeListener.shaking)
         {
             //shakeClick(Instruction text to be completed by shaking, matching that in activeInstructions);
-            shakeClick("Grab Buns");
+            if (shakePanel.activeSelf)
+            {
+                shakePanel.SetActive(false);
+                CmdIncreaseScore();
+            }
         }
     }
 
 
     public void GameOver()
     {
-        
+        gameOverPanel.SetActive(true);
     }
 
     public void setPlayerId(int assignedId)
@@ -154,6 +169,12 @@ public class Player : NetworkBehaviour {
     public void CmdAction(string action)
     {
         gameController.CheckAction(action);
+    }
+
+    [Command]
+    public void CmdIncreaseScore()
+    {
+        gameController.IncreaseScore();
     }
 
 

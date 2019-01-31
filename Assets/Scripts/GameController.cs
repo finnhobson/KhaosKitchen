@@ -24,7 +24,7 @@ public class GameController : NetworkBehaviour
 
     private static int numberOfButtons = 4;
 
-    public int playerCount;
+    public int playerCount = 3;
 
     public List<Player> playerList = new List<Player>();
 
@@ -39,7 +39,7 @@ public class GameController : NetworkBehaviour
     {
         //Find players
         var players = FindObjectsOfType<Player>();
-        playerCount = players.Length;
+        //playerCount = players.Length;
 
         if (isServer)
         {
@@ -151,12 +151,11 @@ public class GameController : NetworkBehaviour
                 RpcUpdateInstruction(activeInstructions[i], i);
             }
         }
+    }
 
-        /*if (score == playerCount*4)
-        {
-            //Run Reset
-            Debug.Log("ROUND COMPLETE");
-            ResetRound();
-        }*/
+    [Server]
+    public void IncreaseScore()
+    {
+        score++;
     }
 }
