@@ -15,26 +15,32 @@ public class Player : NetworkBehaviour {
     public Text scoreText, instructionText, timerText, gpsText;
 
     public GameObject nfcPanel, micPanel, shakePanel, gameOverPanel;
+    public Button nfcButton, micButton, shakeButton;
+    public Text nfcText, micText, shakeText;
 
     public int playerId;
     
     private string nfcValue = "";
-    
+
     private HashSet<String> validNfc = new HashSet<String>{"Grab Meat","Grab Pasta"};
 
     public MicListener micListener;
 
-    public GameObject countdownBar;
+    public GameObject instBar;
 
-    public float timeLeft, startTime;
+    public float instTimeLeft, instStartTime;
 
+    private int scoreStreak = 0;
+
+    //Sets score streak where event will occur
+    private int scoreStreakMax = 5;
 
     private void Start()
     {
         //Link Player GameObject to GameController.
         gameController = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
         Screen.orientation = ScreenOrientation.Portrait;
-        StartTimer();
+        StartInstTimer();
     }
 
 
@@ -42,58 +48,66 @@ public class Player : NetworkBehaviour {
     {
         //Display score.
         scoreText.text = gameController.score.ToString();
-
-        UpdateTimeLeft();
-        if (timeLeft < 0)
+        if (gameController.roundTimeLeft > 0)
         {
-            GameOver();
+            UpdateInstTimeLeft();
+            if (instTimeLeft < 0)
+            {
+                CmdFail(instructionText.text);
+                StartInstTimer();
+            }
+            else
+            {
+                SetTimerText(instTimeLeft.ToString("F2"));
+            }
+
+            if (MicListener.MicLoudness > 0.2f)
+            {
+                //shakeClick(Instruction text to be completed by shouting, matching that in activeInstructions);
+                if (micPanel.activeSelf)
+                {
+                    micPanel.SetActive(false);
+                    CmdIncreaseScore();
+                    StartInstTimer();
+                }
+            }
+
+            nfcValue = nfcCheck();
+            //scoreText.text = nfcValue;
+            if (validNfc.Contains(nfcValue))
+            {
+                //nfcClick(nfcValue);
+                if (nfcPanel.activeSelf)
+                {
+                    nfcPanel.SetActive(false);
+                    CmdIncreaseScore();
+                    StartInstTimer();
+                }
+            }
+
+            if (ShakeListener.shaking)
+            {
+                //shakeClick(Instruction text to be completed by shaking, matching that in activeInstructions);
+                if (shakePanel.activeSelf)
+                {
+                    shakePanel.SetActive(false);
+                    CmdIncreaseScore();
+                    StartInstTimer();
+                }
+            }
+
+            gpsText.text = "Lat: " + GpsListener.latString + "\n Long: " + GpsListener.longString;
+        }
+        else{
             SetTimerText("0");
         }
-        else
-        {
-            SetTimerText(timeLeft.ToString("F2"));
-        }
-
-        if(MicListener.MicLoudness > 0.2f){
-            //shakeClick(Instruction text to be completed by shouting, matching that in activeInstructions);
-            if (micPanel.activeSelf)
-            {
-                micPanel.SetActive(false);
-                CmdIncreaseScore();
-            }
-        }
-
-        nfcValue = nfcCheck();
-        //scoreText.text = nfcValue;
-        if (validNfc.Contains(nfcValue))
-        {
-            //nfcClick(nfcValue);
-            if (nfcPanel.activeSelf)
-            {
-                nfcPanel.SetActive(false);
-                CmdIncreaseScore();
-            }
-        }
-        
-
-        
-        if (ShakeListener.shaking)
-        {
-            //shakeClick(Instruction text to be completed by shaking, matching that in activeInstructions);
-            if (shakePanel.activeSelf)
-            {
-                shakePanel.SetActive(false);
-                CmdIncreaseScore();
-            }
-        }
-
-        gpsText.text = "Lat: " + GpsListener.latString + "\n Long: " + GpsListener.longString;
     }
 
 
     public void GameOver()
     {
         gameOverPanel.SetActive(true);
+        SetTimerText("0");
     }
 
     public void setPlayerId(int assignedId)
@@ -111,7 +125,6 @@ public class Player : NetworkBehaviour {
         string value = NFCListener.GetValue();
         if (value == "BPO/2m8/gA==")
         {
-            
             NFCListener.SetValue("");
             return "Grab Meat";
         } else if (value == "BPjA2m8/gA==")
@@ -172,6 +185,13 @@ public class Player : NetworkBehaviour {
     public void CmdAction(string action)
     {
         gameController.CheckAction(action);
+    }
+
+    [Command]
+    public void CmdFail(string action)
+    {
+        gameController.FailAction(action);
+        ResetScoreStreak();
     }
 
     [Command]
@@ -240,16 +260,20 @@ public class Player : NetworkBehaviour {
         }
     }
 
-    public void StartTimer()
+    public void StartInstTimer()
     {
-        startTime = 90;
-        timeLeft = startTime; 
+        instStartTime = 15;
+        instTimeLeft = instStartTime; 
     }
 
-    private void UpdateTimeLeft() 
+    private void UpdateInstTimeLeft() 
     {
-        timeLeft -= Time.deltaTime;
-        countdownBar.GetComponent<Image>().fillAmount = timeLeft / startTime; 
+        if(nfcPanel.activeSelf||micPanel.activeSelf||shakePanel.activeSelf){
+            //panel active so no timer 
+        }else{
+            instTimeLeft -= Time.deltaTime;
+            instBar.GetComponent<Image>().fillAmount = instTimeLeft / instStartTime;
+        }
     }
 
     private void SetTimerText(string text)
@@ -257,6 +281,65 @@ public class Player : NetworkBehaviour {
         timerText.text = text;
     }
 
+    public void SetNfcPanel(string text)
+    {
+        nfcPanel.SetActive(true);
+        nfcText.text = text;
+
+    }
+
+    public void SetShakePanel(string text)
+    {
+        shakePanel.SetActive(true);
+        shakeText.text = text;
+    }
+
+    public void SetMicPanel(string text)
+    {
+        micPanel.SetActive(true);
+        micText.text = text;
+
+    }
+
+    public void OnClickNfcButton()
+    {
+        if (isLocalPlayer)
+        {
+            nfcPanel.SetActive(false);
+        }
+    }
+
+    public void OnClickMicButton()
+    {
+        if (isLocalPlayer)
+        {
+            micPanel.SetActive(false);
+        }
+    }
+
+    public void IncreaseScoreStreak(){
+        scoreStreak++;
+    }
+
+    public void ResetScoreStreak(){
+        scoreStreak = 0;
+    }
+
+    public void OnClickShakeButton()
+    {
+        if (isLocalPlayer)
+        {
+            shakePanel.SetActive(false);
+        }
+    }
+
+    public void ScoreStreakCheck()
+    {
+        if(scoreStreak>=scoreStreakMax){
+            ResetScoreStreak();
+            SetNfcPanel(" Great Work!\n Dish is ready to serve!\n\n (TAP ON SERVE NFC)");
+        }
+    }
 }
 
 
