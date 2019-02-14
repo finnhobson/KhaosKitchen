@@ -262,7 +262,7 @@ public class Player : NetworkBehaviour {
 
     public void StartInstTimer()
     {
-        instStartTime = 15;
+        instStartTime = 20;
         instTimeLeft = instStartTime; 
     }
 
@@ -272,7 +272,7 @@ public class Player : NetworkBehaviour {
             //panel active so no timer 
         }else{
             instTimeLeft -= Time.deltaTime;
-            instBar.GetComponent<Image>().fillAmount = instTimeLeft / instStartTime;
+            instBar.transform.localScale = new Vector3(instTimeLeft / instStartTime, 1);
         }
     }
 

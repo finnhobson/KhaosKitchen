@@ -24,7 +24,7 @@ public class GameController : NetworkBehaviour
 
     private static int numberOfButtons = 4;
 
-    public int playerCount = 3;
+    public int playerCount = 2;
 
     public List<Player> playerList = new List<Player>();
 
@@ -33,9 +33,9 @@ public class GameController : NetworkBehaviour
         "Drain Pasta", "Cook Beef" });
 
     private static List<String> nfcInstructions = new List<string>(new string[] { "", "" });
-    private static List<String> micInstructions = new List<string>(new string[] { " Sous Chef made a deeply offensive comment!\n Shout some sense into him! It's 2018 ffs!\n\n (SHOUT INTO THE MIC)",
+    private static List<String> micInstructions = new List<string>(new string[] { " Sous Chef made a deeply offensive comment!\n Shout some sense into him!\n\n (SHOUT INTO THE MIC)",
                                                                                   " Waiters won't take the food out fast enough!\n Shout at them to work harder!\n\n (SHOUT INTO THE MIC)",
-                                                                                  " Your team are being incompetent!\n Shout some hurtful words at them!\n\n (SHOUT INTO THE MIC)"});
+                                                                                  " Your team are being incompetent!\n Shout some sense into them!\n\n (SHOUT INTO THE MIC)"});
 
     private static List<String> shakeInstructions = new List<string>(new string[] { " Chef underseasoned the dish!\n Shake to salt the food!\n\n (SHAKE YOUR PHONE)",
                                                                                     " Food runner dropped the dish!\n Shake some sense into the boy!\n\n (SHAKE YOUR PHONE)",
@@ -53,12 +53,12 @@ public class GameController : NetworkBehaviour
     public Text roundTimerText;
 
     public int roundStartScore = 0;
-    public int roundMaxScore = 30;
+    public int roundMaxScore = 20;
     public GameObject scoreBar;
     public Text scoreBarText;
 
     //Phone interaction probability = 2/x
-    private int piProb = 15;
+    private int piProb = 10;
 
     void Start()
     {
@@ -261,7 +261,7 @@ public class GameController : NetworkBehaviour
                 RpcResetScoreSteak(i);
                 PickNewInstruction(i);
                 RpcUpdateInstruction(activeInstructions[i], i);
-                RpcSetNfcPanel(i, "You fucked the order! " + System.Environment.NewLine
+                RpcSetNfcPanel(i, "You messed up the order! " + System.Environment.NewLine
                                + "Run to the bin!" + System.Environment.NewLine + System.Environment.NewLine
                                + "(TAP ON BIN NFC)");
             }

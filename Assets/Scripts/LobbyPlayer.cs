@@ -47,6 +47,7 @@ public class LobbyPlayer : NetworkLobbyPlayer {
     private void SetupLocalPlayer()
     {
         PlayerName.text = "MyPlayer";
+        PlayerName.color = new Color(0, 0, 1.0f);
         ReadyButton.enabled = true;
         ButtonText.text = "JOIN";
     }
