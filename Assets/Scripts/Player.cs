@@ -26,6 +26,8 @@ public class Player : NetworkBehaviour {
         set { playerId = value; }
     }
 
+    public string PlayerUserName { get; set; }
+
     private string nfcValue = "";
 
     private HashSet<String> validNfc = new HashSet<String>{"Grab Meat","Grab Pasta"};

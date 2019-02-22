@@ -31,9 +31,14 @@ public class GameController : NetworkBehaviour
     public Text roundTimerText;
 
     public int roundStartScore = 0;
-    public int roundMaxScore = 30;
+    public int roundMaxScore = 5;
     public GameObject scoreBar;
     public Text scoreBarText;
+
+    private GameStateHandler gameStateHandler;
+    
+    List<String> userNames = new List<string>(new string[] { "A", "B", "C", "D", "E", "F", "G", "H", "I" }); /* Just here so in future they can set their own usernames from the lobby*/
+    private List<String> activeUserNames = new List<String>();
 
     //Phone interaction probability = 2/x
     private int piProb = 15;
@@ -44,13 +49,15 @@ public class GameController : NetworkBehaviour
         var players = FindObjectsOfType<Player>();
         
         //Loop sets up playerList, links players to the GC and IC and sets player id
-        int playerIndex = 0;        
+        int playerIndex = 0;
         foreach (var p in players)
         {
             playerList.Add(p);
             p.SetGameController(this);
             p.SetInstructionController(InstructionController);
             p.setPlayerId(playerIndex);
+            p.PlayerUserName = userNames[playerIndex];
+            activeUserNames.Add(p.PlayerUserName);
             playerIndex++;
         }
         
@@ -60,6 +67,8 @@ public class GameController : NetworkBehaviour
         if (isServer)
         {
             GetComponentInChildren<Canvas>().enabled = true; //Show server display only on the server.
+            gameStateHandler = new GameStateHandler(activeUserNames); //Instantiate single gameStateHandler object on the server to hold gamestate data
+            
         }
 
         playerIndex = 0;
