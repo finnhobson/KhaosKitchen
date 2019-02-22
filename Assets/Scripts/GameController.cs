@@ -37,7 +37,7 @@ public class GameController : NetworkBehaviour
 
     private GameStateHandler gameStateHandler;
     
-    List<String> userNames = new List<string>(new string[] { "A", "B", "C", "D", "E", "F", "G", "H", "I" }); /* Just here so in future they can set their own usernames from the lobby*/
+    List<String> userNames = new List<string>(new string[] { "A", "B", "C", "D", "E", "F", "G", "H", "I" }); /* Just here so in future they can set their own usernames from the lobby */
     private List<String> activeUserNames = new List<String>();
 
     //Phone interaction probability = 2/x
@@ -56,7 +56,11 @@ public class GameController : NetworkBehaviour
             p.SetGameController(this);
             p.SetInstructionController(InstructionController);
             p.setPlayerId(playerIndex);
+
+            //New attributes for players to add to gameplayer, thoughts?
+            p.PlayerScore = 0;
             p.PlayerUserName = userNames[playerIndex];
+            
             activeUserNames.Add(p.PlayerUserName);
             playerIndex++;
         }
@@ -88,6 +92,26 @@ public class GameController : NetworkBehaviour
         //Show score and active instructions on server display.
         scoreText.text = score.ToString();
         UpdateRoundTimeLeft();
+
+        while ( isRoundComplete() )
+        {
+            if (isServer)
+            {
+                Debug.Log("in while");
+                //Save round data to gamestate
+                onRoundComplete();
+                //Reset buttons
+                //Reset instructions
+                //Reset timers
+                //Reset Score
+            }
+            else
+            {
+                //Pause players
+            }
+            
+        }
+        
         if(roundTimeLeft<0){
             SetTimerText("0");
             foreach(Player p in playerList){
@@ -155,4 +179,22 @@ public class GameController : NetworkBehaviour
         scoreBar.GetComponent<UnityEngine.UI.Image>().fillAmount = (float)(score - roundStartScore)/roundMaxScore;
 
     }
+
+    private bool isRoundComplete()
+    {
+        return (score >= roundMaxScore);
+    }
+
+    [Server]
+    private void onRoundComplete()
+    {
+        Debug.Log("Function called");
+        gameStateHandler.onRoundComplete(score);
+        foreach (var player in playerList)
+        {
+            gameStateHandler.updatePlayerScore(player.PlayerUserName, player.PlayerScore);
+        }
+    }
+
+
 }

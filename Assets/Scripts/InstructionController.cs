@@ -152,7 +152,7 @@ public class InstructionController : NetworkBehaviour
     /*
      * Checks if failed action is a current active instruction, and if so pick new instruction and orders NFC bin.
      */
-    [Server]
+//    [Server]
     public void FailAction(string action)
     {
         //When an action button is pressed by a player-client, check if action matches an active instruction.

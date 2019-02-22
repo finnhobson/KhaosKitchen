@@ -27,6 +27,7 @@ public class Player : NetworkBehaviour {
     }
 
     public string PlayerUserName { get; set; }
+    public int PlayerScore { get; set; }
 
     private string nfcValue = "";
 
@@ -59,7 +60,7 @@ public class Player : NetworkBehaviour {
         if (gameController.roundTimeLeft > 0)
         {
             UpdateInstTimeLeft();
-            if (instTimeLeft < 0)
+            if (instTimeLeft < 0 && isLocalPlayer)
             {
                 CmdFail(instructionText.text);
                 StartInstTimer();

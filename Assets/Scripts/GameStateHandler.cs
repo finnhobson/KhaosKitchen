@@ -50,4 +50,15 @@ public class GameStateHandler
     {
         
     }
+    
+    public void onRoundComplete(int score)
+    {
+        RoundNumber++;
+        TeamTotalScore += score;
+    }
+
+    public void updatePlayerScore(string userName, int score)
+    {
+        userProfiles[userName] += score;
+    }
 }
