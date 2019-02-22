@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ContentModelStore">
-    <e p="C:\Users\Harvey\.Rider2018.2\config\extensions" t="IncludeRecursive" />
-    <e p="C:\Users\Harvey\.Rider2018.2\system\extResources" t="IncludeRecursive" />
-    <e p="C:\Users\Harvey\.Rider2018.2\system\resharper-host\Local\Transient\ReSharperHost\v182\SolutionCaches\_KhaosKitchen.-1121122716.00" t="ExcludeRecursive" />
-    <e p="C:\Users\Harvey\Desktop\GamesProject\KhaosKitchen" t="IncludeRecursive">
+    <e p="C:\Users\harry\.Rider2018.2\system\extResources" t="IncludeRecursive" />
+    <e p="C:\Users\harry\.Rider2018.2\system\resharper-host\Local\Transient\ReSharperHost\v182\SolutionCaches\_KhaosKitchen.1702451257.00" t="ExcludeRecursive" />
+    <e p="C:\Users\harry\OneDrive\Documents\GamesProject\KhaosKitchen" t="IncludeRecursive">
       <e p="Assembly-CSharp.csproj" t="IncludeRecursive" />
       <e p="Assets" t="Include">
         <e p="Scripts" t="Include">
           <e p="GameController.cs" t="Include" />
           <e p="GpsListener.cs" t="Include" />
+          <e p="InstructionController.cs" t="Include" />
           <e p="LobbyManager.cs" t="Include" />
           <e p="LobbyPlayer.cs" t="Include" />
           <e p="MainMenu.cs" t="Include" />

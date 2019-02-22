@@ -9,6 +9,7 @@ using UnityEngine.UI;
 public class Player : NetworkBehaviour {
 
     public GameController gameController;
+    public InstructionController InstructionController;
 
     public Button button1, button2, button3, button4;
 
@@ -18,8 +19,13 @@ public class Player : NetworkBehaviour {
     public Button nfcButton, micButton, shakeButton;
     public Text nfcText, micText, shakeText;
 
-    public int playerId;
-    
+    private int playerId;
+    public int PlayerId
+    {
+        get { return playerId; }
+        set { playerId = value; }
+    }
+
     private string nfcValue = "";
 
     private HashSet<String> validNfc = new HashSet<String>{"Grab Meat","Grab Pasta"};
@@ -39,10 +45,10 @@ public class Player : NetworkBehaviour {
     {
         //Link Player GameObject to GameController.
         gameController = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
+        InstructionController = GameObject.FindGameObjectWithTag("InstructionController").GetComponent<InstructionController>();
         Screen.orientation = ScreenOrientation.Portrait;
         StartInstTimer();
     }
-
 
     private void Update()
     {
@@ -103,7 +109,6 @@ public class Player : NetworkBehaviour {
         }
     }
 
-
     public void GameOver()
     {
         gameOverPanel.SetActive(true);
@@ -138,10 +143,17 @@ public class Player : NetworkBehaviour {
         }
     }
 
-
+    /**
+     * What is the point of this function when the game controller has already been assigned by tag?
+     **/
     public void SetGameController(GameController controller)
     {
         gameController = controller;
+    }
+
+    public void SetInstructionController(InstructionController instructionController)
+    {
+        InstructionController = instructionController;
     }
 
     //Assign instructions to each player (NOTE: Currently only works for up to 2 players).
@@ -180,17 +192,16 @@ public class Player : NetworkBehaviour {
         return instructionText.text;
     }
 
-
     [Command]
     public void CmdAction(string action)
     {
-        gameController.CheckAction(action);
+        InstructionController.CheckAction(action);
     }
 
     [Command]
     public void CmdFail(string action)
     {
-        gameController.FailAction(action);
+        InstructionController.FailAction(action);
         ResetScoreStreak();
     }
 
@@ -200,7 +211,6 @@ public class Player : NetworkBehaviour {
         gameController.IncreaseScore();
     }
 
-
     public void OnClickButton1()
     {
         if (isLocalPlayer)
@@ -208,7 +218,6 @@ public class Player : NetworkBehaviour {
             CmdAction(button1.GetComponentInChildren<Text>().text);
         }
     }
-
 
     public void OnClickButton2()
     {
@@ -218,7 +227,6 @@ public class Player : NetworkBehaviour {
         }
     }
 
-
     public void OnClickButton3()
     {
         if (isLocalPlayer)
@@ -226,7 +234,6 @@ public class Player : NetworkBehaviour {
             CmdAction(button3.GetComponentInChildren<Text>().text);
         }
     }
-
 
     public void OnClickButton4()
     {
@@ -262,7 +269,7 @@ public class Player : NetworkBehaviour {
 
     public void StartInstTimer()
     {
-        instStartTime = 20;
+        instStartTime = 15;
         instTimeLeft = instStartTime; 
     }
 
@@ -272,7 +279,7 @@ public class Player : NetworkBehaviour {
             //panel active so no timer 
         }else{
             instTimeLeft -= Time.deltaTime;
-            instBar.transform.localScale = new Vector3(instTimeLeft / instStartTime, 1);
+            instBar.GetComponent<Image>().fillAmount = instTimeLeft / instStartTime;
         }
     }
 
