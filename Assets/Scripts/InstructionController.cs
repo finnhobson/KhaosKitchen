@@ -41,6 +41,8 @@ public class InstructionController : NetworkBehaviour
     public int NumberOfButtons { get; set; }
     public int PlayerCount { get; set; }
 
+    [SyncVar] public bool isRoundPaused = false;
+    [SyncVar] public bool isNextInstructionLast = false;
 
     //Phone interaction probability = 2/x
     private int piProb = 15;
@@ -100,6 +102,7 @@ public class InstructionController : NetworkBehaviour
     [ClientRpc]
     public void RpcResetPlayers()
     {
+//        UnpauseIC();
         //Assign actions and instructions to each player.
         foreach (var player in Players)
         {
@@ -166,6 +169,7 @@ public class InstructionController : NetworkBehaviour
     [Server]
     public void CheckAction(string action)
     {
+        if (isRoundPaused) return; //Do nothing when round paused.
         //When an action button is pressed by a player-client, check if action matches an active instruction.
         for (int i = 0; i < ActiveInstructions.Count; i++)
         {
@@ -176,6 +180,13 @@ public class InstructionController : NetworkBehaviour
                 PickNewInstruction(i);      
                 RpcUpdateInstruction(ActiveInstructions[i], i);
                 RpcStartInstTimer(i);
+                
+                //Update player score
+                Players[i].PlayerScore++;
+                
+                //Only do a panel action if there are still instructions left in the round.
+//                if (isNextInstructionLast) return;
+                
                 int rand = UnityEngine.Random.Range(1, piProb);
                 if(rand==1){
                     rand = UnityEngine.Random.Range(0, micInstructions.Count);
@@ -274,6 +285,26 @@ public class InstructionController : NetworkBehaviour
         {
             player.SetInstruction(player.PlayerUserName + " is paused");
         }
+    }
+
+    public void PauseIC()
+    {
+        isRoundPaused = true;
+    }
+    
+    public void UnpauseIC()
+    {
+        isRoundPaused = false;
+    }
+
+    public void PenultimateAction(bool fromGC)
+    {
+        isNextInstructionLast = fromGC;
+    }
+    
+    public void SetIsLastInstructionFalse()
+    {
+        isNextInstructionLast = false;
     }
 
     // Start is called before the first frame update

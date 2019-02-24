@@ -89,6 +89,11 @@ public class GameController : NetworkBehaviour
         scoreText.text = score.ToString();
         UpdateRoundTimeLeft();
 
+//        if (roundMaxScore - score < 2)
+//        {
+//            PenultimateAction(true);
+//        }
+
         if ( isRoundComplete())
         {
             onRoundComplete();
@@ -126,6 +131,7 @@ public class GameController : NetworkBehaviour
     [Server]
     public void CheckAction(string action, int i)
     {
+        if (isRoundPaused) return; //Do not check if round paused.
         IncreaseScore();
         RpcIncreaseScoreSteak(i);
         RpcScoreSteakCheck(i);
@@ -205,12 +211,13 @@ public class GameController : NetworkBehaviour
     {
         yield return new WaitForSecondsRealtime(x);
         ResetPlayers();
-        resetServer();
+        ResetServer();
         RpcUnpausePlayers();
         isRoundPaused = false;
+//        PenultimateAction(false);
     }
 
-    private void resetServer()
+    private void ResetServer()
     {
         Debug.Log("RESET SERVER");
         score = 0; //This has to be called to break out the loop in Update
@@ -236,8 +243,14 @@ public class GameController : NetworkBehaviour
         }
     }
 
+    /*
+     * Pauses IC to prevent actions from working while paused.
+     * Generate pause message on players.
+     * Generate new active button actions and corresponding active instructions.
+     */
     private void ResetIC()
     {
+        InstructionController.PauseIC();
         InstructionController.RpcShowPaused();
         InstructionController.ResetIC();
     }
@@ -245,5 +258,11 @@ public class GameController : NetworkBehaviour
     private void ResetPlayers()
     {
         InstructionController.RpcResetPlayers();
+        InstructionController.isRoundPaused = false;
+    }
+
+    private void PenultimateAction(bool action)
+    {
+        InstructionController.PenultimateAction(action);
     }
 }

@@ -20,7 +20,6 @@ public class Player : NetworkBehaviour {
     public Text nfcText, micText, shakeText;
 
     public int PlayerId { get; set; }
-
     public string PlayerUserName { get; set; }
     public int PlayerScore { get; set; }
 
