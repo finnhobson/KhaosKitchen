@@ -176,7 +176,6 @@ public class GameController : NetworkBehaviour
         isRoundPaused = true;
 
         RpcPausePlayers();
-        ShowPauseIC();
         ResetIC();
 
         //Store round info
@@ -185,6 +184,7 @@ public class GameController : NetworkBehaviour
         {
             gameStateHandler.updatePlayerScore(player.PlayerUserName, player.PlayerScore);
         }
+        gameStateHandler.printGameData();
 
         var time = 5;
         StartCoroutine(pausePlayersForXSeconds(time));
@@ -203,9 +203,7 @@ public class GameController : NetworkBehaviour
      */
     private IEnumerator pausePlayersForXSeconds(int x)
     {
-        print(Time.time);
         yield return new WaitForSecondsRealtime(x);
-        print(Time.time);
         ResetPlayers();
         resetServer();
         RpcUnpausePlayers();
@@ -240,6 +238,7 @@ public class GameController : NetworkBehaviour
 
     private void ResetIC()
     {
+        InstructionController.RpcShowPaused();
         InstructionController.ResetIC();
     }
 
@@ -247,10 +246,4 @@ public class GameController : NetworkBehaviour
     {
         InstructionController.RpcResetPlayers();
     }
-
-    private void ShowPauseIC()
-    {
-        InstructionController.RpcShowPaused();
-    }
-
 }

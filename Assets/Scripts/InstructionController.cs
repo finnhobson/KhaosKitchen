@@ -78,6 +78,10 @@ public class InstructionController : NetworkBehaviour
     [Server]
     public void ResetIC()
     {
+        SelectButtonActions();  //Create synced list of executables, one for each button in the game
+        SetFirstInstructions(); //Select one instruction per player from Action Button List
+        //Comments used for testing only
+        /*
         ActiveInstructions.Clear();
         ActiveButtonActions.Clear();
         int k = 0;
@@ -90,6 +94,7 @@ public class InstructionController : NetworkBehaviour
                 k++;
             }   
         }
+        */
     }
 
     [ClientRpc]
