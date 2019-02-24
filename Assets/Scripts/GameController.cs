@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Timers;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
@@ -8,42 +10,37 @@ using UnityEngine.UI;
 
 public class GameController : NetworkBehaviour
 {
-
     public InstructionController InstructionController;
-
-    public Text scoreText, instruction1, instruction2, instruction3, instruction4;
-
-    [SyncVar]
-    public int score = 0;
-
-    private static int numberOfButtons = 4;
-
-    public int playerCount = 3;
-
-    public List<Player> playerList = new List<Player>();
-
-    public float roundStartTime = 90;
-
-    [SyncVar]
-    public float roundTimeLeft;
-
-    public GameObject roundTimerBar;
-    public Text roundTimerText;
-
-    public int roundStartScore = 0;
-    public int roundMaxScore = 5;
-    public GameObject scoreBar;
-    public Text scoreBarText;
-
     private GameStateHandler gameStateHandler;
     
-    List<String> userNames = new List<string>(new string[] { "A", "B", "C", "D", "E", "F", "G", "H", "I" }); /* Just here so in future they can set their own usernames from the lobby */
-    private List<String> activeUserNames = new List<String>();
+    public Text scoreText, instruction1, instruction2, instruction3, instruction4;
+    public Text roundTimerText;
+    public Text scoreBarText;
+
+    public GameObject roundTimerBar;
+    
+    public List<Player> playerList = new List<Player>();
+
+    [SyncVar] public int score = 0;
+    [SyncVar] public float roundTimeLeft;
+    
+    [SyncVar] 
+    public bool isRoundPaused = false;
+    
+    private static int numberOfButtons = 4;
+    public int playerCount;
+    public float roundStartTime = 90;
+    public int roundStartScore;
+    public int roundMaxScore;
+    public GameObject scoreBar;
+    
+    List<string> userNames = new List<string>(new string[] { "A", "B", "C", "D", "E", "F", "G", "H", "I" }); /* Just here so in future they can set their own usernames from the lobby */
+    private List<String> activeUserNames = new List<string>();
 
     //Phone interaction probability = 2/x
     private int piProb = 15;
-
-    void Start()
+    
+    private void Start()
     {
         //Find players
         var players = FindObjectsOfType<Player>();
@@ -60,8 +57,8 @@ public class GameController : NetworkBehaviour
             //New attributes for players to add to gameplayer, thoughts?
             p.PlayerScore = 0;
             p.PlayerUserName = userNames[playerIndex];
-            
             activeUserNames.Add(p.PlayerUserName);
+            
             playerIndex++;
         }
         
@@ -71,8 +68,7 @@ public class GameController : NetworkBehaviour
         if (isServer)
         {
             GetComponentInChildren<Canvas>().enabled = true; //Show server display only on the server.
-            gameStateHandler = new GameStateHandler(activeUserNames); //Instantiate single gameStateHandler object on the server to hold gamestate data
-            
+            gameStateHandler = new GameStateHandler(activeUserNames); //Instantiate single gameStateHandler object on the server to hold gamestate data 
         }
 
         playerIndex = 0;
@@ -93,31 +89,18 @@ public class GameController : NetworkBehaviour
         scoreText.text = score.ToString();
         UpdateRoundTimeLeft();
 
-        while ( isRoundComplete() )
+        if ( isRoundComplete())
         {
-            if (isServer)
-            {
-                Debug.Log("in while");
-                //Save round data to gamestate
-                onRoundComplete();
-                //Reset buttons
-                //Reset instructions
-                //Reset timers
-                //Reset Score
-            }
-            else
-            {
-                //Pause players
-            }
-            
+            onRoundComplete();
         }
         
-        if(roundTimeLeft<0){
+        else if(roundTimeLeft<0){
             SetTimerText("0");
             foreach(Player p in playerList){
                 p.GameOver();
             }
-        }else{
+        }
+        else{
             SetTimerText(roundTimeLeft.ToString("F2"));
         }
     }
@@ -177,7 +160,6 @@ public class GameController : NetworkBehaviour
     {
         scoreBarText.text = (score - roundStartScore).ToString() + " / " + roundMaxScore.ToString();
         scoreBar.GetComponent<UnityEngine.UI.Image>().fillAmount = (float)(score - roundStartScore)/roundMaxScore;
-
     }
 
     private bool isRoundComplete()
@@ -185,16 +167,90 @@ public class GameController : NetworkBehaviour
         return (score >= roundMaxScore);
     }
 
-    [Server]
+    /*
+     * Updates gamestatehandler object with current data, as well as updating individual player scores.
+     */
     private void onRoundComplete()
     {
-        Debug.Log("Function called");
+        if (!isServer || isRoundPaused) return; //Only need to access this function once per round completion.
+        isRoundPaused = true;
+
+        RpcPausePlayers();
+        ShowPauseIC();
+        ResetIC();
+
+        //Store round info
         gameStateHandler.onRoundComplete(score);
         foreach (var player in playerList)
         {
             gameStateHandler.updatePlayerScore(player.PlayerUserName, player.PlayerScore);
         }
+
+        var time = 5;
+        StartCoroutine(pausePlayersForXSeconds(time));
+
+//        while (time>0)
+//        {
+//            //Wait
+//            time -= Time.deltaTime;
+//        }
+//        RpcUnpausePlayers();
     }
 
+    /*
+     * Function that halts at yield line for x seconds.
+     * After x seconds, players and server are reset and next round started.
+     */
+    private IEnumerator pausePlayersForXSeconds(int x)
+    {
+        print(Time.time);
+        yield return new WaitForSecondsRealtime(x);
+        print(Time.time);
+        ResetPlayers();
+        resetServer();
+        RpcUnpausePlayers();
+        isRoundPaused = false;
+    }
+
+    private void resetServer()
+    {
+        Debug.Log("RESET SERVER");
+        score = 0; //This has to be called to break out the loop in Update
+        UpdateScoreBar();
+        StartRoundTimer();
+    }
+
+    [ClientRpc]
+    public void RpcPausePlayers()
+    {
+        foreach (var player in playerList)
+        {
+            player.PausePlayer();
+        }
+    }
+
+    [ClientRpc]
+    public void RpcUnpausePlayers()
+    {
+        foreach (var player in playerList)
+        {
+            player.UnpausePlayer();
+        }
+    }
+
+    private void ResetIC()
+    {
+        InstructionController.ResetIC();
+    }
+
+    private void ResetPlayers()
+    {
+        InstructionController.RpcResetPlayers();
+    }
+
+    private void ShowPauseIC()
+    {
+        InstructionController.RpcShowPaused();
+    }
 
 }

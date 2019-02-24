@@ -19,12 +19,7 @@ public class Player : NetworkBehaviour {
     public Button nfcButton, micButton, shakeButton;
     public Text nfcText, micText, shakeText;
 
-    private int playerId;
-    public int PlayerId
-    {
-        get { return playerId; }
-        set { playerId = value; }
-    }
+    public int PlayerId { get; set; }
 
     public string PlayerUserName { get; set; }
     public int PlayerScore { get; set; }
@@ -41,8 +36,10 @@ public class Player : NetworkBehaviour {
 
     private int scoreStreak = 0;
 
+    public bool isGamePaused = false;
+
     //Sets score streak where event will occur
-    private int scoreStreakMax = 5;
+    private const int scoreStreakMax = 5;
 
     private void Start()
     {
@@ -57,6 +54,7 @@ public class Player : NetworkBehaviour {
     {
         //Display score.
         scoreText.text = gameController.score.ToString();
+        
         if (gameController.roundTimeLeft > 0)
         {
             UpdateInstTimeLeft();
@@ -120,12 +118,12 @@ public class Player : NetworkBehaviour {
 
     public void setPlayerId(int assignedId)
     {
-        playerId = assignedId;
+        PlayerId = assignedId;
     }
 
     public int getPlayerId()
     {
-        return playerId;
+        return PlayerId;
     }
 
     private string nfcCheck()
@@ -246,7 +244,7 @@ public class Player : NetworkBehaviour {
         }
     }
     
-    public void nfcClick(String nfcString)
+    public void NfcClick(string nfcString)
     {
         if (isLocalPlayer)
         {
@@ -254,7 +252,7 @@ public class Player : NetworkBehaviour {
         }
     }
     
-    public void micClick(String micString)
+    public void MicClick(string micString)
     {
         if (isLocalPlayer)
         {
@@ -262,7 +260,7 @@ public class Player : NetworkBehaviour {
         }
     }
     
-    public void shakeClick(String shakeString)
+    public void ShakeClick(string shakeString)
     {
         if (isLocalPlayer)
         {
@@ -276,11 +274,20 @@ public class Player : NetworkBehaviour {
         instTimeLeft = instStartTime; 
     }
 
-    private void UpdateInstTimeLeft() 
+    private void UpdateInstTimeLeft()
     {
-        if(nfcPanel.activeSelf||micPanel.activeSelf||shakePanel.activeSelf){
+        if (isGamePaused)
+        {
+            //Reset timer
+            instTimeLeft = instStartTime;
+            instBar.GetComponent<Image>().fillAmount = instTimeLeft / instStartTime;
+        }
+        else if(nfcPanel.activeSelf||micPanel.activeSelf||shakePanel.activeSelf||isGamePaused)
+        {
             //panel active so no timer 
-        }else{
+        }
+        else
+        {
             instTimeLeft -= Time.deltaTime;
             instBar.GetComponent<Image>().fillAmount = instTimeLeft / instStartTime;
         }
@@ -349,6 +356,16 @@ public class Player : NetworkBehaviour {
             ResetScoreStreak();
             SetNfcPanel(" Great Work!\n Dish is ready to serve!\n\n (TAP ON SERVE NFC)");
         }
+    }
+
+    public void PausePlayer()
+    {
+        isGamePaused = true;
+    }
+    
+    public void UnpausePlayer()
+    {
+        isGamePaused = false;
     }
 }
 

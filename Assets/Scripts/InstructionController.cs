@@ -40,20 +40,20 @@ public class InstructionController : NetworkBehaviour
     public List<Player> Players { get; set; }
     public int NumberOfButtons { get; set; }
     public int PlayerCount { get; set; }
-    
+
+
     //Phone interaction probability = 2/x
     private int piProb = 15;
 
-    
     /*
      * Called from GC, this is where the IC is setup. 
     */
     public void ICStart(int playerCount, int numberOfButtons, List<Player> players, GameController gameController)
     {
         //Assignment ensures that GC has generated values
-        this.PlayerCount = playerCount;
-        this.NumberOfButtons = numberOfButtons;
-        this.Players = players;
+        PlayerCount = playerCount;
+        NumberOfButtons = numberOfButtons;
+        Players = players;
 
         if (isServer)
         {
@@ -62,11 +62,45 @@ public class InstructionController : NetworkBehaviour
         }
         
         //Assign actions and instructions to each player.
-        foreach (var player in players)
+        foreach (var player in Players)
         {
-            for (int i = 0; i < numberOfButtons; i++)
+            for (int i = 0; i < NumberOfButtons; i++)
             {
-                player.SetActionButtons(activeButtonActions[player.PlayerId*numberOfButtons + i], i); //
+                player.SetActionButtons(activeButtonActions[player.PlayerId*numberOfButtons + i], i); 
+            }
+            player.SetInstruction(ActiveInstructions[player.PlayerId]);
+        }
+    }
+
+    /*
+     * Reset the active instructions and buttons.
+     */
+    [Server]
+    public void ResetIC()
+    {
+        ActiveInstructions.Clear();
+        ActiveButtonActions.Clear();
+        int k = 0;
+        foreach (var player in Players)
+        {
+            ActiveInstructions.Add(player.PlayerUserName);
+            for (int j = 0; j < NumberOfButtons; j++)
+            {
+                ActiveButtonActions.Add(k.ToString());
+                k++;
+            }   
+        }
+    }
+
+    [ClientRpc]
+    public void RpcResetPlayers()
+    {
+        //Assign actions and instructions to each player.
+        foreach (var player in Players)
+        {
+            for (int i = 0; i < NumberOfButtons; i++)
+            {
+                player.SetActionButtons(activeButtonActions[player.PlayerId*NumberOfButtons + i], i); 
             }
             player.SetInstruction(ActiveInstructions[player.PlayerId]);
         }
@@ -77,6 +111,8 @@ public class InstructionController : NetworkBehaviour
      */
     public void SelectButtonActions()
     {
+        ActiveButtonActions.Clear(); 
+        
         int randomIndex;
         bool duplicate;
         int verbNo, nounNo;
@@ -152,7 +188,6 @@ public class InstructionController : NetworkBehaviour
     /*
      * Checks if failed action is a current active instruction, and if so pick new instruction and orders NFC bin.
      */
-//    [Server]
     public void FailAction(string action)
     {
         //When an action button is pressed by a player-client, check if action matches an active instruction.
@@ -192,7 +227,17 @@ public class InstructionController : NetworkBehaviour
     {
         Players[playerID].SetInstruction(newInstruction);
     }
-    
+
+    [ClientRpc]
+    public void RpcUpdateButtons(int playerID)
+    {
+        for (int i = 0; i < NumberOfButtons; i++)
+        {
+//            Players[i].SetActionButtons(activeButtonActions[Players[i].PlayerId*NumberOfButtons + i], i);
+            Players[i].SetActionButtons(playerID.ToString(), i);
+        }
+    }
+
     [ClientRpc]
     public void RpcStartInstTimer(int playerID)
     {
@@ -217,6 +262,15 @@ public class InstructionController : NetworkBehaviour
         Players[playerID].SetShakePanel(text);
     }
     
+    [ClientRpc]
+    public void RpcShowPaused()
+    {
+        foreach (var player in Players)
+        {
+            player.SetInstruction(player.PlayerUserName + " is paused");
+        }
+    }
+
     // Start is called before the first frame update
     public void Start()
     {
