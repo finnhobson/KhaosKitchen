@@ -102,7 +102,6 @@ public class InstructionController : NetworkBehaviour
     [ClientRpc]
     public void RpcResetPlayers()
     {
-//        UnpauseIC();
         //Assign actions and instructions to each player.
         foreach (var player in Players)
         {
@@ -185,7 +184,7 @@ public class InstructionController : NetworkBehaviour
                 Players[i].PlayerScore++;
                 
                 //Only do a panel action if there are still instructions left in the round.
-//                if (isNextInstructionLast) return;
+                if (isNextInstructionLast) return;
                 
                 int rand = UnityEngine.Random.Range(1, piProb);
                 if(rand==1){
@@ -302,11 +301,6 @@ public class InstructionController : NetworkBehaviour
         isNextInstructionLast = fromGC;
     }
     
-    public void SetIsLastInstructionFalse()
-    {
-        isNextInstructionLast = false;
-    }
-
     // Start is called before the first frame update
     public void Start()
     {

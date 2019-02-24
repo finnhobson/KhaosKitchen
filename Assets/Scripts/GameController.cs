@@ -89,10 +89,10 @@ public class GameController : NetworkBehaviour
         scoreText.text = score.ToString();
         UpdateRoundTimeLeft();
 
-//        if (roundMaxScore - score < 2)
-//        {
-//            PenultimateAction(true);
-//        }
+        if (roundMaxScore - score <= 1)
+        {
+            PenultimateAction(true);
+        }
 
         if ( isRoundComplete())
         {
@@ -184,13 +184,7 @@ public class GameController : NetworkBehaviour
         RpcPausePlayers();
         ResetIC();
 
-        //Store round info
-        gameStateHandler.onRoundComplete(score);
-        foreach (var player in playerList)
-        {
-            gameStateHandler.updatePlayerScore(player.PlayerUserName, player.PlayerScore);
-        }
-        gameStateHandler.printGameData();
+        UpdateGamestate();
 
         var time = 5;
         StartCoroutine(pausePlayersForXSeconds(time));
@@ -214,7 +208,7 @@ public class GameController : NetworkBehaviour
         ResetServer();
         RpcUnpausePlayers();
         isRoundPaused = false;
-//        PenultimateAction(false);
+        PenultimateAction(false);
     }
 
     private void ResetServer()
@@ -264,5 +258,19 @@ public class GameController : NetworkBehaviour
     private void PenultimateAction(bool action)
     {
         InstructionController.PenultimateAction(action);
+    }
+
+    private void UpdateGamestate()
+    {
+        //Store round info
+        gameStateHandler.onRoundComplete(score);
+        foreach (var player in playerList)
+        {
+            gameStateHandler.updatePlayerScore(player.PlayerUserName, player.PlayerScore);
+            player.PlayerScore = 0;
+        }
+        gameStateHandler.printGameData();
+
+        
     }
 }
