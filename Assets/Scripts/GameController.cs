@@ -12,8 +12,8 @@ public class GameController : NetworkBehaviour
 {
     public InstructionController InstructionController;
     private GameStateHandler gameStateHandler;
-    
-    public Text scoreText, instruction1, instruction2, instruction3, instruction4;
+
+    public Text scoreText;
     public Text roundTimerText;
     public Text scoreBarText;
 
