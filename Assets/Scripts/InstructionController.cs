@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -61,14 +62,14 @@ public class InstructionController : NetworkBehaviour
         if (isServer)
         {
             InstructionHandler = new InstructionHandler();
-            SelectButtonActions();  //Create synced list of executables, one for each button in the game
-            SetFirstInstructions(); //Select one instruction per player from Action Button List
+            SelectButtonActions();  //Create synced list of executables, one for each button in the game.
+            SetFirstInstructions(); //Select one instruction per player from Action Button List.
             SetupFinished = true;
         }
 
         while (!SetupFinished)
         {
-            
+            //Just in case there is a timing issue with the setup.
         }
         
         //Assign actions and instructions to each player.
@@ -79,15 +80,12 @@ public class InstructionController : NetworkBehaviour
                 string action = activeButtonActions[player.PlayerId * numberOfButtons + i];
                 player.SetActionButtons(action, i);
 
-                if (isServer)
-                {
-                    InstructionHandler.SetButtonNumber(action, i);
-                    InstructionHandler.SetButtonPlayerID(action, player.PlayerId);
-                }
+                if (!isServer) continue;
+                InstructionHandler.SetButtonNumber(action, i);
+                InstructionHandler.SetButtonPlayerID(action, player.PlayerId);
             }
 
             string instruction = ActiveInstructions[player.PlayerId];
-            
             player.SetInstruction(instruction);
             if(isServer) InstructionHandler.SetInstructionPlayerID(instruction, player.PlayerId);
         }
@@ -101,23 +99,9 @@ public class InstructionController : NetworkBehaviour
     [Server]
     public void ResetIC()
     {
+        InstructionHandler.ClearInstructions();
         SelectButtonActions();  //Create synced list of executables, one for each button in the game
         SetFirstInstructions(); //Select one instruction per player from Action Button List
-        //Comments used for testing only
-        /*
-        ActiveInstructions.Clear();
-        ActiveButtonActions.Clear();
-        int k = 0;
-        foreach (var player in Players)
-        {
-            ActiveInstructions.Add(player.PlayerUserName);
-            for (int j = 0; j < NumberOfButtons; j++)
-            {
-                ActiveButtonActions.Add(k.ToString());
-                k++;
-            }   
-        }
-        */
     }
 
     [ClientRpc]
@@ -128,10 +112,21 @@ public class InstructionController : NetworkBehaviour
         {
             for (int i = 0; i < NumberOfButtons; i++)
             {
-                player.SetActionButtons(activeButtonActions[player.PlayerId*NumberOfButtons + i], i); 
+                string action = activeButtonActions[player.PlayerId * NumberOfButtons + i];
+
+                player.SetActionButtons(action, i);
+                
+                if (!isServer) continue;
+                InstructionHandler.SetButtonNumber(action, i);
+                InstructionHandler.SetButtonPlayerID(action, player.PlayerId);
             }
-            player.SetInstruction(ActiveInstructions[player.PlayerId]);
+            string instruction = ActiveInstructions[player.PlayerId];
+            player.SetInstruction(instruction);
+            if(isServer) InstructionHandler.SetInstructionPlayerID(instruction, player.PlayerId);
         }
+        
+        if(isServer) InstructionHandler.PrintInstructions();
+
     }
 
     /*
@@ -271,6 +266,26 @@ public class InstructionController : NetworkBehaviour
         {
 //            Players[i].SetActionButtons(activeButtonActions[Players[i].PlayerId*NumberOfButtons + i], i);
             Players[i].SetActionButtons(playerID.ToString(), i);
+        }
+    }
+
+    [ClientRpc]
+    public void RpcSetActionButton(int playerID, string action, int buttonNumber)
+    {
+        foreach (var player in Players)
+        {
+            if (player.PlayerId != playerID) return;
+            player.SetActionButtons(action, buttonNumber);
+        }
+    }
+    
+    [ClientRpc]
+    public void RpcSetInstruction(int playerID, string instruction)
+    {
+        foreach (var player in Players)
+        {
+            if (player.PlayerId != playerID) return;
+            player.SetInstruction(instruction);
         }
     }
 

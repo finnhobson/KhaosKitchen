@@ -16,7 +16,7 @@ public class InstructionHandler
         Instructions.Add(s, i);
     }
 
-    public void ClearInstruction()
+    public void ClearInstructions()
     {
         Instructions.Clear();
     }
