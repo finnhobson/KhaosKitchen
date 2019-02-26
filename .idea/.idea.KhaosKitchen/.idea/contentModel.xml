@@ -10,6 +10,7 @@
           <e p="GameController.cs" t="Include" />
           <e p="GameStateHandler.cs" t="Include" />
           <e p="GpsListener.cs" t="Include" />
+          <e p="Instruction.cs" t="Include" />
           <e p="InstructionController.cs" t="Include" />
           <e p="LobbyManager.cs" t="Include" />
           <e p="LobbyPlayer.cs" t="Include" />
