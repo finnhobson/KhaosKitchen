@@ -5,12 +5,10 @@ using UnityEngine;
 public class Instruction
 {
     public int ID { get; set; }
-    public string Action { get; set; }
-    public float Timer { get; set; }
+    public float InstructionTimer { get; set; }
     public bool IsActive { get; set; }
+    public int InstructionPlayerID { get; set; } //ID of player who's ordering instruction.
+    public int ButtonPlayerID { get; set; }      //ID of player who's executing instruction.
+    public int ButtonNumber { get; set; }
 
-    public void printInstruction()
-    {
-        Debug.Log("ID: " + ID + "\nAction: " + Action + "\n Timer: " + Timer + "\n IsActive: " + IsActive);
-    }
 }

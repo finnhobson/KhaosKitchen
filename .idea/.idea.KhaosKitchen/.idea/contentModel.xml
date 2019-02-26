@@ -12,6 +12,7 @@
           <e p="GpsListener.cs" t="Include" />
           <e p="Instruction.cs" t="Include" />
           <e p="InstructionController.cs" t="Include" />
+          <e p="InstructionHandler.cs" t="Include" />
           <e p="LobbyManager.cs" t="Include" />
           <e p="LobbyPlayer.cs" t="Include" />
           <e p="MainMenu.cs" t="Include" />

@@ -8,6 +8,7 @@ using UnityEngine.Networking;
 public class InstructionController : NetworkBehaviour
 {
     public GameController GameController;
+    public InstructionHandler InstructionHandler;
     
     //Store of the combinations of instructions possible
     private static List<String> verbList = new List<string>(new string[] { "Grab", "Fetch", "Grate", "Grill", "Melt", "Serve", "Stir", "Chop", "Cut", "Mash", "Season", "Flambé", "Bake", "Fry", "Taste", "Microwave" });
@@ -20,7 +21,6 @@ public class InstructionController : NetworkBehaviour
     private static List<String> shakeInstructions = new List<string>(new string[] { " Chef underseasoned the dish!\n Shake to salt the food!\n\n (SHAKE YOUR PHONE)",
         " Food runner dropped the dish!\n Shake some sense into the boy!\n\n (SHAKE YOUR PHONE)",
         " Pan set on fire!\n Shake to put it out!\n\n (SHAKE YOUR PHONE)"});
-    
     
     private SyncListString activeButtonActions = new SyncListString();
     private SyncListString activeInstructions = new SyncListString();
@@ -43,7 +43,8 @@ public class InstructionController : NetworkBehaviour
 
     [SyncVar] public bool isRoundPaused = false;
     [SyncVar] public bool isNextInstructionLast = false;
-
+    [SyncVar] public bool SetupFinished = false;
+    
     //Phone interaction probability = 2/x
     private int piProb = 15;
 
@@ -59,8 +60,15 @@ public class InstructionController : NetworkBehaviour
 
         if (isServer)
         {
+            InstructionHandler = new InstructionHandler();
             SelectButtonActions();  //Create synced list of executables, one for each button in the game
             SetFirstInstructions(); //Select one instruction per player from Action Button List
+            SetupFinished = true;
+        }
+
+        while (!SetupFinished)
+        {
+            
         }
         
         //Assign actions and instructions to each player.
@@ -68,10 +76,23 @@ public class InstructionController : NetworkBehaviour
         {
             for (int i = 0; i < NumberOfButtons; i++)
             {
-                player.SetActionButtons(activeButtonActions[player.PlayerId*numberOfButtons + i], i); 
+                string action = activeButtonActions[player.PlayerId * numberOfButtons + i];
+                player.SetActionButtons(action, i);
+
+                if (isServer)
+                {
+                    InstructionHandler.SetButtonNumber(action, i);
+                    InstructionHandler.SetButtonPlayerID(action, player.PlayerId);
+                }
             }
-            player.SetInstruction(ActiveInstructions[player.PlayerId]);
+
+            string instruction = ActiveInstructions[player.PlayerId];
+            
+            player.SetInstruction(instruction);
+            if(isServer) InstructionHandler.SetInstructionPlayerID(instruction, player.PlayerId);
         }
+        
+        if(isServer) InstructionHandler.PrintInstructions();
     }
 
     /*
@@ -134,11 +155,10 @@ public class InstructionController : NetworkBehaviour
                 nounNo = UnityEngine.Random.Range(0, verbList.Count-1); ;
                 text = verbList[verbNo] + " " + nounList[nounNo];
 
-                if (ActiveButtonActions.Contains(text) == false)
-                {
-                    ActiveButtonActions.Add(text);
-                    duplicate = false;
-                }
+                if (ActiveButtonActions.Contains(text)) continue;
+                ActiveButtonActions.Add(text);
+                InstructionHandler.AddValue(text, new Instruction(){ID = i, IsActive = false} );
+                duplicate = false;
             }
         }
     }
@@ -158,6 +178,7 @@ public class InstructionController : NetworkBehaviour
                 randomIndex = UnityEngine.Random.Range(0, ActiveButtonActions.Count);  /* How do we ensure we do not get a duplicate here? */
             }
             ActiveInstructions.Add(ActiveButtonActions[randomIndex]);
+            InstructionHandler.SetIsActive(ActiveButtonActions[randomIndex]);
         }
     }
     
