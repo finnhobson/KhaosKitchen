@@ -96,6 +96,7 @@ public class GameController : NetworkBehaviour
 
         if ( isRoundComplete())
         {
+            
             onRoundComplete();
         }
         
@@ -252,7 +253,7 @@ public class GameController : NetworkBehaviour
     private void ResetPlayers()
     {
         InstructionController.RpcResetPlayers();
-        InstructionController.isRoundPaused = false;
+        InstructionController.UnpauseIC();
     }
 
     private void PenultimateAction(bool action)
@@ -272,5 +273,10 @@ public class GameController : NetworkBehaviour
         gameStateHandler.printGameData();
 
         
+    }
+
+    private void PrintInstructionHandler()
+    {
+        InstructionController.PrintInstructionHandler();
     }
 }

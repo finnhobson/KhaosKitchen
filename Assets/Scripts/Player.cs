@@ -159,32 +159,33 @@ public class Player : NetworkBehaviour {
     //Assign instructions to each player (NOTE: Currently only works for up to 2 players).
     public void SetActionButtons(string instruction, int i)
     {
-        if (isLocalPlayer)
+        if (!isLocalPlayer) return;
+        CmdUpdateIHWithButtonData(i, instruction, PlayerId);
+        
+        switch (i)
         {
-            switch (i)
-            {
-                case 0:
-                    button1.GetComponentInChildren<Text>().text = instruction;
-                    break;
-                case 1:
-                    button2.GetComponentInChildren<Text>().text = instruction;
-                    break;
-                case 2:
-                    button3.GetComponentInChildren<Text>().text = instruction;
-                    break;
-                case 3:
-                    button4.GetComponentInChildren<Text>().text = instruction;
-                    break;
-                default:
-                    Console.WriteLine("ERROOOR");
-                    break;
-            }
+            case 0:
+                button1.GetComponentInChildren<Text>().text = instruction;
+                break;
+            case 1:
+                button2.GetComponentInChildren<Text>().text = instruction;
+                break;
+            case 2:
+                button3.GetComponentInChildren<Text>().text = instruction;
+                break;
+            case 3:
+                button4.GetComponentInChildren<Text>().text = instruction;
+                break;
+            default:
+                Console.WriteLine("ERROOOR");
+                break;
         }
     }
 
     public void SetInstruction(String d)
     {
         instructionText.text = d;
+        CmdUpdateIHWithInstructionData(d, PlayerId);
     }
 
     public string GetInstruction()
@@ -365,6 +366,24 @@ public class Player : NetworkBehaviour {
     public void UnpausePlayer()
     {
         isGamePaused = false;
+    }
+    
+    /*
+     * Updates instruction button number, playerID.
+     */
+    [Command]
+    public void CmdUpdateIHWithButtonData(int buttonNumber, string action, int playerID)
+    {
+        InstructionController.PlayerUpdateButton(buttonNumber, action, playerID);
+    }
+    
+    /*
+    * Updates instruction button number, playerID.
+    */
+    [Command]
+    public void CmdUpdateIHWithInstructionData(string action, int playerID)
+    {
+        InstructionController.PlayerUpdateInstruction(action, playerID);
     }
 }
 

@@ -76,7 +76,13 @@ public class InstructionHandler
     {
         foreach (var instruction in Instructions)
         {
-            Debug.Log(instruction.Key + " : BN = " + instruction.Value.ButtonNumber + " : BP = " + instruction.Value.ButtonPlayerID);
+            if(instruction.Value.IsActive) Debug.Log(instruction.Key + " : IP = " + instruction.Value.InstructionPlayerID + " : Active = " + instruction.Value.IsActive);
         }
+    }
+
+    public void InstructionCompleted(string action)
+    {
+        GetInstruction(action).InstructionPlayerID = 69;
+        SetNotActive(action);
     }
 }

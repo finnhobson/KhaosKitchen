@@ -47,7 +47,7 @@ public class InstructionController : NetworkBehaviour
     [SyncVar] public bool SetupFinished = false;
     
     //Phone interaction probability = 2/x
-    private int piProb = 15;
+    private const int piProb = 15;
 
     /*
      * Called from GC, this is where the IC is setup. 
@@ -115,14 +115,9 @@ public class InstructionController : NetworkBehaviour
                 string action = activeButtonActions[player.PlayerId * NumberOfButtons + i];
 
                 player.SetActionButtons(action, i);
-                
-                if (!isServer) continue;
-                InstructionHandler.SetButtonNumber(action, i);
-                InstructionHandler.SetButtonPlayerID(action, player.PlayerId);
             }
             string instruction = ActiveInstructions[player.PlayerId];
             player.SetInstruction(instruction);
-            if(isServer) InstructionHandler.SetInstructionPlayerID(instruction, player.PlayerId);
         }
         
         if(isServer) InstructionHandler.PrintInstructions();
@@ -152,7 +147,7 @@ public class InstructionController : NetworkBehaviour
 
                 if (ActiveButtonActions.Contains(text)) continue;
                 ActiveButtonActions.Add(text);
-                InstructionHandler.AddValue(text, new Instruction(){ID = i, IsActive = false} );
+                InstructionHandler.AddValue(text, new Instruction(){IsActive = false, ButtonNumber = 69, InstructionPlayerID = 69, ButtonPlayerID = 69, InstructionTimer = 69f} );
                 duplicate = false;
             }
         }
@@ -189,30 +184,35 @@ public class InstructionController : NetworkBehaviour
         for (int i = 0; i < ActiveInstructions.Count; i++)
         {
             //If match, increment score.
-            if (action == ActiveInstructions[i])
-            {
-                GameController.CheckAction(action, i);
-                PickNewInstruction(i);      
-                RpcUpdateInstruction(ActiveInstructions[i], i);
-                RpcStartInstTimer(i);
+            if (action != ActiveInstructions[i]) continue;
+            
+            InstructionHandler.SetNotActive(action);
+            GameController.CheckAction(action, i);
+            
+            Debug.Log(action);
+            
+            PickNewInstruction(i, action);   
+            RpcUpdateInstruction(ActiveInstructions[i], i);
+            RpcStartInstTimer(i);
                 
-                //Update player score
-                Players[i].PlayerScore++;
+            //Update player score
+            Players[i].PlayerScore++;
                 
-                //Only do a panel action if there are still instructions left in the round.
-                if (isNextInstructionLast) return;
+            //Only do a panel action if there are still instructions left in the round.
+            if (isNextInstructionLast) return;
                 
-                int rand = UnityEngine.Random.Range(1, piProb);
-                if(rand==1){
-                    rand = UnityEngine.Random.Range(0, micInstructions.Count);
-                    RpcSetMicPanel(i, micInstructions[rand]);
-                }
-                else if (rand == 2)
-                {
-                    rand = UnityEngine.Random.Range(0, shakeInstructions.Count);
-                    RpcSetShakePanel(i, shakeInstructions[rand]);
-                }
+            int rand = UnityEngine.Random.Range(1, piProb);
+            if(rand==1){
+                rand = UnityEngine.Random.Range(0, micInstructions.Count);
+                RpcSetMicPanel(i, micInstructions[rand]);
             }
+            else if (rand == 2)
+            {
+                rand = UnityEngine.Random.Range(0, shakeInstructions.Count);
+                RpcSetShakePanel(i, shakeInstructions[rand]);
+            }
+
+            PrintInstructionHandler();
         }
     }
     
@@ -228,7 +228,8 @@ public class InstructionController : NetworkBehaviour
             if (action == ActiveInstructions[i])
             {
                 GameController.RpcResetScoreSteak(i);
-                PickNewInstruction(i);
+                
+                PickNewInstruction(i, action);
                 RpcUpdateInstruction(ActiveInstructions[i], i);
                 RpcSetNfcPanel(i, "You f*cked the order! " + System.Environment.NewLine
                                                            + "Run to the bin!" + System.Environment.NewLine + System.Environment.NewLine
@@ -240,8 +241,10 @@ public class InstructionController : NetworkBehaviour
     /*
      * New Instruction selected from set of ActiveButtonActions, with no duplicate ensured.
      */
-    public void PickNewInstruction(int index)
+    public void PickNewInstruction(int index, string action)
     {
+        InstructionHandler.InstructionCompleted(action);
+
         int randomIndex = UnityEngine.Random.Range(0, ActiveButtonActions.Count);
         
         while (ActiveInstructions.Contains(ActiveButtonActions[randomIndex]))
@@ -250,7 +253,8 @@ public class InstructionController : NetworkBehaviour
         }
         
         ActiveInstructions[index] = ActiveButtonActions[randomIndex];
-
+        
+        InstructionHandler.SetIsActive(ActiveButtonActions[randomIndex]);
     }
     
     [ClientRpc]
@@ -335,6 +339,24 @@ public class InstructionController : NetworkBehaviour
     public void PenultimateAction(bool fromGC)
     {
         isNextInstructionLast = fromGC;
+    }
+   
+    public void PlayerUpdateButton(int buttonNumber, string action, int playerID)
+    {
+        InstructionHandler.SetButtonPlayerID(action, playerID);
+        InstructionHandler.SetButtonNumber(action, buttonNumber);
+//        InstructionHandler.AddValue(action, new Instruction() {IsActive = false, ButtonNumber = buttonNumber, ButtonPlayerID = playerID});
+    }
+
+    public void PlayerUpdateInstruction(string instruction, int playerID)
+    {
+        InstructionHandler.SetInstructionPlayerID(instruction, playerID);
+        InstructionHandler.SetIsActive(instruction);
+    }
+
+    public void PrintInstructionHandler()
+    {
+        InstructionHandler.PrintInstructions();
     }
     
     // Start is called before the first frame update

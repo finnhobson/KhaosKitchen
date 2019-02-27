@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class Instruction
 {
-    public int ID { get; set; }
     public float InstructionTimer { get; set; }
     public bool IsActive { get; set; }
     public int InstructionPlayerID { get; set; } //ID of player who's ordering instruction.
