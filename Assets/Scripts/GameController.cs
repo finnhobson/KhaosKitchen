@@ -92,13 +92,16 @@ public class GameController : NetworkBehaviour
             onRoundComplete();
         }
         
-        else if(roundTimeLeft<0){
+        else if(roundTimeLeft<0)
+        {
             SetTimerText("0");
             foreach(Player p in playerList){
                 p.GameOver();
             }
         }
-        else{
+        
+        else
+        {
             SetTimerText(roundTimeLeft.ToString("F2"));
         }
     }
@@ -175,26 +178,18 @@ public class GameController : NetworkBehaviour
         isRoundPaused = true;
 
         RpcPausePlayers();
-        ResetIC();
-
+        ReadyInstructionController();
         UpdateGamestate();
 
         var time = 5;
-        StartCoroutine(pausePlayersForXSeconds(time));
-
-//        while (time>0)
-//        {
-//            //Wait
-//            time -= Time.deltaTime;
-//        }
-//        RpcUnpausePlayers();
+        StartCoroutine(RestartNewRoundAfterXSeconds(time));
     }
 
     /*
      * Function that halts at yield line for x seconds.
-     * After x seconds, players and server are reset and next round started.
+     * After x seconds, players and server are reset and next round starts.
      */
-    private IEnumerator pausePlayersForXSeconds(int x)
+    private IEnumerator RestartNewRoundAfterXSeconds(int x)
     {
         yield return new WaitForSecondsRealtime(x);
         ResetPlayers();
@@ -236,7 +231,7 @@ public class GameController : NetworkBehaviour
      * Generate pause message on players.
      * Generate new active button actions and corresponding active instructions.
      */
-    private void ResetIC()
+    private void ReadyInstructionController()
     {
         InstructionController.PauseIC();
         InstructionController.RpcShowPaused();

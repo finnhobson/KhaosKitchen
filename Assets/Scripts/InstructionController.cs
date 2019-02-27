@@ -102,7 +102,7 @@ public class InstructionController : NetworkBehaviour
     [Server]
     public void ResetIC()
     {
-        InstructionHandler.ClearInstructions();
+        ClearInstructionHandler();
         SelectButtonActions();  //Create synced list of executables, one for each button in the game
         SetFirstInstructions(); //Select one instruction per player from Action Button List
     }
@@ -189,7 +189,7 @@ public class InstructionController : NetworkBehaviour
             //If match, increment score.
             if (action != ActiveInstructions[i]) continue;
             
-            InstructionHandler.SetNotActive(action);
+            DeactivateInstruction(action);
             GameController.CheckAction(action, i);
                         
             PickNewInstruction(i, action);
@@ -202,12 +202,10 @@ public class InstructionController : NetworkBehaviour
             //Update player score
             Players[i].PlayerScore++;
             
-                
             //Only do a panel action if there are still instructions left in the round.
             if (isLastActionOfRound) return;
             PrintInstructionHandler();
 
-                
             int rand = UnityEngine.Random.Range(1, piProb);
             if(rand==1){
                 rand = UnityEngine.Random.Range(0, micInstructions.Count);
@@ -352,6 +350,16 @@ public class InstructionController : NetworkBehaviour
     public void PrintInstructionHandler()
     {
         InstructionHandler.PrintInstructions();
+    }
+
+    private void ClearInstructionHandler()
+    {
+        InstructionHandler.ClearInstructions();
+    }
+
+    private void DeactivateInstruction(string instruction)
+    {
+        InstructionHandler.SetNotActive(instruction);
     }
     
     // Start is called before the first frame update
