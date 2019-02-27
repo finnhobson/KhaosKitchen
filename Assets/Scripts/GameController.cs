@@ -11,6 +11,7 @@ using UnityEngine.UI;
 public class GameController : NetworkBehaviour
 {
     public InstructionController InstructionController;
+    public AnimationController animationController;
     private GameStateHandler gameStateHandler;
 
     public Text scoreText;
@@ -96,7 +97,7 @@ public class GameController : NetworkBehaviour
 
         if ( isRoundComplete())
         {
-            onRoundComplete();
+            OnRoundComplete();
         }
         
         else if(roundTimeLeft<0){
@@ -176,7 +177,7 @@ public class GameController : NetworkBehaviour
     /*
      * Updates gamestatehandler object with current data, as well as updating individual player scores.
      */
-    private void onRoundComplete()
+    private void OnRoundComplete()
     {
         if (!isServer || isRoundPaused) return; //Only need to access this function once per round completion.
         isRoundPaused = true;
