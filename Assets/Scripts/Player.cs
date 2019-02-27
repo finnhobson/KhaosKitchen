@@ -25,6 +25,8 @@ public class Player : NetworkBehaviour {
 
     private string nfcValue = "";
 
+    private int instTime = 100;
+
     private HashSet<String> validNfc = new HashSet<String>{"Grab Meat","Grab Pasta"};
 
     public MicListener micListener;
@@ -184,8 +186,10 @@ public class Player : NetworkBehaviour {
 
     public void SetInstruction(String d)
     {
+        if (!isLocalPlayer) return;
         instructionText.text = d;
-        CmdUpdateIHWithInstructionData(d, PlayerId);
+        if (isGamePaused) return;
+        CmdUpdateIHWithInstructionData(d);
     }
 
     public string GetInstruction()
@@ -270,7 +274,7 @@ public class Player : NetworkBehaviour {
 
     public void StartInstTimer()
     {
-        instStartTime = 15;
+        instStartTime = instTime;
         instTimeLeft = instStartTime; 
     }
 
@@ -381,9 +385,9 @@ public class Player : NetworkBehaviour {
     * Updates instruction button number, playerID.
     */
     [Command]
-    public void CmdUpdateIHWithInstructionData(string action, int playerID)
+    public void CmdUpdateIHWithInstructionData(string action)
     {
-        InstructionController.PlayerUpdateInstruction(action, playerID);
+        InstructionController.PlayerUpdateInstruction(action, PlayerId);
     }
 }
 

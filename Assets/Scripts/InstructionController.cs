@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using UnityEngine;
 using UnityEngine.Networking;
+using UnityEngine.Serialization;
 
 
 public class InstructionController : NetworkBehaviour
@@ -43,7 +44,7 @@ public class InstructionController : NetworkBehaviour
     public int PlayerCount { get; set; }
 
     [SyncVar] public bool isRoundPaused = false;
-    [SyncVar] public bool isNextInstructionLast = false;
+    [FormerlySerializedAs("isNextInstructionLast")] [SyncVar] public bool isLastActionOfRound = false;
     [SyncVar] public bool SetupFinished = false;
     
     //Phone interaction probability = 2/x
@@ -91,6 +92,8 @@ public class InstructionController : NetworkBehaviour
         }
         
         if(isServer) InstructionHandler.PrintInstructions();
+        
+        PrintInstructionHandler();
     }
 
     /*
@@ -188,18 +191,22 @@ public class InstructionController : NetworkBehaviour
             
             InstructionHandler.SetNotActive(action);
             GameController.CheckAction(action, i);
-            
-            Debug.Log(action);
-            
-            PickNewInstruction(i, action);   
-            RpcUpdateInstruction(ActiveInstructions[i], i);
-            RpcStartInstTimer(i);
-                
+                        
+            PickNewInstruction(i, action);
+            if (!isLastActionOfRound)
+            {
+                RpcUpdateInstruction(ActiveInstructions[i], i);
+                RpcStartInstTimer(i);
+            }
+
             //Update player score
             Players[i].PlayerScore++;
+            
                 
             //Only do a panel action if there are still instructions left in the round.
-            if (isNextInstructionLast) return;
+            if (isLastActionOfRound) return;
+            PrintInstructionHandler();
+
                 
             int rand = UnityEngine.Random.Range(1, piProb);
             if(rand==1){
@@ -211,8 +218,6 @@ public class InstructionController : NetworkBehaviour
                 rand = UnityEngine.Random.Range(0, shakeInstructions.Count);
                 RpcSetShakePanel(i, shakeInstructions[rand]);
             }
-
-            PrintInstructionHandler();
         }
     }
     
@@ -282,16 +287,6 @@ public class InstructionController : NetworkBehaviour
             player.SetActionButtons(action, buttonNumber);
         }
     }
-    
-    [ClientRpc]
-    public void RpcSetInstruction(int playerID, string instruction)
-    {
-        foreach (var player in Players)
-        {
-            if (player.PlayerId != playerID) return;
-            player.SetInstruction(instruction);
-        }
-    }
 
     [ClientRpc]
     public void RpcStartInstTimer(int playerID)
@@ -338,7 +333,7 @@ public class InstructionController : NetworkBehaviour
 
     public void PenultimateAction(bool fromGC)
     {
-        isNextInstructionLast = fromGC;
+        isLastActionOfRound = fromGC;
     }
    
     public void PlayerUpdateButton(int buttonNumber, string action, int playerID)

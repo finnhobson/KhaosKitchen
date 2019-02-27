@@ -26,10 +26,10 @@ public class GameController : NetworkBehaviour
     
     [SyncVar] 
     public bool isRoundPaused = false;
-    
-    private static int numberOfButtons = 4;
+
+    private const int numberOfButtons = 4;
     public int playerCount;
-    public float roundStartTime = 90;
+    private float roundStartTime = 1000;
     public int roundStartScore;
     public int roundMaxScore;
     public GameObject scoreBar;
@@ -71,13 +71,6 @@ public class GameController : NetworkBehaviour
             gameStateHandler = new GameStateHandler(activeUserNames); //Instantiate single gameStateHandler object on the server to hold gamestate data 
         }
 
-        playerIndex = 0;
-        //Assign actions to each player.
-        foreach (Player p in players)
-        {
-            p.SetInstruction(InstructionController.ActiveInstructions[playerIndex]);
-            playerIndex++;
-        }
         StartRoundTimer();
         UpdateScoreBar();
         
@@ -93,10 +86,9 @@ public class GameController : NetworkBehaviour
         {
             PenultimateAction(true);
         }
-
+        
         if ( isRoundComplete())
-        {
-            
+        { 
             onRoundComplete();
         }
         
@@ -210,6 +202,7 @@ public class GameController : NetworkBehaviour
         RpcUnpausePlayers();
         isRoundPaused = false;
         PenultimateAction(false);
+        PrintInstructionHandler();
     }
 
     private void ResetServer()

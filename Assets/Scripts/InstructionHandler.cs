@@ -76,7 +76,7 @@ public class InstructionHandler
     {
         foreach (var instruction in Instructions)
         {
-            if(instruction.Value.IsActive) Debug.Log(instruction.Key + " : IP = " + instruction.Value.InstructionPlayerID + " : Active = " + instruction.Value.IsActive);
+            Debug.Log(instruction.Key + " : IP = " + instruction.Value.InstructionPlayerID + " : Active = " + instruction.Value.IsActive + " : BP = " + instruction.Value.ButtonPlayerID + " : BN = " + instruction.Value.ButtonNumber);
         }
     }
 
