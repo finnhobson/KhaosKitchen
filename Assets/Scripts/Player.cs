@@ -402,8 +402,15 @@ public class Player : NetworkBehaviour {
     private void CheckInstruction(string action, int buttonNumber)
     {
         CmdAction(action);
-        if (!InstructionController.ActiveInstructions.Contains(action)) return;
-        ThisButtonWasPressed(buttonNumber);
+        if (InstructionController.ActiveInstructions.Contains(action))
+        {
+            ThisButtonWasPressed(buttonNumber);
+        } 
+        
+        else
+        {
+            ThisButtonWasNotPressed(buttonNumber);
+        }
     }
 
     private void ThisButtonWasPressed(int buttonNumber) 
@@ -411,6 +418,12 @@ public class Player : NetworkBehaviour {
         //Activate feedback on this button
         CmdPrint(buttonNumber);
         AllButtons[buttonNumber].GetComponent<Image>().color = Color.green;
+        StartCoroutine(RestartNewRoundAfterXSeconds(0.5f, buttonNumber));
+    }
+
+    private void ThisButtonWasNotPressed(int buttonNumber)
+    {
+        AllButtons[buttonNumber].GetComponent<Image>().color = Color.red;
         StartCoroutine(RestartNewRoundAfterXSeconds(0.5f, buttonNumber));
     }
 
