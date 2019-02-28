@@ -12,6 +12,7 @@ public class Player : NetworkBehaviour {
     public InstructionController InstructionController;
 
     public Button button1, button2, button3, button4;
+    public Button[] AllButtons;
 
     public Text scoreText, instructionText, timerText, gpsText;
 
@@ -49,6 +50,7 @@ public class Player : NetworkBehaviour {
         InstructionController = GameObject.FindGameObjectWithTag("InstructionController").GetComponent<InstructionController>();
         Screen.orientation = ScreenOrientation.Portrait;
         StartInstTimer();
+        
     }
 
     private void Update()
@@ -220,7 +222,8 @@ public class Player : NetworkBehaviour {
     {
         if (isLocalPlayer)
         {
-            CmdAction(button1.GetComponentInChildren<Text>().text);
+            CheckInstruction(button1.GetComponentInChildren<Text>().text, 0);
+//            CmdAction(button1.GetComponentInChildren<Text>().text);
         }
     }
 
@@ -228,7 +231,9 @@ public class Player : NetworkBehaviour {
     {
         if (isLocalPlayer)
         {
-            CmdAction(button2.GetComponentInChildren<Text>().text);
+            CheckInstruction(button2.GetComponentInChildren<Text>().text, 1);
+
+//            CmdAction(button2.GetComponentInChildren<Text>().text);
         }
     }
 
@@ -236,7 +241,9 @@ public class Player : NetworkBehaviour {
     {
         if (isLocalPlayer)
         {
-            CmdAction(button3.GetComponentInChildren<Text>().text);
+            CheckInstruction(button3.GetComponentInChildren<Text>().text, 2);
+
+//            CmdAction(button3.GetComponentInChildren<Text>().text);
         }
     }
 
@@ -244,7 +251,9 @@ public class Player : NetworkBehaviour {
     {
         if (isLocalPlayer)
         {
-            CmdAction(button4.GetComponentInChildren<Text>().text);
+            CheckInstruction(button4.GetComponentInChildren<Text>().text, 3);
+
+//            CmdAction(button4.GetComponentInChildren<Text>().text);
         }
     }
     
@@ -388,6 +397,34 @@ public class Player : NetworkBehaviour {
     public void CmdUpdateIHWithInstructionData(string action)
     {
         InstructionController.PlayerUpdateInstruction(action, PlayerId);
+    }
+
+    private void CheckInstruction(string action, int buttonNumber)
+    {
+        CmdAction(action);
+        if (!InstructionController.ActiveInstructions.Contains(action)) return;
+        ThisButtonWasPressed(buttonNumber);
+    }
+
+    private void ThisButtonWasPressed(int buttonNumber) 
+    {
+        //Activate feedback on this button
+        CmdPrint(buttonNumber);
+        AllButtons[buttonNumber].GetComponent<Image>().color = Color.green;
+        StartCoroutine(RestartNewRoundAfterXSeconds(0.5f, buttonNumber));
+    }
+
+    private IEnumerator RestartNewRoundAfterXSeconds(float x, int buttonNumber)
+    {
+        yield return new WaitForSecondsRealtime(x);
+        AllButtons[buttonNumber].GetComponent<Image>().color = Color.white;
+        
+    }
+
+    [Command]
+    private void CmdPrint(int buttonNumber)
+    {
+        gameController.PrintOut(buttonNumber);
     }
 }
 

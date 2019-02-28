@@ -267,4 +267,9 @@ public class GameController : NetworkBehaviour
     {
         InstructionController.PrintInstructionHandler();
     }
+
+    public void PrintOut(int buttonNumber)
+    {
+        Debug.Log(buttonNumber);
+    }
 }
