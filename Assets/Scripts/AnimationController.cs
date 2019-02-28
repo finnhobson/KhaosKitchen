@@ -9,22 +9,27 @@ public class AnimationController : MonoBehaviour
 
     public GameObject chefPrefab;
 
+    private bool chefsSpawned = false;
+
     // Start is called before the first frame update
     void Start()
     {
-        int playerCount = gameController.playerCount;
-        for (int i = 0; i < playerCount; i++) SpawnChef();
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        
-
+        if (gameController.playersInitialised && !chefsSpawned)
+        {
+            SpawnChefs();
+            chefsSpawned = true;
+        }
     }
 
-    public void SpawnChef()
+    public void SpawnChefs()
     {
-        Instantiate(chefPrefab);
+        int playerCount = gameController.playerCount;
+        for (int i = 0; i < playerCount; i++) Instantiate(chefPrefab);
     }
 }

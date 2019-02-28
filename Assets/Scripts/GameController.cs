@@ -29,7 +29,7 @@ public class GameController : NetworkBehaviour
     public bool isRoundPaused = false;
     
     private static int numberOfButtons = 4;
-    public int playerCount;
+    public int playerCount = 0;
     public float roundStartTime = 90;
     public int roundStartScore;
     public int roundMaxScore;
@@ -40,6 +40,10 @@ public class GameController : NetworkBehaviour
 
     //Phone interaction probability = 2/x
     private int piProb = 15;
+
+    //Indicator variables for the animation controller
+    public bool playersInitialised = false;
+
     
     private void Start()
     {
@@ -61,7 +65,10 @@ public class GameController : NetworkBehaviour
             activeUserNames.Add(p.PlayerUserName);
             
             playerIndex++;
+            playerCount++;
         }
+
+        playersInitialised = true;
         
         //Setup the instruction controller
         InstructionController.ICStart(playerCount, numberOfButtons, playerList, this);
