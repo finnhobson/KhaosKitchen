@@ -11,6 +11,7 @@ using UnityEngine.UI;
 public class GameController : NetworkBehaviour
 {
     public InstructionController InstructionController;
+    public AnimationController animationController;
     private GameStateHandler gameStateHandler;
 
     public Text scoreText;
@@ -28,7 +29,7 @@ public class GameController : NetworkBehaviour
     public bool isRoundPaused = false;
     
     private static int numberOfButtons = 4;
-    public int playerCount;
+    public int playerCount = 0;
     public float roundStartTime = 90;
     public int roundStartScore;
     public int roundMaxScore;
@@ -39,6 +40,10 @@ public class GameController : NetworkBehaviour
 
     //Phone interaction probability = 2/x
     private int piProb = 15;
+
+    //Indicator variables for the animation controller
+    public bool playersInitialised = false;
+
     
     private void Start()
     {
@@ -60,7 +65,10 @@ public class GameController : NetworkBehaviour
             activeUserNames.Add(p.PlayerUserName);
             
             playerIndex++;
+            playerCount++;
         }
+
+        playersInitialised = true;
         
         //Setup the instruction controller
         InstructionController.ICStart(playerCount, numberOfButtons, playerList, this);
@@ -96,7 +104,7 @@ public class GameController : NetworkBehaviour
 
         if ( isRoundComplete())
         {
-            onRoundComplete();
+            OnRoundComplete();
         }
         
         else if(roundTimeLeft<0){
@@ -176,7 +184,7 @@ public class GameController : NetworkBehaviour
     /*
      * Updates gamestatehandler object with current data, as well as updating individual player scores.
      */
-    private void onRoundComplete()
+    private void OnRoundComplete()
     {
         if (!isServer || isRoundPaused) return; //Only need to access this function once per round completion.
         isRoundPaused = true;
