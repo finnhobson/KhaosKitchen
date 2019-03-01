@@ -32,6 +32,9 @@ ModelImporter:
     100052: RightHand1
     100054: RightShoe
     100056: Spatula
+    100058: Body 1
+    100060: LowerBody
+    100062: RightHand2
     400000: bevelPolygon1
     400002: bevelPolygon2
     400004: Body
@@ -61,6 +64,9 @@ ModelImporter:
     400052: RightHand1
     400054: RightShoe
     400056: Spatula
+    400058: Body 1
+    400060: LowerBody
+    400062: RightHand2
     2100000: lambert7
     2100002: lambert5
     2100004: lambert4
@@ -70,6 +76,7 @@ ModelImporter:
     2100012: blinn2
     2100014: lambert10
     2100016: blinn3
+    2100018: lambert11
     2300000: bevelPolygon1
     2300002: bevelPolygon2
     2300004: Body
@@ -93,6 +100,9 @@ ModelImporter:
     2300040: RightHand
     2300042: RightHand1
     2300044: RightShoe
+    2300046: Body 1
+    2300048: LowerBody
+    2300050: RightHand2
     3300000: bevelPolygon1
     3300002: bevelPolygon2
     3300004: Body
@@ -116,6 +126,9 @@ ModelImporter:
     3300040: RightHand
     3300042: RightHand1
     3300044: RightShoe
+    3300046: Body 1
+    3300048: LowerBody
+    3300050: RightHand2
     4300000: bevelPolygon2
     4300002: bevelPolygon1
     4300004: Body
@@ -139,6 +152,10 @@ ModelImporter:
     4300040: RightHand1
     4300042: pCube2
     4300044: pCube9
+    4300046: RightHand2
+    4300048: LowerBody
+    7400000: Take 001
+    9500000: //RootNode
   externalObjects: {}
   materials:
     importMaterials: 1
@@ -159,7 +176,7 @@ ModelImporter:
     animationDoRetargetingWarnings: 0
     importAnimatedCustomProperties: 0
     importConstraints: 0
-    animationCompression: 1
+    animationCompression: 3
     animationRotationError: 0.5
     animationPositionError: 0.5
     animationScaleError: 0.5
@@ -192,7 +209,7 @@ ModelImporter:
     secondaryUVPackMargin: 4
     useFileScale: 1
     previousCalculatedGlobalScale: 1
-    hasPreviousCalculatedGlobalScale: 0
+    hasPreviousCalculatedGlobalScale: 1
   tangentSpace:
     normalSmoothAngle: 60
     normalImportMode: 0
@@ -219,7 +236,7 @@ ModelImporter:
     hasExtraRoot: 0
     skeletonHasParents: 1
   lastHumanDescriptionAvatarSource: {instanceID: 0}
-  animationType: 0
+  animationType: 2
   humanoidOversampling: 1
   additionalBone: 0
   userData: 
