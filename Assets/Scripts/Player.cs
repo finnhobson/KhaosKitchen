@@ -132,11 +132,11 @@ public class Player : NetworkBehaviour {
     private string nfcCheck()
     {
         string value = NFCListener.GetValue();
-        if (value == "BPO/2m8/gA==")
+        if (value == "Bin")
         {
             NFCListener.SetValue("");
             return "Grab Meat";
-        } else if (value == "BPjA2m8/gA==")
+        } else if (value == "Serve")
         {
             NFCListener.SetValue("");
             return "Grab Meat";
