@@ -29,7 +29,7 @@ public class AnimationController : MonoBehaviour
 
     public void SpawnChefs()
     {
-        int playerCount = gameController.PlayerCount;
+        int playerCount = gameController.playerCount;
         for (int i = 0; i < playerCount; i++) Instantiate(chefPrefab);
     }
 }
