@@ -29,7 +29,7 @@ public class GameController : NetworkBehaviour
     public bool isRoundPaused = false;
     
     private static int numberOfButtons = 4;
-    public int playerCount = 0;
+    public int PlayerCount = 0;
     public float roundStartTime = 90;
     public int roundStartScore;
     public int roundMaxScore;
@@ -49,6 +49,7 @@ public class GameController : NetworkBehaviour
     {
         //Find players
         var players = FindObjectsOfType<Player>();
+        int playerCount = 0;
         
         //Loop sets up playerList, links players to the GC and IC and sets player id
         int playerIndex = 0;
@@ -65,12 +66,14 @@ public class GameController : NetworkBehaviour
             activeUserNames.Add(p.PlayerUserName);
             
             playerIndex++;
-            playerCount++;
+            playerCount = playerCount+1;
         }
 
         playersInitialised = true;
         
         //Setup the instruction controller
+        Debug.Log("player count = " + playerCount);
+        PlayerCount = playerCount;
         InstructionController.ICStart(playerCount, numberOfButtons, playerList, this);
 
         if (isServer)
