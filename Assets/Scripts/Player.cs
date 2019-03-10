@@ -14,9 +14,9 @@ public class Player : NetworkBehaviour {
     public Button button1, button2, button3, button4;
     public Button[] AllButtons;
 
-    public Text scoreText, instructionText, timerText, gpsText;
+    public Text scoreText, instructionText, timerText, gpsText, roundScoreText, topChefText, countdownText, roundNumberText;
 
-    public GameObject nfcPanel, micPanel, shakePanel, gameOverPanel;
+    public GameObject nfcPanel, micPanel, shakePanel, gameOverPanel, roundCompletePanel, roundStartPanel;
     public Button nfcButton, micButton, shakeButton;
     public Text nfcText, micText, shakeText;
 
@@ -26,7 +26,7 @@ public class Player : NetworkBehaviour {
 
     private string nfcValue = "";
 
-    private int instTime = 100;
+    private int instTime = 30;
 
     private HashSet<String> validNfc = new HashSet<String>{"Grab Meat","Grab Pasta"};
 
@@ -82,7 +82,7 @@ public class Player : NetworkBehaviour {
                 }
             }
 
-            nfcValue = nfcCheck();
+            nfcValue = NfcCheck();
             //scoreText.text = nfcValue;
             if (validNfc.Contains(nfcValue))
             {
@@ -119,7 +119,7 @@ public class Player : NetworkBehaviour {
         SetTimerText("0");
     }
 
-    public void setPlayerId(int assignedId)
+    public void SetPlayerId(int assignedId)
     {
         PlayerId = assignedId;
     }
@@ -129,7 +129,7 @@ public class Player : NetworkBehaviour {
         return PlayerId;
     }
 
-    private string nfcCheck()
+    private string NfcCheck()
     {
         string value = NFCListener.GetValue();
         if (value == "Bin")
@@ -293,7 +293,7 @@ public class Player : NetworkBehaviour {
         {
             //Reset timer
             instTimeLeft = instStartTime;
-            instBar.GetComponent<Image>().fillAmount = instTimeLeft / instStartTime;
+            instBar.GetComponent<RectTransform>().localScale = new Vector3(instTimeLeft / instStartTime, 1, 1);
         }
         else if(nfcPanel.activeSelf||micPanel.activeSelf||shakePanel.activeSelf||isGamePaused)
         {
@@ -302,7 +302,7 @@ public class Player : NetworkBehaviour {
         else
         {
             instTimeLeft -= Time.deltaTime;
-            instBar.GetComponent<Image>().fillAmount = instTimeLeft / instStartTime;
+            instBar.GetComponent<RectTransform>().localScale = new Vector3(instTimeLeft / instStartTime, 1, 1);
         }
     }
 

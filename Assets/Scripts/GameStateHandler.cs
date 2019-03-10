@@ -51,18 +51,18 @@ public class GameStateHandler
         
     }
     
-    public void onRoundComplete(int score)
+    public void OnRoundComplete(int score)
     {
         RoundNumber++;
         OverallTeamlScore += score;
     }
 
-    public void updatePlayerScore(string userName, int score)
+    public void UpdatePlayerScore(string userName, int score)
     {
         userProfiles[userName] += score;
     }
 
-    public void printGameData()
+    public void PrintGameData()
     {
         Debug.Log("Round Number: " + RoundNumber);
         Debug.Log("Team Score: " + OverallTeamlScore);
