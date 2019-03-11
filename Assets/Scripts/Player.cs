@@ -106,7 +106,7 @@ public class Player : NetworkBehaviour {
                 }
             }
 
-            gpsText.text = "Lat: " + GpsListener.latString + "\n Long: " + GpsListener.longString;
+            gpsText.text = nfcValue;
         }
         else{
             SetTimerText("0");
@@ -132,11 +132,11 @@ public class Player : NetworkBehaviour {
     private string NfcCheck()
     {
         string value = NFCListener.GetValue();
-        if (value == "Bin")
+        if (value == "BFTT4mEzgA==")
         {
             NFCListener.SetValue("");
             return "Grab Meat";
-        } else if (value == "Serve")
+        } else if (value == "BFXT4mEzgA==")
         {
             NFCListener.SetValue("");
             return "Grab Meat";
