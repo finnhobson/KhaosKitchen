@@ -23,6 +23,7 @@ public class GameController : NetworkBehaviour
     public List<Player> playerList = new List<Player>();
 
     [SyncVar] public int score = 0;
+    [SyncVar] private int roundScore = 0;
     [SyncVar] public float roundTimeLeft = 90;
     [SyncVar] private int roundNumber = 1;
     
@@ -105,7 +106,7 @@ public class GameController : NetworkBehaviour
             scoreText.text = score.ToString();
             UpdateRoundTimeLeft();
 
-            if (roundMaxScore - score <= 1)
+            if (roundMaxScore - roundScore <= 1)
             {
                 PenultimateAction(true);
             }
@@ -162,6 +163,7 @@ public class GameController : NetworkBehaviour
     public void IncreaseScore()
     {
         score++;
+        roundScore++;
         UpdateScoreBar();
     }
 
@@ -185,13 +187,13 @@ public class GameController : NetworkBehaviour
 
     private void UpdateScoreBar()
     {
-        scoreBarText.text = (score - roundStartScore).ToString() + " / " + roundMaxScore.ToString();
-        scoreBar.GetComponent<UnityEngine.UI.Image>().fillAmount = (float)(score - roundStartScore)/roundMaxScore;
+        scoreBarText.text = (roundScore - roundStartScore).ToString() + " / " + roundMaxScore.ToString();
+        scoreBar.GetComponent<UnityEngine.UI.Image>().fillAmount = (float)(roundScore - roundStartScore)/roundMaxScore;
     }
 
     private bool IsRoundComplete()
     {
-        return (score >= roundMaxScore);
+        return (roundScore >= roundMaxScore);
     }
 
     /*
@@ -263,7 +265,7 @@ public class GameController : NetworkBehaviour
     private void ResetServer()
     {
         Debug.Log("RESET SERVER");
-        score = 0; //This has to be called to break out the loop in Update
+        roundScore = 0;
         UpdateScoreBar();
         StartRoundTimer();
     }
@@ -273,6 +275,7 @@ public class GameController : NetworkBehaviour
     {
         foreach (var player in playerList)
         {
+            player.roundScoreText.text = roundScore.ToString();
             player.roundCompletePanel.SetActive(true);
             player.PausePlayer();
         }

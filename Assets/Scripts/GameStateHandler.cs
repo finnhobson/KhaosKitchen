@@ -62,6 +62,11 @@ public class GameStateHandler
         userProfiles[userName] += score;
     }
 
+    public int GetPlayerScore(string name)
+    {
+        return userProfiles[name];
+    }
+
     public void PrintGameData()
     {
         Debug.Log("Round Number: " + RoundNumber);
