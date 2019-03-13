@@ -22,15 +22,21 @@ public class GameController : NetworkBehaviour
 
     [SyncVar] public int score = 0;
     [SyncVar] private int roundScore = 0;
-    [SyncVar] public float roundTimeLeft = 90;
     [SyncVar] private int roundNumber = 1;
 
     [SyncVar] public bool isRoundPaused = false;
     [SyncVar] public bool isGameStarted = false;
 
+    [SyncVar] public float roundTimeLeft;
+    [SyncVar] public int roundStartTime;
+    [SyncVar] public int instructionStartTime;
+
+    public float pointMultiplier;
+
     private static int numberOfButtons = 4;
-    public int playerCount;
-    public float roundStartTime = 90;
+    //[SyncVar] public int playerCount = GameSettings.PlayerCount;
+    [SyncVar] public int playerCount;
+    //public float roundStartTime = 90;
     public int roundStartScore;
     public int roundMaxScore;
     public GameObject scoreBar;
@@ -47,9 +53,14 @@ public class GameController : NetworkBehaviour
 
     private void Start()
     {
+        if (isServer)
+        {
+            LoadSettings();
+        }
+
         //Find players
         var players = FindObjectsOfType<Player>();
-
+        
         //Loop sets up playerList, links players to the GC and IC and sets player id
         int playerIndex = 0;
         foreach (var p in players)
@@ -58,6 +69,7 @@ public class GameController : NetworkBehaviour
             p.SetGameController(this);
             p.SetInstructionController(InstructionController);
             p.SetPlayerId(playerIndex);
+            p.instTime = instructionStartTime;
 
             //New attributes for players to add to gameplayer, thoughts?
             p.PlayerScore = 0;
@@ -73,7 +85,9 @@ public class GameController : NetworkBehaviour
         //Setup the instruction controller
         //Debug.Log("player count = " + playerCount);
         //PlayerCount = playerCount;
+        //InstructionController.ICStart(playerCount, numberOfButtons, playerList, this);
         InstructionController.ICStart(playerCount, numberOfButtons, playerList, this);
+
 
         if (isServer)
         {
@@ -81,10 +95,13 @@ public class GameController : NetworkBehaviour
             gameStateHandler = new GameStateHandler(activeUserNames); //Instantiate single gameStateHandler object on the server to hold gamestate data 
         }
 
-        StartCoroutine(RoundCountdown(3, "2"));
-        StartCoroutine(RoundCountdown(4, "1"));
-        StartCoroutine(StartRound(5));
-        StartCoroutine(StartGame(5));
+        //StartCoroutine(RoundCountdown(3, "2"));
+        //StartCoroutine(RoundCountdown(4, "1"));
+        //StartCoroutine(StartRound(5));
+        //StartCoroutine(StartGame(5));
+
+        StartCoroutine(StartRound(0));
+        StartCoroutine(StartGame(0));
     }
 
     private IEnumerator StartGame(int x)
@@ -168,7 +185,7 @@ public class GameController : NetworkBehaviour
 
     public void StartRoundTimer()
     {
-        roundStartTime = 90;
+        //roundStartTime = 90;
         roundTimeLeft = roundStartTime;
     }
 
@@ -214,6 +231,12 @@ public class GameController : NetworkBehaviour
         StartCoroutine(RoundCountdown(7, "1"));
         StartCoroutine(StartRound(8));
 
+        //StartCoroutine(StartRound(0));
+
+    }
+    private IEnumerator Wait(float n)
+    {
+        yield return new WaitForSecondsRealtime(n);
     }
 
     private IEnumerator RoundCountdown(int n, string x)
@@ -336,6 +359,15 @@ public class GameController : NetworkBehaviour
     public void PrintOut(int buttonNumber)
     {
         Debug.Log(buttonNumber);
+    }
+
+    private void LoadSettings()
+    {
+
+        roundStartTime = GameSettings.RoundTime;
+        instructionStartTime = GameSettings.InstructionTime;
+        pointMultiplier = GameSettings.PointMultiplier;
+        playerCount = GameSettings.PlayerCount;
     }
 
 
