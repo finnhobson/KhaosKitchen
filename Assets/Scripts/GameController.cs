@@ -31,11 +31,20 @@ public class GameController : NetworkBehaviour
     [SyncVar] public int roundStartTime;
     [SyncVar] public int instructionStartTime;
 
+    [SyncVar] public int BaseInstructionNumber;
+    [SyncVar] public int InstructionNumberIncreasePerRound;
+    [SyncVar] public int BaseInstructionTime;
+    [SyncVar] public int InstructionTimeReductionPerRound;
+    [SyncVar] public int InstructionTimeIncreasePerPlayer;
+    [SyncVar] public int MinimumInstructionTime;
+
+    [SyncVar] public int playerCount;
+
+
     public float pointMultiplier;
 
     private static int numberOfButtons = 4;
     //[SyncVar] public int playerCount = GameSettings.PlayerCount;
-    [SyncVar] public int playerCount;
     //public float roundStartTime = 90;
     public int roundStartScore;
     public int roundMaxScore;
@@ -69,7 +78,7 @@ public class GameController : NetworkBehaviour
             p.SetGameController(this);
             p.SetInstructionController(InstructionController);
             p.SetPlayerId(playerIndex);
-            p.instTime = instructionStartTime;
+            p.instStartTime = CalculateInstructionTime();
 
             //New attributes for players to add to gameplayer, thoughts?
             p.PlayerScore = 0;
@@ -223,6 +232,10 @@ public class GameController : NetworkBehaviour
 
 
         RpcPausePlayers();
+        foreach (Player p in playerList)
+        {
+            p.instStartTime = CalculateInstructionTime();
+        }
         ReadyInstructionController();
         UpdateGamestate();
 
@@ -230,7 +243,6 @@ public class GameController : NetworkBehaviour
         StartCoroutine(RoundCountdown(6, "2"));
         StartCoroutine(RoundCountdown(7, "1"));
         StartCoroutine(StartRound(8));
-
         //StartCoroutine(StartRound(0));
 
     }
@@ -282,6 +294,9 @@ public class GameController : NetworkBehaviour
         isRoundPaused = false;
         PenultimateAction(false);
         PrintInstructionHandler();
+        roundMaxScore = CalculateInstructionNumber();
+        UpdateScoreBar();
+
     }
 
     private void ResetServer()
@@ -361,13 +376,35 @@ public class GameController : NetworkBehaviour
         Debug.Log(buttonNumber);
     }
 
+    //50% reduction in Number with 8 players
+    private int CalculateInstructionNumber()
+    {
+        return ((BaseInstructionNumber + InstructionNumberIncreasePerRound * (roundNumber - 1))
+                * ((12 - (playerCount - 2)) / 12));
+    }
+
+    public int CalculateInstructionTime()
+    {
+        int temp = BaseInstructionTime
+                   - (roundNumber-1) * InstructionTimeReductionPerRound
+                   + (playerCount-2) * InstructionTimeIncreasePerPlayer;
+
+        return temp > MinimumInstructionTime ? temp : MinimumInstructionTime;
+    }
+
+
     private void LoadSettings()
     {
 
         roundStartTime = GameSettings.RoundTime;
-        instructionStartTime = GameSettings.InstructionTime;
-        pointMultiplier = GameSettings.PointMultiplier;
         playerCount = GameSettings.PlayerCount;
+
+        BaseInstructionNumber = GameSettings.BaseInstructionNumber;
+        InstructionNumberIncreasePerRound = GameSettings.InstructionNumberIncreasePerRound;
+        BaseInstructionTime = GameSettings.BaseInstructionTime;
+        InstructionTimeReductionPerRound = GameSettings.InstructionTimeReductionPerRound;
+        InstructionTimeIncreasePerPlayer = GameSettings.InstructionTimeIncreasePerPlayer;
+        MinimumInstructionTime = GameSettings.MinimumInstructionTime;
     }
 
 

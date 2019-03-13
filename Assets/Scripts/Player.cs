@@ -41,7 +41,7 @@ public class Player : NetworkBehaviour {
     //Extras
     private string nfcValue = "";
 
-    public int instTime;
+    //public int instTime;
 
     private HashSet<String> validNfc = new HashSet<String>{"Grab Meat","Grab Pasta"};
     public MicListener micListener;
@@ -306,7 +306,7 @@ public class Player : NetworkBehaviour {
 
     public void StartInstTimer()
     {
-        instStartTime = instTime;
+        instStartTime = gameController.CalculateInstructionTime();
         instTimeLeft = instStartTime; 
     }
 

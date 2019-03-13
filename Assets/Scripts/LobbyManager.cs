@@ -8,10 +8,11 @@ public class LobbyManager : NetworkLobbyManager {
 
     public GameObject Lobby;
     public GameObject Menu;
+    
+    //private int roundTime, playerCount, BaseInstructionNumber, InstructionNumberIncreasePerRound, BaseInstructionTime, InstructionTimeReductionPerRound, InstructionTimeIncreasePerPlayer, MinimumInstructionTime;
 
-    private int instructionTime, roundTime, playerCount;
-    private float pointMultiplier;
-    public Text instructionTimeText, roundTimeText, pointMultiplierText, playerCountText;
+    public Text roundTimeText, playerCountText, BaseInstructionNumberText, InstructionNumberIncreasePerRoundText, BaseInstructionTimeText, InstructionTimeReductionPerRoundText, InstructionTimeIncreasePerPlayerText, MinimumInstructionTimeText;
+
 
     private void Start()
     {
@@ -42,28 +43,35 @@ public class LobbyManager : NetworkLobbyManager {
 
     public void SetSettings()
     {
+        //GameSettings.RoundTime = int.Parse(roundTimeText.text);
+        //roundTime = GameSettings.RoundTime;
+        //GameSettings.InstructionTime = int.Parse(instructionTimeText.text);
+        //instructionTime = GameSettings.InstructionTime;
+        //GameSettings.PointMultiplier = float.Parse(pointMultiplierText.text);
+        //pointMultiplier = GameSettings.PointMultiplier;
+        //GameSettings.PlayerCount = int.Parse(playerCountText.text);
+        //playerCount = GameSettings.PlayerCount;
+
         GameSettings.RoundTime = int.Parse(roundTimeText.text);
-        roundTime = GameSettings.RoundTime;
-        GameSettings.InstructionTime = int.Parse(instructionTimeText.text);
-        instructionTime = GameSettings.InstructionTime;
-        GameSettings.PointMultiplier = float.Parse(pointMultiplierText.text);
-        pointMultiplier = GameSettings.PointMultiplier;
         GameSettings.PlayerCount = int.Parse(playerCountText.text);
-        playerCount = GameSettings.PlayerCount;
+        GameSettings.BaseInstructionNumber = int.Parse(BaseInstructionNumberText.text);
+        GameSettings.InstructionNumberIncreasePerRound = int.Parse(InstructionNumberIncreasePerRoundText.text);
+        GameSettings.BaseInstructionTime = int.Parse(BaseInstructionTimeText.text);
+        GameSettings.InstructionTimeReductionPerRound = int.Parse(InstructionTimeReductionPerRoundText.text);
+        GameSettings.InstructionTimeIncreasePerPlayer = int.Parse(InstructionTimeIncreasePerPlayerText.text);
+        GameSettings.MinimumInstructionTime = int.Parse(MinimumInstructionTimeText.text);
     }
 
     private void SetDefaultSettings()
     {
-        GameSettings.RoundTime = 90;
-        GameSettings.InstructionTime = 15;
-        GameSettings.PointMultiplier = 1;
+        GameSettings.RoundTime = 60;
         GameSettings.PlayerCount = 2;
+        GameSettings.BaseInstructionNumber = 16;
+        GameSettings.InstructionNumberIncreasePerRound = 16;
+        GameSettings.BaseInstructionTime = 15;
+        GameSettings.InstructionTimeReductionPerRound = 2;
+        GameSettings.InstructionTimeIncreasePerPlayer = 2;
+        GameSettings.MinimumInstructionTime = 5;
     }
 
-    public void ResetSettingsToLast()
-    {
-        roundTimeText.text = roundTime.ToString();
-        instructionTimeText.text = instructionTime.ToString();
-        pointMultiplierText.text = pointMultiplier.ToString();
-    }
 }

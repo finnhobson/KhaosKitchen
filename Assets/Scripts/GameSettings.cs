@@ -21,8 +21,7 @@ public static class GameSettings
      * 
      * XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
      */
-    private static int rTime, iTime, pCount;
-    private static float pointMultiplier;
+    private static int pCount;
 
     public static int PlayerCount
     {
@@ -36,40 +35,18 @@ public static class GameSettings
         }
     }
 
-    public static int RoundTime
-    {
-        get
-        {
-            return rTime;
-        }
-        set
-        {
-            rTime = value;
-        }
-    }
+    public static int BaseInstructionNumber { get; set;}
 
-    public static int InstructionTime
-    {
-        get
-        {
-            return iTime;
-        }
-        set
-        {
-            iTime = value;
-        }
-    }
+    public static int InstructionNumberIncreasePerRound { get; set; }
 
-    public static float PointMultiplier
-    {
-        get
-        {
-            return pointMultiplier;
-        }
-        set
-        {
-            pointMultiplier = value;
-        }
-    }
+    public static int BaseInstructionTime { get; set; }
+
+    public static int InstructionTimeReductionPerRound { get; set; }
+
+    public static int InstructionTimeIncreasePerPlayer { get; set; }
+
+    public static int MinimumInstructionTime { get; set; }
+
+    public static int RoundTime { get; set; }
 
 }
