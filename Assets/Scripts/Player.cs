@@ -8,44 +8,60 @@ using UnityEngine.UI;
 
 public class Player : NetworkBehaviour {
 
+    //Custom objects
     public GameController gameController;
     public InstructionController InstructionController;
 
+    //Buttons
     public Button button1, button2, button3, button4;
     public Button[] AllButtons;
-
-    public AudioClip correctAction;
-    public AudioClip incorrectAction;
-    public AudioSource source;
-
-    public Text scoreText, instructionText, timerText, gpsText, roundScoreText, topChefText, countdownText, roundNumberText;
-
-    public GameObject nfcPanel, micPanel, shakePanel, gameOverPanel, roundCompletePanel, roundStartPanel;
     public Button nfcButton, micButton, shakeButton;
+
+    //Sound
+    public AudioClip[] correctActions;
+    public AudioClip[] incorrectActions;
+    public AudioClip[] badNoises;
+    private AudioSource source;
+    private int switcher = 0;
+    private int failSwitch = 0;
+    private int numberOfFails;
+    private int numberOfButtonSounds;
+
+    //Unity GameObjects
+    public Text scoreText, instructionText, timerText, gpsText, roundScoreText, topChefText, countdownText, roundNumberText;
+    public GameObject nfcPanel, micPanel, shakePanel, gameOverPanel, roundCompletePanel, roundStartPanel;
     public Text nfcText, micText, shakeText;
 
+    //Player
     public int PlayerId { get; set; }
     public string PlayerUserName { get; set; }
     public int PlayerScore { get; set; }
 
+    //Extras
     private string nfcValue = "";
-
-    private int instTime = 30;
-
     private HashSet<String> validNfc = new HashSet<String>{"Grab Meat","Grab Pasta"};
-
     public MicListener micListener;
-
+    
+    //Timer
+    private int instTime = 30;
     public GameObject instBar;
-
     public float instTimeLeft, instStartTime;
-
+    
+    //Score
     private int scoreStreak = 0;
-
-    public bool isGamePaused = false;
 
     //Sets score streak where event will occur
     private const int scoreStreakMax = 5;
+
+    //Booleans
+    public bool isGamePaused = false;
+
+    private void Awake()
+    {
+        source = GetComponent<AudioSource>();
+        numberOfFails = badNoises.Length;
+        numberOfButtonSounds = correctActions.Length;
+    }
 
     private void Start()
     {
@@ -67,6 +83,7 @@ public class Player : NetworkBehaviour {
             if (instTimeLeft < 0 && isLocalPlayer)
             {
                 CmdFail(instructionText.text);
+                PlayFailSound();
                 StartInstTimer();
             }
             else
@@ -421,13 +438,18 @@ public class Player : NetworkBehaviour {
         //Activate feedback on this button
         CmdPrint(buttonNumber);
         AllButtons[buttonNumber].GetComponent<Image>().color = Color.green;
-        //Insert Sound here
+        
+        PlayCorrectSound();
+        
         StartCoroutine(RestartNewRoundAfterXSeconds(0.5f, buttonNumber));
     }
 
     private void ThisButtonWasNotPressed(int buttonNumber)
     {
         AllButtons[buttonNumber].GetComponent<Image>().color = Color.red;
+        
+        PlayIncorrectSound();
+
         StartCoroutine(RestartNewRoundAfterXSeconds(0.5f, buttonNumber));
     }
 
@@ -443,6 +465,26 @@ public class Player : NetworkBehaviour {
     {
         gameController.PrintOut(buttonNumber);
     }
+
+    private void PlayFailSound()
+    {
+        source.PlayOneShot(badNoises[failSwitch]);
+        failSwitch = (failSwitch + 1) % numberOfFails;
+    }
+
+    private void PlayCorrectSound()
+    {
+        source.PlayOneShot(correctActions[switcher], 1f);
+        switcher = (switcher + 1) % numberOfButtonSounds;
+    }    
+    
+    private void PlayIncorrectSound()
+    {
+        source.PlayOneShot(incorrectActions[switcher], 1f);
+        switcher = (switcher + 1) % numberOfButtonSounds;
+    }
+    
+    
 }
 
 

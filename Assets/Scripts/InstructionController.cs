@@ -11,6 +11,7 @@ public class InstructionController : NetworkBehaviour
 {
     public GameController GameController;
     public InstructionHandler InstructionHandler;
+    public MusicPlayer MusicPlayer;
     
     //Store of the combinations of instructions possible
     private static List<String> verbList = new List<string>(new string[] { "Grab", "Fetch", "Grate", "Grill", "Melt", "Serve", "Stir", "Chop", "Cut", "Mash", "Season", "Flambé", "Bake", "Fry", "Taste", "Microwave" });

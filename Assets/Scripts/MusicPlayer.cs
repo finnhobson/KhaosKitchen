@@ -4,12 +4,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Serialization;
 
-public class ServerAudio : MonoBehaviour
+public class MusicPlayer : MonoBehaviour
 {
     
     //Remember to add variance to button sounds
 
     private AudioSource BackgroundSource;
+    public AudioClip BackgroundMusic;
+    public AudioClip GameOverClip;
+    public AudioClip[] RoundBreaks;
 
     private bool isMusicPaused;
     
@@ -17,8 +20,9 @@ public class ServerAudio : MonoBehaviour
     void Awake()
     {
         BackgroundSource = GetComponent<AudioSource>();
+        BackgroundSource.clip = BackgroundMusic;
         isMusicPaused = false; 
-        BackgroundSource.Play();
+//        BackgroundSource.Play();
     }
 
     // Update is called once per frame

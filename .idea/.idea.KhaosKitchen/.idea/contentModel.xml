@@ -19,10 +19,10 @@
           <e p="LobbyPlayer.cs" t="Include" />
           <e p="MainMenu.cs" t="Include" />
           <e p="MicListener.cs" t="Include" />
+          <e p="MusicPlayer.cs" t="Include" />
           <e p="MyNetworkDiscovery.cs" t="Include" />
           <e p="NFCListener.cs" t="Include" />
           <e p="Player.cs" t="Include" />
-          <e p="ServerAudio.cs" t="Include" />
           <e p="ShakeListener.cs" t="Include" />
           <e p="ShowLocalCanvas.cs" t="Include" />
         </e>
