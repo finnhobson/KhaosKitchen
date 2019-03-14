@@ -14,6 +14,10 @@ public class Player : NetworkBehaviour {
     public Button button1, button2, button3, button4;
     public Button[] AllButtons;
 
+    public AudioClip correctAction;
+    public AudioClip incorrectAction;
+    public AudioSource source;
+
     public Text scoreText, instructionText, timerText, gpsText, roundScoreText, topChefText, countdownText, roundNumberText;
 
     public GameObject nfcPanel, micPanel, shakePanel, gameOverPanel, roundCompletePanel, roundStartPanel;
@@ -50,7 +54,6 @@ public class Player : NetworkBehaviour {
         InstructionController = GameObject.FindGameObjectWithTag("InstructionController").GetComponent<InstructionController>();
         Screen.orientation = ScreenOrientation.Portrait;
         StartInstTimer();
-        
     }
 
     private void Update()
@@ -418,6 +421,7 @@ public class Player : NetworkBehaviour {
         //Activate feedback on this button
         CmdPrint(buttonNumber);
         AllButtons[buttonNumber].GetComponent<Image>().color = Color.green;
+        //Insert Sound here
         StartCoroutine(RestartNewRoundAfterXSeconds(0.5f, buttonNumber));
     }
 
