@@ -69,6 +69,7 @@ public class Player : NetworkBehaviour {
         InstructionController = GameObject.FindGameObjectWithTag("InstructionController").GetComponent<InstructionController>();
         Screen.orientation = ScreenOrientation.Portrait;
         StartInstTimer();
+        VolumeOfSoundEffects = 2.0f;
     }
 
     private void Update()
@@ -143,7 +144,7 @@ public class Player : NetworkBehaviour {
         PlayerId = assignedId;
     }
 
-    public int getPlayerId()
+    public int GetPlayerId()
     {
         return PlayerId;
     }
@@ -484,13 +485,13 @@ public class Player : NetworkBehaviour {
         switcher = (switcher + 1) % numberOfButtonSounds;
     }
     
-    void OnGUI()
+    /*void OnGUI()
     {
         //Create a horizontal Slider that controls volume levels. Its highest value is 1 and lowest is 0
         VolumeOfSoundEffects = GUI.HorizontalSlider(new Rect(25, 25, 200, 60), VolumeOfSoundEffects, 0.0F, 1.0F);
         //Makes the volume of the Audio match the Slider value
         source.volume = VolumeOfSoundEffects;
-    }
+    }*/
 
     private void Vibrate()
     {

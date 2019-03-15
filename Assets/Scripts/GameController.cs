@@ -10,50 +10,46 @@ using UnityEngine.UI;
 
 public class GameController : NetworkBehaviour
 {
-    //Custom Objects
     public InstructionController InstructionController;
     public AnimationController animationController;
     private GameStateHandler gameStateHandler;
-    public MusicPlayer MusicPlayer;
 
     public Text scoreText, roundTimerText, scoreBarText, roundNumberText;
 
     public GameObject roundTimerBar;
-    public GameObject scoreBar;
-    
-    //Lists
+
     public List<Player> playerList = new List<Player>();
-    List<string> userNames = new List<string>(new string[] { "A", "B", "C", "D", "E", "F", "G", "H", "I" }); /* Just here so in future they can set their own usernames from the lobby */
-    private List<String> activeUserNames = new List<string>();
-    
-    //Synced primitives
+
     [SyncVar] public int score = 0;
     [SyncVar] private int roundScore = 0;
-    [SyncVar] public float roundTimeLeft;
+    [SyncVar] public float roundTimeLeft = 90;
     [SyncVar] private int roundNumber = 1;
-    
-    //Booleans
+
     [SyncVar] public bool isRoundPaused = false;
     [SyncVar] public bool isGameStarted = false;
-    private int piProb = 10;                       //Phone interaction probability = 2/x
-    public bool playersInitialised = false;        //Indicator variables for the animation controller
 
-    //Primitives
     private static int numberOfButtons = 4;
     public int playerCount;
-    public float roundStartTime;
+    public float roundStartTime = 90;
     public int roundStartScore;
     public int roundMaxScore;
-    public float VolumeOfSoundEffects;
+    public GameObject scoreBar;
 
-    private bool stopped = false;
+    List<string> userNames = new List<string>(new string[] { "A", "B", "C", "D", "E", "F", "G", "H", "I" }); /* Just here so in future they can set their own usernames from the lobby */
+    private List<String> activeUserNames = new List<string>();
 
-    
+    //Phone interaction probability = 2/x
+    private int piProb = 10;
+
+    //Indicator variables for the animation controller
+    public bool playersInitialised = false;
+
+
     private void Start()
     {
         //Find players
         var players = FindObjectsOfType<Player>();
-        
+
         //Loop sets up playerList, links players to the GC and IC and sets player id
         int playerIndex = 0;
         foreach (var p in players)
@@ -67,14 +63,13 @@ public class GameController : NetworkBehaviour
             p.PlayerScore = 0;
             p.PlayerUserName = userNames[playerIndex];
             activeUserNames.Add(p.PlayerUserName);
-            p.VolumeOfSoundEffects = VolumeOfSoundEffects;
-            
+
             playerIndex++;
             //playerCount = playerCount+1;
         }
 
         playersInitialised = true;
-        
+
         //Setup the instruction controller
         //Debug.Log("player count = " + playerCount);
         //PlayerCount = playerCount;
@@ -86,7 +81,6 @@ public class GameController : NetworkBehaviour
             gameStateHandler = new GameStateHandler(activeUserNames); //Instantiate single gameStateHandler object on the server to hold gamestate data 
         }
 
-        StartCoroutine(PlayXCountAfterNSeconds(2, 2));
         StartCoroutine(RoundCountdown(3, "2"));
         StartCoroutine(RoundCountdown(4, "1"));
         StartCoroutine(StartRound(5));
@@ -124,18 +118,10 @@ public class GameController : NetworkBehaviour
             else if (roundTimeLeft < 0)
             {
                 SetTimerText("0");
-                if (!stopped)
-                {
-                    PlayGameOver();
-                    stopped = true;
-
-                }
-
                 foreach (Player p in playerList)
                 {
                     p.GameOver();
                 }
-                
             }
 
             else
@@ -201,7 +187,7 @@ public class GameController : NetworkBehaviour
     private void UpdateScoreBar()
     {
         scoreBarText.text = (roundScore - roundStartScore).ToString() + " / " + roundMaxScore.ToString();
-        scoreBar.GetComponent<RectTransform>().localScale = new Vector3((float)(roundScore - roundStartScore)/roundMaxScore, 1, 1);
+        scoreBar.GetComponent<RectTransform>().localScale = new Vector3((float)(roundScore - roundStartScore) / roundMaxScore, 1, 1);
     }
 
     private bool IsRoundComplete()
@@ -217,9 +203,7 @@ public class GameController : NetworkBehaviour
         if (!isServer || isRoundPaused) return; //Only need to access this function once per round completion.
         roundNumber++;
         isRoundPaused = true;
-        
-        PauseMusic();
-        PlayRoundBreakMusic();
+
 
         RpcPausePlayers();
         ReadyInstructionController();
@@ -232,18 +216,9 @@ public class GameController : NetworkBehaviour
 
     }
 
-    private IEnumerator PlayXCountAfterNSeconds(int n, int x)
-    {
-        yield return new WaitForSecondsRealtime(n);
-        PlayCountDown(x);
-    }
-    
     private IEnumerator RoundCountdown(int n, string x)
     {
-        int count = 1;
-        Int32.TryParse(x, out count);
         yield return new WaitForSecondsRealtime(n);
-        PlayCountDown(count - 1);
         RpcCountdown(x);
     }
 
@@ -260,8 +235,6 @@ public class GameController : NetworkBehaviour
     private IEnumerator StartNewRoundAfterXSeconds(int x)
     {
         yield return new WaitForSecondsRealtime(x);
-        PauseMusic();
-        PlayCountDown(2);
         RpcStartNewRound();
     }
 
@@ -284,7 +257,6 @@ public class GameController : NetworkBehaviour
         ResetServer();
         RpcUnpausePlayers();
         isRoundPaused = false;
-        PlayRoundMusic();
         PenultimateAction(false);
         PrintInstructionHandler();
     }
@@ -353,7 +325,7 @@ public class GameController : NetworkBehaviour
         }
         gameStateHandler.PrintGameData();
 
-        
+
     }
 
     private void PrintInstructionHandler()
@@ -365,8 +337,9 @@ public class GameController : NetworkBehaviour
     {
         Debug.Log(buttonNumber);
     }
-    
-    private void PlayRoundBreakMusic()
+
+
+    /*private void PlayRoundBreakMusic()
     {
         MusicPlayer.PlayRoundBreak();
     }
@@ -389,5 +362,5 @@ public class GameController : NetworkBehaviour
     private void PlayGameOver()
     {
         MusicPlayer.PlayGameOver();
-    }
+    }*/
 }
