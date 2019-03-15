@@ -480,6 +480,7 @@ public class Player : NetworkBehaviour {
     private void PlayIncorrectSound()
     {
         source.PlayOneShot(incorrectActions[switcher], VolumeOfSoundEffects);
+        Vibrate();
         switcher = (switcher + 1) % numberOfButtonSounds;
     }
     
@@ -489,6 +490,13 @@ public class Player : NetworkBehaviour {
         VolumeOfSoundEffects = GUI.HorizontalSlider(new Rect(25, 25, 200, 60), VolumeOfSoundEffects, 0.0F, 1.0F);
         //Makes the volume of the Audio match the Slider value
         source.volume = VolumeOfSoundEffects;
+    }
+
+    private void Vibrate()
+    {
+#if UNITY_ANDROID
+        Handheld.Vibrate();
+#endif
     }
 }
 

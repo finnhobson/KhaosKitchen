@@ -8,13 +8,14 @@ public class AnimationController : MonoBehaviour
     public GameController gameController;
 
     public GameObject chefPrefab;
+    public GameObject kitchenPrefab;
 
     private bool chefsSpawned = false;
 
     // Start is called before the first frame update
     void Start()
     {
-
+        Instantiate(kitchenPrefab);
     }
 
     // Update is called once per frame
