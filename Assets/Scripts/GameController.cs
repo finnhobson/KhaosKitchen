@@ -13,6 +13,7 @@ public class GameController : NetworkBehaviour
     public InstructionController InstructionController;
     public AnimationController animationController;
     private GameStateHandler gameStateHandler;
+    public MusicPlayer MusicPlayer;
 
     public Text scoreText, roundTimerText, scoreBarText, roundNumberText;
 
@@ -240,7 +241,8 @@ public class GameController : NetworkBehaviour
         if (!isServer || isRoundPaused) return; //Only need to access this function once per round completion.
         roundNumber++;
         isRoundPaused = true;
-
+        PauseMusic();
+        PlayRoundBreakMusic();
 
         RpcPausePlayers();
         foreach (Player p in playerList)
@@ -257,6 +259,7 @@ public class GameController : NetworkBehaviour
         //StartCoroutine(StartRound(0));
 
     }
+    
     private IEnumerator Wait(float n)
     {
         yield return new WaitForSecondsRealtime(n);
@@ -265,6 +268,9 @@ public class GameController : NetworkBehaviour
     private IEnumerator RoundCountdown(int n, string x)
     {
         yield return new WaitForSecondsRealtime(n);
+        int count = 1;
+        Int32.TryParse(x, out count);
+        PlayCountDown(count - 1);
         RpcCountdown(x);
     }
 
@@ -299,6 +305,7 @@ public class GameController : NetworkBehaviour
     private IEnumerator StartRound(int x)
     {
         yield return new WaitForSecondsRealtime(x);
+        PlayRoundMusic();
         ResetPlayers();
         ResetServer();
         RpcUnpausePlayers();
@@ -308,7 +315,6 @@ public class GameController : NetworkBehaviour
         roundMaxScore = CalculateInstructionNumber();
         customerSatisfaction = 100;
         UpdateScoreBar();
-
     }
 
     private void ResetServer()
@@ -435,32 +441,39 @@ public class GameController : NetworkBehaviour
         customerSatisfaction = customerSatisfaction + roundScore - roundMaxScore * (roundTimeLeft / roundStartTime);
         if (customerSatisfaction > 100) customerSatisfaction = 100;
         if (customerSatisfaction < 0) customerSatisfaction = 0;
-
+    private IEnumerator PlayXAfterNSeconds(int x, int n)
+    {
+        yield return new WaitForSecondsRealtime(n);
+        PlayCountDown(x);
     }
 
-
-    /*private void PlayRoundBreakMusic()
+    [Server]
+    private void PlayRoundBreakMusic()
     {
         MusicPlayer.PlayRoundBreak();
     }
 
+    [Server]
     private void PlayRoundMusic()
     {
         MusicPlayer.StartRoundMusic();
     }
 
+    [Server]
     private void PlayCountDown(int x)
     {
         MusicPlayer.PlayCountDown(x);
     }
 
+    [Server]
     private void PauseMusic()
     {
         MusicPlayer.PauseMusic();
     }
 
+    [Server]
     private void PlayGameOver()
     {
         MusicPlayer.PlayGameOver();
-    }*/
+    }
 }

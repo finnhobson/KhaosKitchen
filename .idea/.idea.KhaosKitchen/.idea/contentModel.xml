@@ -10,6 +10,7 @@
           <e p="AnimationController.cs" t="Include" />
           <e p="ChefController.cs" t="Include" />
           <e p="GameController.cs" t="Include" />
+          <e p="GameSettings.cs" t="Include" />
           <e p="GameStateHandler.cs" t="Include" />
           <e p="GpsListener.cs" t="Include" />
           <e p="Instruction.cs" t="Include" />

@@ -116,12 +116,12 @@
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="cs" value="18354" />
+          <entry key="cs" value="18587" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="C#" value="18354" />
+          <entry key="C#" value="18587" />
         </counts>
       </usages-collector>
     </session>
@@ -392,12 +392,29 @@
           </provider>
         </entry>
       </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Assets/Scripts/LobbyManager.cs">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-881">
+              <folding>
+                <marker date="1552664646413" expanded="true" signature="6:130" ph="..." />
+                <marker date="1552664646413" expanded="true" signature="180:3079" ph="{...}" />
+                <marker date="1552664646413" expanded="true" signature="728:802" ph="{...}" />
+                <marker date="1552664646413" expanded="true" signature="844:977" ph="{...}" />
+                <marker date="1552664646413" expanded="true" signature="1042:1163" ph="{...}" />
+                <marker date="1552664646413" expanded="true" signature="1234:1350" ph="{...}" />
+                <marker date="1552664646413" expanded="true" signature="1381:2626" ph="{...}" />
+                <marker date="1552664646413" expanded="true" signature="1396:1893" ph="/* GameSettings.RoundTime = int.Parse(roundTimeText.text); ... */" />
+                <marker date="1552664646413" expanded="true" signature="2665:3076" ph="{...}" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
     </leaf>
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>order</find>
-      <find>pop</find>
       <find>setRandom</find>
       <find>ordered</find>
       <find>burgerRecipe</find>
@@ -424,8 +441,10 @@
       <find>CmdAction</find>
       <find>playerCOunt</find>
       <find>isMusicPaused</find>
-      <find>RoundCountdown</find>
       <find>PlayXCountAfterNSeconds</find>
+      <find>PlayRoundMusic</find>
+      <find>PlayXAfterNSeconds</find>
+      <find>RoundCountdown</find>
     </findStrings>
     <replaceStrings>
       <replace>geneicRecipe</replace>
@@ -639,7 +658,21 @@
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/Assets/Scripts/LobbyManager.cs">
-      <provider selected="true" editor-type-id="text-editor" />
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-881">
+          <folding>
+            <marker date="1552664646413" expanded="true" signature="6:130" ph="..." />
+            <marker date="1552664646413" expanded="true" signature="180:3079" ph="{...}" />
+            <marker date="1552664646413" expanded="true" signature="728:802" ph="{...}" />
+            <marker date="1552664646413" expanded="true" signature="844:977" ph="{...}" />
+            <marker date="1552664646413" expanded="true" signature="1042:1163" ph="{...}" />
+            <marker date="1552664646413" expanded="true" signature="1234:1350" ph="{...}" />
+            <marker date="1552664646413" expanded="true" signature="1381:2626" ph="{...}" />
+            <marker date="1552664646413" expanded="true" signature="1396:1893" ph="/* GameSettings.RoundTime = int.Parse(roundTimeText.text); ... */" />
+            <marker date="1552664646413" expanded="true" signature="2665:3076" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Assets/Scripts/NFCListenScript.cs" />
     <entry file="file://$PROJECT_DIR$/Assets/Scripts/MicListener.cs">
