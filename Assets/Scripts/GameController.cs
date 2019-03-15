@@ -64,7 +64,6 @@ public class GameController : NetworkBehaviour
     //Indicator variables for the animation controller
     public bool playersInitialised = false;
 
-
     private void Start()
     {
         if (isServer)
@@ -252,6 +251,7 @@ public class GameController : NetworkBehaviour
         ReadyInstructionController();
         UpdateGamestate();
 
+        PlayXCountAfterNSeconds(4, 2);
         StartCoroutine(StartNewRoundAfterXSeconds(5));
         StartCoroutine(RoundCountdown(6, "2"));
         StartCoroutine(RoundCountdown(7, "1"));
@@ -446,7 +446,7 @@ public class GameController : NetworkBehaviour
         yield return new WaitForSecondsRealtime(n);
         PlayCountDown(x);
     }
-
+    
     [Server]
     private void PlayRoundBreakMusic()
     {
