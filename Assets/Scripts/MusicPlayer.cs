@@ -18,6 +18,7 @@ public class MusicPlayer : MonoBehaviour
     public AudioClip[] RoundBreaks;
     public AudioClip[] Countdown;
     float volume;
+    private float VolumeOneShot = 2f;
     
     //Primitives
     private int NumberOfRoundBreaks;
@@ -38,20 +39,7 @@ public class MusicPlayer : MonoBehaviour
         NumberOfRoundBreaks = RoundBreaks.Length;
         volume = 1.0f;
     }
-
-    private void Update()
-    {        
-        /*if (Input.GetKeyDown(KeyCode.Space))
-        {
-            BackgroundSource.Pause();
-        }
-
-        else if (Input.GetKeyDown(KeyCode.Backspace))
-        {
-            BackgroundSource.UnPause();
-        }*/
-    }
-
+    
     public void PauseMusic()
     {
         isMusicPaused = true;
@@ -81,7 +69,7 @@ public class MusicPlayer : MonoBehaviour
     {
         if(!isMusicPaused) PauseMusic();
         
-        BackgroundSource.PlayOneShot(RoundBreaks[Switch], 2f);
+        BackgroundSource.PlayOneShot(RoundBreaks[Switch], VolumeOneShot);
         Switch = (Switch + 1) % NumberOfRoundBreaks;
     }
 
@@ -94,14 +82,6 @@ public class MusicPlayer : MonoBehaviour
 
     public void PlayCountDown(int count)
     {
-        BackgroundSource.PlayOneShot(Countdown[count], 2f);
+        BackgroundSource.PlayOneShot(Countdown[count], VolumeOneShot);
     }
-    
-    /*void OnGUI()
-    {
-        //Create a horizontal Slider that controls volume levels. Its highest value is 1 and lowest is 0
-        m_MySliderValue = GUI.HorizontalSlider(new Rect(25, 25, 200, 60), m_MySliderValue, 0.0F, 1.0F);
-        //Makes the volume of the Audio match the Slider value
-        BackgroundSource.volume = m_MySliderValue;
-    }*/
 }
