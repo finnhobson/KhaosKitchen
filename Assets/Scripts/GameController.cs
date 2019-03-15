@@ -16,10 +16,8 @@ public class GameController : NetworkBehaviour
     private GameStateHandler gameStateHandler;
     public MusicPlayer MusicPlayer;
 
-    //GameObjects
-    public Text scoreText;
-    public Text roundTimerText;
-    public Text scoreBarText;
+    public Text scoreText, roundTimerText, scoreBarText, roundNumberText;
+
     public GameObject roundTimerBar;
     public GameObject scoreBar;
     
@@ -110,6 +108,7 @@ public class GameController : NetworkBehaviour
         {
             //Show score and active instructions on server display.
             scoreText.text = score.ToString();
+            roundNumberText.text = roundNumber.ToString();
             UpdateRoundTimeLeft();
 
             if (roundMaxScore - roundScore <= 1)
@@ -190,7 +189,7 @@ public class GameController : NetworkBehaviour
     private void UpdateRoundTimeLeft()
     {
         roundTimeLeft -= Time.deltaTime;
-        roundTimerBar.GetComponent<UnityEngine.UI.Image>().fillAmount = roundTimeLeft / roundStartTime;
+        roundTimerBar.GetComponent<RectTransform>().localScale = new Vector3(roundTimeLeft / roundStartTime, 1, 1);
         //SetTimerText(roundTimeLeft.ToString("F2"));
     }
 
@@ -202,7 +201,7 @@ public class GameController : NetworkBehaviour
     private void UpdateScoreBar()
     {
         scoreBarText.text = (roundScore - roundStartScore).ToString() + " / " + roundMaxScore.ToString();
-        scoreBar.GetComponent<UnityEngine.UI.Image>().fillAmount = (float)(roundScore - roundStartScore)/roundMaxScore;
+        scoreBar.GetComponent<RectTransform>().localScale = new Vector3((float)(roundScore - roundStartScore)/roundMaxScore, 1, 1);
     }
 
     private bool IsRoundComplete()
