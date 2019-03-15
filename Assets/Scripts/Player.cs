@@ -41,13 +41,13 @@ public class Player : NetworkBehaviour {
     //Extras
     private string nfcValue = "";
 
-    //public int instTime;
+    public int instTime;
 
     private HashSet<String> validNfc = new HashSet<String>{"Grab Meat","Grab Pasta"};
     public MicListener micListener;
     
     //Timer
-    private int instTime = 30;
+    //private int instTime = 30;
     public GameObject instBar;
     public float instTimeLeft, instStartTime;
     
