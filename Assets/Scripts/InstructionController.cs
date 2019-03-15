@@ -204,7 +204,7 @@ public class InstructionController : NetworkBehaviour
             
             //Only do a panel action if there are still instructions left in the round.
             if (isLastActionOfRound) return;
-            PrintInstructionHandler();
+//            PrintInstructionHandler();
 
             int rand = UnityEngine.Random.Range(1, piProb);
             if(rand==1){
