@@ -53,9 +53,9 @@ public class MusicPlayer : MonoBehaviour
     public void PlayGameOver()
     {
         BackgroundSource.Stop();
-//        BackgroundSource.clip = GameOverClip;
+        BackgroundSource.clip = GameOverClip;
         BackgroundSource.PlayOneShot(GameOverClip, VolumeOneShot);
-//        BackgroundSource.PlayOneShot(GameOverClip, 2f);
+//        BackgroundSource.Play();
     }
 
     void PlayBackgroundMusic()
@@ -65,8 +65,7 @@ public class MusicPlayer : MonoBehaviour
 
     public void PlayRoundBreak()
     {
-        if(!isMusicPaused) PauseMusic();
-        
+//        if(!isMusicPaused) PauseMusic();
         BackgroundSource.PlayOneShot(RoundBreaks[Switch], VolumeOneShot);
         Switch = (Switch + 1) % NumberOfRoundBreaks;
     }

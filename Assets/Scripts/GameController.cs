@@ -159,7 +159,7 @@ public class GameController : NetworkBehaviour
                 if (!isGameOver)
                 {
                     PlayGameOver();
-                    isGameOver = false;
+                    isGameOver = true;
                 }
             }
             else
@@ -251,8 +251,10 @@ public class GameController : NetworkBehaviour
         }
         ReadyInstructionController();
         UpdateGamestate();
+        
+        
 
-        PlayXCountAfterNSeconds(4, 2);
+        StartCoroutine(PlayXCountAfterNSeconds(5, 2));
         StartCoroutine(StartNewRoundAfterXSeconds(5));
         StartCoroutine(RoundCountdown(6, "2"));
         StartCoroutine(RoundCountdown(7, "1"));
@@ -306,7 +308,6 @@ public class GameController : NetworkBehaviour
     private IEnumerator StartRound(int x)
     {
         yield return new WaitForSecondsRealtime(x);
-        PauseMusic();
         PlayRoundMusic();
         ResetPlayers();
         ResetServer();
@@ -429,8 +430,8 @@ public class GameController : NetworkBehaviour
     private IEnumerator PlayXCountAfterNSeconds(int n, int x)
     {
         yield return new WaitForSecondsRealtime(n);
+        PauseMusic();
         PlayCountDown(x);
-        
     }
     
     [Server]
