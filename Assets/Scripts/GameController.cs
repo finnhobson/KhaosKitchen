@@ -60,7 +60,6 @@ public class GameController : NetworkBehaviour
     //Indicator variables for the animation controller
     public bool playersInitialised = false;
 
-
     private void Start()
     {
         if (isServer)
@@ -105,7 +104,8 @@ public class GameController : NetworkBehaviour
             gameStateHandler = new GameStateHandler(activeUserNames); //Instantiate single gameStateHandler object on the server to hold gamestate data 
         }
 
-        PlayXAfterNSeconds(2, 2);
+        PlayXCountAfterNSeconds(1, 2);
+//        PlayCountDown(2);
         StartCoroutine(RoundCountdown(3, "2"));
         StartCoroutine(RoundCountdown(4, "1"));
         StartCoroutine(StartRound(5));
@@ -243,6 +243,7 @@ public class GameController : NetworkBehaviour
         ReadyInstructionController();
         UpdateGamestate();
 
+        PlayXCountAfterNSeconds(4, 2);
         StartCoroutine(StartNewRoundAfterXSeconds(5));
         StartCoroutine(RoundCountdown(6, "2"));
         StartCoroutine(RoundCountdown(7, "1"));
@@ -415,12 +416,12 @@ public class GameController : NetworkBehaviour
         MinimumInstructionTime = GameSettings.MinimumInstructionTime;
     }
 
-    private IEnumerator PlayXAfterNSeconds(int x, int n)
+    private IEnumerator PlayXCountAfterNSeconds(int n, int x)
     {
         yield return new WaitForSecondsRealtime(n);
         PlayCountDown(x);
     }
-
+    
     [Server]
     private void PlayRoundBreakMusic()
     {
