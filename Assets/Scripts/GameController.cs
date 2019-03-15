@@ -104,13 +104,13 @@ public class GameController : NetworkBehaviour
             gameStateHandler = new GameStateHandler(activeUserNames); //Instantiate single gameStateHandler object on the server to hold gamestate data 
         }
 
-        //StartCoroutine(RoundCountdown(3, "2"));
-        //StartCoroutine(RoundCountdown(4, "1"));
-        //StartCoroutine(StartRound(5));
-        //StartCoroutine(StartGame(5));
+        StartCoroutine(RoundCountdown(6, "2"));
+        StartCoroutine(RoundCountdown(7, "1"));
+        StartCoroutine(StartRound(8));
+        StartCoroutine(StartGame(8));
 
-        StartCoroutine(StartRound(0));
-        StartCoroutine(StartGame(0));
+        /*StartCoroutine(StartRound(0));
+        StartCoroutine(StartGame(0));*/
     }
 
     private IEnumerator StartGame(int x)
@@ -379,8 +379,10 @@ public class GameController : NetworkBehaviour
     //50% reduction in Number with 8 players
     private int CalculateInstructionNumber()
     {
-        return ((BaseInstructionNumber + InstructionNumberIncreasePerRound * (roundNumber - 1))
-                * ((12 - (playerCount - 2)) / 12));
+        //return ((BaseInstructionNumber + InstructionNumberIncreasePerRound * (roundNumber - 1))
+        //        * ((12 - (playerCount - 2)) / 12));
+
+        return 10;
     }
 
     public int CalculateInstructionTime()
