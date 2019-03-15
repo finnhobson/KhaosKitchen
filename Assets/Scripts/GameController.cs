@@ -379,17 +379,21 @@ public class GameController : NetworkBehaviour
     //50% reduction in Number with 8 players
     private int CalculateInstructionNumber()
     {
-        return ((BaseInstructionNumber + InstructionNumberIncreasePerRound * (roundNumber - 1))
-                * ((12 - (playerCount - 2)) / 12));
+        //return ((BaseInstructionNumber + InstructionNumberIncreasePerRound * (roundNumber - 1))
+                //* ((12 - (playerCount - 2)) / 12));
+
+        return 40;
     }
 
     public int CalculateInstructionTime()
     {
-        int temp = BaseInstructionTime
-                   - (roundNumber-1) * InstructionTimeReductionPerRound
-                   + (playerCount-2) * InstructionTimeIncreasePerPlayer;
+        //int temp = BaseInstructionTime
+        //- (roundNumber-1) * InstructionTimeReductionPerRound
+        //+ (playerCount-2) * InstructionTimeIncreasePerPlayer;
 
-        return temp > MinimumInstructionTime ? temp : MinimumInstructionTime;
+        //return temp > MinimumInstructionTime ? temp : MinimumInstructionTime;
+
+        return 40;
     }
 
 
