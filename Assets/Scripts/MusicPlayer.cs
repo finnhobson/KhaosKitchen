@@ -65,8 +65,7 @@ public class MusicPlayer : MonoBehaviour
 
     public void PlayRoundBreak()
     {
-        if(!isMusicPaused) PauseMusic();
-        
+//        if(!isMusicPaused) PauseMusic();
         BackgroundSource.PlayOneShot(RoundBreaks[Switch], VolumeOneShot);
         Switch = (Switch + 1) % NumberOfRoundBreaks;
     }

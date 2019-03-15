@@ -124,6 +124,17 @@ public class GameController : NetworkBehaviour
             StartCoroutine(StartRound(8));
             StartCoroutine(StartGame(8));
         }
+
+        StartCoroutine(PlayXCountAfterNSeconds(2, 2));
+//        PlayCountDown(2);
+        StartCoroutine(RoundCountdown(3, "2"));
+        StartCoroutine(RoundCountdown(4, "1"));
+        StartCoroutine(StartRound(5));
+        StartCoroutine(StartGame(5));
+
+//        StartCoroutine(StartRound(0));
+//        StartCoroutine(StartGame(0));
+        
     }
 
     private IEnumerator StartGame(int x)
@@ -157,6 +168,16 @@ public class GameController : NetworkBehaviour
             {
                 SetTimerText("0");
                 RpcGameOver();
+                foreach (Player p in playerList)
+                {
+                    p.GameOver();
+                }
+
+                if (!isGameOver)
+                {
+                    PlayGameOver();
+                    isGameOver = true;
+                }
             }
             else
             {
@@ -253,8 +274,10 @@ public class GameController : NetworkBehaviour
         }
         ReadyInstructionController();
         UpdateGamestate();
+        
+        
 
-        PlayXCountAfterNSeconds(4, 2);
+        StartCoroutine(PlayXCountAfterNSeconds(5, 2));
         StartCoroutine(StartNewRoundAfterXSeconds(5));
         StartCoroutine(RoundCountdown(6, "2"));
         StartCoroutine(RoundCountdown(7, "1"));
@@ -308,7 +331,6 @@ public class GameController : NetworkBehaviour
     private IEnumerator StartRound(int x)
     {
         yield return new WaitForSecondsRealtime(x);
-        PauseMusic();
         PlayRoundMusic();
         ResetPlayers();
         ResetServer();
@@ -440,16 +462,11 @@ public class GameController : NetworkBehaviour
         piProb = GameSettings.PhoneInteractionProbability;
     }
 
-    private void UpdateCustomerSatisfaction()
-    {
-        customerSatisfaction = customerSatisfaction + roundScore - roundMaxScore * (roundTimeLeft / roundStartTime);
-        if (customerSatisfaction > 100) customerSatisfaction = 100;
-        if (customerSatisfaction < 0) customerSatisfaction = 0;
-    private IEnumerator PlayXAfterNSeconds(int x, int n)
+    private IEnumerator PlayXCountAfterNSeconds(int n, int x)
     {
         yield return new WaitForSecondsRealtime(n);
+        PauseMusic();
         PlayCountDown(x);
-        
     }
     
     [Server]
