@@ -26,6 +26,7 @@ public class Player : NetworkBehaviour {
     private int failSwitch = 0;
     private int numberOfFails;
     private int numberOfButtonSounds;
+    public float VolumeOfSoundEffects { get; set; }
 
     //Unity GameObjects
     public Text scoreText, instructionText, timerText, gpsText, roundScoreText, topChefText, countdownText, roundNumberText;
@@ -49,8 +50,6 @@ public class Player : NetworkBehaviour {
     
     //Score
     private int scoreStreak = 0;
-
-    //Sets score streak where event will occur
     private const int scoreStreakMax = 5;
 
     //Booleans
@@ -468,23 +467,29 @@ public class Player : NetworkBehaviour {
 
     private void PlayFailSound()
     {
-        source.PlayOneShot(badNoises[failSwitch]);
+        source.PlayOneShot(badNoises[failSwitch], VolumeOfSoundEffects);
         failSwitch = (failSwitch + 1) % numberOfFails;
     }
 
     private void PlayCorrectSound()
     {
-        source.PlayOneShot(correctActions[switcher], 1f);
+        source.PlayOneShot(correctActions[switcher], VolumeOfSoundEffects);
         switcher = (switcher + 1) % numberOfButtonSounds;
     }    
     
     private void PlayIncorrectSound()
     {
-        source.PlayOneShot(incorrectActions[switcher], 1f);
+        source.PlayOneShot(incorrectActions[switcher], VolumeOfSoundEffects);
         switcher = (switcher + 1) % numberOfButtonSounds;
     }
     
-    
+    void OnGUI()
+    {
+        //Create a horizontal Slider that controls volume levels. Its highest value is 1 and lowest is 0
+        VolumeOfSoundEffects = GUI.HorizontalSlider(new Rect(25, 25, 200, 60), VolumeOfSoundEffects, 0.0F, 1.0F);
+        //Makes the volume of the Audio match the Slider value
+        source.volume = VolumeOfSoundEffects;
+    }
 }
 
 

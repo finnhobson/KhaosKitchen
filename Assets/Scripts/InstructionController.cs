@@ -11,18 +11,14 @@ public class InstructionController : NetworkBehaviour
 {
     public GameController GameController;
     public InstructionHandler InstructionHandler;
-    public MusicPlayer MusicPlayer;
     
     //Store of the combinations of instructions possible
     private static List<String> verbList = new List<string>(new string[] { "Grab", "Fetch", "Grate", "Grill", "Melt", "Serve", "Stir", "Chop", "Cut", "Mash", "Season", "Flambé", "Bake", "Fry", "Taste", "Microwave" });
     private static List<String> nounList = new List<string>(new string[] { "Minced Beef", "Steak", "Pork Loin", "Ice Cream", "Strawberry", "Bannana", "Bun", "Toast", "Chocolate", "Pasta", "Bacon", "Tomato", "Sugar", "Salt", "Lettuce", "Sauce", "Mustard" });
-   
     private static List<String> nfcInstructions = new List<string>(new string[] { "", "" });
-
     private static List<String> micInstructions = new List<string>(new string[] { " Sous Chef made a deeply offensive comment!\n Shout some sense into him! It's 2018 ffs!\n\n (SHOUT INTO THE MIC)",
         " Waiters won't take the food out fast enough!\n Shout at them to work harder!\n\n (SHOUT INTO THE MIC)",
         " Your team are being incompetent!\n Shout some hurtful words at them!\n\n (SHOUT INTO THE MIC)"});
-
     private static List<String> shakeInstructions = new List<string>(new string[] { " Chef underseasoned the dish!\n Shake to salt the food!\n\n (SHAKE YOUR PHONE)",
         " Food runner dropped the dish!\n Shake some sense into the boy!\n\n (SHAKE YOUR PHONE)",
         " Pan set on fire!\n Shake to put it out!\n\n (SHAKE YOUR PHONE)"});
@@ -46,8 +42,9 @@ public class InstructionController : NetworkBehaviour
     public int NumberOfButtons { get; set; }
     public int PlayerCount { get; set; }
 
+    //Booleans
     [SyncVar] public bool isRoundPaused = false;
-    [FormerlySerializedAs("isNextInstructionLast")] [SyncVar] public bool isLastActionOfRound = false;
+    [SyncVar] public bool isLastActionOfRound = false;
     [SyncVar] public bool SetupFinished = false;
     
     //Phone interaction probability = 2/x
@@ -327,7 +324,7 @@ public class InstructionController : NetworkBehaviour
         isRoundPaused = true;
     }
     
-    public void UnpauseIC()
+    public void UnPauseIC()
     {
         isRoundPaused = false;
     }
@@ -363,17 +360,5 @@ public class InstructionController : NetworkBehaviour
     private void DeactivateInstruction(string instruction)
     {
         InstructionHandler.SetNotActive(instruction);
-    }
-    
-    // Start is called before the first frame update
-    public void Start()
-    {
-        
-    }
-    
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }
