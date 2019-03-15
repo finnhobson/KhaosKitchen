@@ -17,7 +17,6 @@ public class MusicPlayer : MonoBehaviour
     public AudioClip GameOverClip;
     public AudioClip[] RoundBreaks;
     public AudioClip[] Countdown;
-    float volume;
     private float VolumeOneShot = 2f;
     
     //Primitives
@@ -37,7 +36,6 @@ public class MusicPlayer : MonoBehaviour
     private void Start()
     {
         NumberOfRoundBreaks = RoundBreaks.Length;
-        volume = 1.0f;
     }
     
     public void PauseMusic()
@@ -55,8 +53,8 @@ public class MusicPlayer : MonoBehaviour
     public void PlayGameOver()
     {
         BackgroundSource.Stop();
-        BackgroundSource.clip = GameOverClip;
-        BackgroundSource.Play();
+//        BackgroundSource.clip = GameOverClip;
+        BackgroundSource.PlayOneShot(GameOverClip, VolumeOneShot);
 //        BackgroundSource.PlayOneShot(GameOverClip, 2f);
     }
 

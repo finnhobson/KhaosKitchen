@@ -10,17 +10,19 @@ using UnityEngine.UI;
 
 public class GameController : NetworkBehaviour
 {
+    //Custom GameObjects
     public InstructionController InstructionController;
     public AnimationController animationController;
     private GameStateHandler gameStateHandler;
     public MusicPlayer MusicPlayer;
 
+    //Unity GameObjects
     public Text scoreText, roundTimerText, scoreBarText, roundNumberText;
-
     public GameObject roundTimerBar;
 
     public List<Player> playerList = new List<Player>();
 
+    
     [SyncVar] public int score = 0;
     [SyncVar] private int roundScore = 0;
     [SyncVar] public int roundNumber = 1;
@@ -55,6 +57,9 @@ public class GameController : NetworkBehaviour
     public int roundStartScore;
     public int roundMaxScore;
     public GameObject scoreBar;
+
+    //Booleans
+    private bool isGameOver = false;
 
     List<string> userNames = new List<string>(new string[] { "A", "B", "C", "D", "E", "F", "G", "H", "I" }); /* Just here so in future they can set their own usernames from the lobby */
     private List<String> activeUserNames = new List<string>();
@@ -148,13 +153,11 @@ public class GameController : NetworkBehaviour
             {
                 OnRoundComplete();
             }
-
             else if (roundTimeLeft < 0)
             {
                 SetTimerText("0");
                 RpcGameOver();
             }
-
             else
             {
                 SetTimerText(roundTimeLeft.ToString("F2"));
@@ -305,6 +308,7 @@ public class GameController : NetworkBehaviour
     private IEnumerator StartRound(int x)
     {
         yield return new WaitForSecondsRealtime(x);
+        PauseMusic();
         PlayRoundMusic();
         ResetPlayers();
         ResetServer();
@@ -445,6 +449,7 @@ public class GameController : NetworkBehaviour
     {
         yield return new WaitForSecondsRealtime(n);
         PlayCountDown(x);
+        
     }
     
     [Server]
