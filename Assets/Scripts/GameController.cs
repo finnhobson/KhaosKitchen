@@ -152,10 +152,7 @@ public class GameController : NetworkBehaviour
             else if (roundTimeLeft < 0)
             {
                 SetTimerText("0");
-                foreach (Player p in playerList)
-                {
-                    p.GameOver();
-                }
+                RpcGameOver();
             }
 
             else
@@ -163,6 +160,12 @@ public class GameController : NetworkBehaviour
                 SetTimerText(roundTimeLeft.ToString("F2"));
             }
         }
+    }
+
+    [ClientRpc]
+    private void RpcGameOver()
+    {
+        foreach (Player p in playerList) p.GameOver();
     }
 
     [ClientRpc]
