@@ -13,8 +13,8 @@ public class InstructionController : NetworkBehaviour
     public InstructionHandler InstructionHandler;
     
     //Store of the combinations of instructions possible
-    private static List<String> verbList = new List<string>(new string[] { "Grab", "Fetch", "Grate", "Grill", "Melt", "Serve", "Stir", "Chop", "Cut", "Mash", "Season", "Flambé", "Bake", "Fry", "Taste", "Microwave", "Tendorise", "Roast", "Cry Into", "Sneeze On",  });
-    private static List<String> nounList = new List<string>(new string[] { "Minced Beef", "Steak", "Pork Loin", "Ice Cream", "Strawberry", "Bannana", "Bun", "Toast", "Chocolate", "Pasta", "Bacon", "Tomato", "Sugar", "Salt", "Lettuce", "Sauce", "Mustard", "Sausage", "Chicken", "Yourself", "Ice Cubes" });
+    private static List<String> verbList = new List<string>(new string[] { "Grab", "Fetch", "Grate", "Grill", "Melt", "Serve", "Stir", "Chop", "Cut", "Mash", "Season", "Flambé", "Bake", "Fry", "Taste", "Microwave", "Tendorise", "Roast", "Cry Into", "Sneeze On" });
+    private static List<String> nounList = new List<string>(new string[] { "Minced Beef", "Steak", "Pork Loin", "Ice Cream", "Strawberry", "Bannana", "Bun", "Toast", "Chocolate", "Pasta", "Bacon", "Tomato", "Sugar", "Salt", "Lettuce", "Sauce", "Mustard", "Sausage", "Chicken", "Ice Cubes" });
     private static List<String> nfcInstructions = new List<string>(new string[] { "", "" });
     private static List<String> micInstructions = new List<string>(new string[] { " Sous Chef made a deeply offensive comment!\n Shout some sense into him! It's 2019 ffs!\n\n (SHOUT INTO THE MIC)",
         " Waiters won't take the food out fast enough!\n Shout at them to work harder!\n\n (SHOUT INTO THE MIC)",

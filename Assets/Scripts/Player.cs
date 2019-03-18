@@ -33,7 +33,9 @@ public class Player : NetworkBehaviour {
     public GameObject nfcPanel, micPanel, shakePanel, gameOverPanel, roundCompletePanel, roundStartPanel;
     public Text nfcText, micText, shakeText;
     public GameObject nfcOkayButton, micOkayButton, shakeOkayButton;
-    
+
+    public GameObject fullScreenPanel;
+    public Text fullScreenPanelText;
 
     //Player
     public int PlayerId { get; set; }
