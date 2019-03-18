@@ -49,4 +49,7 @@ public static class GameSettings
 
     public static int RoundTime { get; set; }
 
+    public static bool EasyPhoneInteractions { get; set; }
+
+
 }

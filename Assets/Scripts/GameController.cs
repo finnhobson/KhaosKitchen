@@ -39,6 +39,9 @@ public class GameController : NetworkBehaviour
     [SyncVar] public int MinimumInstructionTime;
 
     [SyncVar] public int playerCount;
+    [SyncVar] public bool easyPhoneInteractions;
+
+    [SyncVar] public float customerSatisfaction = 100;
 
 
     public float pointMultiplier;
@@ -80,6 +83,10 @@ public class GameController : NetworkBehaviour
             p.SetPlayerId(playerIndex);
             p.instStartTime = CalculateInstructionTime();
             p.playerCount = playerCount;
+
+            if(!easyPhoneInteractions){
+                p.DisableOkayButtonsOnPanels();
+            }
 
             //New attributes for players to add to gameplayer, thoughts?
             p.PlayerScore = 0;
@@ -296,6 +303,7 @@ public class GameController : NetworkBehaviour
         PenultimateAction(false);
         PrintInstructionHandler();
         roundMaxScore = CalculateInstructionNumber();
+        customerSatisfaction = 100;
         UpdateScoreBar();
 
     }
@@ -407,6 +415,7 @@ public class GameController : NetworkBehaviour
 
         roundStartTime = GameSettings.RoundTime;
         playerCount = GameSettings.PlayerCount;
+        easyPhoneInteractions = GameSettings.EasyPhoneInteractions;
 
         BaseInstructionNumber = GameSettings.BaseInstructionNumber;
         InstructionNumberIncreasePerRound = GameSettings.InstructionNumberIncreasePerRound;
@@ -414,6 +423,14 @@ public class GameController : NetworkBehaviour
         InstructionTimeReductionPerRound = GameSettings.InstructionTimeReductionPerRound;
         InstructionTimeIncreasePerPlayer = GameSettings.InstructionTimeIncreasePerPlayer;
         MinimumInstructionTime = GameSettings.MinimumInstructionTime;
+    }
+
+    private void UpdateCustomerSatisfaction()
+    {
+        customerSatisfaction = customerSatisfaction + roundScore - roundMaxScore * (roundTimeLeft / roundStartTime);
+        if (customerSatisfaction > 100) customerSatisfaction = 100;
+        if (customerSatisfaction < 0) customerSatisfaction = 0;
+
     }
 
 

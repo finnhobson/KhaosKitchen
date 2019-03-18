@@ -15,6 +15,8 @@ public class LobbyManager : NetworkLobbyManager {
 
     public Text playerCountText;
     public Slider playerCountSlider;
+    public Text toggleText;
+    public Toggle easyPhoneInteractions;
 
     private void Start()
     {
@@ -74,6 +76,7 @@ public class LobbyManager : NetworkLobbyManager {
 
         //GameSettings.PlayerCount = string.IsNullOrEmpty(playerCountText.text) ? 2 : int.Parse(playerCountText.text);
         GameSettings.PlayerCount = (int)playerCountSlider.value;
+        GameSettings.EasyPhoneInteractions = easyPhoneInteractions.isOn;
 
     }
 
@@ -87,6 +90,7 @@ public class LobbyManager : NetworkLobbyManager {
         GameSettings.InstructionTimeReductionPerRound = 2;
         GameSettings.InstructionTimeIncreasePerPlayer = 2;
         GameSettings.MinimumInstructionTime = 5;
+        GameSettings.EasyPhoneInteractions = true;
     }
 
     public void UpdatePlayerCountText()
@@ -94,4 +98,13 @@ public class LobbyManager : NetworkLobbyManager {
         playerCountText.text = "Player Count: " + playerCountSlider.value;
     }
 
+    public void UpdateToggleText()
+    {
+        if(easyPhoneInteractions.isOn){
+            toggleText.text = "On";
+        }
+        else{
+            toggleText.text = "Off";
+        }
+    }
 }

@@ -32,6 +32,8 @@ public class Player : NetworkBehaviour {
     public Text scoreText, instructionText, timerText, gpsText, roundScoreText, topChefText, countdownText, roundNumberText;
     public GameObject nfcPanel, micPanel, shakePanel, gameOverPanel, roundCompletePanel, roundStartPanel;
     public Text nfcText, micText, shakeText;
+    public GameObject nfcOkayButton, micOkayButton, shakeOkayButton;
+    
 
     //Player
     public int PlayerId { get; set; }
@@ -42,6 +44,7 @@ public class Player : NetworkBehaviour {
     private string nfcValue = "";
     public int playerCount;
     public int instTime;
+    public bool easyPhoneInteractions;
 
     private HashSet<String> validNfc = new HashSet<String>{"Grab Meat","Grab Pasta"};
     public MicListener micListener;
@@ -479,13 +482,32 @@ public class Player : NetworkBehaviour {
     {
         source.PlayOneShot(correctActions[switcher], VolumeOfSoundEffects);
         switcher = (switcher + 1) % numberOfButtonSounds;
-    }    
-    
+    }
+
+    public void DisableOkayButtonsOnPanels()
+    {
+        //nfcOkayButton.enabled = false;
+        //micOkayButton.enabled = false;
+        //shakeOkayButton.enabled = false;
+
+        //nfcOkayButton.GetComponent<Renderer>().enabled = false;
+        //micOkayButton.GetComponent<Renderer>().enabled = false;
+        //shakeOkayButton.GetComponent<Renderer>().enabled = false;
+
+        nfcOkayButton.SetActive(false);
+        micOkayButton.SetActive(false);
+        shakeOkayButton.SetActive(false);
+
+
+    }
+
+
     private void PlayIncorrectSound()
     {
         source.PlayOneShot(incorrectActions[switcher], VolumeOfSoundEffects);
         Vibrate();
         switcher = (switcher + 1) % numberOfButtonSounds;
+       
     }
     
     /*void OnGUI()
@@ -503,6 +525,5 @@ public class Player : NetworkBehaviour {
 #endif
     }
 }
-
 
 
