@@ -19,7 +19,8 @@ public class LobbyManager : NetworkLobbyManager {
     private void Start()
     {
         Lobby.SetActive(false);
-        SetDefaultSettings();
+        //SetDefaultSettings();
+        SetSettings();
     }
 
     public override void OnStartServer()
