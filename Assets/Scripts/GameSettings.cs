@@ -23,7 +23,7 @@ public static class GameSettings
      */
     private static int pCount;
 
-    public static int PlayerCount
+    public static int PlayerCount 
     {
         get
         {

@@ -4,10 +4,12 @@ using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
 
+
 public class LobbyManager : NetworkLobbyManager {
 
     public GameObject Lobby;
     public GameObject Menu;
+    public NetworkLobbyHook NetworkLobbyHook;
     
     //private int roundTime, playerCount, BaseInstructionNumber, InstructionNumberIncreasePerRound, BaseInstructionTime, InstructionTimeReductionPerRound, InstructionTimeIncreasePerPlayer, MinimumInstructionTime;
 
@@ -18,6 +20,7 @@ public class LobbyManager : NetworkLobbyManager {
     {
         Lobby.SetActive(false);
         SetDefaultSettings();
+        
     }
 
     public override void OnStartServer()
@@ -25,6 +28,7 @@ public class LobbyManager : NetworkLobbyManager {
         base.OnStartServer();
         Debug.Log("New game created at " + networkAddress);
         Lobby.SetActive(true);
+        NetworkLobbyHook = GetComponent<NetworkLobbyHook>();
     }
 
     public override void OnServerSceneChanged(string sceneName)
@@ -66,12 +70,23 @@ public class LobbyManager : NetworkLobbyManager {
     {
         GameSettings.RoundTime = 60;
         GameSettings.PlayerCount = 2;
-        GameSettings.BaseInstructionNumber = 16;
-        GameSettings.InstructionNumberIncreasePerRound = 16;
+        GameSettings.BaseInstructionNumber = 4;
+        GameSettings.InstructionNumberIncreasePerRound = 4;
         GameSettings.BaseInstructionTime = 15;
         GameSettings.InstructionTimeReductionPerRound = 2;
         GameSettings.InstructionTimeIncreasePerPlayer = 2;
         GameSettings.MinimumInstructionTime = 5;
+    }
+    
+    public override bool OnLobbyServerSceneLoadedForPlayer(GameObject lobbyPlayer, GameObject gamePlayer)
+    {
+        //This hook allows you to apply state data from the lobby-player to the game-player
+        //just subclass "LobbyHook" and add it to the lobby object.
+
+        if (NetworkLobbyHook)
+            NetworkLobbyHook.OnLobbyServerSceneLoadedForPlayer(this, lobbyPlayer, gamePlayer);
+
+        return true;
     }
 
 }

@@ -22,7 +22,7 @@ public class InstructionController : NetworkBehaviour
     private static List<String> shakeInstructions = new List<string>(new string[] { " Chef underseasoned the dish!\n Shake to salt the food!\n\n (SHAKE YOUR PHONE)",
         " Food runner dropped the dish!\n Shake some sense into the boy!\n\n (SHAKE YOUR PHONE)",
         " Pan set on fire!\n Shake to put it out!\n\n (SHAKE YOUR PHONE)"});
-    
+        
     private SyncListString activeButtonActions = new SyncListString();
     private SyncListString activeInstructions = new SyncListString();
     
@@ -90,10 +90,7 @@ public class InstructionController : NetworkBehaviour
             player.SetInstruction(instruction);
             if(isServer) InstructionHandler.SetInstructionPlayerID(instruction, player.PlayerId);
         }
-        
-        if(isServer) InstructionHandler.PrintInstructions();
-        
-        PrintInstructionHandler();
+                
     }
 
     /*
@@ -123,7 +120,7 @@ public class InstructionController : NetworkBehaviour
             player.SetInstruction(instruction);
         }
         
-        if(isServer) InstructionHandler.PrintInstructions();
+//        if(isServer) InstructionHandler.PrintInstructions();
 
     }
 

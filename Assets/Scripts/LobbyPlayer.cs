@@ -1,8 +1,11 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Experimental.UIElements;
 using UnityEngine.Networking;
 using UnityEngine.UI;
+using Button = UnityEngine.UI.Button;
 
 public class LobbyPlayer : NetworkLobbyPlayer {
 
@@ -10,10 +13,16 @@ public class LobbyPlayer : NetworkLobbyPlayer {
     public Button ReadyButton;
     public Text PlayerName;
     public Text ButtonText;
+    public InputField InputField;
+    public Button ApplyNameButton;
+
+    [SyncVar] public string UserName;
 
     private void Awake()
     {
         DontDestroyOnLoad(transform.gameObject);
+        ApplyNameButton.onClick.AddListener(OnButtonClick);
+//        else InputField.DeactivateInputField();
     }
 
     public void OnClickReady()
@@ -43,7 +52,6 @@ public class LobbyPlayer : NetworkLobbyPlayer {
         SetupLocalPlayer();
     }
 
-
     private void SetupLocalPlayer()
     {
         PlayerName.text = "MyPlayer";
@@ -57,5 +65,26 @@ public class LobbyPlayer : NetworkLobbyPlayer {
         PlayerName.text = "NotMyPlayer";
         ReadyButton.enabled = false;
         ButtonText.text = "...";
+    }
+
+    public void OnButtonClick()
+    {
+        string userName = InputField.text;
+        PlayerName.text = userName;
+        CmdUpdateUserName(userName);
+        
+//        CmdPrint(pName);
+    }
+
+    [Command]
+    public void CmdPrint(string p)
+    {
+        Debug.Log(p);
+    }
+
+    [Command]
+    public void CmdUpdateUserName(string name)
+    {
+        UserName = name;
     }
 }
