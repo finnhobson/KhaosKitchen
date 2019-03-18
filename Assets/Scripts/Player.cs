@@ -40,7 +40,7 @@ public class Player : NetworkBehaviour {
 
     //Extras
     private string nfcValue = "";
-
+    public int playerCount;
     public int instTime;
 
     private HashSet<String> validNfc = new HashSet<String>{"Grab Meat","Grab Pasta"};

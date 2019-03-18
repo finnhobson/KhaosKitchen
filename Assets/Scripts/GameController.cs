@@ -79,6 +79,7 @@ public class GameController : NetworkBehaviour
             p.SetInstructionController(InstructionController);
             p.SetPlayerId(playerIndex);
             p.instStartTime = CalculateInstructionTime();
+            p.playerCount = playerCount;
 
             //New attributes for players to add to gameplayer, thoughts?
             p.PlayerScore = 0;
@@ -379,21 +380,25 @@ public class GameController : NetworkBehaviour
     //50% reduction in Number with 8 players
     private int CalculateInstructionNumber()
     {
-        //return ((BaseInstructionNumber + InstructionNumberIncreasePerRound * (roundNumber - 1))
-        //        * ((12 - (playerCount - 2)) / 12));
+        float temp = ((BaseInstructionNumber + InstructionNumberIncreasePerRound * (roundNumber - 1))
+                      * ((12f - (playerCount - 2f)) / 12f));
 
-        return 10;
+        int round = (int)Math.Ceiling(temp);
+
+        return round > 0 ? round : 1; ;
+
+        //return 40;
     }
 
     public int CalculateInstructionTime()
     {
-        //int temp = BaseInstructionTime
-        //- (roundNumber-1) * InstructionTimeReductionPerRound
-        //+ (playerCount-2) * InstructionTimeIncreasePerPlayer;
+        int temp = BaseInstructionTime
+                    - (roundNumber-1) * InstructionTimeReductionPerRound
+                    + (playerCount-2) * InstructionTimeIncreasePerPlayer;
 
-        //return temp > MinimumInstructionTime ? temp : MinimumInstructionTime;
+        return temp > MinimumInstructionTime ? temp : MinimumInstructionTime;
 
-        return 40;
+        //return 40;
     }
 
 
