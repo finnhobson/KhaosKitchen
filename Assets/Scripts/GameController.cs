@@ -43,6 +43,8 @@ public class GameController : NetworkBehaviour
 
     [SyncVar] public float customerSatisfaction = 100;
 
+    //Phone interaction probability = 2/x
+    [SyncVar] public int piProb = 21;
 
     public float pointMultiplier;
 
@@ -56,8 +58,7 @@ public class GameController : NetworkBehaviour
     List<string> userNames = new List<string>(new string[] { "A", "B", "C", "D", "E", "F", "G", "H", "I" }); /* Just here so in future they can set their own usernames from the lobby */
     private List<String> activeUserNames = new List<string>();
 
-    //Phone interaction probability = 2/x
-    private int piProb = 10;
+
 
     //Indicator variables for the animation controller
     public bool playersInitialised = false;
@@ -104,6 +105,7 @@ public class GameController : NetworkBehaviour
         //PlayerCount = playerCount;
         //InstructionController.ICStart(playerCount, numberOfButtons, playerList, this);
         InstructionController.ICStart(playerCount, numberOfButtons, playerList, this);
+        InstructionController.piProb = piProb;
 
 
         if (isServer)
@@ -423,6 +425,8 @@ public class GameController : NetworkBehaviour
         InstructionTimeReductionPerRound = GameSettings.InstructionTimeReductionPerRound;
         InstructionTimeIncreasePerPlayer = GameSettings.InstructionTimeIncreasePerPlayer;
         MinimumInstructionTime = GameSettings.MinimumInstructionTime;
+
+        piProb = GameSettings.PhoneInteractionProbability;
     }
 
     private void UpdateCustomerSatisfaction()

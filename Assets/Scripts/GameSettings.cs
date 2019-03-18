@@ -51,5 +51,6 @@ public static class GameSettings
 
     public static bool EasyPhoneInteractions { get; set; }
 
+    public static int PhoneInteractionProbability { get; set; }
 
 }
