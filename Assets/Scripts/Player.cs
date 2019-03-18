@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Net.Sockets;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -27,6 +28,7 @@ public class Player : NetworkBehaviour {
     private int numberOfFails;
     private int numberOfButtonSounds;
     public float VolumeOfSoundEffects { get; set; }
+    private float Volume = 2f;
 
     //Unity GameObjects
     public Text scoreText, instructionText, timerText, gpsText, roundScoreText, topChefText, countdownText, roundNumberText;
@@ -38,8 +40,8 @@ public class Player : NetworkBehaviour {
     public Text fullScreenPanelText;
 
     //Player
+    [SyncVar(hook = "CmdPrintName")] public string PlayerUserName;
     public int PlayerId { get; set; }
-    public string PlayerUserName { get; set; }
     public int PlayerScore { get; set; }
 
     //Extras
@@ -47,7 +49,6 @@ public class Player : NetworkBehaviour {
     public int playerCount;
     public int instTime;
     public bool easyPhoneInteractions;
-
     private HashSet<String> validNfc = new HashSet<String>{"Grab Meat","Grab Pasta"};
     public MicListener micListener;
     
@@ -63,6 +64,8 @@ public class Player : NetworkBehaviour {
     //Booleans
     public bool isGamePaused = false;
 
+    
+    
     private void Awake()
     {
         source = GetComponent<AudioSource>();
@@ -77,7 +80,7 @@ public class Player : NetworkBehaviour {
         InstructionController = GameObject.FindGameObjectWithTag("InstructionController").GetComponent<InstructionController>();
         Screen.orientation = ScreenOrientation.Portrait;
         StartInstTimer();
-        VolumeOfSoundEffects = 2.0f;
+        VolumeOfSoundEffects = Volume;
     }
 
     private void Update()
@@ -525,6 +528,12 @@ public class Player : NetworkBehaviour {
 #if UNITY_ANDROID
         Handheld.Vibrate();
 #endif
+    }
+
+    [Command]
+    private void CmdPrintName(string name)
+    {
+        Debug.Log(name);
     }
 }
 

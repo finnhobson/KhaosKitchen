@@ -22,6 +22,7 @@
           <e p="MicListener.cs" t="Include" />
           <e p="MusicPlayer.cs" t="Include" />
           <e p="MyNetworkDiscovery.cs" t="Include" />
+          <e p="NetworkLobbyHook.cs" t="Include" />
           <e p="NFCListener.cs" t="Include" />
           <e p="Player.cs" t="Include" />
           <e p="ShakeListener.cs" t="Include" />
