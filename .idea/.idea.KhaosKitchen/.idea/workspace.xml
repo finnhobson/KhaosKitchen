@@ -3,11 +3,9 @@
   <component name="ChangeListManager">
     <list default="true" id="58a0f81b-04b1-4198-b5a2-51d9547a1794" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.KhaosKitchen/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.KhaosKitchen/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/LobbyPlayer.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/LobbyPlayer.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/GameController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/GameController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/LobbyScene.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/LobbyScene.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/LobbyManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/LobbyManager.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/LobbyPlayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/LobbyPlayer.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/NetworkLobbyHook.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/NetworkLobbyHook.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Player.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Player.cs" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -65,22 +63,22 @@
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
-          <entry key="cs" value="22" />
+          <entry key="cs" value="23" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
-          <entry key="C#" value="22" />
+          <entry key="C#" value="23" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="cs" value="21662" />
+          <entry key="cs" value="21731" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="C#" value="21662" />
+          <entry key="C#" value="21731" />
         </counts>
       </usages-collector>
     </session>
@@ -324,36 +322,20 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Assets/Scripts/LobbyManager.cs">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="226">
-              <caret line="25" column="40" selection-start-line="25" selection-start-column="40" selection-end-line="25" selection-end-column="40" />
+            <state relative-caret-position="272">
+              <caret line="30" column="5" selection-start-line="30" selection-start-column="5" selection-end-line="30" selection-end-column="5" />
               <folding>
-                <marker date="1552877346229" expanded="false" signature="6:130" ph="..." />
-                <marker date="1552877346229" expanded="true" signature="181:3625" ph="{...}" />
-                <marker date="1552877346229" expanded="false" signature="775:858" ph="{...}" />
-                <marker date="1552877346229" expanded="false" signature="900:1094" ph="{...}" />
-                <marker date="1552877346229" expanded="false" signature="1159:1280" ph="{...}" />
-                <marker date="1552877346229" expanded="false" signature="1351:1467" ph="{...}" />
-                <marker date="1552877346229" expanded="false" signature="1498:2743" ph="{...}" />
-                <marker date="1552877346229" expanded="false" signature="1513:2010" ph="/* GameSettings.RoundTime = int.Parse(roundTimeText.text); ... */" />
-                <marker date="1552877346229" expanded="false" signature="2782:3191" ph="{...}" />
-                <marker date="1552877346229" expanded="false" signature="3302:3622" ph="{...}" />
-                <marker date="1552877346229" expanded="false" signature="3317:3468" ph="/* This hook allows you to apply state data from the lobby-player to the game-player ... */" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Assets/Scripts/MainMenu.cs">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="510">
-              <caret line="34" column="51" selection-start-line="34" selection-start-column="51" selection-end-line="34" selection-end-column="51" />
-              <folding>
-                <marker date="1550838402365" expanded="false" signature="6:130" ph="..." />
-                <marker date="1550838402365" expanded="true" signature="170:1113" ph="{...}" />
-                <marker date="1550838402365" expanded="true" signature="343:519" ph="{...}" />
-                <marker date="1550838402365" expanded="true" signature="550:811" ph="{...}" />
-                <marker date="1550838402365" expanded="true" signature="842:1111" ph="{...}" />
+                <marker date="1552921113068" expanded="false" signature="6:130" ph="..." />
+                <marker date="1552921113068" expanded="true" signature="181:3618" ph="{...}" />
+                <marker date="1552921113068" expanded="false" signature="775:851" ph="{...}" />
+                <marker date="1552921113068" expanded="false" signature="893:1087" ph="{...}" />
+                <marker date="1552921113068" expanded="false" signature="1152:1273" ph="{...}" />
+                <marker date="1552921113068" expanded="false" signature="1344:1460" ph="{...}" />
+                <marker date="1552921113068" expanded="false" signature="1491:2736" ph="{...}" />
+                <marker date="1552921113068" expanded="false" signature="1506:2003" ph="/* GameSettings.RoundTime = int.Parse(roundTimeText.text); ... */" />
+                <marker date="1552921113068" expanded="false" signature="2775:3184" ph="{...}" />
+                <marker date="1552921113068" expanded="false" signature="3295:3615" ph="{...}" />
+                <marker date="1552921113068" expanded="false" signature="3310:3461" ph="/* This hook allows you to apply state data from the lobby-player to the game-player ... */" />
               </folding>
             </state>
           </provider>
@@ -376,28 +358,28 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Assets/Scripts/LobbyPlayer.cs">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="204">
-              <caret line="20" column="22" lean-forward="true" selection-start-line="20" selection-start-column="22" selection-end-line="20" selection-end-column="22" />
+            <state relative-caret-position="374">
+              <caret line="41" column="5" selection-start-line="41" selection-start-column="5" selection-end-line="41" selection-end-column="5" />
               <folding>
-                <marker date="1552920375568" expanded="false" signature="6:233" ph="..." />
-                <marker date="1552920375568" expanded="true" signature="281:3791" ph="{...}" />
-                <marker date="1552920375568" expanded="true" signature="1217:1350" ph="{...}" />
-                <marker date="1552920375568" expanded="true" signature="1377:1687" ph="{...}" />
-                <marker date="1552920375568" expanded="true" signature="1559:1632" ph="{...}" />
-                <marker date="1552920375568" expanded="false" signature="1719:1801" ph="{...}" />
-                <marker date="1552920375568" expanded="false" signature="1848:2170" ph="{...}" />
-                <marker date="1552920375568" expanded="true" signature="2047:2099" ph="{...}" />
-                <marker date="1552920375568" expanded="true" signature="2112:2164" ph="{...}" />
-                <marker date="1552920375568" expanded="false" signature="2215:2288" ph="{...}" />
-                <marker date="1552920375568" expanded="false" signature="2325:2680" ph="{...}" />
-                <marker date="1552920375568" expanded="false" signature="2717:2905" ph="{...}" />
-                <marker date="1552920375568" expanded="false" signature="2939:3031" ph="{...}" />
-                <marker date="1552920375568" expanded="false" signature="3071:3337" ph="{...}" />
-                <marker date="1552920375568" expanded="false" signature="3387:3421" ph="{...}" />
-                <marker date="1552920375568" expanded="true" signature="3483:3520" ph="{...}" />
-                <marker date="1552920375568" expanded="false" signature="3585:3626" ph="{...}" />
-                <marker date="1552920375568" expanded="true" signature="3678:3722" ph="{...}" />
-                <marker date="1552920375568" expanded="true" signature="3732:3789" ph="/* REMEMBER TO ADD THE RETURN KEY LISTENER ... */" />
+                <marker date="1552922043566" expanded="false" signature="6:233" ph="..." />
+                <marker date="1552922043566" expanded="true" signature="281:3539" ph="{...}" />
+                <marker date="1552922043566" expanded="true" signature="1000:1133" ph="{...}" />
+                <marker date="1552922043566" expanded="true" signature="1160:1431" ph="{...}" />
+                <marker date="1552922043566" expanded="true" signature="1303:1376" ph="{...}" />
+                <marker date="1552922043566" expanded="false" signature="1463:1545" ph="{...}" />
+                <marker date="1552922043566" expanded="true" signature="1592:1914" ph="{...}" />
+                <marker date="1552922043566" expanded="true" signature="1791:1843" ph="{...}" />
+                <marker date="1552922043566" expanded="true" signature="1856:1908" ph="{...}" />
+                <marker date="1552922043566" expanded="false" signature="1959:2032" ph="{...}" />
+                <marker date="1552922043566" expanded="true" signature="2069:2426" ph="{...}" />
+                <marker date="1552922043566" expanded="true" signature="2463:2653" ph="{...}" />
+                <marker date="1552922043566" expanded="false" signature="2687:2779" ph="{...}" />
+                <marker date="1552922043566" expanded="false" signature="2819:3085" ph="{...}" />
+                <marker date="1552922043566" expanded="false" signature="3135:3169" ph="{...}" />
+                <marker date="1552922043566" expanded="true" signature="3231:3268" ph="{...}" />
+                <marker date="1552922043566" expanded="false" signature="3333:3374" ph="{...}" />
+                <marker date="1552922043566" expanded="true" signature="3426:3470" ph="{...}" />
+                <marker date="1552922043566" expanded="true" signature="3480:3537" ph="/* REMEMBER TO ADD THE RETURN KEY LISTENER ... */" />
               </folding>
             </state>
           </provider>
@@ -522,10 +504,10 @@
         <option value="$PROJECT_DIR$/Assets/Scripts/GameStateHandler.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/InstructionController.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/LobbyHook.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/LobbyManager.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/Player.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/NetworkLobbyHook.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/GameController.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/LobbyManager.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/LobbyPlayer.cs" />
       </list>
     </option>
@@ -630,12 +612,12 @@
       <workItem from="1552673078037" duration="4792000" />
       <workItem from="1552732849602" duration="1856000" />
       <workItem from="1552862857769" duration="15031000" />
-      <workItem from="1552913796281" duration="6315000" />
+      <workItem from="1552913796281" duration="7860000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="185809000" />
+    <option name="totallyTimeSpent" value="187354000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -650,7 +632,7 @@
     <frame x="-7" y="-7" width="1295" height="704" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.20242915" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.20242915" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -757,20 +739,6 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Assets/Scripts/LobbyHook.cs" />
-    <entry file="file://$PROJECT_DIR$/Assets/Scripts/MainMenu.cs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="510">
-          <caret line="34" column="51" selection-start-line="34" selection-start-column="51" selection-end-line="34" selection-end-column="51" />
-          <folding>
-            <marker date="1550838402365" expanded="false" signature="6:130" ph="..." />
-            <marker date="1550838402365" expanded="true" signature="170:1113" ph="{...}" />
-            <marker date="1550838402365" expanded="true" signature="343:519" ph="{...}" />
-            <marker date="1550838402365" expanded="true" signature="550:811" ph="{...}" />
-            <marker date="1550838402365" expanded="true" signature="842:1111" ph="{...}" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Assets/Scripts/GameStateHandler.cs">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="374">
@@ -949,26 +917,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Assets/Scripts/LobbyManager.cs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="226">
-          <caret line="25" column="40" selection-start-line="25" selection-start-column="40" selection-end-line="25" selection-end-column="40" />
-          <folding>
-            <marker date="1552877346229" expanded="false" signature="6:130" ph="..." />
-            <marker date="1552877346229" expanded="true" signature="181:3625" ph="{...}" />
-            <marker date="1552877346229" expanded="false" signature="775:858" ph="{...}" />
-            <marker date="1552877346229" expanded="false" signature="900:1094" ph="{...}" />
-            <marker date="1552877346229" expanded="false" signature="1159:1280" ph="{...}" />
-            <marker date="1552877346229" expanded="false" signature="1351:1467" ph="{...}" />
-            <marker date="1552877346229" expanded="false" signature="1498:2743" ph="{...}" />
-            <marker date="1552877346229" expanded="false" signature="1513:2010" ph="/* GameSettings.RoundTime = int.Parse(roundTimeText.text); ... */" />
-            <marker date="1552877346229" expanded="false" signature="2782:3191" ph="{...}" />
-            <marker date="1552877346229" expanded="false" signature="3302:3622" ph="{...}" />
-            <marker date="1552877346229" expanded="false" signature="3317:3468" ph="/* This hook allows you to apply state data from the lobby-player to the game-player ... */" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Assets/Scripts/Player.cs">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-113">
@@ -1063,30 +1011,64 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/Assets/Scripts/MainMenu.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="510">
+          <caret line="34" column="51" selection-start-line="34" selection-start-column="51" selection-end-line="34" selection-end-column="51" />
+          <folding>
+            <marker date="1550838402365" expanded="false" signature="6:130" ph="..." />
+            <marker date="1550838402365" expanded="true" signature="170:1113" ph="{...}" />
+            <marker date="1550838402365" expanded="true" signature="343:519" ph="{...}" />
+            <marker date="1550838402365" expanded="true" signature="550:811" ph="{...}" />
+            <marker date="1550838402365" expanded="true" signature="842:1111" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Assets/Scripts/LobbyManager.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="272">
+          <caret line="30" column="5" selection-start-line="30" selection-start-column="5" selection-end-line="30" selection-end-column="5" />
+          <folding>
+            <marker date="1552921113068" expanded="false" signature="6:130" ph="..." />
+            <marker date="1552921113068" expanded="true" signature="181:3618" ph="{...}" />
+            <marker date="1552921113068" expanded="false" signature="775:851" ph="{...}" />
+            <marker date="1552921113068" expanded="false" signature="893:1087" ph="{...}" />
+            <marker date="1552921113068" expanded="false" signature="1152:1273" ph="{...}" />
+            <marker date="1552921113068" expanded="false" signature="1344:1460" ph="{...}" />
+            <marker date="1552921113068" expanded="false" signature="1491:2736" ph="{...}" />
+            <marker date="1552921113068" expanded="false" signature="1506:2003" ph="/* GameSettings.RoundTime = int.Parse(roundTimeText.text); ... */" />
+            <marker date="1552921113068" expanded="false" signature="2775:3184" ph="{...}" />
+            <marker date="1552921113068" expanded="false" signature="3295:3615" ph="{...}" />
+            <marker date="1552921113068" expanded="false" signature="3310:3461" ph="/* This hook allows you to apply state data from the lobby-player to the game-player ... */" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/Assets/Scripts/LobbyPlayer.cs">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="204">
-          <caret line="20" column="22" lean-forward="true" selection-start-line="20" selection-start-column="22" selection-end-line="20" selection-end-column="22" />
+        <state relative-caret-position="374">
+          <caret line="41" column="5" selection-start-line="41" selection-start-column="5" selection-end-line="41" selection-end-column="5" />
           <folding>
-            <marker date="1552920375568" expanded="false" signature="6:233" ph="..." />
-            <marker date="1552920375568" expanded="true" signature="281:3791" ph="{...}" />
-            <marker date="1552920375568" expanded="true" signature="1217:1350" ph="{...}" />
-            <marker date="1552920375568" expanded="true" signature="1377:1687" ph="{...}" />
-            <marker date="1552920375568" expanded="true" signature="1559:1632" ph="{...}" />
-            <marker date="1552920375568" expanded="false" signature="1719:1801" ph="{...}" />
-            <marker date="1552920375568" expanded="false" signature="1848:2170" ph="{...}" />
-            <marker date="1552920375568" expanded="true" signature="2047:2099" ph="{...}" />
-            <marker date="1552920375568" expanded="true" signature="2112:2164" ph="{...}" />
-            <marker date="1552920375568" expanded="false" signature="2215:2288" ph="{...}" />
-            <marker date="1552920375568" expanded="false" signature="2325:2680" ph="{...}" />
-            <marker date="1552920375568" expanded="false" signature="2717:2905" ph="{...}" />
-            <marker date="1552920375568" expanded="false" signature="2939:3031" ph="{...}" />
-            <marker date="1552920375568" expanded="false" signature="3071:3337" ph="{...}" />
-            <marker date="1552920375568" expanded="false" signature="3387:3421" ph="{...}" />
-            <marker date="1552920375568" expanded="true" signature="3483:3520" ph="{...}" />
-            <marker date="1552920375568" expanded="false" signature="3585:3626" ph="{...}" />
-            <marker date="1552920375568" expanded="true" signature="3678:3722" ph="{...}" />
-            <marker date="1552920375568" expanded="true" signature="3732:3789" ph="/* REMEMBER TO ADD THE RETURN KEY LISTENER ... */" />
+            <marker date="1552922043566" expanded="false" signature="6:233" ph="..." />
+            <marker date="1552922043566" expanded="true" signature="281:3539" ph="{...}" />
+            <marker date="1552922043566" expanded="true" signature="1000:1133" ph="{...}" />
+            <marker date="1552922043566" expanded="true" signature="1160:1431" ph="{...}" />
+            <marker date="1552922043566" expanded="true" signature="1303:1376" ph="{...}" />
+            <marker date="1552922043566" expanded="false" signature="1463:1545" ph="{...}" />
+            <marker date="1552922043566" expanded="true" signature="1592:1914" ph="{...}" />
+            <marker date="1552922043566" expanded="true" signature="1791:1843" ph="{...}" />
+            <marker date="1552922043566" expanded="true" signature="1856:1908" ph="{...}" />
+            <marker date="1552922043566" expanded="false" signature="1959:2032" ph="{...}" />
+            <marker date="1552922043566" expanded="true" signature="2069:2426" ph="{...}" />
+            <marker date="1552922043566" expanded="true" signature="2463:2653" ph="{...}" />
+            <marker date="1552922043566" expanded="false" signature="2687:2779" ph="{...}" />
+            <marker date="1552922043566" expanded="false" signature="2819:3085" ph="{...}" />
+            <marker date="1552922043566" expanded="false" signature="3135:3169" ph="{...}" />
+            <marker date="1552922043566" expanded="true" signature="3231:3268" ph="{...}" />
+            <marker date="1552922043566" expanded="false" signature="3333:3374" ph="{...}" />
+            <marker date="1552922043566" expanded="true" signature="3426:3470" ph="{...}" />
+            <marker date="1552922043566" expanded="true" signature="3480:3537" ph="/* REMEMBER TO ADD THE RETURN KEY LISTENER ... */" />
           </folding>
         </state>
       </provider>

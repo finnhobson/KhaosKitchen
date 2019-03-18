@@ -10,6 +10,7 @@ using Button = UnityEngine.UI.Button;
 
 public class LobbyPlayer : NetworkLobbyPlayer {
 
+    //Unity game objects
     public GameObject ParentPref;
     public Button ReadyButton;
     public Text PlayerName;
@@ -21,14 +22,13 @@ public class LobbyPlayer : NetworkLobbyPlayer {
     [SyncVar (hook = "UpdatePlayerName")] public string UserName;
     [SyncVar] public Color UserColour;
 
+    //Primitive variables
     private int palleteSelector = 0;
     private int palleteCount;
     
     //Booleans
     private bool allowEnter = true;
     
-    private static System.Collections.Generic.List<String> lsi = new System.Collections.Generic.List<string>(new string[] { "Grab", "Fetch", "Grate", "Grill", "Melt", "Serve", "Stir", "Chop", "Cut", "Mash", "Season", "Flambé", "Bake", "Fry", "Taste", "Microwave" });
-
     private static List<Color> Pallete = new List<Color>( new Color[] {Color.black, Color.cyan, Color.white,  Color.green, Color.blue, Color.magenta, Color.red, Color.yellow, });
     
     private void Awake()
@@ -39,9 +39,7 @@ public class LobbyPlayer : NetworkLobbyPlayer {
     }
 
     private void Update()
-    {
-//        PlayerName.text = UserName;
-        
+    {        
         if (allowEnter && (InputField.text.Length > 0) && (Input.GetKey (KeyCode.Return) || Input.GetKey(KeyCode.KeypadEnter))) {
             OnSetNameClick();
             allowEnter = false;
@@ -79,7 +77,7 @@ public class LobbyPlayer : NetworkLobbyPlayer {
     private void SetupLocalPlayer()
     {
         UserName = "MyPlayer";
-        PlayerName.text = UserName;
+//        PlayerName.text = UserName;
         PlayerName.color = new Color(0, 0, 1.0f);
         ReadyButton.enabled = true;
         ButtonText.text = "JOIN";
@@ -91,7 +89,7 @@ public class LobbyPlayer : NetworkLobbyPlayer {
     private void SetupOtherPlayer()
     {
         UserName = "NotMyPlayer";
-        PlayerName.text = UserName;
+//        PlayerName.text = UserName;
         ReadyButton.enabled = false;
         ButtonText.text = "...";
         InputField.enabled = false;
