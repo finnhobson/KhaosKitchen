@@ -9,5 +9,6 @@ public class NetworkLobbyHook : MonoBehaviour
         Player player = gamePlayer.GetComponent<Player>();
 
         player.PlayerUserName = lp.UserName;
+        player.PlayerColour = lp.UserColour;
     }
 }

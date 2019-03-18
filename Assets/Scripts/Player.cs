@@ -40,7 +40,8 @@ public class Player : NetworkBehaviour {
     public Text fullScreenPanelText;
 
     //Player
-    [SyncVar(hook = "CmdPrintName")] public string PlayerUserName;
+    [SyncVar] public string PlayerUserName;
+    [SyncVar] public Color PlayerColour;
     public int PlayerId { get; set; }
     public int PlayerScore { get; set; }
 
@@ -64,8 +65,6 @@ public class Player : NetworkBehaviour {
     //Booleans
     public bool isGamePaused = false;
 
-    
-    
     private void Awake()
     {
         source = GetComponent<AudioSource>();

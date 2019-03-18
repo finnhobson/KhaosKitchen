@@ -348,6 +348,7 @@ public class GameController : NetworkBehaviour
         foreach (var player in playerList)
         {
             player.roundScoreText.text = player.PlayerUserName;
+            player.roundScoreText.color = player.PlayerColour;
             player.roundCompletePanel.SetActive(true);
             player.PausePlayer();
         }
