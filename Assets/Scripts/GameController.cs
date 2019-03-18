@@ -114,10 +114,13 @@ public class GameController : NetworkBehaviour
             gameStateHandler = new GameStateHandler(activeUserNames); //Instantiate single gameStateHandler object on the server to hold gamestate data 
         }
 
-        StartCoroutine(RoundCountdown(6, "2"));
-        StartCoroutine(RoundCountdown(7, "1"));
-        StartCoroutine(StartRound(8));
-        StartCoroutine(StartGame(8));
+        if (isServer)
+        {
+            StartCoroutine(RoundCountdown(8, "2"));
+            StartCoroutine(RoundCountdown(10, "1"));
+            StartCoroutine(StartRound(8));
+            StartCoroutine(StartGame(8));
+        }
 
         /*StartCoroutine(StartRound(0));
         StartCoroutine(StartGame(0));*/
