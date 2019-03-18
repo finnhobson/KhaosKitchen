@@ -16,9 +16,12 @@ public class ChefController : MonoBehaviour
     private float time;
     private float angle;
 
+    private GameController gameController;
+
     // Use this for initialization
     void Start()
     {
+        gameController = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
 
         x = Random.Range(-maxSpeed, maxSpeed);
         z = Random.Range(-maxSpeed, maxSpeed);
@@ -31,45 +34,53 @@ public class ChefController : MonoBehaviour
     {
         time += Time.deltaTime;
 
-        if (transform.localPosition.x > xMax)
+        if (!gameController.isRoundPaused && gameController.isGameStarted)
         {
-            x = Random.Range(-maxSpeed, 0.0f);
-            angle = Mathf.Atan2(x, z) * (180 / 3.141592f);
-            transform.localRotation = Quaternion.Euler(0, angle, 0);
-            time = 0.0f;
-        }
-        if (transform.localPosition.x < xMin)
-        {
-            x = Random.Range(0.0f, maxSpeed);
-            angle = Mathf.Atan2(x, z) * (180 / 3.141592f);
-            transform.localRotation = Quaternion.Euler(0, angle, 0);
-            time = 0.0f;
-        }
-        if (transform.localPosition.z > zMax)
-        {
-            z = Random.Range(-maxSpeed, 0.0f);
-            angle = Mathf.Atan2(x, z) * (180 / 3.141592f);
-            transform.localRotation = Quaternion.Euler(0, angle, 0);
-            time = 0.0f;
-        }
-        if (transform.localPosition.z < zMin)
-        {
-            z = Random.Range(0.0f, maxSpeed);
-            angle = Mathf.Atan2(x, z) * (180 / 3.141592f);
-            transform.localRotation = Quaternion.Euler(0, angle, 0);
-            time = 0.0f;
-        }
+            if (transform.localPosition.x > xMax)
+            {
+                x = Random.Range(-maxSpeed, 0.0f);
+                angle = Mathf.Atan2(x, z) * (180 / 3.141592f);
+                transform.localRotation = Quaternion.Euler(0, angle, 0);
+                time = 0.0f;
+            }
+            if (transform.localPosition.x < xMin)
+            {
+                x = Random.Range(0.0f, maxSpeed);
+                angle = Mathf.Atan2(x, z) * (180 / 3.141592f);
+                transform.localRotation = Quaternion.Euler(0, angle, 0);
+                time = 0.0f;
+            }
+            if (transform.localPosition.z > zMax)
+            {
+                z = Random.Range(-maxSpeed, 0.0f);
+                angle = Mathf.Atan2(x, z) * (180 / 3.141592f);
+                transform.localRotation = Quaternion.Euler(0, angle, 0);
+                time = 0.0f;
+            }
+            if (transform.localPosition.z < zMin)
+            {
+                z = Random.Range(0.0f, maxSpeed);
+                angle = Mathf.Atan2(x, z) * (180 / 3.141592f);
+                transform.localRotation = Quaternion.Euler(0, angle, 0);
+                time = 0.0f;
+            }
 
 
-        if (time > 1.0f)
-        {
-            x = Random.Range(-maxSpeed, maxSpeed);
-            z = Random.Range(-maxSpeed, maxSpeed);
-            angle = Mathf.Atan2(x, z) * (180 / 3.141592f);
-            transform.localRotation = Quaternion.Euler(0, angle, 0);
-            time = 0.0f;
-        }
+            if (time > 1.0f)
+            {
+                x = Random.Range(-maxSpeed, maxSpeed);
+                z = Random.Range(-maxSpeed, maxSpeed);
+                angle = Mathf.Atan2(x, z) * (180 / 3.141592f);
+                transform.localRotation = Quaternion.Euler(0, angle, 0);
+                time = 0.0f;
+            }
 
-        transform.localPosition = new Vector3(transform.localPosition.x + x, transform.localPosition.y, transform.localPosition.z + z);
+            transform.localPosition = new Vector3(transform.localPosition.x + x, transform.localPosition.y, transform.localPosition.z + z);
+        }
+        else
+        {
+            transform.localRotation = Quaternion.Euler(0, 0, 0);
+        }
+            
     }
 }

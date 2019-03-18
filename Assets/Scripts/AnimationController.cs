@@ -8,9 +8,11 @@ public class AnimationController : MonoBehaviour
     public GameController gameController;
 
     public GameObject chefPrefab;
+    public GameObject customerPrefab;
     public GameObject kitchenPrefab;
 
     private bool chefsSpawned = false;
+    private int currentRound = 0;
 
     // Start is called before the first frame update
     void Start()
@@ -23,14 +25,26 @@ public class AnimationController : MonoBehaviour
     {
         if (gameController.playersInitialised && !chefsSpawned)
         {
-            SpawnChefs();
+            StartCoroutine(SpawnChefs());
             chefsSpawned = true;
+        }
+
+        if (currentRound < gameController.roundNumber && gameController.isGameStarted && !gameController.isRoundPaused)
+        {
+            SpawnCustomers();
+            currentRound = gameController.roundNumber;
         }
     }
 
-    public void SpawnChefs()
+    private IEnumerator SpawnChefs()
     {
+        yield return new WaitForSecondsRealtime(2);
         int playerCount = gameController.playerCount;
-        for (int i = 0; i < playerCount; i++) Instantiate(chefPrefab);
+        for (int i = 0; i < playerCount; i++) Instantiate(chefPrefab, new Vector3(((2*i*40)+40)/(playerCount*2)-20, 0, 0), transform.rotation);
+    }
+
+    private void SpawnCustomers()
+    {
+        for (int i = 0; i < 3; i++) Instantiate(customerPrefab);
     }
 }

@@ -22,7 +22,7 @@ public class GameController : NetworkBehaviour
 
     [SyncVar] public int score = 0;
     [SyncVar] private int roundScore = 0;
-    [SyncVar] private int roundNumber = 1;
+    [SyncVar] public int roundNumber = 1;
 
     [SyncVar] public bool isRoundPaused = false;
     [SyncVar] public bool isGameStarted = false;
@@ -112,18 +112,13 @@ public class GameController : NetworkBehaviour
         {
             GetComponentInChildren<Canvas>().enabled = true; //Show server display only on the server.
             gameStateHandler = new GameStateHandler(activeUserNames); //Instantiate single gameStateHandler object on the server to hold gamestate data 
-        }
 
-        if (isServer)
-        {
-            StartCoroutine(RoundCountdown(8, "2"));
-            StartCoroutine(RoundCountdown(10, "1"));
+            StartCoroutine(RoundCountdown(5, "3"));
+            StartCoroutine(RoundCountdown(6, "2"));
+            StartCoroutine(RoundCountdown(7, "1"));
             StartCoroutine(StartRound(8));
             StartCoroutine(StartGame(8));
         }
-
-        /*StartCoroutine(StartRound(0));
-        StartCoroutine(StartGame(0));*/
     }
 
     private IEnumerator StartGame(int x)
@@ -214,7 +209,7 @@ public class GameController : NetworkBehaviour
     private void UpdateRoundTimeLeft()
     {
         roundTimeLeft -= Time.deltaTime;
-        roundTimerBar.GetComponent<RectTransform>().localScale = new Vector3(roundTimeLeft / roundStartTime, 1, 1);
+        if (roundTimeLeft >= 0) roundTimerBar.GetComponent<RectTransform>().localScale = new Vector3(roundTimeLeft / roundStartTime, 1, 1);
         //SetTimerText(roundTimeLeft.ToString("F2"));
     }
 
