@@ -121,11 +121,11 @@ public class GameController : NetworkBehaviour
             GetComponentInChildren<Canvas>().enabled = true; //Show server display only on the server.
             gameStateHandler = new GameStateHandler(UserNames); //Instantiate single gameStateHandler object on the server to hold gamestate data 
         
-            StartCoroutine(RoundCountdown(5, "3"));
-            StartCoroutine(RoundCountdown(6, "2"));
-            StartCoroutine(RoundCountdown(7, "1"));
-            StartCoroutine(StartRound(8));
-            StartCoroutine(StartGame(8));
+            StartCoroutine(RoundCountdown(15, "3"));
+            StartCoroutine(RoundCountdown(16, "2"));
+            StartCoroutine(RoundCountdown(17, "1"));
+            StartCoroutine(StartRound(18));
+            StartCoroutine(StartGame(18));
 
         }
 

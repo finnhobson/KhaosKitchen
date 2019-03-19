@@ -80,6 +80,8 @@ public class Player : NetworkBehaviour {
         Screen.orientation = ScreenOrientation.Portrait;
         StartInstTimer();
         VolumeOfSoundEffects = Volume;
+        countdownText.text = PlayerUserName;
+        countdownText.color = PlayerColour;
     }
 
     private void Update()
