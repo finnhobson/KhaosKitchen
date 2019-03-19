@@ -18,9 +18,11 @@ public class LobbyPlayer : NetworkLobbyPlayer {
     public InputField InputField;
     public Button ApplyNameButton;
     public Button ColourButton;
+    public GameObject CoverPanel;
+    public Text OtherPlayerName;
 
     [SyncVar (hook = "UpdatePlayerName")] public string UserName;
-    [SyncVar] public Color UserColour;
+    [SyncVar (hook = "UpdatePlayerColour")] public Color UserColour;
 
     //Primitive variables
     private int palleteSelector = 0;
@@ -76,6 +78,7 @@ public class LobbyPlayer : NetworkLobbyPlayer {
 
     private void SetupLocalPlayer()
     {
+        CoverPanel.SetActive(false);
         UserName = "MyPlayer";
 //        PlayerName.text = UserName;
         PlayerName.color = new Color(0, 0, 1.0f);
@@ -89,10 +92,11 @@ public class LobbyPlayer : NetworkLobbyPlayer {
     private void SetupOtherPlayer()
     {
         UserName = "NotMyPlayer";
-//        PlayerName.text = UserName;
         ReadyButton.enabled = false;
         ButtonText.text = "...";
         InputField.enabled = false;
+        CoverPanel.SetActive(true);
+        OtherPlayerName.text = UserName;
     }
 
     public void OnSetNameClick()
@@ -128,13 +132,15 @@ public class LobbyPlayer : NetworkLobbyPlayer {
         UserColour = colour;
     }
 
-    
     public void UpdatePlayerName(string name)
     {
         PlayerName.text = name;
+        OtherPlayerName.text = name;
+    }
+
+    public void UpdatePlayerColour(Color colour)
+    {
+        OtherPlayerName.color = colour;
     }
     
-    /*
-     * REMEMBER TO ADD THE RETURN KEY LISTENER
-     */
 }

@@ -11,10 +11,11 @@ public class LobbyManager : NetworkLobbyManager {
     public GameObject Menu;
     public NetworkLobbyHook NetworkLobbyHook;
     
-    //private int roundTime, playerCount, BaseInstructionNumber, InstructionNumberIncreasePerRound, BaseInstructionTime, InstructionTimeReductionPerRound, InstructionTimeIncreasePerPlayer, MinimumInstructionTime;
+    //private int roundTime, playerCount, BaseInstructionNumber, InstructionNumberIncreasePerRound, BaseInstructionTime, InstructionTimeReductionPerRound,
+    //InstructionTimeIncreasePerPlayer, MinimumInstructionTime;
 
-    public Text roundTimeText, playerCountText, BaseInstructionNumberText, InstructionNumberIncreasePerRoundText, BaseInstructionTimeText, InstructionTimeReductionPerRoundText, InstructionTimeIncreasePerPlayerText, MinimumInstructionTimeText;
-
+    public Text roundTimeText, playerCountText, BaseInstructionNumberText, InstructionNumberIncreasePerRoundText, BaseInstructionTimeText, 
+        InstructionTimeReductionPerRoundText, InstructionTimeIncreasePerPlayerText, MinimumInstructionTimeText;
 
     private void Start()
     {
