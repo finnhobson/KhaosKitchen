@@ -454,6 +454,13 @@ public class GameController : NetworkBehaviour
 
         piProb = GameSettings.PhoneInteractionProbability;
     }
+    
+    private void UpdateCustomerSatisfaction()
+    {
+        customerSatisfaction = customerSatisfaction + roundScore - roundMaxScore * (roundTimeLeft / roundStartTime);
+        if(customerSatisfaction > 100) customerSatisfaction = 100;
+        if(customerSatisfaction < 0) customerSatisfaction = 0;
+    }
 
     private IEnumerator PlayXCountAfterNSeconds(int n, int x)
     {
