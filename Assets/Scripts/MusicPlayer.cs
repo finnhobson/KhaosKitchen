@@ -53,9 +53,7 @@ public class MusicPlayer : MonoBehaviour
     public void PlayGameOver()
     {
         BackgroundSource.Stop();
-//        BackgroundSource.clip = GameOverClip;
         BackgroundSource.PlayOneShot(GameOverClip, VolumeOneShot);
-//        BackgroundSource.PlayOneShot(GameOverClip, 2f);
     }
 
     void PlayBackgroundMusic()
