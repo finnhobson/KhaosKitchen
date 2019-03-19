@@ -60,9 +60,7 @@ public class GameController : NetworkBehaviour
     //Booleans
     private bool isGameOver = false;
 
-    List<string> userNames = new List<string>(); /* Just here so in future they can set their own usernames from the lobby */
-
-
+    List<string> UserNames = new List<string>(); /* Just here so in future they can set their own usernames from the lobby */
 
     //Indicator variables for the animation controller
     public bool playersInitialised = false;
@@ -105,10 +103,10 @@ public class GameController : NetworkBehaviour
             GetComponentInChildren<Canvas>().enabled = true; //Show server display only on the server.
             foreach (var p in players)
             {
-                userNames.Add(p.PlayerUserName);
+                UserNames.Add(p.PlayerUserName);
                 Debug.Log(p.PlayerId + " = " + p.PlayerUserName);
             }
-            gameStateHandler = new GameStateHandler(userNames); //Instantiate single gameStateHandler object on the server to hold gamestate data 
+            gameStateHandler = new GameStateHandler(UserNames); //Instantiate single gameStateHandler object on the server to hold gamestate data 
         }
 
         playersInitialised = true;
@@ -121,16 +119,16 @@ public class GameController : NetworkBehaviour
         if (isServer)
         {
             GetComponentInChildren<Canvas>().enabled = true; //Show server display only on the server.
-            gameStateHandler = new GameStateHandler(userNames); //Instantiate single gameStateHandler object on the server to hold gamestate data 
-
+            gameStateHandler = new GameStateHandler(UserNames); //Instantiate single gameStateHandler object on the server to hold gamestate data 
+        
+            StartCoroutine(RoundCountdown(5, "3"));
+            StartCoroutine(RoundCountdown(6, "2"));
+            StartCoroutine(RoundCountdown(7, "1"));
+            StartCoroutine(StartRound(8));
+            StartCoroutine(StartGame(8));
 
         }
-        
-        StartCoroutine(RoundCountdown(5, "3"));
-        StartCoroutine(RoundCountdown(6, "2"));
-        StartCoroutine(RoundCountdown(7, "1"));
-        StartCoroutine(StartRound(8));
-        StartCoroutine(StartGame(8));
+
 
 //        StartCoroutine(PlayXCountAfterNSeconds(2, 2));
 //        StartCoroutine(RoundCountdown(3, "2"));
