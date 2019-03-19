@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
+<<<<<<< develop
     <list default="true" id="58a0f81b-04b1-4198-b5a2-51d9547a1794" name="Default Changelist" comment="">
 <<<<<<< develop
 <<<<<<< develop
@@ -92,6 +93,9 @@
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/LobbyPlayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/LobbyPlayer.cs" afterDir="false" />
 >>>>>>> Lobby working, panel covering other players. No exclusion.
     </list>
+=======
+    <list default="true" id="58a0f81b-04b1-4198-b5a2-51d9547a1794" name="Default Changelist" comment="" />
+>>>>>>> Ready to merge
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -133,7 +137,7 @@
     <session id="-2094231985">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="11" />
+          <entry key="project.closed" value="12" />
           <entry key="project.open.time.10" value="1" />
           <entry key="project.open.time.11" value="2" />
           <entry key="project.open.time.12" value="2" />
@@ -1191,8 +1195,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Assets/Scripts/LobbyPlayer.cs">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="735">
-              <caret line="142" column="39" selection-start-line="142" selection-start-column="39" selection-end-line="142" selection-end-column="39" />
+            <state relative-caret-position="786">
+              <caret line="145" column="1" selection-start-line="145" selection-start-column="1" selection-end-line="145" selection-end-column="1" />
               <folding>
                 <marker date="1553006432705" expanded="false" signature="6:233" ph="..." />
                 <marker date="1553006432705" expanded="true" signature="281:3784" ph="{...}" />
@@ -1430,11 +1434,12 @@
       <workItem from="1552862857769" duration="15031000" />
       <workItem from="1552913796281" duration="7860000" />
       <workItem from="1552937750875" duration="1634000" />
-      <workItem from="1553003640209" duration="2787000" />
+      <workItem from="1553003640209" duration="3110000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
+<<<<<<< develop
 <<<<<<< develop
 <<<<<<< develop
 <<<<<<< develop
@@ -1456,6 +1461,9 @@
 =======
     <option name="totallyTimeSpent" value="191775000" />
 >>>>>>> Lobby working, panel covering other players. No exclusion.
+=======
+    <option name="totallyTimeSpent" value="192098000" />
+>>>>>>> Ready to merge
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1489,7 +1497,6 @@
 >>>>>>> Need to redo canvases and make lobby players appear in the server.
 =======
     <frame x="-8" y="-8" width="1936" height="1066" extended-state="6" />
-    <editor active="true" />
     <layout>
 <<<<<<< develop
       <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.20469083" />
@@ -2278,8 +2285,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Assets/Scripts/LobbyPlayer.cs">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="735">
-          <caret line="142" column="39" selection-start-line="142" selection-start-column="39" selection-end-line="142" selection-end-column="39" />
+        <state relative-caret-position="786">
+          <caret line="145" column="1" selection-start-line="145" selection-start-column="1" selection-end-line="145" selection-end-column="1" />
           <folding>
             <marker date="1553006432705" expanded="false" signature="6:233" ph="..." />
             <marker date="1553006432705" expanded="true" signature="281:3784" ph="{...}" />
