@@ -180,15 +180,18 @@ public class InstructionController : NetworkBehaviour
     public void CheckAction(string action)
     {
         if (isRoundPaused) return; //Do nothing when round paused.
+        bool match = false;
+
         //When an action button is pressed by a player-client, check if action matches an active instruction.
         for (int i = 0; i < ActiveInstructions.Count; i++)
         {
             //If match, increment score.
             if (action != ActiveInstructions[i]) continue;
-            
+
+            match = true;
             DeactivateInstruction(action);
             GameController.CheckAction(action, i);
-                        
+
             PickNewInstruction(i, action);
             if (!isLastActionOfRound)
             {
@@ -219,6 +222,7 @@ public class InstructionController : NetworkBehaviour
                 RpcSetNfcPanel(i, nfcInstructions[rand]);
             }
         }
+        if (!match) GameController.fireCount++;
     }
     
     /*

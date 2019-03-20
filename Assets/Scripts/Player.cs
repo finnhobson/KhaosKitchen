@@ -453,7 +453,7 @@ public class Player : NetworkBehaviour {
         
         PlayCorrectSound();
         
-        StartCoroutine(RestartNewRoundAfterXSeconds(0.5f, buttonNumber));
+        StartCoroutine(ResetButtonColour(0.5f, buttonNumber));
     }
 
     private void ThisButtonWasNotPressed(int buttonNumber)
@@ -462,10 +462,10 @@ public class Player : NetworkBehaviour {
         
         PlayIncorrectSound();
 
-        StartCoroutine(RestartNewRoundAfterXSeconds(0.5f, buttonNumber));
+        StartCoroutine(ResetButtonColour(0.5f, buttonNumber));
     }
 
-    private IEnumerator RestartNewRoundAfterXSeconds(float x, int buttonNumber)
+    private IEnumerator ResetButtonColour(float x, int buttonNumber)
     {
         yield return new WaitForSecondsRealtime(x);
         AllButtons[buttonNumber].GetComponent<Image>().color = Color.white;

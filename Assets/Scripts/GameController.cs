@@ -25,6 +25,7 @@ public class GameController : NetworkBehaviour
     [SyncVar] public int score = 0;
     [SyncVar] private int roundScore = 0;
     [SyncVar] public int roundNumber = 1;
+    [SyncVar] public int fireCount = 0;
 
     [SyncVar] public bool isRoundPaused = false;
     [SyncVar] public bool isGameStarted = false;
@@ -226,6 +227,12 @@ public class GameController : NetworkBehaviour
     }
 
     [Server]
+    public void IncreaseFireCount()
+    {
+        fireCount++;
+    }
+
+    [Server]
     public void IncreaseScore()
     {
         score++;
@@ -267,6 +274,7 @@ public class GameController : NetworkBehaviour
         if (!isServer || isRoundPaused) return; //Only need to access this function once per round completion.
         roundNumber++;
         isRoundPaused = true;
+        fireCount = 0;
         PauseMusic();
         PlayRoundBreakMusic();
 
