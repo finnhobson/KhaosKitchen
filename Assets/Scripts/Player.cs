@@ -31,7 +31,7 @@ public class Player : NetworkBehaviour {
     private float Volume = 2f;
 
     //Unity GameObjects
-    public Text scoreText, instructionText, timerText, gpsText, roundScoreText, topChefText, countdownText, roundNumberText;
+    public Text scoreText, instructionText, timerText, gpsText, roundScoreText, topChefText, countdownText, roundNumberText, nameText;
     public GameObject nfcPanel, micPanel, shakePanel, gameOverPanel, roundCompletePanel, roundStartPanel;
     public Text nfcText, micText, shakeText;
     public GameObject nfcOkayButton, micOkayButton, shakeOkayButton;
@@ -80,8 +80,8 @@ public class Player : NetworkBehaviour {
         Screen.orientation = ScreenOrientation.Portrait;
         StartInstTimer();
         VolumeOfSoundEffects = Volume;
-        countdownText.text = PlayerUserName;
-        countdownText.color = PlayerColour;
+        nameText.text += PlayerUserName;
+        //countdownText.color = PlayerColour;
     }
 
     private void Update()

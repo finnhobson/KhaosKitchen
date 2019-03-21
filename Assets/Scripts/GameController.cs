@@ -114,33 +114,18 @@ public class GameController : NetworkBehaviour
 
         InstructionController.ICStart(playerCount, numberOfButtons, playerList, this);
         InstructionController.piProb = piProb;
-        
-        
 
         if (isServer)
         {
             GetComponentInChildren<Canvas>().enabled = true; //Show server display only on the server.
             gameStateHandler = new GameStateHandler(UserNames); //Instantiate single gameStateHandler object on the server to hold gamestate data 
         
-            StartCoroutine(RoundCountdown(15, "3"));
-            StartCoroutine(RoundCountdown(16, "2"));
-            StartCoroutine(RoundCountdown(17, "1"));
-            StartCoroutine(StartRound(18));
-            StartCoroutine(StartGame(18));
-
+            StartCoroutine(RoundCountdown(10, "3"));
+            StartCoroutine(RoundCountdown(11, "2"));
+            StartCoroutine(RoundCountdown(12, "1"));
+            StartCoroutine(StartRound(13));
+            StartCoroutine(StartGame(13));
         }
-
-
-//        StartCoroutine(PlayXCountAfterNSeconds(2, 2));
-//        StartCoroutine(RoundCountdown(3, "2"));
-//        StartCoroutine(RoundCountdown(4, "1"));
-//        StartCoroutine(StartRound(5));
-//        StartCoroutine(StartGame(5));
-        
-//        Debug.Log(PlayerCount);
-
-//        StartCoroutine(StartRound(0));
-//        StartCoroutine(StartGame(0));
         
     }
 
@@ -286,8 +271,6 @@ public class GameController : NetworkBehaviour
         ReadyInstructionController();
         UpdateGamestate();
         
-        
-
         StartCoroutine(PlayXCountAfterNSeconds(5, 2));
         StartCoroutine(StartNewRoundAfterXSeconds(5));
         StartCoroutine(RoundCountdown(6, "2"));
