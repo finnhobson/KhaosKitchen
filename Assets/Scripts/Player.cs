@@ -118,7 +118,16 @@ public class Player : NetworkBehaviour {
             //scoreText.text = nfcValue;
             if (validNfc.Contains(nfcValue))
             {
-                //nfcClick(nfcValue);
+                if (nfcValue == "Grab Meat")
+                {
+                    validNfc.Remove("Grab Meat");
+                    if(!validNfc.Contains("Grab Pasta")) validNfc.Add("Grab Pasta");
+                } else if (nfcValue == "Grab Pasta")
+                {
+                    validNfc.Remove("Grab Pasta");
+                    if(!validNfc.Contains("Grab Meat")) validNfc.Add("Grab Meat");
+                }
+
                 if (nfcPanel.activeSelf)
                 {
                     nfcPanel.SetActive(false);
@@ -171,7 +180,7 @@ public class Player : NetworkBehaviour {
         } else if (value == "BFXT4mEzgA==")
         {
             NFCListener.SetValue("");
-            return "Grab Meat";
+            return "Grab Pasta";
         }
         else
         {
