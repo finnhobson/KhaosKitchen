@@ -15,7 +15,7 @@ public class InstructionController : NetworkBehaviour
     //Store of the combinations of instructions possible
     private static List<String> verbList = new List<string>(new string[] { "Grab", "Fetch", "Grate", "Grill", "Melt", "Serve", "Stir", "Chop", "Cut", "Mash", "Season", "Flambé", "Bake", "Fry", "Taste", "Microwave", "Tendorise", "Roast", "Cry Into", "Sneeze On" });
     private static List<String> nounList = new List<string>(new string[] { "Minced Beef", "Steak", "Pork Loin", "Ice Cream", "Strawberry", "Bannana", "Bun", "Toast", "Chocolate", "Pasta", "Bacon", "Tomato", "Sugar", "Salt", "Lettuce", "Sauce", "Mustard", "Sausage", "Chicken", "Ice Cubes" });
-    private static List<String> nfcInstructions = new List<string>(new string[] { "Cant come up with anything interesting to put here!\n\n\n(RUN TO NFC)", "Still no good ideas of nfc instructions please change!\n\n\n(RUN TO NFC)" });
+    private static List<String> nfcInstructions = new List<string>(new string[] { "Darn! Run to the bin!\n\n\n(RUN TO NFC)", "Quickly! Get that rubbish out of here!\n\n\n(RUN TO NFC)" });
     private static List<String> micInstructions = new List<string>(new string[] { " Sous Chef made a deeply offensive comment!\n Shout some sense into him! It's 2019 ffs!\n\n (SHOUT INTO THE MIC)",
         " Waiters won't take the food out fast enough!\n Shout at them to work harder!\n\n (SHOUT INTO THE MIC)",
         " Your team are being incompetent!\n Shout some hurtful words at them!\n\n (SHOUT INTO THE MIC)"});
