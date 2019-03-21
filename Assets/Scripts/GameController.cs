@@ -82,8 +82,9 @@ public class GameController : NetworkBehaviour
         int playerIndex = 0;
         foreach (var p in players)
         {
+            Debug.Log("isLocalPlayer: " + p.isLocalPlayer);
             playerList.Add(p);
-            p.SetGameController(this);
+            if (isServer) p.SetGameController(this);
             p.SetInstructionController(InstructionController);
             p.SetPlayerId(playerIndex);
             p.instStartTime = CalculateInstructionTime();
