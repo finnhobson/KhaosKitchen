@@ -38,6 +38,7 @@ public class LobbyPlayer : NetworkLobbyPlayer {
         DontDestroyOnLoad(transform.gameObject);
         UserColour = Color.black;
         palleteCount = Pallete.Count;
+        ReadyButton.enabled = false;
     }
 
     private void Update()
@@ -102,6 +103,7 @@ public class LobbyPlayer : NetworkLobbyPlayer {
     public void OnSetNameClick()
     {
         string userName = InputField.text;
+        ReadyButton.enabled = true;
         CmdUpdateUserName(userName);
     }
     
