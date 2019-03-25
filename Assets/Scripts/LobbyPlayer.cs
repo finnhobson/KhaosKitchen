@@ -83,7 +83,7 @@ public class LobbyPlayer : NetworkLobbyPlayer {
         UserName = "MyPlayer";
 //        PlayerName.text = UserName;
         PlayerName.color = new Color(0, 0, 1.0f);
-        ReadyButton.enabled = true;
+        ReadyButton.enabled = false;
         ButtonText.text = "JOIN";
         InputField.enabled = true;
         ApplyNameButton.onClick.AddListener(OnSetNameClick);

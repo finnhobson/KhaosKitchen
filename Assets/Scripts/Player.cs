@@ -91,7 +91,7 @@ public class Player : NetworkBehaviour {
     private void Update()
     {
         //Display score.
-        //scoreText.text = gameController.score.ToString();
+        scoreText.text = gameController.score.ToString();
         
         if (gameController.roundTimeLeft > 0)
         {
@@ -120,7 +120,6 @@ public class Player : NetworkBehaviour {
             }
 
             nfcValue = NfcCheck();
-            scoreText.text = nfcValue;
             if (validNfc.Contains(nfcValue))
             {
                 if (isFail)
@@ -132,7 +131,6 @@ public class Player : NetworkBehaviour {
                         if (nfcPanel.activeSelf)
                         {
                             nfcPanel.SetActive(false);
-                            CmdIncreaseScore();
                             StartInstTimer();
                         }
                         isBinA = !isBinA;
@@ -146,7 +144,6 @@ public class Player : NetworkBehaviour {
                         if (nfcPanel.activeSelf)
                         {
                             nfcPanel.SetActive(false);
-                            CmdIncreaseScore();
                             StartInstTimer();
                         }
                         isBinA = !isBinA;
