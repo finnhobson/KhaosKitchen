@@ -228,7 +228,7 @@ public class InstructionController : NetworkBehaviour
     /*
      * Checks if failed action is a current active instruction, and if so pick new instruction and orders NFC bin.
      */
-    public void FailAction(string action)
+    public void FailAction(string action, string bin)
     {
         //When an action button is pressed by a player-client, check if action matches an active instruction.
         for (int i = 0; i < ActiveInstructions.Count; i++)
@@ -241,8 +241,8 @@ public class InstructionController : NetworkBehaviour
                 PickNewInstruction(i, action);
                 RpcUpdateInstruction(ActiveInstructions[i], i);
                 RpcSetNfcPanel(i, "You missed an order! " + System.Environment.NewLine
-                                                           + "Run to the bin!" + System.Environment.NewLine + System.Environment.NewLine
-                                                           + "(TAP ON BIN NFC)");
+                                                           + "Run to the "+ bin +"!" + System.Environment.NewLine + System.Environment.NewLine
+                                                           + "(TAP ON "+ bin +" NFC)");
             }
         }
     }

@@ -50,7 +50,7 @@ public class Player : NetworkBehaviour {
     public int playerCount;
     public int instTime;
     public bool easyPhoneInteractions;
-    private HashSet<String> validNfc = new HashSet<String>{"Grab Meat","Grab Pasta"};
+    private HashSet<String> validNfc = new HashSet<String>{"Serve","Bin"};
     public MicListener micListener;
     
     //Timer
@@ -64,6 +64,7 @@ public class Player : NetworkBehaviour {
 
     //Booleans
     public bool isGamePaused = false;
+    private bool isBinA = true;
 
     private void Awake()
     {
@@ -118,14 +119,14 @@ public class Player : NetworkBehaviour {
             //scoreText.text = nfcValue;
             if (validNfc.Contains(nfcValue))
             {
-                if (nfcValue == "Grab Meat")
+                if (nfcValue == "Serve")
                 {
-                    validNfc.Remove("Grab Meat");
-                    if(!validNfc.Contains("Grab Pasta")) validNfc.Add("Grab Pasta");
-                } else if (nfcValue == "Grab Pasta")
+                    validNfc.Remove("Serve");
+                    if(!validNfc.Contains("Bin")) validNfc.Add("Bin");
+                } else if (nfcValue == "Bin")
                 {
-                    validNfc.Remove("Grab Pasta");
-                    if(!validNfc.Contains("Grab Meat")) validNfc.Add("Grab Meat");
+                    validNfc.Remove("Bin");
+                    if(!validNfc.Contains("Serve")) validNfc.Add("Serve");
                 }
 
                 if (nfcPanel.activeSelf)
@@ -176,11 +177,11 @@ public class Player : NetworkBehaviour {
         if (value == "BFTT4mEzgA==")
         {
             NFCListener.SetValue("");
-            return "Grab Meat";
+            return "Serve";
         } else if (value == "BFXT4mEzgA==")
         {
             NFCListener.SetValue("");
-            return "Grab Pasta";
+            return "Bin";
         }
         else
         {
@@ -249,7 +250,11 @@ public class Player : NetworkBehaviour {
     [Command]
     public void CmdFail(string action)
     {
-        InstructionController.FailAction(action);
+        string bin;
+        if (isBinA) bin = "Recycling Bin";
+        else bin = "Food Waste";
+        isBinA = !isBinA;
+        InstructionController.FailAction(action,bin);
         ResetScoreStreak();
     }
 
