@@ -35,6 +35,7 @@ public class MainMenu : MonoBehaviour {
 
        // lobbyManager.networkAddress = "172.20.10.4";
         lobbyManager.networkAddress = "127.0.0.1";
+        //lobbyManager.networkAddress ="192.168.0.26"; 
         Debug.Log("Joining Game using IP Address: " + lobbyManager.networkAddress);
         lobbyManager.StartClient();
         Lobby.SetActive(true);
