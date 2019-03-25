@@ -50,7 +50,7 @@ public class Player : NetworkBehaviour {
     public int playerCount;
     public int instTime;
     public bool easyPhoneInteractions;
-    private HashSet<String> validNfc = new HashSet<String>{"Serve","Bin"};
+    private HashSet<String> validNfc = new HashSet<String>{"Food Waste","Recycling Bin","Window A","Window B"};
     public MicListener micListener;
     
     //Timer
@@ -65,6 +65,9 @@ public class Player : NetworkBehaviour {
     //Booleans
     public bool isGamePaused = false;
     private bool isBinA = true;
+    private bool isWindowA = true;
+    private bool isFail = false;
+    private bool isServe = false;
 
     private void Awake()
     {
@@ -88,16 +91,17 @@ public class Player : NetworkBehaviour {
     private void Update()
     {
         //Display score.
-        scoreText.text = gameController.score.ToString();
+        //scoreText.text = gameController.score.ToString();
         
         if (gameController.roundTimeLeft > 0)
         {
             UpdateInstTimeLeft();
             if (instTimeLeft < 0 && isLocalPlayer)
             {
-                CmdFail(instructionText.text);
+                CmdFail(instructionText.text,(isBinA) ? "Food Waste" : "Recycling Bin");
                 PlayFailSound();
                 StartInstTimer();
+                isFail = true;
             }
             else
             {
@@ -116,25 +120,99 @@ public class Player : NetworkBehaviour {
             }
 
             nfcValue = NfcCheck();
-            //scoreText.text = nfcValue;
+            scoreText.text = nfcValue;
             if (validNfc.Contains(nfcValue))
             {
-                if (nfcValue == "Serve")
+                if (isFail)
                 {
-                    validNfc.Remove("Serve");
-                    if(!validNfc.Contains("Bin")) validNfc.Add("Bin");
-                } else if (nfcValue == "Bin")
+                    if ((nfcValue == "Food Waste") && (isBinA))
+                    {
+                        validNfc.Remove("Food Waste");
+                        if (!validNfc.Contains("Recycling Bin")) validNfc.Add("Recycling Bin");
+                        if (nfcPanel.activeSelf)
+                        {
+                            nfcPanel.SetActive(false);
+                            CmdIncreaseScore();
+                            StartInstTimer();
+                        }
+                        isBinA = !isBinA;
+                        isFail = false;
+
+                    }
+                    else if (nfcValue == "Recycling Bin" && !isBinA)
+                    {
+                        validNfc.Remove("Recycling Bin");
+                        if (!validNfc.Contains("Food Waste")) validNfc.Add("Food Waste");
+                        if (nfcPanel.activeSelf)
+                        {
+                            nfcPanel.SetActive(false);
+                            CmdIncreaseScore();
+                            StartInstTimer();
+                        }
+                        isBinA = !isBinA;
+                        isFail = false;
+                    }
+                    
+                   
+                }
+                else if(isServe)
                 {
-                    validNfc.Remove("Bin");
-                    if(!validNfc.Contains("Serve")) validNfc.Add("Serve");
+                    if (nfcValue == "Window A" && isWindowA)
+                    {
+                        validNfc.Remove("Window A");
+                        if (!validNfc.Contains("Window B")) validNfc.Add("Window B");
+                        if (nfcPanel.activeSelf)
+                        {
+                            nfcPanel.SetActive(false);
+                            CmdIncreaseScore();
+                            StartInstTimer();
+                        }
+                        isServe = false;
+
+                    }
+                    else if (nfcValue == "Window B" && !isWindowA)
+                    {
+                        validNfc.Remove("Window B");
+                        if (!validNfc.Contains("Window A")) validNfc.Add("Window A");
+                        if (nfcPanel.activeSelf)
+                        {
+                            nfcPanel.SetActive(false);
+                            CmdIncreaseScore();
+                            StartInstTimer();
+                        }
+                        isServe = false;
+
+                    }
+
+                }else{
+                    if ((nfcValue == "Food Waste") && (isBinA))
+                    {
+                        validNfc.Remove("Food Waste");
+                        if (!validNfc.Contains("Recycling Bin")) validNfc.Add("Recycling Bin");
+                        isBinA = !isBinA;
+                    }
+                    else if (nfcValue == "Recycling Bin" && !isBinA)
+                    {
+                        validNfc.Remove("Recycling Bin");
+                        if (!validNfc.Contains("Food Waste")) validNfc.Add("Food Waste");
+                        isBinA = !isBinA;
+                    }
+                    if (nfcValue == "Window A" && isWindowA)
+                    {
+                        validNfc.Remove("Window A");
+                        if (!validNfc.Contains("Window B")) validNfc.Add("Window B");
+                        isWindowA = !isWindowA;
+                    }
+                    else if (nfcValue == "Window B" && !isWindowA)
+                    {
+                        validNfc.Remove("Window B");
+                        if (!validNfc.Contains("Window A")) validNfc.Add("Window A");
+                        isWindowA = !isWindowA;
+                    }
+
                 }
 
-                if (nfcPanel.activeSelf)
-                {
-                    nfcPanel.SetActive(false);
-                    CmdIncreaseScore();
-                    StartInstTimer();
-                }
+                
             }
 
             if (ShakeListener.shaking)
@@ -148,7 +226,7 @@ public class Player : NetworkBehaviour {
                 }
             }
 
-            gpsText.text = nfcValue;
+            //scoreText.text = nfcValue;
         }
         else{
             SetTimerText("0");
@@ -174,14 +252,25 @@ public class Player : NetworkBehaviour {
     private string NfcCheck()
     {
         string value = NFCListener.GetValue();
+        
         if (value == "BFTT4mEzgA==")
         {
             NFCListener.SetValue("");
-            return "Serve";
+            return "Food Waste";
         } else if (value == "BFXT4mEzgA==")
         {
             NFCListener.SetValue("");
-            return "Bin";
+            return "Recycling Bin";
+        }
+        else if (value == "BDbT4mEzgA==")
+        {
+            NFCListener.SetValue("");
+            return "Window A";
+        } 
+        else if (value == "BAvT4mEzgA==")
+        {
+            NFCListener.SetValue("");
+            return "Window B";
         }
         else
         {
@@ -248,12 +337,8 @@ public class Player : NetworkBehaviour {
     }
 
     [Command]
-    public void CmdFail(string action)
+    public void CmdFail(string action, string bin)
     {
-        string bin;
-        if (isBinA) bin = "Recycling Bin";
-        else bin = "Food Waste";
-        isBinA = !isBinA;
         InstructionController.FailAction(action,bin);
         ResetScoreStreak();
     }
@@ -411,9 +496,15 @@ public class Player : NetworkBehaviour {
 
     public void ScoreStreakCheck()
     {
-        if(scoreStreak>=scoreStreakMax){
+        if(scoreStreak>=scoreStreakMax)
+        {
+
+            isServe = true;
+            isWindowA = !isWindowA;
+            String window = (isWindowA) ? "Window A" : "Window B";
             ResetScoreStreak();
-            SetNfcPanel(" Great Work!\n Dish is ready to serve!\n\n (TAP ON SERVE NFC)");
+            SetNfcPanel(" Great Work!\n Serve dish to "+ window +"!\n\n (TAP ON "+ window +" NFC)");
+            
         }
     }
 
