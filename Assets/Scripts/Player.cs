@@ -32,7 +32,7 @@ public class Player : NetworkBehaviour {
     private float Volume = 2f;
 
     //Unity GameObjects
-    public Text scoreText, instructionText, timerText, gpsText, roundScoreText, topChefText, countdownText, roundNumberText, nameText;
+    public Text scoreText, instructionText, timerText, gpsText, roundScoreText, topChefText, countdownText, roundNumberText, nameText, micVolumeText;
     public GameObject nfcPanel, micPanel, shakePanel, gameOverPanel, roundCompletePanel, roundStartPanel;
     public Text nfcText, micText, shakeText;
     public GameObject nfcOkayButton, micOkayButton, shakeOkayButton;
@@ -94,8 +94,8 @@ public class Player : NetworkBehaviour {
     private void Update()
     {
         //Display score.
-        //scoreText.text = gameController.score.ToString();
-        if (micActive) scoreText.text = micListener.MicLoudness.ToString();
+        scoreText.text = gameController.score.ToString();
+        //if (micActive) micVolumeText.text = micListener.MicLoudness.ToString("F4");
 
         if (gameController.roundTimeLeft > 0)
         {
