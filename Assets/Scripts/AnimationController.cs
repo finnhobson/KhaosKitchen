@@ -59,7 +59,7 @@ public class AnimationController : MonoBehaviour
 
     private void SpawnCustomers()
     {
-        for (int i = 0; i < 3; i++) Instantiate(customerPrefab);
+        for (int i = 0; i < 2; i++) Instantiate(customerPrefab);
     }
 
     private void DestroyFires()

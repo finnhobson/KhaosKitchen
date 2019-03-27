@@ -70,9 +70,9 @@ public class LobbyManager : NetworkLobbyManager {
         //GameSettings.InstructionTimeIncreasePerPlayer = int.Parse(InstructionTimeIncreasePerPlayerText.text);
         //GameSettings.MinimumInstructionTime = int.Parse(MinimumInstructionTimeText.text);
 
-        GameSettings.RoundTime = string.IsNullOrEmpty(roundTimeText.text) ? 60 : int.Parse(roundTimeText.text);
-        GameSettings.BaseInstructionNumber = string.IsNullOrEmpty(BaseInstructionNumberText.text) ? 16 : int.Parse(BaseInstructionNumberText.text);
-        GameSettings.InstructionNumberIncreasePerRound = string.IsNullOrEmpty(InstructionNumberIncreasePerRoundText.text) ? 16 : int.Parse(InstructionNumberIncreasePerRoundText.text);
+        GameSettings.RoundTime = string.IsNullOrEmpty(roundTimeText.text) ? 90 : int.Parse(roundTimeText.text);
+        GameSettings.BaseInstructionNumber = string.IsNullOrEmpty(BaseInstructionNumberText.text) ? 10 : int.Parse(BaseInstructionNumberText.text);
+        GameSettings.InstructionNumberIncreasePerRound = string.IsNullOrEmpty(InstructionNumberIncreasePerRoundText.text) ? 5 : int.Parse(InstructionNumberIncreasePerRoundText.text);
         GameSettings.BaseInstructionTime = string.IsNullOrEmpty(BaseInstructionTimeText.text) ? 15 : int.Parse(BaseInstructionTimeText.text);
         GameSettings.InstructionTimeReductionPerRound = string.IsNullOrEmpty(InstructionTimeReductionPerRoundText.text) ? 2 : int.Parse(InstructionTimeReductionPerRoundText.text);
         GameSettings.InstructionTimeIncreasePerPlayer = string.IsNullOrEmpty(InstructionTimeIncreasePerPlayerText.text) ? 2 : int.Parse(InstructionTimeIncreasePerPlayerText.text);
@@ -81,7 +81,7 @@ public class LobbyManager : NetworkLobbyManager {
         //GameSettings.PlayerCount = string.IsNullOrEmpty(playerCountText.text) ? 2 : int.Parse(playerCountText.text);
         GameSettings.PlayerCount = (int)playerCountSlider.value;
         GameSettings.EasyPhoneInteractions = easyPhoneInteractions.isOn;
-        GameSettings.PhoneInteractionProbability = string.IsNullOrEmpty(phoneInteractionText.text) ? 42 : 3*int.Parse(phoneInteractionText.text);
+        GameSettings.PhoneInteractionProbability = string.IsNullOrEmpty(phoneInteractionText.text) ? 42 : 2*int.Parse(phoneInteractionText.text);
 
     }
 

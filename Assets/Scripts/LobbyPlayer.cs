@@ -116,6 +116,16 @@ public class LobbyPlayer : NetworkLobbyPlayer {
         PlayerName.color = colour;
     }
 
+    public void OnClickBack()
+    {
+        var players = GameObject.FindGameObjectsWithTag("LobbyPlayer");
+        foreach (var player in players)
+        {
+            Destroy(player);
+        }
+
+    }
+
     [Command]
     public void CmdPrint(string p)
     {

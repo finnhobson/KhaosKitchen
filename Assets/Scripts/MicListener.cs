@@ -5,9 +5,17 @@ using UnityEngine;
 public class MicListener : MonoBehaviour
 {
 
-    public static float MicLoudness;
+    public float MicLoudness;
+    public bool isInitialized = false;
 
     private string _device;
+    AudioClip _clipRecord;
+    int _sampleWindow = 128;
+
+    private void Start()
+    {
+        InitMic();
+    }
 
     //mic initialization
     void InitMic()
@@ -21,17 +29,13 @@ public class MicListener : MonoBehaviour
         Microphone.End(_device);
     }
 
-
-    AudioClip _clipRecord;
-    int _sampleWindow = 128;
-
     //get data from microphone into audioclip
     float LevelMax()
     {
         float levelMax = 0;
         float[] waveData = new float[_sampleWindow];
         int micPosition = Microphone.GetPosition(null) - (_sampleWindow + 1); // null means the first microphone
-        if (micPosition < 0) return 0;
+        //if (micPosition < 0) return 0;
         _clipRecord.GetData(waveData, micPosition);
         // Getting a peak on the last 128 samples
         for (int i = 0; i < _sampleWindow; i++)
@@ -42,6 +46,7 @@ public class MicListener : MonoBehaviour
                 levelMax = wavePeak;
             }
         }
+        isInitialized = true;
         return levelMax;
     }
 
@@ -54,17 +59,17 @@ public class MicListener : MonoBehaviour
         MicLoudness = LevelMax();
     }
 
-    bool _isInitialized;
+    
     // start mic when scene starts
     void OnEnable()
     {
         InitMic();
-        _isInitialized = true;
     }
 
     //stop mic when loading a new level or quit application
     void OnDisable()
     {
+        MicLoudness = 0;
         StopMicrophone();
     }
 
@@ -74,18 +79,18 @@ public class MicListener : MonoBehaviour
     }
 
 
-    // make sure the mic gets started & stopped when application gets focused
+    /*// make sure the mic gets started & stopped when application gets focused
     void OnApplicationFocus(bool focus)
     {
         if (focus)
         {
             Debug.Log("Focus");
 
-            if (!_isInitialized)
+            if (!isInitialized)
             {
                 Debug.Log("Init Mic");
                 InitMic();
-                _isInitialized = true;
+                isInitialized = true;
             }
         }
         if (!focus)
@@ -93,9 +98,9 @@ public class MicListener : MonoBehaviour
             Debug.Log("Pause");
             StopMicrophone();
             Debug.Log("Stop Mic");
-            _isInitialized = false;
+            isInitialized = false;
 
         }
-    }
+    }*/
 }
 

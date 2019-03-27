@@ -6,6 +6,7 @@ using System.Timers;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 
 public class GameController : NetworkBehaviour
@@ -18,7 +19,7 @@ public class GameController : NetworkBehaviour
 
     //Unity GameObjects
     public Text scoreText, roundTimerText, scoreBarText, roundNumberText;
-    public GameObject roundTimerBar;
+    public GameObject roundTimerBar, gameOverText, backButton;
 
     public List<Player> playerList = new List<Player>();
     
@@ -44,6 +45,8 @@ public class GameController : NetworkBehaviour
     [SyncVar] public int playerCount;
     [SyncVar] public bool easyPhoneInteractions;
 
+    [SyncVar(hook = "SetTopChef")] public string currentTopChef;
+
     [SyncVar] public float customerSatisfaction = 100;
 
     //Phone interaction probability = 2/x
@@ -65,6 +68,7 @@ public class GameController : NetworkBehaviour
 
     //Indicator variables for the animation controller
     public bool playersInitialised = false;
+
     
     //Functions-----------------------------------------------------------------------------------------------------
 
@@ -161,6 +165,8 @@ public class GameController : NetworkBehaviour
             {
                 SetTimerText("0");
                 RpcGameOver();
+                gameOverText.SetActive(true);
+                backButton.SetActive(true);
                 foreach (Player p in playerList)
                 {
                     p.GameOver();
@@ -183,6 +189,21 @@ public class GameController : NetworkBehaviour
     private void RpcGameOver()
     {
         foreach (Player p in playerList) p.GameOver();
+    }
+
+    public void OnClickBack()
+    {
+        RpcQuitGame();
+        Application.Quit();
+    }
+
+    [ClientRpc]
+    public void RpcQuitGame()
+    {
+        foreach (Player p in playerList)
+        {
+            p.BackToMainMenu();
+        }
     }
 
     [ClientRpc]
@@ -263,14 +284,14 @@ public class GameController : NetworkBehaviour
         fireCount = 0;
         PauseMusic();
         PlayRoundBreakMusic();
-
+        UpdateGamestate();
         RpcPausePlayers();
+
         foreach (Player p in playerList)
         {
             p.instStartTime = CalculateInstructionTime();
         }
         ReadyInstructionController();
-        UpdateGamestate();
         
         StartCoroutine(PlayXCountAfterNSeconds(5, 2));
         StartCoroutine(StartNewRoundAfterXSeconds(5));
@@ -347,8 +368,7 @@ public class GameController : NetworkBehaviour
     {
         foreach (var player in playerList)
         {
-            player.roundScoreText.text = player.PlayerUserName;
-            player.roundScoreText.color = player.PlayerColour;
+            player.roundScoreText.text = (score + 1).ToString();
             player.roundCompletePanel.SetActive(true);
             player.PausePlayer();
         }
@@ -387,11 +407,19 @@ public class GameController : NetworkBehaviour
     {
         //Store round info
         gameStateHandler.OnRoundComplete(score);
+        int topScore = 0;
+        string topChef = "";
         foreach (var player in playerList)
         {
+            if (player.PlayerScore > topScore)
+            {
+                topScore = player.PlayerScore;
+                topChef = player.PlayerUserName;
+            }
             gameStateHandler.UpdatePlayerScore(player.PlayerUserName, player.PlayerScore);
             player.PlayerScore = 0;
         }
+        currentTopChef = topChef;
     }
 
     private void PrintInstructionHandler()
@@ -487,5 +515,14 @@ public class GameController : NetworkBehaviour
     private void PlayGameOver()
     {
         MusicPlayer.PlayGameOver();
+    }
+
+    private void SetTopChef(string topChef)
+    {
+        Debug.Log(topChef);
+        foreach (var player in playerList)
+        {
+            player.topChefText.text = topChef;
+        }
     }
 }

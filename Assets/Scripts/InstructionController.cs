@@ -197,30 +197,26 @@ public class InstructionController : NetworkBehaviour
             {
                 RpcUpdateInstruction(ActiveInstructions[i], i);
                 RpcStartInstTimer(i);
+
+                int rand = UnityEngine.Random.Range(1, piProb);
+                if (rand == 1)
+                {
+                    rand = UnityEngine.Random.Range(0, micInstructions.Count);
+                    RpcSetMicPanel(i, micInstructions[rand]);
+                }
+                else if (rand == 2)
+                {
+                    rand = UnityEngine.Random.Range(0, shakeInstructions.Count);
+                    RpcSetShakePanel(i, shakeInstructions[rand]);
+                }
             }
 
             //Update player score
             Players[i].PlayerScore++;
             
             //Only do a panel action if there are still instructions left in the round.
-            if (isLastActionOfRound) return;
-//            PrintInstructionHandler();
-
-            int rand = UnityEngine.Random.Range(1, piProb);
-            if(rand==1){
-                rand = UnityEngine.Random.Range(0, micInstructions.Count);
-                RpcSetMicPanel(i, micInstructions[rand]);
-            }
-            else if (rand == 2)
-            {
-                rand = UnityEngine.Random.Range(0, shakeInstructions.Count);
-                RpcSetShakePanel(i, shakeInstructions[rand]);
-            }
-            else if (rand == 3)
-            {
-                rand = UnityEngine.Random.Range(0, nfcInstructions.Count);
-                RpcSetNfcPanel(i, nfcInstructions[rand]);
-            }
+            //if (isLastActionOfRound) return;
+            //PrintInstructionHandler();
         }
         if (!match) GameController.fireCount++;
     }

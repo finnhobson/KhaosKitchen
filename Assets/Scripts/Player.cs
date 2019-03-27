@@ -6,6 +6,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class Player : NetworkBehaviour {
 
@@ -35,9 +36,9 @@ public class Player : NetworkBehaviour {
     public GameObject nfcPanel, micPanel, shakePanel, gameOverPanel, roundCompletePanel, roundStartPanel;
     public Text nfcText, micText, shakeText;
     public GameObject nfcOkayButton, micOkayButton, shakeOkayButton;
-
     public GameObject fullScreenPanel;
     public Text fullScreenPanelText;
+    public GameObject cameraController, cameraPanel;
 
     //Player
     [SyncVar] public string PlayerUserName;
@@ -68,6 +69,7 @@ public class Player : NetworkBehaviour {
     private bool isWindowA = true;
     private bool isFail = false;
     private bool isServe = false;
+    private bool micActive = false;
 
     private void Awake()
     {
@@ -86,13 +88,15 @@ public class Player : NetworkBehaviour {
         VolumeOfSoundEffects = Volume;
         nameText.text += PlayerUserName;
         //countdownText.color = PlayerColour;
+        micListener.enabled = false;
     }
 
     private void Update()
     {
         //Display score.
-        scoreText.text = gameController.score.ToString();
-        
+        //scoreText.text = gameController.score.ToString();
+        if (micActive) scoreText.text = micListener.MicLoudness.ToString();
+
         if (gameController.roundTimeLeft > 0)
         {
             UpdateInstTimeLeft();
@@ -108,17 +112,22 @@ public class Player : NetworkBehaviour {
                 SetTimerText(instTimeLeft.ToString("F2"));
             }
 
-            if (MicListener.MicLoudness > 0.2f)
+            if (micPanel.activeInHierarchy && !micActive)
             {
-                //shakeClick(Instruction text to be completed by shouting, matching that in activeInstructions);
-                if (micPanel.activeSelf)
-                {
-                    micPanel.SetActive(false);
-                    CmdIncreaseScore();
-                    StartInstTimer();
-                }
+                micListener.enabled = true;
+                micActive = true;
             }
 
+            if (micPanel.activeInHierarchy && micListener.MicLoudness > 0.15f)
+            {
+                micPanel.SetActive(false);
+                micActive = false;
+                micListener.enabled = false;
+                CmdIncreaseScore();
+                StartInstTimer();
+            }
+
+            
             nfcValue = NfcCheck();
             if (validNfc.Contains(nfcValue))
             {
@@ -164,6 +173,7 @@ public class Player : NetworkBehaviour {
                             CmdIncreaseScore();
                             StartInstTimer();
                         }
+                        isWindowA = !isWindowA;
                         isServe = false;
 
                     }
@@ -177,11 +187,13 @@ public class Player : NetworkBehaviour {
                             CmdIncreaseScore();
                             StartInstTimer();
                         }
+                        isWindowA = !isWindowA;
                         isServe = false;
 
                     }
-
-                }else{
+                }
+                else
+                {
                     if ((nfcValue == "Food Waste") && (isBinA))
                     {
                         validNfc.Remove("Food Waste");
@@ -225,7 +237,8 @@ public class Player : NetworkBehaviour {
 
             //scoreText.text = nfcValue;
         }
-        else{
+        else
+        {
             SetTimerText("0");
         }
     }
@@ -264,7 +277,7 @@ public class Player : NetworkBehaviour {
             NFCListener.SetValue("");
             return "Window A";
         } 
-        else if (value == "BAvT4mEzgA==")
+        else if (value == "BBrT4mEzgA==")
         {
             NFCListener.SetValue("");
             return "Window B";
@@ -491,13 +504,26 @@ public class Player : NetworkBehaviour {
         }
     }
 
+    public void OnClickCameraButton()
+    {
+        if (cameraPanel.activeInHierarchy)
+        {
+            cameraPanel.SetActive(false);
+            cameraController.SetActive(false);
+        }
+        else
+        {
+            cameraController.SetActive(true);
+            cameraPanel.SetActive(true);
+        }
+    }
+
     public void ScoreStreakCheck()
     {
         if(scoreStreak>=scoreStreakMax)
         {
 
             isServe = true;
-            isWindowA = !isWindowA;
             String window = (isWindowA) ? "Window A" : "Window B";
             ResetScoreStreak();
             SetNfcPanel(" Great Work!\n Serve dish to "+ window +"!\n\n (TAP ON "+ window +" NFC)");
@@ -637,6 +663,12 @@ public class Player : NetworkBehaviour {
     private void CmdPrintName(string name)
     {
         Debug.Log(name);
+    }
+
+
+    public void BackToMainMenu()
+    {
+        Application.Quit();
     }
 }
 
