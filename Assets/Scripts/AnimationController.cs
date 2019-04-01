@@ -1,11 +1,14 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 
 public class AnimationController : MonoBehaviour
 {
     public GameController gameController;
+
+    public Image arrow;
 
     public GameObject chefPrefab;
     public GameObject customerPrefab;
@@ -54,7 +57,15 @@ public class AnimationController : MonoBehaviour
     {
         yield return new WaitForSecondsRealtime(2);
         int playerCount = gameController.playerCount;
-        for (int i = 0; i < playerCount; i++) Instantiate(chefPrefab, new Vector3(((2*i*40)+40)/(playerCount*2)-20, 0, 0), transform.rotation);
+        for (int i = 0; i < playerCount; i++)
+        {
+            Vector3 pos = new Vector3(((2 * i * 40) + 40) / (playerCount * 2) - 20, 0, 0);
+            GameObject newChef = Instantiate(chefPrefab, pos, transform.rotation);
+            Image newArrow = Instantiate(arrow);
+            newArrow.color = new Color(0, 0, 1);
+            newArrow.transform.SetParent(GameObject.FindGameObjectWithTag("ServerCanvas").transform, false);
+            newChef.GetComponent<ChefController>().arrow = newArrow;
+        }
     }
 
     private void SpawnCustomers()

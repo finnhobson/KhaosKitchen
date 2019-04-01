@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ChefController : MonoBehaviour
+public class CustomerController : MonoBehaviour
 {
     public float maxSpeed;
 
@@ -18,9 +18,6 @@ public class ChefController : MonoBehaviour
     private float angle;
 
     private GameController gameController;
-
-    public GameObject sphere;
-    public Image arrow;
 
     // Use this for initialization
     void Start()
@@ -37,9 +34,6 @@ public class ChefController : MonoBehaviour
     void Update()
     {
         time += Time.deltaTime;
-
-        Vector3 arrowPos = Camera.main.WorldToScreenPoint(sphere.transform.position);
-        arrow.transform.position = arrowPos;
 
         if (!gameController.isRoundPaused && gameController.isGameStarted)
         {
@@ -88,6 +82,6 @@ public class ChefController : MonoBehaviour
         {
             transform.localRotation = Quaternion.Euler(0, 0, 0);
         }
-            
+
     }
 }
