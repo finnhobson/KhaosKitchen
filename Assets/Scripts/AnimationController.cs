@@ -57,12 +57,13 @@ public class AnimationController : MonoBehaviour
     {
         yield return new WaitForSecondsRealtime(2);
         int playerCount = gameController.playerCount;
+        var players = FindObjectsOfType<Player>();
         for (int i = 0; i < playerCount; i++)
         {
             Vector3 pos = new Vector3(((2 * i * 40) + 40) / (playerCount * 2) - 20, 0, 0);
             GameObject newChef = Instantiate(chefPrefab, pos, transform.rotation);
             Image newArrow = Instantiate(arrow);
-            newArrow.color = new Color(0, 0, 1);
+            newArrow.color = players[i].PlayerColour;
             newArrow.transform.SetParent(GameObject.FindGameObjectWithTag("ServerCanvas").transform, false);
             newChef.GetComponent<ChefController>().arrow = newArrow;
         }

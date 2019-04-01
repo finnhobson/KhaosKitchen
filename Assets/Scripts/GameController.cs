@@ -22,6 +22,7 @@ public class GameController : NetworkBehaviour
     public GameObject roundTimerBar, gameOverText, backButton;
 
     public List<Player> playerList = new List<Player>();
+    public List<Text> playerNames = new List<Text>();
     
     [SyncVar] public int score = 0;
     [SyncVar] private int roundScore = 0;
@@ -93,6 +94,8 @@ public class GameController : NetworkBehaviour
             p.SetPlayerId(playerIndex);
             p.instStartTime = CalculateInstructionTime();
             p.playerCount = playerCount;
+            playerNames[playerIndex].text = p.PlayerUserName;
+            playerNames[playerIndex].color = p.PlayerColour;
 
             if(!easyPhoneInteractions){
                 p.DisableOkayButtonsOnPanels();
