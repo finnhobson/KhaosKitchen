@@ -61,7 +61,7 @@ public class Player : NetworkBehaviour {
     
     //Score
     private int scoreStreak = 0;
-    private const int scoreStreakMax = 5;
+    private const int scoreStreakMax = 3;
 
     //Booleans
     public bool isGamePaused = false;
@@ -81,6 +81,7 @@ public class Player : NetworkBehaviour {
     private void Start()
     {
         //Link Player GameObject to GameController.
+
         gameController = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
         InstructionController = GameObject.FindGameObjectWithTag("InstructionController").GetComponent<InstructionController>();
         Screen.orientation = ScreenOrientation.Portrait;
@@ -89,6 +90,17 @@ public class Player : NetworkBehaviour {
         nameText.text += PlayerUserName;
         //countdownText.color = PlayerColour;
         micListener.enabled = false;
+        int rand = UnityEngine.Random.Range(0, 1);
+        if(rand == 0)
+        {
+            isBinA = false;
+        }
+         rand = UnityEngine.Random.Range(0, 1);
+        if (rand == 0)
+        {
+            isWindowA = false;
+        }
+
     }
 
     private void Update()
