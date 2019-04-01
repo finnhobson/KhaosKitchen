@@ -525,4 +525,5 @@ public class GameController : NetworkBehaviour
             player.topChefText.text = topChef;
         }
     }
+
 }
