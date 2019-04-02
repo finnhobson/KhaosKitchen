@@ -5,7 +5,7 @@ using UnityEngine.Networking;
 using UnityEngine.UI;
 
 
-public class LobbyManager : NetworkLobbyManager {
+public class OldLobbyManager : NetworkLobbyManager {
 
     public GameObject Lobby;
     public GameObject Menu;

@@ -24,13 +24,13 @@ public class GameController : NetworkBehaviour
     public List<Player> playerList = new List<Player>();
     public List<Text> playerNames = new List<Text>();
     
-    [SyncVar] public int score = 0;
-    [SyncVar] private int roundScore = 0;
+    [SyncVar] public int score;
+    [SyncVar] private int roundScore;
     [SyncVar] public int roundNumber = 1;
-    [SyncVar] public int fireCount = 0;
+    [SyncVar] public int fireCount;
 
-    [SyncVar] public bool isRoundPaused = false;
-    [SyncVar] public bool isGameStarted = false;
+    [SyncVar] public bool isRoundPaused;
+    [SyncVar] public bool isGameStarted;
 
     [SyncVar] public float roundTimeLeft;
     [SyncVar] public int roundStartTime;
@@ -43,7 +43,13 @@ public class GameController : NetworkBehaviour
     [SyncVar] public int InstructionTimeIncreasePerPlayer;
     [SyncVar] public int MinimumInstructionTime;
 
-    [SyncVar] public int playerCount;
+    [SyncVar] private int playerCount = 3;
+
+    public int PlayerCount
+    {
+        get { return playerCount; }
+    }
+
     [SyncVar] public bool easyPhoneInteractions;
 
     [SyncVar(hook = "SetTopChef")] public string currentTopChef;
@@ -63,7 +69,7 @@ public class GameController : NetworkBehaviour
     public GameObject scoreBar;
 
     //Booleans
-    private bool isGameOver = false;
+    private bool isGameOver;
 
     List<string> UserNames = new List<string>(); /* Just here so in future they can set their own usernames from the lobby */
 
@@ -77,8 +83,17 @@ public class GameController : NetworkBehaviour
     {
         if (isServer)
         {
+            GameSettings.SetDefaultValues();
             LoadSettings();
+            
+            Debug.Log("Round Time : " + roundStartTime);
+            Debug.Log("Player Count : " + playerCount);
+
+
+            
         }
+
+        playerCount = 2;
 
         //Find players
         var players = FindObjectsOfType<Player>();
@@ -87,7 +102,7 @@ public class GameController : NetworkBehaviour
         int playerIndex = 0;
         foreach (var p in players)
         {
-            Debug.Log("isLocalPlayer: " + p.isLocalPlayer);
+//            Debug.Log("isLocalPlayer: " + p.isLocalPlayer);
             playerList.Add(p);
             if (isServer) p.SetGameController(this);
             p.SetInstructionController(InstructionController);
@@ -166,6 +181,7 @@ public class GameController : NetworkBehaviour
             {
                 OnRoundComplete();
             }
+            
             else if (roundTimeLeft < 0)
             {
                 SetTimerText("0");
@@ -183,6 +199,7 @@ public class GameController : NetworkBehaviour
                     isGameOver = true;
                 }
             }
+            
             else
             {
                 SetTimerText(roundTimeLeft.ToString("F2"));
@@ -476,6 +493,7 @@ public class GameController : NetworkBehaviour
         MinimumInstructionTime = GameSettings.MinimumInstructionTime;
 
         piProb = GameSettings.PhoneInteractionProbability;
+        
     }
     
     private void UpdateCustomerSatisfaction()

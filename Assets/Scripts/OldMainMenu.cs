@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
 
-public class MainMenu : MonoBehaviour {
+public class OldMainMenu : MonoBehaviour {
 
     public LobbyManager lobbyManager;
     public GameObject lobby, mainMenu;

@@ -56,7 +56,7 @@ public class AnimationController : MonoBehaviour
     private IEnumerator SpawnChefs()
     {
         yield return new WaitForSecondsRealtime(2);
-        int playerCount = gameController.playerCount;
+        int playerCount = gameController.PlayerCount;
         var players = FindObjectsOfType<Player>();
         for (int i = 0; i < playerCount; i++)
         {

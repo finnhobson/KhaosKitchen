@@ -85,6 +85,13 @@ public class Player : NetworkBehaviour {
         gameController = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
         InstructionController = GameObject.FindGameObjectWithTag("InstructionController").GetComponent<InstructionController>();
         Screen.orientation = ScreenOrientation.Portrait;
+        
+        // ------------------------------------------------------------------------------
+        fullScreenPanel.SetActive(false);
+        roundCompletePanel.SetActive(false);
+        roundStartPanel.SetActive(false);
+        // ------------------------------------------------------------------------------
+
         StartInstTimer();
         VolumeOfSoundEffects = Volume;
         nameText.text += PlayerUserName;
@@ -100,6 +107,7 @@ public class Player : NetworkBehaviour {
         {
             isWindowA = false;
         }
+        
 
     }
 
@@ -257,7 +265,7 @@ public class Player : NetworkBehaviour {
 
     public void GameOver()
     {
-        gameOverPanel.SetActive(true);
+//        gameOverPanel.SetActive(true);
         SetTimerText("0");
     }
 

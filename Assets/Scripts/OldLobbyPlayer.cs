@@ -8,7 +8,7 @@ using UnityEngine.Networking;
 using UnityEngine.UI;
 using Button = UnityEngine.UI.Button;
 
-public class LobbyPlayer : NetworkLobbyPlayer {
+public class OldLobbyPlayer : NetworkLobbyPlayer {
 
     //Unity game objects
     public GameObject ParentPref;
