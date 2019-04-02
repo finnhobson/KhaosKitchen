@@ -266,6 +266,7 @@ public class GameController : NetworkBehaviour
                     GameOver();
                 }
             }
+            
             else
             {
                 SetTimerText(roundTimeLeft.ToString("F2"));
@@ -582,6 +583,7 @@ public class GameController : NetworkBehaviour
         MinimumInstructionTime = GameSettings.MinimumInstructionTime;
 
         piProb = GameSettings.PhoneInteractionProbability;
+        
     }
     
     private void DecreaseCustomerSatisfaction()

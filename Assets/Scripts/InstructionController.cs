@@ -25,6 +25,7 @@ public class InstructionController : NetworkBehaviour
     private SyncListString activeButtonActions = new SyncListString();
     private SyncListString activeInstructions = new SyncListString();
     
+    
     public SyncListString ActiveButtonActions
     {
         get { return activeButtonActions; }
@@ -84,6 +85,7 @@ public class InstructionController : NetworkBehaviour
         //Assign actions and instructions to each player.
         foreach (var player in Players)
         {
+            Debug.Log("List length = " + activeButtonActions.Count);
             for (int i = 0; i < NumberOfButtons; i++)
             {
                 string action = activeButtonActions[player.PlayerId * numberOfButtons + i];
@@ -133,11 +135,14 @@ public class InstructionController : NetworkBehaviour
      */
     public void SelectButtonActions()
     {
-        ActiveButtonActions.Clear(); 
-
+        ActiveButtonActions.Clear();
+        
+        int randomIndex;
         bool duplicate;
         int verbNo, nounNo;
         string text;
+        
+//        Debug.Log("PlayerCount :: " + PlayerCount + ", NoB :: "  //                  + NumberOfButtons);
         
         for (int i = 0; i < PlayerCount*NumberOfButtons; i++)
         {

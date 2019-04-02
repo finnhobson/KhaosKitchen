@@ -5,7 +5,7 @@ public class NetworkLobbyHook : MonoBehaviour
 {
     public void OnLobbyServerSceneLoadedForPlayer(NetworkManager manager, GameObject lobbyPlayer, GameObject gamePlayer)
     {
-        LobbyPlayer lp = lobbyPlayer.GetComponent<LobbyPlayer>();
+        OldLobbyPlayer lp = lobbyPlayer.GetComponent<OldLobbyPlayer>();
         Player player = gamePlayer.GetComponent<Player>();
 
         player.PlayerUserName = lp.UserName;
