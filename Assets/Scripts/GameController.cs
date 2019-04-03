@@ -89,34 +89,24 @@ public class GameController : NetworkBehaviour
         {
             Debug.Log("isLocalPlayer: " + p.isLocalPlayer);
             playerList.Add(p);
+            UserNames.Add(p.PlayerUserName);
             if (isServer) p.SetGameController(this);
             p.SetInstructionController(InstructionController);
             p.SetPlayerId(playerIndex);
             p.instStartTime = CalculateInstructionTime();
             p.playerCount = playerCount;
+            p.PlayerScore = 0;
 
-            if(!easyPhoneInteractions){
+            if (!easyPhoneInteractions){
                 p.DisableOkayButtonsOnPanels();
             }
-
-            //New attributes for players to add to gameplayer, thoughts?
-            p.PlayerScore = 0;            
-
+                       
             playerIndex++;
         }
         
         if (isServer)
         {
             GetComponentInChildren<Canvas>().enabled = true; //Show server display only on the server.
-            playerIndex = 0;
-            foreach (var p in players)
-            {
-                UserNames.Add(p.PlayerUserName);
-                Debug.Log(p.PlayerId + " = " + p.PlayerUserName);
-                playerNames[playerIndex].text = p.PlayerUserName;
-                playerNames[playerIndex].color = p.PlayerColour;
-                playerIndex++;
-            }
             gameStateHandler = new GameStateHandler(UserNames); //Instantiate single gameStateHandler object on the server to hold gamestate data 
         }
 
@@ -170,6 +160,7 @@ public class GameController : NetworkBehaviour
             {
                 SetTimerText("0");
                 RpcGameOver();
+                gameOverText.transform.SetAsLastSibling();
                 gameOverText.SetActive(true);
                 backButton.SetActive(true);
                 foreach (Player p in playerList)
@@ -348,13 +339,18 @@ public class GameController : NetworkBehaviour
     private IEnumerator StartRound(int x)
     {
         yield return new WaitForSecondsRealtime(x);
+        var players = FindObjectsOfType<Player>();
+        for (int i = 0; i < players.Length; i++)
+        {
+            playerNames[i].text = players[i].PlayerUserName;
+            playerNames[i].color = players[i].PlayerColour;
+        }
         PlayRoundMusic();
         ResetPlayers();
         ResetServer();
         RpcUnpausePlayers();
         isRoundPaused = false;
         PenultimateAction(false);
-//        PrintInstructionHandler();
         roundMaxScore = CalculateInstructionNumber();
         customerSatisfaction = 100;
         UpdateScoreBar();

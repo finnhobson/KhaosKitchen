@@ -84,10 +84,13 @@ public class ChefController : MonoBehaviour
 
             transform.localPosition = new Vector3(transform.localPosition.x + x, transform.localPosition.y, transform.localPosition.z + z);
         }
-        else
+        else if (gameController.isGameStarted)
         {
             transform.localRotation = Quaternion.Euler(0, 0, 0);
         }
-            
+        else transform.localRotation = Quaternion.Euler(0, 0, 0);
+
+
+
     }
 }
