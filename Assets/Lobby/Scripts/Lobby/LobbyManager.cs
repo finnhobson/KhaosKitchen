@@ -33,7 +33,7 @@ public class LobbyManager : NetworkLobbyManager
     protected RectTransform currentPanel;
 
     public Button backButton;
-
+    public Button settingsButton;
     public Text statusInfo;
     public Text hostInfo;
 
