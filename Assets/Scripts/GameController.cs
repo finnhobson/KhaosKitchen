@@ -342,8 +342,8 @@ public class GameController : NetworkBehaviour
         var players = FindObjectsOfType<Player>();
         for (int i = 0; i < players.Length; i++)
         {
-            playerNames[i].text = playerList[i].PlayerUserName;
-            playerNames[i].color = playerList[i].PlayerColour;
+            playerNames[i].text = players[i].PlayerUserName;
+            playerNames[i].color = players[i].PlayerColour;
         }
         PlayRoundMusic();
         ResetPlayers();
