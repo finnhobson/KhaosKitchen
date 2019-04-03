@@ -83,7 +83,8 @@ public class GameController : NetworkBehaviour
     {
         if (isServer)
         {    
-            LoadSettings();           
+            LoadSettings(); 
+            Debug.Log("PlayerCount : " + playerCount + ", GSPC : " + GameSettings.PlayerCount);
         }
 
         //Find players

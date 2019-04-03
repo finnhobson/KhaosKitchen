@@ -33,7 +33,7 @@ public static class GameSettings
     private static bool easyPhoneInteraction = true;
     private static int phoneInteractionProbability = 21;
     
-    private static int pCount = 2;
+    private static int pCount;
     
     public static int PlayerCount 
     {
