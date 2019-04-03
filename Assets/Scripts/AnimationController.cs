@@ -56,11 +56,10 @@ public class AnimationController : MonoBehaviour
     private IEnumerator SpawnChefs()
     {
         yield return new WaitForSecondsRealtime(2);
-        int playerCount = gameController.playerCount;
         var players = FindObjectsOfType<Player>();
-        for (int i = 0; i < playerCount; i++)
+        for (int i = 0; i < players.Length; i++)
         {
-            Vector3 pos = new Vector3(((2 * i * 40) + 40) / (playerCount * 2) - 20, 0, 0);
+            Vector3 pos = new Vector3(((2 * i * 40) + 40) / (players.Length * 2) - 20, 0, 0);
             GameObject newChef = Instantiate(chefPrefab, pos, transform.rotation);
             Image newArrow = Instantiate(arrow);
             newArrow.color = players[i].PlayerColour;
