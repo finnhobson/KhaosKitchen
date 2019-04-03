@@ -47,6 +47,14 @@ public class Player : NetworkBehaviour
     [SyncVar] public int PlayerId;
     [SyncVar] public int PlayerScore;
 
+    [SyncVar (hook = "DisplayTopChef")] private string topChef;
+
+    public string TopChef
+    {
+        get { return topChef; }
+        set { topChef = value; }
+    }
+
     //Extras
     private string nfcValue = "";
     public int playerCount;
@@ -135,8 +143,6 @@ public class Player : NetworkBehaviour
         {
             isWindowA = false;
         }
-        
-
     }
 
     private void Update()
@@ -642,9 +648,10 @@ public class Player : NetworkBehaviour
     private void ThisButtonWasPressed(int buttonNumber)
     {
         //Activate feedback on this button
-        CmdPrint(buttonNumber);
+//        CmdPrint(buttonNumber);
         AllButtons[buttonNumber].GetComponent<Image>().color = Color.green;
-
+        PlayerScore++;
+        
         PlayCorrectSound();
         CmdIncreasePlayerScore();
         
@@ -739,6 +746,11 @@ public class Player : NetworkBehaviour
     public void BackToMainMenu()
     {
         Application.Quit();
+    }
+
+    private void DisplayTopChef(string topChef)
+    {
+        topChefText.text = topChef;
     }
 }
 

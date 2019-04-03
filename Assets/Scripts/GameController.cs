@@ -522,7 +522,6 @@ public class GameController : NetworkBehaviour
         var players = FindObjectsOfType<Player>();
         foreach (Player player in players)
         {
-            Debug.Log("Name = " + player.PlayerUserName + " Score = " + player.PlayerScore);
             if (player.PlayerScore > topScore)
             {
                 topScore = player.PlayerScore;
@@ -531,7 +530,7 @@ public class GameController : NetworkBehaviour
             //gameStateHandler.UpdatePlayerScore(player.PlayerUserName, player.PlayerScore);
             //player.PlayerScore = 0;
         }
-        currentTopChef = topChef;
+        SetTopChef(topChef);
     }
 
     private void PrintInstructionHandler()
