@@ -65,7 +65,7 @@ public class AnimationController : MonoBehaviour
             Image newArrow = Instantiate(arrow);
             newArrow.color = players[i].PlayerColour;
             newArrow.transform.SetParent(GameObject.FindGameObjectWithTag("ServerCanvas").transform, false);
-            newChef.GetComponent<ChefController>().arrow = newArrow;
+            newChef.GetComponentInChild<ChefController>().arrow = newArrow;
         }
     }
 

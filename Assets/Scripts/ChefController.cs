@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class ChefController : MonoBehaviour
 {
+    public Animator anim; 
     public float maxSpeed;
 
     public float xMax;
@@ -25,6 +26,7 @@ public class ChefController : MonoBehaviour
     // Use this for initialization
     void Start()
     {
+        anim = this.transform.GetComponent<Animator>();
         gameController = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
 
         x = Random.Range(-maxSpeed, maxSpeed);
@@ -43,6 +45,8 @@ public class ChefController : MonoBehaviour
 
         if (!gameController.isRoundPaused && gameController.isGameStarted)
         {
+            anim.SetBool("isInGame", true); 
+
             if (transform.localPosition.x > xMax)
             {
                 x = Random.Range(-maxSpeed, 0.0f);
@@ -84,10 +88,13 @@ public class ChefController : MonoBehaviour
 
             transform.localPosition = new Vector3(transform.localPosition.x + x, transform.localPosition.y, transform.localPosition.z + z);
         }
-        else
+        else if (gameController.isGameStarted)
         {
             transform.localRotation = Quaternion.Euler(0, 0, 0);
+            anim.SetBool("isEndRoundSuccessful", true);
         }
+
+
             
     }
 }
