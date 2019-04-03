@@ -66,6 +66,10 @@ public class LobbyManager : NetworkLobbyManager
         DontDestroyOnLoad(gameObject);
 
         SetServerInfo("Offline", "None");
+
+        #if UNITY_ANDROID
+        settingsButton.enabled = false;
+        #endif
     }
 
     public override void OnLobbyClientSceneChanged(NetworkConnection conn)
