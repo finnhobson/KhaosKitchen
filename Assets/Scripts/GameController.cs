@@ -74,7 +74,7 @@ public class GameController : NetworkBehaviour
     List<string> UserNames = new List<string>(); /* Just here so in future they can set their own usernames from the lobby */
 
     //Indicator variables for the animation controller
-    public bool playersInitialised = false;
+    public bool playersInitialised;
 
     
     //Functions-----------------------------------------------------------------------------------------------------
@@ -82,18 +82,9 @@ public class GameController : NetworkBehaviour
     private void Start()
     {
         if (isServer)
-        {
-            GameSettings.SetDefaultValues();
-            LoadSettings();
-            
-            Debug.Log("Round Time : " + roundStartTime);
-            Debug.Log("Player Count : " + playerCount);
-
-
-            
+        {    
+            LoadSettings();           
         }
-
-        playerCount = 2;
 
         //Find players
         var players = FindObjectsOfType<Player>();
