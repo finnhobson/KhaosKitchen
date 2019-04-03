@@ -52,7 +52,6 @@ public class GameController : NetworkBehaviour
 
     [SyncVar] public bool easyPhoneInteractions;
 
-    [SyncVar(hook = "SetTopChef")] public string currentTopChef;
 
     [SyncVar] public float customerSatisfaction = 100;
 
@@ -76,7 +75,6 @@ public class GameController : NetworkBehaviour
     //Indicator variables for the animation controller
     public bool playersInitialised;
 
-    
     //Functions-----------------------------------------------------------------------------------------------------
 
     private void Start()
@@ -421,10 +419,11 @@ public class GameController : NetworkBehaviour
     {
         //Store round info
         gameStateHandler.OnRoundComplete(score);
-        int topScore = 0;
+        int topScore = -1;
         string topChef = "";
         foreach (var player in playerList)
         {
+            Debug.Log("Player: " + player.PlayerUserName + " :: " + player.PlayerScore);
             if (player.PlayerScore > topScore)
             {
                 topScore = player.PlayerScore;
@@ -433,7 +432,7 @@ public class GameController : NetworkBehaviour
             gameStateHandler.UpdatePlayerScore(player.PlayerUserName, player.PlayerScore);
             player.PlayerScore = 0;
         }
-        currentTopChef = topChef;
+        SetTopChef(topChef);
     }
 
     private void PrintInstructionHandler()
@@ -537,7 +536,7 @@ public class GameController : NetworkBehaviour
         Debug.Log(topChef);
         foreach (var player in playerList)
         {
-            player.topChefText.text = topChef;
+            player.TopChef = topChef;
         }
     }
 
