@@ -145,7 +145,7 @@ public class GameController : NetworkBehaviour
     List<string> UserNames = new List<string>(); /* Just here so in future they can set their own usernames from the lobby */
 
     //Indicator variables for the animation controller
-    public bool playersInitialised = false;
+    public bool playersInitialised;
 
     public bool PlayersInitialised
     {

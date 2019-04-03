@@ -14,7 +14,6 @@ public class LobbyManager : NetworkLobbyManager
 
     static public LobbyManager s_Singleton;
 
-
     [Header("Unity UI Lobby")]
     [Tooltip("Time in second between all players ready & match start")]
     public float prematchCountdown = 5.0f;
@@ -42,15 +41,18 @@ public class LobbyManager : NetworkLobbyManager
     [HideInInspector]
     public int _playerNumber = 0;
 
-    //used to disconnect a client properly when exiting the matchmaker
-    [HideInInspector]
-    public bool _isMatchmaking = false;
-
     protected bool _disconnectServer = false;
     
-    protected ulong _currentMatchID;
-
     protected LobbyHook _lobbyHooks;
+    
+    //Game Settings
+    public Text roundTimeText, BaseInstructionNumberText, InstructionNumberIncreasePerRoundText, BaseInstructionTimeText, InstructionTimeReductionPerRoundText, InstructionTimeIncreasePerPlayerText, MinimumInstructionTimeText;
+
+    public Text playerCountText;
+    public Slider playerCountSlider;
+    public Text toggleText;
+    public Toggle easyPhoneInteractions;
+    public Text phoneInteractionText;
 
     void Start()
     {
@@ -73,28 +75,16 @@ public class LobbyManager : NetworkLobbyManager
             if (topPanel.isInGame)
             {
                 ChangeTo(lobbyPanel);
-                if (_isMatchmaking)
+               
+                if (conn.playerControllers[0].unetView.isClient)
                 {
-                    if (conn.playerControllers[0].unetView.isServer)
-                    {
-                        backDelegate = StopHostClbk;
-                    }
-                    else
-                    {
-                        backDelegate = StopClientClbk;
-                    }
+                    backDelegate = StopHostClbk;
                 }
                 else
-                {
-                    if (conn.playerControllers[0].unetView.isClient)
-                    {
-                        backDelegate = StopHostClbk;
-                    }
-                    else
                     {
                         backDelegate = StopClientClbk;
                     }
-                }
+                
             }
             else
             {
@@ -138,7 +128,6 @@ public class LobbyManager : NetworkLobbyManager
         {
             backButton.gameObject.SetActive(false);
             SetServerInfo("Offline", "None");
-            _isMatchmaking = false;
         }
     }
 
@@ -153,7 +142,6 @@ public class LobbyManager : NetworkLobbyManager
         statusInfo.text = status;
         hostInfo.text = host;
     }
-
 
     public delegate void BackButtonDelegate();
     public BackButtonDelegate backDelegate;
@@ -182,28 +170,14 @@ public class LobbyManager : NetworkLobbyManager
              
     public void StopHostClbk()
     {
-        if (_isMatchmaking)
-        {
-            matchMaker.DestroyMatch((NetworkID)_currentMatchID, 0, OnDestroyMatch);
-            _disconnectServer = true;
-        }
-        else
-        {
-            StopHost();
-        }
-
-        
+        StopHost();
+      
         ChangeTo(mainMenuPanel);
     }
 
     public void StopClientClbk()
     {
         StopClient();
-
-        if (_isMatchmaking)
-        {
-            StopMatchMaker();
-        }
 
         ChangeTo(mainMenuPanel);
     }
@@ -235,22 +209,6 @@ public class LobbyManager : NetworkLobbyManager
         ChangeTo(lobbyPanel);
         backDelegate = StopHostClbk;
         SetServerInfo("Hosting", networkAddress);
-    }
-
-    public override void OnMatchCreate(bool success, string extendedInfo, MatchInfo matchInfo)
-    {
-        base.OnMatchCreate(success, extendedInfo, matchInfo);
-        _currentMatchID = (System.UInt64)matchInfo.networkId;
-    }
-
-    public override void OnDestroyMatch(bool success, string extendedInfo)
-    {
-        base.OnDestroyMatch(success, extendedInfo);
-        if (_disconnectServer)
-        {
-            StopMatchMaker();
-            StopHost();
-        }
     }
 
     //allow to handle the (+) button to add/remove player
@@ -380,6 +338,8 @@ public class LobbyManager : NetworkLobbyManager
             }
         }
 
+        topPanel.enabled = false;
+
         ServerChangeScene(playScene);
     }
 
@@ -413,5 +373,38 @@ public class LobbyManager : NetworkLobbyManager
         ChangeTo(mainMenuPanel);
         infoPanel.Display("Client error : " + (errorCode == 6 ? "timeout" : errorCode.ToString()), "Close", null);
     }
+    
+    // ------------- Game Settings -------------------------------------------------------
+    
+    public void SetSettings()
+    {
+        GameSettings.RoundTime = string.IsNullOrEmpty(roundTimeText.text) ? 90 : int.Parse(roundTimeText.text);
+        GameSettings.BaseInstructionNumber = string.IsNullOrEmpty(BaseInstructionNumberText.text) ? 10 : int.Parse(BaseInstructionNumberText.text);
+        GameSettings.InstructionNumberIncreasePerRound = string.IsNullOrEmpty(InstructionNumberIncreasePerRoundText.text) ? 5 : int.Parse(InstructionNumberIncreasePerRoundText.text);
+        GameSettings.BaseInstructionTime = string.IsNullOrEmpty(BaseInstructionTimeText.text) ? 15 : int.Parse(BaseInstructionTimeText.text);
+        GameSettings.InstructionTimeReductionPerRound = string.IsNullOrEmpty(InstructionTimeReductionPerRoundText.text) ? 2 : int.Parse(InstructionTimeReductionPerRoundText.text);
+        GameSettings.InstructionTimeIncreasePerPlayer = string.IsNullOrEmpty(InstructionTimeIncreasePerPlayerText.text) ? 2 : int.Parse(InstructionTimeIncreasePerPlayerText.text);
+        GameSettings.MinimumInstructionTime = string.IsNullOrEmpty(MinimumInstructionTimeText.text) ? 5 : int.Parse(MinimumInstructionTimeText.text);
+        GameSettings.PlayerCount = (int)playerCountSlider.value;
+        GameSettings.EasyPhoneInteractions = easyPhoneInteractions.isOn;
+        GameSettings.PhoneInteractionProbability = string.IsNullOrEmpty(phoneInteractionText.text) ? 42 : 2*int.Parse(phoneInteractionText.text);
+
+    }
+    
+    public void UpdatePlayerCountText()
+    {
+        playerCountText.text = "Player Count: " + playerCountSlider.value;
+    }
+
+    public void UpdateToggleText()
+    {
+        if(easyPhoneInteractions.isOn){
+            toggleText.text = "On";
+        }
+        else{
+            toggleText.text = "Off";
+        }
+    }
+    
 }
 
