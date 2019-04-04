@@ -70,6 +70,7 @@ public class Player : NetworkBehaviour {
     private bool isFail = false;
     private bool isServe = false;
     private bool micActive = false;
+    private bool timerStarted = false;
 
     private void Awake()
     {
@@ -81,26 +82,17 @@ public class Player : NetworkBehaviour {
     private void Start()
     {
         //Link Player GameObject to GameController.
-
         gameController = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
         InstructionController = GameObject.FindGameObjectWithTag("InstructionController").GetComponent<InstructionController>();
         Screen.orientation = ScreenOrientation.Portrait;
-        StartInstTimer();
         VolumeOfSoundEffects = Volume;
         nameText.text += PlayerUserName;
-        //countdownText.color = PlayerColour;
         micListener.enabled = false;
-        int rand = UnityEngine.Random.Range(0, 1);
-        if(rand == 0)
-        {
-            isBinA = false;
-        }
-         rand = UnityEngine.Random.Range(0, 1);
-        if (rand == 0)
-        {
-            isWindowA = false;
-        }
 
+        int rand = UnityEngine.Random.Range(0, 1);
+        if (rand == 0) isBinA = false;
+        rand = UnityEngine.Random.Range(0, 1);
+        if (rand == 0) isWindowA = false;
     }
 
     private void Update()
@@ -109,7 +101,13 @@ public class Player : NetworkBehaviour {
         scoreText.text = gameController.score.ToString();
         //if (micActive) micVolumeText.text = micListener.MicLoudness.ToString("F4");
 
-        if (gameController.roundTimeLeft > 0)
+        if (!timerStarted && gameController.isGameStarted)
+        {
+            StartInstTimer();
+            timerStarted = true;
+        }
+
+        if (gameController.isGameStarted && gameController.roundTimeLeft > 0)
         {
             UpdateInstTimeLeft();
             if (instTimeLeft < 0 && isLocalPlayer)
@@ -121,7 +119,7 @@ public class Player : NetworkBehaviour {
             }
             else
             {
-                SetTimerText(instTimeLeft.ToString("F2"));
+                SetTimerText(instTimeLeft.ToString("F1"));
             }
 
             if (micPanel.activeInHierarchy && !micActive)
@@ -173,7 +171,7 @@ public class Player : NetworkBehaviour {
                     
                    
                 }
-                else if(isServe)
+                else if (isServe)
                 {
                     if (nfcValue == "Window A" && isWindowA)
                     {
@@ -254,6 +252,7 @@ public class Player : NetworkBehaviour {
             SetTimerText("0");
         }
     }
+
 
     public void GameOver()
     {

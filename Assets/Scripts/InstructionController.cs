@@ -112,15 +112,11 @@ public class InstructionController : NetworkBehaviour
             for (int i = 0; i < NumberOfButtons; i++)
             {
                 string action = activeButtonActions[player.PlayerId * NumberOfButtons + i];
-
                 player.SetActionButtons(action, i);
             }
             string instruction = ActiveInstructions[player.PlayerId];
             player.SetInstruction(instruction);
         }
-        
-//        if(isServer) InstructionHandler.PrintInstructions();
-
     }
 
     /*
@@ -250,14 +246,12 @@ public class InstructionController : NetworkBehaviour
         InstructionHandler.InstructionCompleted(action);
 
         int randomIndex = UnityEngine.Random.Range(0, ActiveButtonActions.Count);
-        
         while (ActiveInstructions.Contains(ActiveButtonActions[randomIndex]))
         {
             randomIndex = UnityEngine.Random.Range(0, ActiveButtonActions.Count);
         }
         
         ActiveInstructions[index] = ActiveButtonActions[randomIndex];
-        
         InstructionHandler.SetIsActive(ActiveButtonActions[randomIndex]);
     }
     
@@ -272,7 +266,6 @@ public class InstructionController : NetworkBehaviour
     {
         for (int i = 0; i < NumberOfButtons; i++)
         {
-//            Players[i].SetActionButtons(activeButtonActions[Players[i].PlayerId*NumberOfButtons + i], i);
             Players[i].SetActionButtons(playerID.ToString(), i);
         }
     }

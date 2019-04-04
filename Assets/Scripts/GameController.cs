@@ -32,7 +32,7 @@ public class GameController : NetworkBehaviour
     [SyncVar] public bool isRoundPaused = false;
     [SyncVar] public bool isGameStarted = false;
 
-    [SyncVar] public float roundTimeLeft;
+    [SyncVar] public float roundTimeLeft = 90;
     [SyncVar] public int roundStartTime;
     [SyncVar] public int instructionStartTime;
 
@@ -46,7 +46,8 @@ public class GameController : NetworkBehaviour
     [SyncVar] public int playerCount;
     [SyncVar] public bool easyPhoneInteractions;
 
-    [SyncVar(hook = "SetTopChef")] public string currentTopChef;
+    //[SyncVar(hook = "SetTopChef")] public string currentTopChef;
+    private string currentTopChef;
 
     [SyncVar] public float customerSatisfaction = 100;
 
@@ -70,22 +71,35 @@ public class GameController : NetworkBehaviour
     //Indicator variables for the animation controller
     public bool playersInitialised = false;
 
-    
-    //Functions-----------------------------------------------------------------------------------------------------
+
+    //--------------------------------------------------------------------------------------------------------------
+    // FUNCTIONS ---------------------------------------------------------------------------------------------------
+    //--------------------------------------------------------------------------------------------------------------
 
     private void Start()
     {
+        StartCoroutine(SetupGame(2));
+
+        //Show server display only on the server
         if (isServer)
         {
-            LoadSettings();
+            GetComponentInChildren<Canvas>().enabled = true;
+            GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Animation>().Play();
         }
+    }
+
+    private IEnumerator SetupGame(int x)
+    {
+        yield return new WaitForSecondsRealtime(x);
+
+        if (isServer) LoadSettings();
 
         //Find players
         var players = FindObjectsOfType<Player>();
-        
+
         //Loop sets up playerList, links players to the GC and IC and sets player id
         int playerIndex = 0;
-        foreach (var p in players)
+        foreach (Player p in players)
         {
             Debug.Log("isLocalPlayer: " + p.isLocalPlayer);
             playerList.Add(p);
@@ -96,38 +110,27 @@ public class GameController : NetworkBehaviour
             p.instStartTime = CalculateInstructionTime();
             p.playerCount = playerCount;
             p.PlayerScore = 0;
+            if (!easyPhoneInteractions) p.DisableOkayButtonsOnPanels();
 
-            if (!easyPhoneInteractions){
-                p.DisableOkayButtonsOnPanels();
-            }
-                       
             playerIndex++;
         }
-        
-        if (isServer)
-        {
-            GetComponentInChildren<Canvas>().enabled = true; //Show server display only on the server.
-            gameStateHandler = new GameStateHandler(UserNames); //Instantiate single gameStateHandler object on the server to hold gamestate data 
-        }
-
-        playersInitialised = true;
 
         InstructionController.ICStart(playerCount, numberOfButtons, playerList, this);
         InstructionController.piProb = piProb;
 
         if (isServer)
         {
-            GetComponentInChildren<Canvas>().enabled = true; //Show server display only on the server.
             gameStateHandler = new GameStateHandler(UserNames); //Instantiate single gameStateHandler object on the server to hold gamestate data 
-        
-            StartCoroutine(RoundCountdown(10, "3"));
-            StartCoroutine(RoundCountdown(11, "2"));
-            StartCoroutine(RoundCountdown(12, "1"));
-            StartCoroutine(StartRound(13));
-            StartCoroutine(StartGame(13));
+            playersInitialised = true;
+
+            StartCoroutine(RoundCountdown(12, "3"));
+            StartCoroutine(RoundCountdown(13, "2"));
+            StartCoroutine(RoundCountdown(14, "1"));
+            StartCoroutine(StartRound(15));
+            StartCoroutine(StartGame(15));
         }
-        
     }
+
 
     private IEnumerator StartGame(int x)
     {
@@ -137,6 +140,7 @@ public class GameController : NetworkBehaviour
         isGameStarted = true;
 
     }
+
 
     private void Update()
     {
@@ -277,10 +281,22 @@ public class GameController : NetworkBehaviour
         if (!isServer || isRoundPaused) return; //Only need to access this function once per round completion.
         roundNumber++;
         isRoundPaused = true;
+        UpdateGamestate();
+
+        int highScore = 0;
+        var players = FindObjectsOfType<Player>();
+        foreach (Player p in players)
+        {
+            if (p.PlayerScore > highScore)
+            {
+                highScore = p.PlayerScore;
+                currentTopChef = p.PlayerUserName;
+            }
+        }
+
         fireCount = 0;
         PauseMusic();
         PlayRoundBreakMusic();
-        UpdateGamestate();
         RpcPausePlayers();
 
         foreach (Player p in playerList)
@@ -298,10 +314,6 @@ public class GameController : NetworkBehaviour
 
     }
     
-    private IEnumerator Wait(float n)
-    {
-        yield return new WaitForSecondsRealtime(n);
-    }
 
     private IEnumerator RoundCountdown(int n, string x)
     {
@@ -311,6 +323,7 @@ public class GameController : NetworkBehaviour
         PlayCountDown(count - 1);
         RpcCountdown(x);
     }
+
 
     [ClientRpc]
     private void RpcCountdown(string x)
@@ -344,6 +357,7 @@ public class GameController : NetworkBehaviour
         {
             playerNames[i].text = players[i].PlayerUserName;
             playerNames[i].color = players[i].PlayerColour;
+            players[i].SetPlayerId(i);
         }
         PlayRoundMusic();
         ResetPlayers();
@@ -370,6 +384,7 @@ public class GameController : NetworkBehaviour
         foreach (var player in playerList)
         {
             player.roundScoreText.text = (score + 1).ToString();
+            if (currentTopChef != null) player.topChefText.text = currentTopChef;
             player.roundCompletePanel.SetActive(true);
             player.PausePlayer();
         }
@@ -408,19 +423,19 @@ public class GameController : NetworkBehaviour
     {
         //Store round info
         gameStateHandler.OnRoundComplete(score);
-        int topScore = 0;
-        string topChef = "";
+        //int topScore = 0;
+        //string topChef = "";
         foreach (var player in playerList)
         {
-            if (player.PlayerScore > topScore)
+            /*if (player.PlayerScore > topScore)
             {
                 topScore = player.PlayerScore;
                 topChef = player.PlayerUserName;
-            }
+            }*/
             gameStateHandler.UpdatePlayerScore(player.PlayerUserName, player.PlayerScore);
             player.PlayerScore = 0;
         }
-        currentTopChef = topChef;
+        //currentTopChef = topChef;
     }
 
     private void PrintInstructionHandler()
