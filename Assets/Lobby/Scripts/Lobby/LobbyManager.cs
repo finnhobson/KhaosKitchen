@@ -66,10 +66,10 @@ public class LobbyManager : NetworkLobbyManager
         DontDestroyOnLoad(gameObject);
 
         SetServerInfo("Offline", "None");
-
-        #if UNITY_ANDROID
+        
+#if UNITY_ANDROID
         settingsButton.enabled = false;
-        #endif
+#endif
     }
 
     public override void OnLobbyClientSceneChanged(NetworkConnection conn)
@@ -393,6 +393,7 @@ public class LobbyManager : NetworkLobbyManager
         GameSettings.EasyPhoneInteractions = easyPhoneInteractions.isOn;
         GameSettings.PhoneInteractionProbability = string.IsNullOrEmpty(phoneInteractionText.text) ? 42 : 2*int.Parse(phoneInteractionText.text);
 
+        s_Singleton.minPlayers = GameSettings.PlayerCount;
     }
     
     public void UpdatePlayerCountText()
