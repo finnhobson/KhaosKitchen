@@ -25,8 +25,25 @@ public class MusicPlayer : MonoBehaviour
     
     //Booleans
     private bool isRoundPaused = false;
+
+    public bool IsRoundPaused
+    {
+        get
+        {
+            return isRoundPaused;
+        }
+    }
+
     private bool isMusicPaused = false;
-    
+
+    public bool IsMusicPaused
+    {
+        get
+        {
+            return isMusicPaused;
+        }
+    }
+
     private void Awake()
     {
         BackgroundSource = GetComponent<AudioSource>();

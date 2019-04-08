@@ -25,6 +25,15 @@ public class GameController : NetworkBehaviour, IGameController
     public List<Text> playerNames = new List<Text>();
 
     [SyncVar] public int score = 0;
+
+    public int Score
+    {
+        get
+        {
+            return score;
+        }
+    }
+
     [SyncVar] private int roundScore = 0;
     [SyncVar] public int roundNumber = 1;
     [SyncVar] public int fireCount = 0;
