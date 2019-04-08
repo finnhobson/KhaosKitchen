@@ -9,7 +9,7 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 
-public class GameController : NetworkBehaviour
+public class GameController : NetworkBehaviour, IGameController
 {
     //Custom GameObjects
     public InstructionController InstructionController;
@@ -23,7 +23,7 @@ public class GameController : NetworkBehaviour
 
     public List<Player> playerList = new List<Player>();
     public List<Text> playerNames = new List<Text>();
-    
+
     [SyncVar] public int score = 0;
     [SyncVar] private int roundScore = 0;
     [SyncVar] public int roundNumber = 1;
@@ -70,7 +70,7 @@ public class GameController : NetworkBehaviour
     //Indicator variables for the animation controller
     public bool playersInitialised = false;
 
-    
+
     //Functions-----------------------------------------------------------------------------------------------------
 
     private void Start()
@@ -82,7 +82,7 @@ public class GameController : NetworkBehaviour
 
         //Find players
         var players = FindObjectsOfType<Player>();
-        
+
         //Loop sets up playerList, links players to the GC and IC and sets player id
         int playerIndex = 0;
         foreach (var p in players)
@@ -95,16 +95,17 @@ public class GameController : NetworkBehaviour
             p.instStartTime = CalculateInstructionTime();
             p.playerCount = playerCount;
 
-            if(!easyPhoneInteractions){
+            if (!easyPhoneInteractions)
+            {
                 p.DisableOkayButtonsOnPanels();
             }
 
             //New attributes for players to add to gameplayer, thoughts?
-            p.PlayerScore = 0;            
+            p.PlayerScore = 0;
 
             playerIndex++;
         }
-        
+
         if (isServer)
         {
             GetComponentInChildren<Canvas>().enabled = true; //Show server display only on the server.
@@ -129,14 +130,14 @@ public class GameController : NetworkBehaviour
         {
             GetComponentInChildren<Canvas>().enabled = true; //Show server display only on the server.
             gameStateHandler = new GameStateHandler(UserNames); //Instantiate single gameStateHandler object on the server to hold gamestate data 
-        
+
             StartCoroutine(RoundCountdown(10, "3"));
             StartCoroutine(RoundCountdown(11, "2"));
             StartCoroutine(RoundCountdown(12, "1"));
             StartCoroutine(StartRound(13));
             StartCoroutine(StartGame(13));
         }
-        
+
     }
 
     private IEnumerator StartGame(int x)
@@ -297,7 +298,7 @@ public class GameController : NetworkBehaviour
             p.instStartTime = CalculateInstructionTime();
         }
         ReadyInstructionController();
-        
+
         StartCoroutine(PlayXCountAfterNSeconds(5, 2));
         StartCoroutine(StartNewRoundAfterXSeconds(5));
         StartCoroutine(RoundCountdown(6, "2"));
@@ -306,7 +307,7 @@ public class GameController : NetworkBehaviour
         //StartCoroutine(StartRound(0));
 
     }
-    
+
     private IEnumerator Wait(float n)
     {
         yield return new WaitForSecondsRealtime(n);
@@ -354,7 +355,7 @@ public class GameController : NetworkBehaviour
         RpcUnpausePlayers();
         isRoundPaused = false;
         PenultimateAction(false);
-//        PrintInstructionHandler();
+        //        PrintInstructionHandler();
         roundMaxScore = CalculateInstructionNumber();
         customerSatisfaction = 100;
         UpdateScoreBar();
@@ -453,8 +454,8 @@ public class GameController : NetworkBehaviour
     public int CalculateInstructionTime()
     {
         int temp = BaseInstructionTime
-                    - (roundNumber-1) * InstructionTimeReductionPerRound
-                    + (playerCount-2) * InstructionTimeIncreasePerPlayer;
+                    - (roundNumber - 1) * InstructionTimeReductionPerRound
+                    + (playerCount - 2) * InstructionTimeIncreasePerPlayer;
 
         return temp > MinimumInstructionTime ? temp : MinimumInstructionTime;
 
@@ -477,12 +478,12 @@ public class GameController : NetworkBehaviour
 
         piProb = GameSettings.PhoneInteractionProbability;
     }
-    
+
     private void UpdateCustomerSatisfaction()
     {
         customerSatisfaction = customerSatisfaction + roundScore - roundMaxScore * (roundTimeLeft / roundStartTime);
-        if(customerSatisfaction > 100) customerSatisfaction = 100;
-        if(customerSatisfaction < 0) customerSatisfaction = 0;
+        if (customerSatisfaction > 100) customerSatisfaction = 100;
+        if (customerSatisfaction < 0) customerSatisfaction = 0;
     }
 
     private IEnumerator PlayXCountAfterNSeconds(int n, int x)
@@ -491,7 +492,7 @@ public class GameController : NetworkBehaviour
         PauseMusic();
         PlayCountDown(x);
     }
-    
+
     [Server]
     private void PlayRoundBreakMusic()
     {
