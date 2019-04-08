@@ -36,6 +36,15 @@ public class GameController : NetworkBehaviour, IGameController
 
     [SyncVar] private int roundScore = 0;
     [SyncVar] public int roundNumber = 1;
+
+    public int RoundNumber
+    {
+        get
+        {
+            return roundNumber;
+        }
+    }
+
     [SyncVar] public int fireCount = 0;
 
     [SyncVar] public bool isRoundPaused = false;

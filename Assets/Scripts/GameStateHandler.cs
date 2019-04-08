@@ -38,7 +38,7 @@ public class GameStateHandler
             UserProfiles.Add(userName, 0);
         }
     }
-    
+
     public void OnRoundComplete(int score)
     {
         RoundNumber++;

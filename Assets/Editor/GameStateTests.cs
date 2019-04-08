@@ -70,4 +70,26 @@ public class GameStateTests
         Assert.AreEqual(true, gameController.IsGameOver);
     }
 
+    [Test]
+    public void RoundNumberNotNull_Test()
+    {
+        var gameController = new GameController();
+        Assert.NotNull(gameController.roundNumber);
+    }
+
+    [Test]
+    public void RoundNumberInitialSetUp_Test()
+    {
+        var gameController = new GameController();
+        Assert.AreEqual(1, gameController.roundNumber);
+    }
+
+    [Test]
+    public void RoundNumberIncrease_Test()
+    {
+        var gameController = new GameController();
+        gameController.roundNumber++;
+        Assert.AreEqual(2, gameController.roundNumber);
+    }
+
 }
