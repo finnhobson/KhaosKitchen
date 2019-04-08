@@ -62,6 +62,15 @@ public class Player : NetworkBehaviour, IPlayer
 
     //Score
     private int scoreStreak = 0;
+
+    public int ScoreStreak
+    {
+        get
+        {
+            return scoreStreak;
+        }
+    }
+
     private const int scoreStreakMax = 3;
 
     //Booleans
@@ -79,6 +88,15 @@ public class Player : NetworkBehaviour, IPlayer
     private bool isWindowA = true;
     private bool isFail = false;
     private bool isServe = false;
+
+    public bool IsServe
+    {
+        get
+        {
+            return isServe;
+        }
+    }
+
     private bool micActive = false;
 
     private void Awake()
