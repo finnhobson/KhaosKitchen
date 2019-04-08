@@ -41,8 +41,34 @@ public class GameController : NetworkBehaviour, IGameController
     [SyncVar] public bool isRoundPaused = false;
     [SyncVar] public bool isGameStarted = false;
 
+    public bool IsGameStarted
+    {
+        get
+        {
+            return isGameStarted;
+        }
+    }
+
     [SyncVar] public float roundTimeLeft;
+
+    public float RoundTimeLeft
+    {
+        get
+        {
+            return roundTimeLeft;
+        }
+    }
+
     [SyncVar] public int roundStartTime;
+
+    public int RoundStartTime
+    {
+        get
+        {
+            return roundStartTime;
+        }
+    }
+
     [SyncVar] public int instructionStartTime;
 
     [SyncVar] public int BaseInstructionNumber;
@@ -73,6 +99,14 @@ public class GameController : NetworkBehaviour, IGameController
 
     //Booleans
     private bool isGameOver = false;
+
+    public bool IsGameOver
+    {
+        get
+        {
+            return isGameOver;
+        }
+    }
 
     List<string> UserNames = new List<string>(); /* Just here so in future they can set their own usernames from the lobby */
 
@@ -190,7 +224,7 @@ public class GameController : NetworkBehaviour, IGameController
                 if (!isGameOver)
                 {
                     PlayGameOver();
-                    isGameOver = true;
+                    GameOver();
                 }
             }
             else
@@ -531,6 +565,13 @@ public class GameController : NetworkBehaviour, IGameController
     {
         MusicPlayer.PlayGameOver();
     }
+
+    public void GameOver()
+    {
+        isGameOver = true;
+    }
+
+
 
     private void SetTopChef(string topChef)
     {

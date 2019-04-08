@@ -1,18 +1,20 @@
 ﻿<Properties StartupConfiguration="{5AAD9717-E92E-BFD1-71EB-1C3207432BAB}|">
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/GameController.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Editor/PauseGameTests.cs">
     <Files>
-      <File FileName="Assets/Scripts/GameController.cs" Line="258" Column="30" />
+      <File FileName="Assets/Scripts/GameController.cs" Line="62" Column="35" />
       <File FileName="Assets/Editor/ScoreTests.cs" Line="9" Column="40" />
+      <File FileName="Assets/Scripts/GameSettings.cs" Line="26" Column="35" />
+      <File FileName="Assets/Editor/PauseGameTests.cs" Line="6" Column="42" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="KhaosKitchen" expanded="True">
             <Node name="Assets" expanded="True">
-              <Node name="Editor" expanded="True" />
-              <Node name="Scripts" expanded="True">
-                <Node name="GameController.cs" selected="True" />
+              <Node name="Editor" expanded="True">
+                <Node name="PauseGameTests.cs" selected="True" />
               </Node>
+              <Node name="Scripts" expanded="True" />
               <Node name="Tests" expanded="True" />
             </Node>
           </Node>

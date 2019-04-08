@@ -6,28 +6,28 @@ public class MusicPlayerTests
 {
 
     [Test] 
-    public void IsRoundPausedNotNull()
+    public void IsRoundPausedNotNull_Test()
     {
         MusicPlayer music = new MusicPlayer();
         Assert.NotNull(music.IsRoundPaused);
     }
 
     [Test]
-    public void IsRoundPausedStartUp()
+    public void IsRoundPausedStartUp_Test()
     {
         MusicPlayer music = new MusicPlayer();
         Assert.IsFalse(music.IsRoundPaused);
     }
 
     [Test]
-    public void IsMusicPausedNotNull()
+    public void IsMusicPausedNotNull_Test()
     {
         MusicPlayer music = new MusicPlayer();
         Assert.NotNull(music.IsMusicPaused);
     }
 
     [Test]
-    public void IsMusicPausedStartUp()
+    public void IsMusicPausedStartUp_Test()
     {
         MusicPlayer music = new MusicPlayer();
         Assert.IsFalse(music.IsMusicPaused);
