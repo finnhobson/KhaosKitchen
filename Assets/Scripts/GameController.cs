@@ -88,6 +88,15 @@ public class GameController : NetworkBehaviour, IGameController
     [SyncVar] public int MinimumInstructionTime;
 
     [SyncVar] public int playerCount;
+
+    public int PlayerCount
+    {
+        get
+        {
+            return playerCount;
+        }
+    }
+
     [SyncVar] public bool easyPhoneInteractions;
 
     [SyncVar(hook = "SetTopChef")] public string currentTopChef;

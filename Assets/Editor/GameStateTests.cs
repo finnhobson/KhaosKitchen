@@ -29,21 +29,21 @@ public class GameStateTests
     [Test]
     public void PlayerPauseNotNull_Test()
     {
-        var player = new Player();
+        Player player = new Player();
         Assert.NotNull(player.IsGamePaused);
     }
 
     [Test]
     public void PlayerPausedInitialStartUp_Test()
     {
-        var player = new Player();
+        Player player = new Player();
         Assert.IsFalse(player.IsGamePaused);
     }
 
     [Test]
     public void PlayerPauseGameState_Test()
     {
-        var player = new Player();
+        Player player = new Player();
         player.PausePlayer();
         Assert.AreEqual(true, player.IsGamePaused);
     }
@@ -73,21 +73,21 @@ public class GameStateTests
     [Test]
     public void RoundNumberNotNull_Test()
     {
-        var gameController = new GameController();
+        GameController gameController = new GameController();
         Assert.NotNull(gameController.roundNumber);
     }
 
     [Test]
     public void RoundNumberInitialSetUp_Test()
     {
-        var gameController = new GameController();
+        GameController gameController = new GameController();
         Assert.AreEqual(1, gameController.roundNumber);
     }
 
     [Test]
     public void RoundNumberIncrease_Test()
     {
-        var gameController = new GameController();
+        GameController gameController = new GameController();
         gameController.roundNumber++;
         Assert.AreEqual(2, gameController.roundNumber);
     }
