@@ -55,6 +55,8 @@ public class Player : NetworkBehaviour
         set { topChef = value; }
     }
 
+    public string topChefPush;
+
     //Extras
     private string nfcValue = "";
     public int playerCount;
@@ -126,6 +128,7 @@ public class Player : NetworkBehaviour
         fullScreenPanel.SetActive(false);
         roundCompletePanel.SetActive(false);
         roundStartPanel.SetActive(false);
+        CmdSetName(PlayerUserName);
         // ------------------------------------------------------------------------------
 
         StartInstTimer();
@@ -150,6 +153,8 @@ public class Player : NetworkBehaviour
         //Display score.
         scoreText.text = gameController.score.ToString();
         //if (micActive) micVolumeText.text = micListener.MicLoudness.ToString("F4");
+//        topChefText.text = TopChef;
+        scoreText.text = PlayerScore.ToString();
 
         if (!timerStarted && gameController.isGameStarted)
         {
@@ -650,7 +655,7 @@ public class Player : NetworkBehaviour
         //Activate feedback on this button
 //        CmdPrint(buttonNumber);
         AllButtons[buttonNumber].GetComponent<Image>().color = Color.green;
-        PlayerScore++;
+        CmdIncrementScore();
         
         PlayCorrectSound();
         CmdIncreasePlayerScore();
@@ -751,6 +756,25 @@ public class Player : NetworkBehaviour
     private void DisplayTopChef(string topChef)
     {
         topChefText.text = topChef;
+    }
+
+    [Command]
+    public void CmdIncrementScore()
+    {
+        PlayerScore++;
+    }
+    
+    [Command]
+    public void CmdSetName(string name)
+    {
+        PlayerUserName = name;
+    }
+
+    public void SetRndCompletePanel()
+    {
+        if (topChefPush == "") topChefText.text = "Fuck";
+        else topChefText.text = topChefPush;
+        roundCompletePanel.SetActive(true);
     }
 }
 

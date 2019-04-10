@@ -375,6 +375,7 @@ public class GameController : NetworkBehaviour
     {
         if (!isServer || isRoundPaused) return; //Only need to access this function once per round completion.
         roundNumber++;
+        UpdateGamestate();
         isRoundPaused = true;
         UpdateGamestate();
 
@@ -530,7 +531,11 @@ public class GameController : NetworkBehaviour
             //gameStateHandler.UpdatePlayerScore(player.PlayerUserName, player.PlayerScore);
             //player.PlayerScore = 0;
         }
-        SetTopChef(topChef);
+
+        if (topChef == "") topChef = "Fucked the lobbynames";
+        RpcSetTopChef("RPC + " + topChef);
+//        SetTopChef("Set + " + topChef);
+        
     }
 
     private void PrintInstructionHandler()
