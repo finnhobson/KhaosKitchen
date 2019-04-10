@@ -82,7 +82,6 @@ public class GameController : NetworkBehaviour
         if (isServer)
         {    
             LoadSettings(); 
-            Debug.Log("PlayerCount : " + playerCount + ", GSPC : " + GameSettings.PlayerCount);
         }
 
         //Find players
@@ -292,11 +291,11 @@ public class GameController : NetworkBehaviour
     {
         if (!isServer || isRoundPaused) return; //Only need to access this function once per round completion.
         roundNumber++;
+        UpdateGamestate();
         isRoundPaused = true;
         fireCount = 0;
         PauseMusic();
         PlayRoundBreakMusic();
-        UpdateGamestate();
         RpcPausePlayers();
 
         foreach (Player p in playerList)
@@ -380,8 +379,9 @@ public class GameController : NetworkBehaviour
     {
         foreach (var player in playerList)
         {
-            player.roundScoreText.text = (score + 1).ToString();
-            player.roundCompletePanel.SetActive(true);
+//            player.roundScoreText.text = (score + 1).ToString(); 
+//            player.roundCompletePanel.SetActive(true);
+            player.SetRndCompletePanel();
             player.PausePlayer();
         }
     }
@@ -432,7 +432,11 @@ public class GameController : NetworkBehaviour
             gameStateHandler.UpdatePlayerScore(player.PlayerUserName, player.PlayerScore);
             player.PlayerScore = 0;
         }
-        SetTopChef(topChef);
+
+        if (topChef == "") topChef = "Fucked the lobbynames";
+        RpcSetTopChef("RPC + " + topChef);
+//        SetTopChef("Set + " + topChef);
+        
     }
 
     private void PrintInstructionHandler()
@@ -537,6 +541,15 @@ public class GameController : NetworkBehaviour
         foreach (var player in playerList)
         {
             player.TopChef = topChef;
+        }
+    }
+
+    [ClientRpc]
+    private void RpcSetTopChef(string topChef)
+    {
+        foreach (var player in playerList)
+        {
+            player.topChefPush = topChef;
         }
     }
 

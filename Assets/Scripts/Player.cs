@@ -44,7 +44,7 @@ public class Player : NetworkBehaviour {
     [SyncVar] public string PlayerUserName;
     [SyncVar] public Color PlayerColour;
     public int PlayerId { get; set; }
-    public int PlayerScore { get; set; }
+    [SyncVar] public int PlayerScore;
 
     [SyncVar (hook = "DisplayTopChef")] private string topChef;
 
@@ -53,6 +53,8 @@ public class Player : NetworkBehaviour {
         get { return topChef; }
         set { topChef = value; }
     }
+
+    public string topChefPush;
 
     //Extras
     private string nfcValue = "";
@@ -98,6 +100,7 @@ public class Player : NetworkBehaviour {
         fullScreenPanel.SetActive(false);
         roundCompletePanel.SetActive(false);
         roundStartPanel.SetActive(false);
+        CmdSetName(PlayerUserName);
         // ------------------------------------------------------------------------------
 
         StartInstTimer();
@@ -122,6 +125,8 @@ public class Player : NetworkBehaviour {
         //Display score.
         scoreText.text = gameController.score.ToString();
         //if (micActive) micVolumeText.text = micListener.MicLoudness.ToString("F4");
+//        topChefText.text = TopChef;
+        scoreText.text = PlayerScore.ToString();
 
         if (gameController.roundTimeLeft > 0)
         {
@@ -604,7 +609,7 @@ public class Player : NetworkBehaviour {
         //Activate feedback on this button
 //        CmdPrint(buttonNumber);
         AllButtons[buttonNumber].GetComponent<Image>().color = Color.green;
-        PlayerScore++;
+        CmdIncrementScore();
         
         PlayCorrectSound();
         
@@ -701,6 +706,25 @@ public class Player : NetworkBehaviour {
     private void DisplayTopChef(string topChef)
     {
         topChefText.text = topChef;
+    }
+
+    [Command]
+    public void CmdIncrementScore()
+    {
+        PlayerScore++;
+    }
+    
+    [Command]
+    public void CmdSetName(string name)
+    {
+        PlayerUserName = name;
+    }
+
+    public void SetRndCompletePanel()
+    {
+        if (topChefPush == "") topChefText.text = "Fuck";
+        else topChefText.text = topChefPush;
+        roundCompletePanel.SetActive(true);
     }
 }
 
