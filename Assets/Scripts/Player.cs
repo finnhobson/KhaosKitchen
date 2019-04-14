@@ -46,15 +46,14 @@ public class Player : NetworkBehaviour
     [SyncVar] public Color PlayerColour;
     [SyncVar] public int PlayerId;
     [SyncVar] public int PlayerScore;
+    public uint PlayerNetworkID;
 
     [SyncVar (hook = "DisplayTopChef")] private string topChef;
-
     public string TopChef
     {
         get { return topChef; }
         set { topChef = value; }
     }
-
     public string topChefPush;
 
     //Extras
@@ -109,6 +108,8 @@ public class Player : NetworkBehaviour
 
     private bool micActive = false;
     private bool timerStarted = false;
+    [SyncVar] public bool isSetupComplete;	
+
 
     private void Awake()
     {
@@ -128,8 +129,14 @@ public class Player : NetworkBehaviour
         fullScreenPanel.SetActive(false);
         roundCompletePanel.SetActive(false);
         roundStartPanel.SetActive(false);
-        CmdSetName(PlayerUserName);
         // ------------------------------------------------------------------------------
+        
+        if (isLocalPlayer)
+        {
+            CmdSetNetworkID(PlayerNetworkID);
+            CmdSetNameAndColour(PlayerUserName, PlayerColour);
+            CmdSetPlayerReady();        
+        }
 
         StartInstTimer();
         VolumeOfSoundEffects = Volume;
@@ -765,9 +772,10 @@ public class Player : NetworkBehaviour
     }
     
     [Command]
-    public void CmdSetName(string name)
+    public void CmdSetNameAndColour(string name, Color colour)
     {
         PlayerUserName = name;
+        PlayerColour = colour;
     }
 
     public void SetRndCompletePanel()
@@ -775,6 +783,18 @@ public class Player : NetworkBehaviour
         if (topChefPush == "") topChefText.text = "Fuck";
         else topChefText.text = topChefPush;
         roundCompletePanel.SetActive(true);
+    }
+    
+    [Command]
+    public void CmdSetPlayerReady()
+    {
+        isSetupComplete = true;
+    }
+
+    [Command]
+    public void CmdSetNetworkID(uint ID)
+    {
+        PlayerNetworkID = ID;
     }
 }
 

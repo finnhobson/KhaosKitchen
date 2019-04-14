@@ -199,6 +199,20 @@ public class GameController : NetworkBehaviour
 
             playerIndex++;
         }
+        
+        if (isServer)
+        {
+            GetComponentInChildren<Canvas>().enabled = true; //Show server display only on the server.
+            playerIndex = 0;
+            foreach (var p in players)
+            {
+                UserNames.Add(p.PlayerUserName);
+                playerNames[playerIndex].text = p.PlayerUserName;
+                playerNames[playerIndex].color = p.PlayerColour;
+                playerIndex++;
+            }
+            gameStateHandler = new GameStateHandler(UserNames); //Instantiate single gameStateHandler object on the server to hold gamestate data 
+        }
 
         PlayersInitialisedFromStart();
 
@@ -225,7 +239,6 @@ public class GameController : NetworkBehaviour
         StartRoundTimer();
         UpdateScoreBar();
         isGameStarted = true;
-
     }
 
 

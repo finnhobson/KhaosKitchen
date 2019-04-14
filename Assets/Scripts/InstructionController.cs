@@ -85,7 +85,6 @@ public class InstructionController : NetworkBehaviour
         //Assign actions and instructions to each player.
         foreach (var player in Players)
         {
-            Debug.Log("List length = " + activeButtonActions.Count);
             for (int i = 0; i < NumberOfButtons; i++)
             {
                 string action = activeButtonActions[player.PlayerId * numberOfButtons + i];
