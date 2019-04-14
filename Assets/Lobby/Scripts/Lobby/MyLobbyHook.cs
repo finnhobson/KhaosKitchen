@@ -10,5 +10,6 @@ public class MyLobbyHook : LobbyHook
 
         player.PlayerUserName = lp.playerName;
         player.PlayerColour = lp.playerColor;
+        player.PlayerNetworkID = lp.netId.Value;
     }
 }

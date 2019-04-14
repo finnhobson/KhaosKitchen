@@ -116,7 +116,6 @@ public class GameController : NetworkBehaviour
             foreach (var p in players)
             {
                 UserNames.Add(p.PlayerUserName);
-                Debug.Log(p.PlayerId + " = " + p.PlayerUserName);
                 playerNames[playerIndex].text = p.PlayerUserName;
                 playerNames[playerIndex].color = p.PlayerColour;
                 playerIndex++;
@@ -149,7 +148,6 @@ public class GameController : NetworkBehaviour
         StartRoundTimer();
         UpdateScoreBar();
         isGameStarted = true;
-
     }
 
     private void Update()
