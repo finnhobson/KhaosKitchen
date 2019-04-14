@@ -10,6 +10,13 @@ public class ScoreTests
     }
 
     [Test]
+    public void ScoreInitialSetUp_Test()
+    {
+        GameController gameController = new GameController();
+        Assert.AreEqual(0, gameController.score);
+    }
+
+    [Test]
     public void IncreaseScore_Test()
     {
         GameController gameController = new GameController();
@@ -18,6 +25,7 @@ public class ScoreTests
         int score = 0;
         Assert.AreEqual(score, gameScore);
     }
+
 
     [Test]
     public void ScoreStreakNotNull_Test()
@@ -43,6 +51,4 @@ public class ScoreTests
         player.IncreaseScoreStreak();
         Assert.AreEqual(3, player.ScoreStreak);
     }
-
-
 }

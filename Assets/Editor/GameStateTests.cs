@@ -17,12 +17,69 @@ public class GameStateTests
     }
 
     [Test]
+    public void PlayersInitialisedNotNull_Test()
+    {
+        GameController gameController = new GameController();
+        Assert.NotNull(gameController.playersInitialised);
+    }
+
+    [Test]
+    public void PlayersInitialisedInitialSetUp_Test()
+    {
+        GameController gameController = new GameController();
+        Assert.IsFalse(gameController.playersInitialised);
+    }
+
+    [Test]
+    public void PlayersInitialised_Test()
+    {
+        GameController gameController = new GameController();
+        gameController.PlayersInitialisedFromStart();
+        Assert.AreEqual(true, gameController.playersInitialised);
+    }
+
+    [Test]
     public void RoundTimerInitialisation_Test()
     {
         GameSettings.RoundTime = 90;
         GameController gameController = new GameController();
         gameController.StartRoundTimer();
         Assert.AreEqual(0, gameController.roundStartTime);
+    }
+
+    [Test]
+    public void IsLastActionOfRoundNotNull_Test()
+    {
+        InstructionController instructionController = new InstructionController();
+        Assert.NotNull(instructionController.isLastActionOfRound);
+    }
+
+    [Test]
+    public void IsLastActionOfRoundInitialSetUp_Test()
+    {
+        InstructionController instructionController = new InstructionController();
+        Assert.IsFalse(instructionController.isLastActionOfRound);
+    }
+
+    public void IsGamePausedNotNull_Test()
+    {
+        GameController gameController = new GameController();
+        Assert.NotNull(gameController.isRoundPaused);
+    }
+
+    [Test]
+    public void IsGamePausedInitialSetUp_Test()
+    {
+        GameController gameController = new GameController();
+        Assert.IsFalse(gameController.isRoundPaused);
+    }
+
+    [Test]
+    public void IsRoundPaused_Test()
+    {
+        GameController gameController = new GameController();
+        gameController.RoundPaused();
+        Assert.AreEqual(true, gameController.isRoundPaused);
     }
 
 
@@ -90,6 +147,29 @@ public class GameStateTests
         GameController gameController = new GameController();
         gameController.roundNumber++;
         Assert.AreEqual(2, gameController.roundNumber);
+    }
+
+
+    [Test]
+    public void FireCountNotNull_Test()
+    {
+        GameController gameController = new GameController();
+        Assert.NotNull(gameController.fireCount);
+    }
+
+    [Test]
+    public void FireCountInitialSetUp_Test()
+    {
+        GameController gameController = new GameController();
+        Assert.AreEqual(0, gameController.fireCount);
+    }
+
+    [Test]
+    public void FireCountIncrease_Test()
+    {
+        GameController gameController = new GameController();
+        gameController.fireCount++;
+        Assert.AreEqual(1, gameController.fireCount);
     }
 
 }

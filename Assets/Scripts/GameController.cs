@@ -47,7 +47,24 @@ public class GameController : NetworkBehaviour, IGameController
 
     [SyncVar] public int fireCount = 0;
 
+    public int FireCount
+    {
+        get
+        {
+            return fireCount;
+        }
+    }
+
     [SyncVar] public bool isRoundPaused = false;
+
+    public bool IsRoundPaused
+    {
+        get
+        {
+            return isRoundPaused;
+        }
+    }
+
     [SyncVar] public bool isGameStarted = false;
 
     public bool IsGameStarted
@@ -79,14 +96,12 @@ public class GameController : NetworkBehaviour, IGameController
     }
 
     [SyncVar] public int instructionStartTime;
-
     [SyncVar] public int BaseInstructionNumber;
     [SyncVar] public int InstructionNumberIncreasePerRound;
     [SyncVar] public int BaseInstructionTime;
     [SyncVar] public int InstructionTimeReductionPerRound;
     [SyncVar] public int InstructionTimeIncreasePerPlayer;
     [SyncVar] public int MinimumInstructionTime;
-
     [SyncVar] public int playerCount;
 
     public int PlayerCount
@@ -117,7 +132,6 @@ public class GameController : NetworkBehaviour, IGameController
 
     //Booleans
     private bool isGameOver = false;
-
     public bool IsGameOver
     {
         get
@@ -130,6 +144,14 @@ public class GameController : NetworkBehaviour, IGameController
 
     //Indicator variables for the animation controller
     public bool playersInitialised = false;
+
+    public bool PlayersInitialised
+    {
+        get
+        {
+            return playersInitialised;
+        }
+    }
 
 
     //Functions-----------------------------------------------------------------------------------------------------
@@ -182,7 +204,7 @@ public class GameController : NetworkBehaviour, IGameController
             gameStateHandler = new GameStateHandler(UserNames); //Instantiate single gameStateHandler object on the server to hold gamestate data 
         }
 
-        playersInitialised = true;
+        PlayersInitialisedFromStart();
 
         InstructionController.ICStart(playerCount, numberOfButtons, playerList, this);
         InstructionController.piProb = piProb;
@@ -313,7 +335,7 @@ public class GameController : NetworkBehaviour, IGameController
         roundScore++;
         UpdateScoreBar();
     }
-
+         
     public void StartRoundTimer()
     {
         //roundStartTime = 90;
@@ -325,6 +347,11 @@ public class GameController : NetworkBehaviour, IGameController
         roundTimeLeft -= Time.deltaTime;
         if (roundTimeLeft >= 0) roundTimerBar.GetComponent<RectTransform>().localScale = new Vector3(roundTimeLeft / roundStartTime, 1, 1);
         //SetTimerText(roundTimeLeft.ToString("F2"));
+    }
+
+    public void PlayersInitialisedFromStart()
+    {
+        playersInitialised = true;
     }
 
     private void SetTimerText(string text)
@@ -347,7 +374,7 @@ public class GameController : NetworkBehaviour, IGameController
     {
         if (!isServer || isRoundPaused) return; //Only need to access this function once per round completion.
         roundNumber++;
-        isRoundPaused = true;
+        RoundPaused();
         fireCount = 0;
         PauseMusic();
         PlayRoundBreakMusic();
@@ -367,6 +394,11 @@ public class GameController : NetworkBehaviour, IGameController
         StartCoroutine(StartRound(8));
         //StartCoroutine(StartRound(0));
 
+    }
+
+    public void RoundPaused()
+    {
+        isRoundPaused = true;
     }
 
     private IEnumerator Wait(float n)

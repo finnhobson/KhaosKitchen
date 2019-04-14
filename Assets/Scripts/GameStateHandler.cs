@@ -10,10 +10,21 @@ using UnityEngine.Networking;
 public class GameStateHandler
 {
     public int RoundNumber { get; set; }
-    public int OverallTeamScore { get; set; }
-    
+    public int OverallTeamScore
+    {
+        get
+        {
+            return overallTeamScore;
+        }
+        set
+        {
+            overallTeamScore = value;
+        }
+    }
+
     private List<string> userNames = new List<string>();
     private Dictionary<string, int> userProfiles = new Dictionary<string, int>();
+    private int overallTeamScore;
 
     public List<string> UserNames
     {
@@ -31,7 +42,7 @@ public class GameStateHandler
         RoundNumber = 0;
         OverallTeamScore = 0;
         UserNames = userNames;
-        
+
         //Set each players initial score to 0
         foreach (var userName in userNames)
         {
@@ -61,7 +72,7 @@ public class GameStateHandler
         Debug.Log("Team Score: " + OverallTeamScore);
         foreach (var userProfile in userProfiles)
         {
-            Debug.Log("Player: " + userProfile.Key + ", Score: " + userProfile.Value); 
-        }        
+            Debug.Log("Player: " + userProfile.Key + ", Score: " + userProfile.Value);
+        }
     }
 }

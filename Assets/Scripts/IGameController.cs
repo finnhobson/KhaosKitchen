@@ -5,6 +5,7 @@
     void IncreaseFireCount();
     void IncreaseScore();
     void OnClickBack();
+    void PlayersInitialisedFromStart();
     void PrintOut(int buttonNumber);
     void RpcIncreaseScoreSteak(int playerID);
     void RpcPausePlayers();

@@ -51,4 +51,28 @@ public class PlayerCountTests
         gameController.playerList.Add(player);
         Assert.AreEqual(1, gameController.playerList.Count);
     }
+
+
+    [Test]
+    public void PlayerNamesListNotNull_Test()
+    {
+        GameController gameController = new GameController();
+        Assert.NotNull(gameController.playerNames);
+    }
+
+    [Test]
+    public void PlayerNamesListInitialSetUp_Test()
+    {
+        GameController gameController = new GameController();
+        Assert.AreEqual(0, gameController.playerNames.Count);
+    }
+
+    [Test]
+    public void PlayerNamesListIncrease_Test()
+    {
+        Player player = new Player();
+        GameController gameController = new GameController();
+        gameController.playerList.Add(player);
+        Assert.AreEqual(1, gameController.playerList.Count);
+    }
 }

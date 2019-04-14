@@ -12,12 +12,6 @@ public class GameSettingsTests
     }
 
     [Test]
-    public void BaseInstructionNumberInitialSetUp_Test()
-    {
-        Assert.AreEqual(0, GameSettings.BaseInstructionNumber);
-    }
-
-    [Test]
     public void BaseInstructionNumberSetting_Test()
     {
         GameSettings.BaseInstructionNumber = 10;
@@ -30,11 +24,6 @@ public class GameSettingsTests
         Assert.NotNull(GameSettings.InstructionNumberIncreasePerRound);
     }
 
-    [Test]
-    public void InstructionNumberIncreasePerRoundInitialSetUp_Test()
-    {
-        Assert.AreEqual(0, GameSettings.InstructionNumberIncreasePerRound);
-    }
 
     [Test]
     public void InstructionNumberIncreasePerRoundSetting_Test()
@@ -50,11 +39,6 @@ public class GameSettingsTests
         Assert.NotNull(GameSettings.BaseInstructionTime);
     }
 
-    [Test]
-    public void BaseInstructionTimeInitialSetUp_Test()
-    {
-        Assert.AreEqual(0, GameSettings.BaseInstructionTime);
-    }
 
     [Test]
     public void BaseInstructionTimeSetting_Test()
@@ -69,11 +53,6 @@ public class GameSettingsTests
         Assert.NotNull(GameSettings.InstructionTimeReductionPerRound);
     }
 
-    [Test]
-    public void InstructionTimeReductionPerRoundInitialSetUp_Test()
-    {
-        Assert.AreEqual(0, GameSettings.InstructionTimeReductionPerRound);
-    }
 
     [Test]
     public void InstructionTimeReductionPerRoundSetting_Test()
@@ -88,11 +67,6 @@ public class GameSettingsTests
         Assert.NotNull(GameSettings.InstructionTimeIncreasePerPlayer);
     }
 
-    [Test]
-    public void InstructionTimeIncreasePerPlayerInitialSetUp_Test()
-    {
-        Assert.AreEqual(0, GameSettings.InstructionTimeIncreasePerPlayer);
-    }
 
     [Test]
     public void InstructionTimeIncreasePerPlayerSetting_Test()
@@ -107,11 +81,6 @@ public class GameSettingsTests
         Assert.NotNull(GameSettings.MinimumInstructionTime);
     }
 
-    [Test]
-    public void MinimumInstructionTimeInitialSetUp_Test()
-    {
-        Assert.AreEqual(0, GameSettings.MinimumInstructionTime);
-    }
 
     [Test]
     public void MinimumInstructionTimeSetting_Test()
@@ -127,11 +96,6 @@ public class GameSettingsTests
         Assert.NotNull(GameSettings.RoundTime);
     }
 
-    [Test]
-    public void RoundTimeInitialSetUp_Test()
-    {
-        Assert.AreEqual(0, GameSettings.RoundTime);
-    }
 
     [Test]
     public void RoundTimeSetting_Test()
@@ -146,11 +110,6 @@ public class GameSettingsTests
         Assert.NotNull(GameSettings.EasyPhoneInteractions);
     }
 
-    [Test]
-    public void EasyPhoneInteractionsInitialSetUp_Test()
-    {
-        Assert.AreEqual(false, GameSettings.EasyPhoneInteractions);
-    }
 
     [Test]
     public void EasyPhoneInteractionsSetting_Test()
@@ -166,11 +125,6 @@ public class GameSettingsTests
         Assert.NotNull(GameSettings.PhoneInteractionProbability);
     }
 
-    [Test]
-    public void PhoneInteractionProbabilityInitialSetUp_Test()
-    {
-        Assert.AreEqual(0, GameSettings.PhoneInteractionProbability);
-    }
 
     [Test]
     public void PhoneInteractionProbabilitySetting_Test()

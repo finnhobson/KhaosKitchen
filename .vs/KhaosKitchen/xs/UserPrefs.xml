@@ -1,8 +1,11 @@
 ﻿<Properties StartupConfiguration="{5AAD9717-E92E-BFD1-71EB-1C3207432BAB}|">
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/GameSettings.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Player.cs">
     <Files>
-      <File FileName="Assets/Scripts/GameSettings.cs" Line="26" Column="35" />
-      <File FileName="Assets/Editor/GameSettingsTests.cs" Line="9" Column="17" />
+      <File FileName="Assets/Scripts/GameController.cs" Line="104" Column="49" />
+      <File FileName="Assets/Scripts/InstructionController.cs" Line="33" Column="45" />
+      <File FileName="Assets/Editor/InstructionTests.cs" Line="34" Column="6" />
+      <File FileName="Assets/Editor/GameStateTests.cs" Line="56" Column="1" />
+      <File FileName="Assets/Scripts/Player.cs" Line="19" Column="21" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -11,7 +14,7 @@
             <Node name="Assets" expanded="True">
               <Node name="Editor" expanded="True" />
               <Node name="Scripts" expanded="True">
-                <Node name="GameSettings.cs" selected="True" />
+                <Node name="Player.cs" selected="True" />
               </Node>
               <Node name="Tests" expanded="True" />
             </Node>
@@ -22,7 +25,7 @@
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="8ea33bc6-183c-4bdb-9a1f-44e83712781a" />
+  <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="ed029a70-8448-4039-a9f6-9fbd4ad573f8" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
