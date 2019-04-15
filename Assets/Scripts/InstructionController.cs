@@ -184,6 +184,8 @@ public class InstructionController : NetworkBehaviour
             if (action != ActiveInstructions[i]) continue;
 
             match = true;
+            //Update player score
+            Players[i].PlayerScore++;
             DeactivateInstruction(action);
             GameController.CheckAction(action, i);
 
@@ -205,9 +207,6 @@ public class InstructionController : NetworkBehaviour
                     RpcSetShakePanel(i, shakeInstructions[rand]);
                 }
             }
-
-            //Update player score
-            Players[i].PlayerScore++;
             
             //Only do a panel action if there are still instructions left in the round.
             //if (isLastActionOfRound) return;

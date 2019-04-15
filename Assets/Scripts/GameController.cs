@@ -101,7 +101,6 @@ public class GameController : NetworkBehaviour
         int playerIndex = 0;
         foreach (Player p in players)
         {
-            Debug.Log("isLocalPlayer: " + p.isLocalPlayer);
             playerList.Add(p);
             UserNames.Add(p.PlayerUserName);
             if (isServer) p.SetGameController(this);
