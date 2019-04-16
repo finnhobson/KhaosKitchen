@@ -10,7 +10,6 @@ public class MainMenu : MonoBehaviour {
     public GameObject lobby, mainMenu;
     public MyNetworkDiscovery networkDiscovery;
     private bool host = false;
-    private bool client = false;
 
     public string ipAddress;
 
@@ -20,7 +19,6 @@ public class MainMenu : MonoBehaviour {
         NetworkServer.Reset();
         networkDiscovery.Initialize();
         networkDiscovery.StartAsClient();
-        client = true;
         Debug.Log("Listening for IP Addresses...");
     }
 
@@ -33,7 +31,6 @@ public class MainMenu : MonoBehaviour {
         networkDiscovery.StartAsServer();
         Debug.Log("Broadcasting IP Address...");
         lobbyManager.StartServer();
-        client = false;
         host = true;
     }
 

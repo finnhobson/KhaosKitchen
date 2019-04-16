@@ -243,7 +243,7 @@ public class GameController : NetworkBehaviour
     [Server]
     public void IncreaseScore()
     {
-        score++;
+        score += 10;
         roundScore++;
         customerSatisfaction += 5.0f;
         UpdateScoreBar();
@@ -376,7 +376,6 @@ public class GameController : NetworkBehaviour
     {
         foreach (var player in playerList)
         {
-            player.roundScoreText.text = (score + 1).ToString();
             player.roundCompletePanel.SetActive(true);
             player.PausePlayer();
         }

@@ -37,7 +37,7 @@ public class InstructionController : NetworkBehaviour
     }
 
     //Variables that are generated in GC
-    public List<Player> Players { get; set; }
+    public List<Player> Players;
     public int NumberOfButtons { get; set; }
     public int PlayerCount { get; set; }
 
@@ -125,8 +125,7 @@ public class InstructionController : NetworkBehaviour
     public void SelectButtonActions()
     {
         ActiveButtonActions.Clear(); 
-        
-        int randomIndex;
+
         bool duplicate;
         int verbNo, nounNo;
         string text;
@@ -184,9 +183,10 @@ public class InstructionController : NetworkBehaviour
             if (action != ActiveInstructions[i]) continue;
 
             match = true;
-            //Update player score
+
             DeactivateInstruction(action);
             GameController.CheckAction(i);
+            Players[i].PlayerScore++;
 
             PickNewInstruction(i, action);
             if (!isLastActionOfRound)
