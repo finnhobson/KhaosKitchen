@@ -20,6 +20,7 @@ public class GameController : NetworkBehaviour
     //Unity GameObjects
     public Text scoreText, roundTimerText, scoreBarText, roundNumberText;
     public GameObject roundTimerBar, gameOverText, backButton;
+    public Image stars;
 
     public List<Player> playerList = new List<Player>();
     public List<Text> playerNames = new List<Text>();
@@ -47,9 +48,9 @@ public class GameController : NetworkBehaviour
     [SyncVar] public bool easyPhoneInteractions;
 
     //[SyncVar(hook = "SetTopChef")] public string currentTopChef;
-    private string currentTopChef;
+    [SyncVar] public string currentTopChef;
 
-    [SyncVar] public float customerSatisfaction = 100;
+    [SyncVar] public float customerSatisfaction = 50;
 
     //Phone interaction probability = 2/x
     [SyncVar] public int piProb = 21;
@@ -122,11 +123,11 @@ public class GameController : NetworkBehaviour
             gameStateHandler = new GameStateHandler(UserNames); //Instantiate single gameStateHandler object on the server to hold gamestate data 
             playersInitialised = true;
 
-            StartCoroutine(RoundCountdown(12, "3"));
-            StartCoroutine(RoundCountdown(13, "2"));
-            StartCoroutine(RoundCountdown(14, "1"));
-            StartCoroutine(StartRound(15));
-            StartCoroutine(StartGame(15));
+            StartCoroutine(RoundCountdown(10, "3"));
+            StartCoroutine(RoundCountdown(11, "2"));
+            StartCoroutine(RoundCountdown(12, "1"));
+            StartCoroutine(StartRound(13));
+            StartCoroutine(StartGame(13));
         }
     }
 
@@ -149,6 +150,7 @@ public class GameController : NetworkBehaviour
             scoreText.text = score.ToString();
             roundNumberText.text = roundNumber.ToString();
             UpdateRoundTimeLeft();
+            stars.fillAmount = customerSatisfaction / 100;
 
             if (roundMaxScore - roundScore <= 1)
             {
@@ -206,7 +208,7 @@ public class GameController : NetworkBehaviour
     }
 
     [ClientRpc]
-    public void RpcIncreaseScoreSteak(int playerID)
+    public void RpcIncreaseScoreStreak(int playerID)
     {
         playerList[playerID].IncreaseScoreStreak();
     }
@@ -218,7 +220,7 @@ public class GameController : NetworkBehaviour
     }
 
     [ClientRpc]
-    public void RpcScoreSteakCheck(int playerID)
+    public void RpcScoreStreakCheck(int playerID)
     {
         playerList[playerID].ScoreStreakCheck();
     }
@@ -228,14 +230,15 @@ public class GameController : NetworkBehaviour
     {
         if (isRoundPaused) return; //Do not check if round paused.
         IncreaseScore();
-        RpcIncreaseScoreSteak(i);
-        RpcScoreSteakCheck(i);
+        RpcIncreaseScoreStreak(i);
+        RpcScoreStreakCheck(i);
     }
 
     [Server]
     public void IncreaseFireCount()
     {
         fireCount++;
+        customerSatisfaction = customerSatisfaction - 5.0f;
     }
 
     [Server]
@@ -243,6 +246,7 @@ public class GameController : NetworkBehaviour
     {
         score++;
         roundScore++;
+        customerSatisfaction += 5.0f;
         UpdateScoreBar();
     }
 
@@ -282,26 +286,18 @@ public class GameController : NetworkBehaviour
         isRoundPaused = true;
         UpdateGamestate();
 
-        int highScore = 0;
-        var players = FindObjectsOfType<Player>();
-        foreach (Player p in players)
-        {
-            if (p.PlayerScore > highScore)
-            {
-                highScore = p.PlayerScore;
-                currentTopChef = p.PlayerUserName;
-            }
-        }
-
         fireCount = 0;
+        CancelInvoke();
         PauseMusic();
         PlayRoundBreakMusic();
+        RpcSetTopChef(currentTopChef);
         RpcPausePlayers();
 
         foreach (Player p in playerList)
         {
             p.instStartTime = CalculateInstructionTime();
         }
+
         ReadyInstructionController();
         
         StartCoroutine(PlayXCountAfterNSeconds(5, 2));
@@ -309,8 +305,6 @@ public class GameController : NetworkBehaviour
         StartCoroutine(RoundCountdown(6, "2"));
         StartCoroutine(RoundCountdown(7, "1"));
         StartCoroutine(StartRound(8));
-        //StartCoroutine(StartRound(0));
-
     }
     
 
@@ -365,7 +359,8 @@ public class GameController : NetworkBehaviour
         isRoundPaused = false;
         PenultimateAction(false);
         roundMaxScore = CalculateInstructionNumber();
-        customerSatisfaction = 100;
+        customerSatisfaction = 50;
+        InvokeRepeating("DecreaseCustomerSatisfaction", 1.0f, 1.0f);
         UpdateScoreBar();
     }
 
@@ -383,7 +378,6 @@ public class GameController : NetworkBehaviour
         foreach (var player in playerList)
         {
             player.roundScoreText.text = (score + 1).ToString();
-            if (currentTopChef != null) player.topChefText.text = currentTopChef;
             player.roundCompletePanel.SetActive(true);
             player.PausePlayer();
         }
@@ -422,19 +416,21 @@ public class GameController : NetworkBehaviour
     {
         //Store round info
         gameStateHandler.OnRoundComplete(score);
-        //int topScore = 0;
-        //string topChef = "";
-        foreach (var player in playerList)
+        int topScore = 0;
+        string topChef = null;
+        var players = FindObjectsOfType<Player>();
+        foreach (Player player in players)
         {
-            /*if (player.PlayerScore > topScore)
+            Debug.Log("Name = " + player.PlayerUserName + " Score = " + player.PlayerScore);
+            if (player.PlayerScore > topScore)
             {
                 topScore = player.PlayerScore;
                 topChef = player.PlayerUserName;
-            }*/
-            gameStateHandler.UpdatePlayerScore(player.PlayerUserName, player.PlayerScore);
-            player.PlayerScore = 0;
+            }
+            //gameStateHandler.UpdatePlayerScore(player.PlayerUserName, player.PlayerScore);
+            //player.PlayerScore = 0;
         }
-        //currentTopChef = topChef;
+        currentTopChef = topChef;
     }
 
     private void PrintInstructionHandler()
@@ -488,11 +484,11 @@ public class GameController : NetworkBehaviour
         piProb = GameSettings.PhoneInteractionProbability;
     }
     
-    private void UpdateCustomerSatisfaction()
+    private void DecreaseCustomerSatisfaction()
     {
-        customerSatisfaction = customerSatisfaction + roundScore - roundMaxScore * (roundTimeLeft / roundStartTime);
-        if(customerSatisfaction > 100) customerSatisfaction = 100;
-        if(customerSatisfaction < 0) customerSatisfaction = 0;
+        customerSatisfaction -= 0.5f;
+        if (customerSatisfaction > 100) customerSatisfaction = 100;
+        if (customerSatisfaction < 0) customerSatisfaction = 0;
     }
 
     private IEnumerator PlayXCountAfterNSeconds(int n, int x)
@@ -532,13 +528,20 @@ public class GameController : NetworkBehaviour
         MusicPlayer.PlayGameOver();
     }
 
-    private void SetTopChef(string topChef)
+    [ClientRpc]
+    private void RpcSetTopChef(string topChef)
     {
-        Debug.Log(topChef);
+        Debug.Log("TOP CHEF = " + topChef);
         foreach (var player in playerList)
         {
-            player.topChefText.text = topChef;
+            if (topChef != null)
+            {
+                if (topChef == player.PlayerUserName)
+                {
+                    player.topChefText.text = "YOU!!";
+                }
+                else player.topChefText.text = topChef;
+            }
         }
     }
-
 }

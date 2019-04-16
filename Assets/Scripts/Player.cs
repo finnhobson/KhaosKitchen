@@ -43,8 +43,8 @@ public class Player : NetworkBehaviour {
     //Player
     [SyncVar] public string PlayerUserName;
     [SyncVar] public Color PlayerColour;
-    public int PlayerId { get; set; }
-    public int PlayerScore { get; set; }
+    [SyncVar] public int PlayerId;
+    [SyncVar] public int PlayerScore;
 
     //Extras
     private string nfcValue = "";
@@ -105,7 +105,7 @@ public class Player : NetworkBehaviour {
         {
             StartInstTimer();
             timerStarted = true;
-            CmdUpdateChefPrefab();
+            if (isLocalPlayer) CmdUpdateChefPrefab();
         }
 
         if (gameController.isGameStarted && gameController.roundTimeLeft > 0)
@@ -369,6 +369,13 @@ public class Player : NetworkBehaviour {
     public void CmdIncreaseScore()
     {
         gameController.IncreaseScore();
+        PlayerScore++;
+    }
+
+    [Command]
+    public void CmdIncreasePlayerScore()
+    {
+        PlayerScore++;
     }
 
     public void OnClickButton1()
@@ -592,6 +599,7 @@ public class Player : NetworkBehaviour {
         AllButtons[buttonNumber].GetComponent<Image>().color = Color.green;
         
         PlayCorrectSound();
+        CmdIncreasePlayerScore();
         
         StartCoroutine(ResetButtonColour(0.5f, buttonNumber));
     }

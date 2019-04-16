@@ -185,7 +185,6 @@ public class InstructionController : NetworkBehaviour
 
             match = true;
             //Update player score
-            Players[i].PlayerScore++;
             DeactivateInstruction(action);
             GameController.CheckAction(action, i);
 
@@ -227,6 +226,7 @@ public class InstructionController : NetworkBehaviour
             if (action == ActiveInstructions[i])
             {
                 GameController.RpcResetScoreSteak(i);
+                GameController.IncreaseFireCount();
                 
                 PickNewInstruction(i, action);
                 RpcUpdateInstruction(ActiveInstructions[i], i);
