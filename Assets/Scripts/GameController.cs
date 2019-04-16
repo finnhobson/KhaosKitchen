@@ -161,7 +161,7 @@ public class GameController : NetworkBehaviour
             {
                 OnRoundComplete();
             }
-            else if (roundTimeLeft < 0)
+            else if (roundTimeLeft < 0 || customerSatisfaction == 0)
             {
                 SetTimerText("0");
                 RpcGameOver();
@@ -226,7 +226,7 @@ public class GameController : NetworkBehaviour
     }
 
     [Server]
-    public void CheckAction(string action, int i)
+    public void CheckAction(int i)
     {
         if (isRoundPaused) return; //Do not check if round paused.
         IncreaseScore();
@@ -238,7 +238,6 @@ public class GameController : NetworkBehaviour
     public void IncreaseFireCount()
     {
         fireCount++;
-        customerSatisfaction = customerSatisfaction - 5.0f;
     }
 
     [Server]
@@ -534,6 +533,7 @@ public class GameController : NetworkBehaviour
         Debug.Log("TOP CHEF = " + topChef);
         foreach (var player in playerList)
         {
+            player.roundScoreText.text = player.PlayerScore.ToString();
             if (topChef != null)
             {
                 if (topChef == player.PlayerUserName)

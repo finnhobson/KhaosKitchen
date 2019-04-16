@@ -186,7 +186,7 @@ public class InstructionController : NetworkBehaviour
             match = true;
             //Update player score
             DeactivateInstruction(action);
-            GameController.CheckAction(action, i);
+            GameController.CheckAction(i);
 
             PickNewInstruction(i, action);
             if (!isLastActionOfRound)
@@ -206,12 +206,12 @@ public class InstructionController : NetworkBehaviour
                     RpcSetShakePanel(i, shakeInstructions[rand]);
                 }
             }
-            
-            //Only do a panel action if there are still instructions left in the round.
-            //if (isLastActionOfRound) return;
-            //PrintInstructionHandler();
         }
-        if (!match) GameController.fireCount++;
+        if (!match)
+        {
+            GameController.fireCount++;
+            GameController.customerSatisfaction -= 5;
+        }
     }
     
     /*
