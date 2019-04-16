@@ -43,8 +43,8 @@ public class Player : NetworkBehaviour {
     //Player
     [SyncVar] public string PlayerUserName;
     [SyncVar] public Color PlayerColour;
-    public int PlayerId { get; set; }
-    public int PlayerScore { get; set; }
+    [SyncVar] public int PlayerId;
+    [SyncVar] public int PlayerScore;
 
     //Extras
     private string nfcValue = "";
@@ -105,6 +105,7 @@ public class Player : NetworkBehaviour {
         {
             StartInstTimer();
             timerStarted = true;
+            if (isLocalPlayer) CmdUpdateChefPrefab();
         }
 
         if (gameController.isGameStarted && gameController.roundTimeLeft > 0)
@@ -368,6 +369,13 @@ public class Player : NetworkBehaviour {
     public void CmdIncreaseScore()
     {
         gameController.IncreaseScore();
+        PlayerScore++;
+    }
+
+    [Command]
+    public void CmdIncreasePlayerScore()
+    {
+        PlayerScore++;
     }
 
     public void OnClickButton1()
@@ -591,6 +599,7 @@ public class Player : NetworkBehaviour {
         AllButtons[buttonNumber].GetComponent<Image>().color = Color.green;
         
         PlayCorrectSound();
+        CmdIncreasePlayerScore();
         
         StartCoroutine(ResetButtonColour(0.5f, buttonNumber));
     }
@@ -631,19 +640,9 @@ public class Player : NetworkBehaviour {
 
     public void DisableOkayButtonsOnPanels()
     {
-        //nfcOkayButton.enabled = false;
-        //micOkayButton.enabled = false;
-        //shakeOkayButton.enabled = false;
-
-        //nfcOkayButton.GetComponent<Renderer>().enabled = false;
-        //micOkayButton.GetComponent<Renderer>().enabled = false;
-        //shakeOkayButton.GetComponent<Renderer>().enabled = false;
-
         nfcOkayButton.SetActive(false);
         micOkayButton.SetActive(false);
         shakeOkayButton.SetActive(false);
-
-
     }
 
 
@@ -654,14 +653,27 @@ public class Player : NetworkBehaviour {
         switcher = (switcher + 1) % numberOfButtonSounds;
        
     }
-    
-    /*void OnGUI()
+
+    [Command]
+    public void CmdUpdateChefPrefab()
     {
-        //Create a horizontal Slider that controls volume levels. Its highest value is 1 and lowest is 0
-        VolumeOfSoundEffects = GUI.HorizontalSlider(new Rect(25, 25, 200, 60), VolumeOfSoundEffects, 0.0F, 1.0F);
-        //Makes the volume of the Audio match the Slider value
-        source.volume = VolumeOfSoundEffects;
-    }*/
+        var chefs = GameObject.FindGameObjectsWithTag("ChefPrefab");
+        foreach (GameObject chef in chefs)
+        {
+            if (chef.GetComponent<ChefController>().arrow.GetComponent<Image>().color == PlayerColour)
+            {
+                //UPDATE PREFAB HERE
+                List<GameObject> hatParts = chef.GetComponent<ChefController>().hat;
+                foreach (GameObject part in hatParts)
+                {
+                    Material hatColour = new Material(part.GetComponent<MeshRenderer>().material);
+                    hatColour.color = PlayerColour;
+                    part.GetComponent<MeshRenderer>().material = hatColour;
+                }
+            }
+        }
+    }
+    
 
     private void Vibrate()
     {

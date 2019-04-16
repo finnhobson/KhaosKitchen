@@ -24,8 +24,8 @@ public class MusicPlayer : MonoBehaviour
     private int Switch = 0;
     
     //Booleans
-    private bool isRoundPaused = false;
-    private bool isMusicPaused = false;
+    //private bool isRoundPaused = false;
+    //private bool isMusicPaused = false;
     
     private void Awake()
     {
@@ -40,13 +40,13 @@ public class MusicPlayer : MonoBehaviour
     
     public void PauseMusic()
     {
-        isMusicPaused = true;
+        //isMusicPaused = true;
         BackgroundSource.Stop();
     }
 
     public void UnPauseMusic()
     {
-        isMusicPaused = false;
+        //isMusicPaused = false;
         BackgroundSource.UnPause();
     }
 
@@ -70,8 +70,8 @@ public class MusicPlayer : MonoBehaviour
 
     public void StartRoundMusic()
     {
-        isRoundPaused = false;
-        isMusicPaused = false;
+        //isRoundPaused = false;
+        //isMusicPaused = false;
         PlayBackgroundMusic();
     }
 

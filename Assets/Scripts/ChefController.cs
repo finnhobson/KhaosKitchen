@@ -22,6 +22,8 @@ public class ChefController : MonoBehaviour
     public GameObject sphere;
     public Image arrow;
 
+    public List<GameObject> hat;
+
     // Use this for initialization
     void Start()
     {

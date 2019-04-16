@@ -4,7 +4,7 @@ using System.Collections;
 
 public class CameraController : MonoBehaviour
 {
-    private bool camAvailable;
+    //private bool camAvailable;
     private WebCamTexture backCam;
     public RawImage panel;
 
@@ -16,7 +16,7 @@ public class CameraController : MonoBehaviour
         if (devices.Length == 0)
         {
             Debug.Log("No camera detected");
-            camAvailable = false;
+            //camAvailable = false;
             return;
         }
 
@@ -37,7 +37,7 @@ public class CameraController : MonoBehaviour
         backCam.Play();
         panel.texture = backCam;
 
-        camAvailable = true;
+        //camAvailable = true;
     }
 
     // Update is called once per frame

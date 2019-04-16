@@ -37,7 +37,7 @@ public class InstructionController : NetworkBehaviour
     }
 
     //Variables that are generated in GC
-    public List<Player> Players { get; set; }
+    public List<Player> Players;
     public int NumberOfButtons { get; set; }
     public int PlayerCount { get; set; }
 
@@ -125,8 +125,7 @@ public class InstructionController : NetworkBehaviour
     public void SelectButtonActions()
     {
         ActiveButtonActions.Clear(); 
-        
-        int randomIndex;
+
         bool duplicate;
         int verbNo, nounNo;
         string text;
@@ -184,8 +183,10 @@ public class InstructionController : NetworkBehaviour
             if (action != ActiveInstructions[i]) continue;
 
             match = true;
+
             DeactivateInstruction(action);
-            GameController.CheckAction(action, i);
+            GameController.CheckAction(i);
+            Players[i].PlayerScore++;
 
             PickNewInstruction(i, action);
             if (!isLastActionOfRound)
@@ -205,15 +206,12 @@ public class InstructionController : NetworkBehaviour
                     RpcSetShakePanel(i, shakeInstructions[rand]);
                 }
             }
-
-            //Update player score
-            Players[i].PlayerScore++;
-            
-            //Only do a panel action if there are still instructions left in the round.
-            //if (isLastActionOfRound) return;
-            //PrintInstructionHandler();
         }
-        if (!match) GameController.fireCount++;
+        if (!match)
+        {
+            GameController.fireCount++;
+            GameController.customerSatisfaction -= 5;
+        }
     }
     
     /*
@@ -228,6 +226,7 @@ public class InstructionController : NetworkBehaviour
             if (action == ActiveInstructions[i])
             {
                 GameController.RpcResetScoreSteak(i);
+                GameController.IncreaseFireCount();
                 
                 PickNewInstruction(i, action);
                 RpcUpdateInstruction(ActiveInstructions[i], i);
