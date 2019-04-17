@@ -9,7 +9,7 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 
-public class GameController : NetworkBehaviour, IGameController
+public class GameController : NetworkBehaviour
 {
     //Custom GameObjects
     public InstructionController InstructionController;

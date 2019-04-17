@@ -8,7 +8,7 @@ using UnityEngine.Networking;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
-public class Player : NetworkBehaviour, IPlayer
+public class Player : NetworkBehaviour
 {
 
     //Custom objects
