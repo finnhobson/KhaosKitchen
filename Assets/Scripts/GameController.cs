@@ -9,7 +9,7 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 
-public class GameController : NetworkBehaviour
+public class GameController : NetworkBehaviour, IGameController
 {
     //Custom GameObjects
     public InstructionController InstructionController;
@@ -24,27 +24,95 @@ public class GameController : NetworkBehaviour
 
     public List<Player> playerList = new List<Player>();
     public List<Text> playerNames = new List<Text>();
-    
+
     [SyncVar] public int score = 0;
+
+    public int Score
+    {
+        get
+        {
+            return score;
+        }
+    }
+
     [SyncVar] private int roundScore = 0;
     [SyncVar] public int roundNumber = 1;
+
+    public int RoundNumber
+    {
+        get
+        {
+            return roundNumber;
+        }
+    }
+
     [SyncVar] public int fireCount = 0;
 
+    public int FireCount
+    {
+        get
+        {
+            return fireCount;
+        }
+    }
+
     [SyncVar] public bool isRoundPaused = false;
+
+    public bool IsRoundPaused
+    {
+        get
+        {
+            return isRoundPaused;
+        }
+    }
+
     [SyncVar] public bool isGameStarted = false;
 
-    [SyncVar] public float roundTimeLeft = 90;
-    [SyncVar] public int roundStartTime;
-    [SyncVar] public int instructionStartTime;
+    public bool IsGameStarted
+    {
+        get
+        {
+            return isGameStarted;
+        }
+    }
 
+    [SyncVar] public float roundTimeLeft;
+
+    public float RoundTimeLeft
+    {
+        get
+        {
+            return roundTimeLeft;
+        }
+    }
+
+    [SyncVar] public int roundStartTime;
+
+    public int RoundStartTime
+    {
+        get
+        {
+            return roundStartTime;
+        }
+    }
+
+    [SyncVar] public int instructionStartTime;
     [SyncVar] public int BaseInstructionNumber;
     [SyncVar] public int InstructionNumberIncreasePerRound;
     [SyncVar] public int BaseInstructionTime;
     [SyncVar] public int InstructionTimeReductionPerRound;
     [SyncVar] public int InstructionTimeIncreasePerPlayer;
     [SyncVar] public int MinimumInstructionTime;
-
     [SyncVar] public int playerCount;
+
+    public int PlayerCount
+    {
+        get
+        {
+            return playerCount;
+        }
+    }
+
     [SyncVar] public bool easyPhoneInteractions;
 
     //[SyncVar(hook = "SetTopChef")] public string currentTopChef;
@@ -66,12 +134,29 @@ public class GameController : NetworkBehaviour
 
     //Booleans
     private bool isGameOver = false;
+    public bool IsGameOver
+    {
+        get
+        {
+            return isGameOver;
+        }
+    }
 
     List<string> UserNames = new List<string>(); /* Just here so in future they can set their own usernames from the lobby */
 
     //Indicator variables for the animation controller
     public bool playersInitialised = false;
 
+    public bool PlayersInitialised
+    {
+        get
+        {
+            return playersInitialised;
+        }
+    }
+
+
+    //Functions-----------------------------------------------------------------------------------------------------
 
     //--------------------------------------------------------------------------------------------------------------
     // FUNCTIONS ---------------------------------------------------------------------------------------------------
@@ -115,20 +200,22 @@ public class GameController : NetworkBehaviour
             playerIndex++;
         }
 
+        PlayersInitialisedFromStart();
+
         InstructionController.ICStart(playerCount, numberOfButtons, playerList, this);
         InstructionController.piProb = piProb;
 
         if (isServer)
         {
             gameStateHandler = new GameStateHandler(UserNames); //Instantiate single gameStateHandler object on the server to hold gamestate data 
-            playersInitialised = true;
-
+        
             StartCoroutine(RoundCountdown(10, "3"));
             StartCoroutine(RoundCountdown(11, "2"));
             StartCoroutine(RoundCountdown(12, "1"));
             StartCoroutine(StartRound(13));
             StartCoroutine(StartGame(13));
         }
+
     }
 
 
@@ -176,7 +263,7 @@ public class GameController : NetworkBehaviour
                 if (!isGameOver)
                 {
                     PlayGameOver();
-                    isGameOver = true;
+                    GameOver();
                 }
             }
             else
@@ -248,7 +335,7 @@ public class GameController : NetworkBehaviour
         customerSatisfaction += 5.0f;
         UpdateScoreBar();
     }
-
+         
     public void StartRoundTimer()
     {
         //roundStartTime = 90;
@@ -260,6 +347,11 @@ public class GameController : NetworkBehaviour
         roundTimeLeft -= Time.deltaTime;
         if (roundTimeLeft >= 0) roundTimerBar.GetComponent<RectTransform>().localScale = new Vector3(roundTimeLeft / roundStartTime, 1, 1);
         //SetTimerText(roundTimeLeft.ToString("F2"));
+    }
+
+    public void PlayersInitialisedFromStart()
+    {
+        playersInitialised = true;
     }
 
     private void SetTimerText(string text)
@@ -285,6 +377,7 @@ public class GameController : NetworkBehaviour
         isRoundPaused = true;
         UpdateGamestate();
 
+        RoundPaused();
         fireCount = 0;
         CancelInvoke();
         PauseMusic();
@@ -298,14 +391,23 @@ public class GameController : NetworkBehaviour
         }
 
         ReadyInstructionController();
-        
+
         StartCoroutine(PlayXCountAfterNSeconds(5, 2));
         StartCoroutine(StartNewRoundAfterXSeconds(5));
         StartCoroutine(RoundCountdown(6, "2"));
         StartCoroutine(RoundCountdown(7, "1"));
         StartCoroutine(StartRound(8));
     }
-    
+
+    public void RoundPaused()
+    {
+        isRoundPaused = true;
+    }
+
+    private IEnumerator Wait(float n)
+    {
+        yield return new WaitForSecondsRealtime(n);
+    }
 
     private IEnumerator RoundCountdown(int n, string x)
     {
@@ -457,8 +559,8 @@ public class GameController : NetworkBehaviour
     public int CalculateInstructionTime()
     {
         int temp = BaseInstructionTime
-                    - (roundNumber-1) * InstructionTimeReductionPerRound
-                    + (playerCount-2) * InstructionTimeIncreasePerPlayer;
+                    - (roundNumber - 1) * InstructionTimeReductionPerRound
+                    + (playerCount - 2) * InstructionTimeIncreasePerPlayer;
 
         return temp > MinimumInstructionTime ? temp : MinimumInstructionTime;
 
@@ -495,7 +597,7 @@ public class GameController : NetworkBehaviour
         PauseMusic();
         PlayCountDown(x);
     }
-    
+
     [Server]
     private void PlayRoundBreakMusic()
     {
@@ -525,7 +627,12 @@ public class GameController : NetworkBehaviour
     {
         MusicPlayer.PlayGameOver();
     }
-
+    
+    public void GameOver()
+    {
+        isGameOver = true;
+    }
+    
     [ClientRpc]
     private void RpcSetTopChef(string topChef)
     {

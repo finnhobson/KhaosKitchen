@@ -8,7 +8,8 @@ using UnityEngine.Networking;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
-public class Player : NetworkBehaviour {
+public class Player : NetworkBehaviour, IPlayer
+{
 
     //Custom objects
     public GameController gameController;
@@ -51,24 +52,51 @@ public class Player : NetworkBehaviour {
     public int playerCount;
     public int instTime;
     public bool easyPhoneInteractions;
-    private HashSet<String> validNfc = new HashSet<String>{"Food Waste","Recycling Bin","Window A","Window B"};
+    private HashSet<String> validNfc = new HashSet<String> { "Food Waste", "Recycling Bin", "Window A", "Window B" };
     public MicListener micListener;
-    
+
     //Timer
     //private int instTime = 30;
     public GameObject instBar;
     public float instTimeLeft, instStartTime;
-    
+
     //Score
     private int scoreStreak = 0;
+
+    public int ScoreStreak
+    {
+        get
+        {
+            return scoreStreak;
+        }
+    }
+
     private const int scoreStreakMax = 3;
 
     //Booleans
-    public bool isGamePaused = false;
+    public bool isGamePaused;
+
+    public bool IsGamePaused
+    {
+        get
+        {
+            return isGamePaused;
+        }
+    }
+
     private bool isBinA = true;
     private bool isWindowA = true;
     private bool isFail = false;
     private bool isServe = false;
+
+    public bool IsServe
+    {
+        get
+        {
+            return isServe;
+        }
+    }
+
     private bool micActive = false;
     private bool timerStarted = false;
 
@@ -90,9 +118,16 @@ public class Player : NetworkBehaviour {
         micListener.enabled = false;
 
         int rand = UnityEngine.Random.Range(0, 1);
-        if (rand == 0) isBinA = false;
+        if (rand == 0)
+        {
+            isBinA = false;
+        }
         rand = UnityEngine.Random.Range(0, 1);
-        if (rand == 0) isWindowA = false;
+        if (rand == 0)
+        {
+            isWindowA = false;
+        }
+
     }
 
     private void Update()
@@ -113,7 +148,7 @@ public class Player : NetworkBehaviour {
             UpdateInstTimeLeft();
             if (instTimeLeft < 0 && isLocalPlayer)
             {
-                CmdFail(instructionText.text,(isBinA) ? "Food Waste" : "Recycling Bin");
+                CmdFail(instructionText.text, (isBinA) ? "Food Waste" : "Recycling Bin");
                 PlayFailSound();
                 StartInstTimer();
                 isFail = true;
@@ -138,7 +173,7 @@ public class Player : NetworkBehaviour {
                 StartInstTimer();
             }
 
-            
+
             nfcValue = NfcCheck();
             if (validNfc.Contains(nfcValue))
             {
@@ -169,8 +204,8 @@ public class Player : NetworkBehaviour {
                         isBinA = !isBinA;
                         isFail = false;
                     }
-                    
-                   
+
+
                 }
                 else if (isServe)
                 {
@@ -232,7 +267,7 @@ public class Player : NetworkBehaviour {
 
                 }
 
-                
+
             }
 
             if (ShakeListener.shaking)
@@ -274,12 +309,13 @@ public class Player : NetworkBehaviour {
     private string NfcCheck()
     {
         string value = NFCListener.GetValue();
-        
+
         if (value == "BFTT4mEzgA==")
         {
             NFCListener.SetValue("");
             return "Food Waste";
-        } else if (value == "BFXT4mEzgA==")
+        }
+        else if (value == "BFXT4mEzgA==")
         {
             NFCListener.SetValue("");
             return "Recycling Bin";
@@ -288,7 +324,7 @@ public class Player : NetworkBehaviour {
         {
             NFCListener.SetValue("");
             return "Window A";
-        } 
+        }
         else if (value == "BBrT4mEzgA==")
         {
             NFCListener.SetValue("");
@@ -318,7 +354,7 @@ public class Player : NetworkBehaviour {
     {
         if (!isLocalPlayer) return;
         CmdUpdateIHWithButtonData(i, instruction, PlayerId);
-        
+
         switch (i)
         {
             case 0:
@@ -361,7 +397,7 @@ public class Player : NetworkBehaviour {
     [Command]
     public void CmdFail(string action, string bin)
     {
-        InstructionController.FailAction(action,bin);
+        InstructionController.FailAction(action, bin);
         ResetScoreStreak();
     }
 
@@ -383,7 +419,7 @@ public class Player : NetworkBehaviour {
         if (isLocalPlayer)
         {
             CheckInstruction(button1.GetComponentInChildren<Text>().text, 0);
-//            CmdAction(button1.GetComponentInChildren<Text>().text);
+            //            CmdAction(button1.GetComponentInChildren<Text>().text);
         }
     }
 
@@ -393,7 +429,7 @@ public class Player : NetworkBehaviour {
         {
             CheckInstruction(button2.GetComponentInChildren<Text>().text, 1);
 
-//            CmdAction(button2.GetComponentInChildren<Text>().text);
+            //            CmdAction(button2.GetComponentInChildren<Text>().text);
         }
     }
 
@@ -403,7 +439,7 @@ public class Player : NetworkBehaviour {
         {
             CheckInstruction(button3.GetComponentInChildren<Text>().text, 2);
 
-//            CmdAction(button3.GetComponentInChildren<Text>().text);
+            //            CmdAction(button3.GetComponentInChildren<Text>().text);
         }
     }
 
@@ -413,10 +449,10 @@ public class Player : NetworkBehaviour {
         {
             CheckInstruction(button4.GetComponentInChildren<Text>().text, 3);
 
-//            CmdAction(button4.GetComponentInChildren<Text>().text);
+            //            CmdAction(button4.GetComponentInChildren<Text>().text);
         }
     }
-    
+
     public void NfcClick(string nfcString)
     {
         if (isLocalPlayer)
@@ -424,7 +460,7 @@ public class Player : NetworkBehaviour {
             CmdAction(nfcString);
         }
     }
-    
+
     public void MicClick(string micString)
     {
         if (isLocalPlayer)
@@ -432,7 +468,7 @@ public class Player : NetworkBehaviour {
             CmdAction(micString);
         }
     }
-    
+
     public void ShakeClick(string shakeString)
     {
         if (isLocalPlayer)
@@ -444,7 +480,7 @@ public class Player : NetworkBehaviour {
     public void StartInstTimer()
     {
         instStartTime = gameController.CalculateInstructionTime();
-        instTimeLeft = instStartTime; 
+        instTimeLeft = instStartTime;
     }
 
     private void UpdateInstTimeLeft()
@@ -455,7 +491,7 @@ public class Player : NetworkBehaviour {
             instTimeLeft = instStartTime;
             instBar.GetComponent<RectTransform>().localScale = new Vector3(instTimeLeft / instStartTime, 1, 1);
         }
-        else if(nfcPanel.activeSelf||micPanel.activeSelf||shakePanel.activeSelf||isGamePaused)
+        else if (nfcPanel.activeSelf || micPanel.activeSelf || shakePanel.activeSelf || isGamePaused)
         {
             //panel active so no timer 
         }
@@ -507,11 +543,13 @@ public class Player : NetworkBehaviour {
         }
     }
 
-    public void IncreaseScoreStreak(){
+    public void IncreaseScoreStreak()
+    {
         scoreStreak++;
     }
 
-    public void ResetScoreStreak(){
+    public void ResetScoreStreak()
+    {
         scoreStreak = 0;
     }
 
@@ -539,14 +577,14 @@ public class Player : NetworkBehaviour {
 
     public void ScoreStreakCheck()
     {
-        if(scoreStreak>=scoreStreakMax)
+        if (scoreStreak >= scoreStreakMax)
         {
 
             isServe = true;
             String window = (isWindowA) ? "Window A" : "Window B";
             ResetScoreStreak();
-            SetNfcPanel(" Great Work!\n Serve dish to "+ window +"!\n\n (TAP ON "+ window +" NFC)");
-            
+            SetNfcPanel(" Great Work!\n Serve dish to " + window + "!\n\n (TAP ON " + window + " NFC)");
+
         }
     }
 
@@ -554,12 +592,12 @@ public class Player : NetworkBehaviour {
     {
         isGamePaused = true;
     }
-    
+
     public void UnpausePlayer()
     {
         isGamePaused = false;
     }
-    
+
     /*
      * Updates instruction button number, playerID.
      */
@@ -568,7 +606,7 @@ public class Player : NetworkBehaviour {
     {
         InstructionController.PlayerUpdateButton(buttonNumber, action, playerID);
     }
-    
+
     /*
     * Updates instruction button number, playerID.
     */
@@ -584,20 +622,20 @@ public class Player : NetworkBehaviour {
         if (InstructionController.ActiveInstructions.Contains(action))
         {
             ThisButtonWasPressed(buttonNumber);
-        } 
-        
+        }
+
         else
         {
             ThisButtonWasNotPressed(buttonNumber);
         }
     }
 
-    private void ThisButtonWasPressed(int buttonNumber) 
+    private void ThisButtonWasPressed(int buttonNumber)
     {
         //Activate feedback on this button
         CmdPrint(buttonNumber);
         AllButtons[buttonNumber].GetComponent<Image>().color = Color.green;
-        
+
         PlayCorrectSound();
         CmdIncreasePlayerScore();
         
@@ -607,7 +645,7 @@ public class Player : NetworkBehaviour {
     private void ThisButtonWasNotPressed(int buttonNumber)
     {
         AllButtons[buttonNumber].GetComponent<Image>().color = Color.red;
-        
+
         PlayIncorrectSound();
 
         StartCoroutine(ResetButtonColour(0.5f, buttonNumber));
@@ -617,7 +655,7 @@ public class Player : NetworkBehaviour {
     {
         yield return new WaitForSecondsRealtime(x);
         AllButtons[buttonNumber].GetComponent<Image>().color = Color.white;
-        
+
     }
 
     [Command]
@@ -651,7 +689,7 @@ public class Player : NetworkBehaviour {
         source.PlayOneShot(incorrectActions[switcher], VolumeOfSoundEffects);
         Vibrate();
         switcher = (switcher + 1) % numberOfButtonSounds;
-       
+
     }
 
     [Command]

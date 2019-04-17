@@ -44,6 +44,15 @@ public class InstructionController : NetworkBehaviour
     //Booleans
     [SyncVar] public bool isRoundPaused = false;
     [SyncVar] public bool isLastActionOfRound = false;
+
+    public bool IsLastActionOfRound
+    {
+        get
+        {
+            return isLastActionOfRound;
+        }
+    }
+
     [SyncVar] public bool SetupFinished = false;
 
     //Phone interaction probability = 2/x
