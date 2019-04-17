@@ -106,6 +106,14 @@ public class GameStateTests
     }
 
     [Test]
+    public void PlayerUnpauseGameState_Test()
+    {
+        Player player = new Player();
+        player.UnpausePlayer();
+        Assert.AreEqual(false, player.isGamePaused);
+    }
+
+    [Test]
     public void IsGameOverNotNull_Test()
     {
         GameController gameController = new GameController();

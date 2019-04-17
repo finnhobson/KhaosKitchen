@@ -51,4 +51,27 @@ public class ScoreTests
         player.IncreaseScoreStreak();
         Assert.AreEqual(3, player.ScoreStreak);
     }
+
+
+    [Test]
+    public void PlayerScoreStreakNotNull_Test()
+    {
+        Player player = new Player();
+        Assert.NotNull(player.PlayerScore);
+    }
+
+    [Test]
+    public void PlayerScoreInitialSetUp()
+    {
+        Player player = new Player();
+        Assert.AreEqual(0, player.PlayerScore);
+    }
+
+    [Test]
+    public void PlayerScoreIncrease_Test()
+    {
+        Player player = new Player();
+        player.PlayerScore++;
+        Assert.AreEqual(1, player.PlayerScore);
+    }
 }

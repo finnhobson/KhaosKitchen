@@ -1,21 +1,22 @@
 ﻿<Properties StartupConfiguration="{5AAD9717-E92E-BFD1-71EB-1C3207432BAB}|">
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Player.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Editor/ScoreTests.cs">
     <Files>
       <File FileName="Assets/Scripts/GameController.cs" Line="104" Column="49" />
       <File FileName="Assets/Scripts/InstructionController.cs" Line="33" Column="45" />
       <File FileName="Assets/Editor/InstructionTests.cs" Line="34" Column="6" />
-      <File FileName="Assets/Editor/GameStateTests.cs" Line="56" Column="1" />
-      <File FileName="Assets/Scripts/Player.cs" Line="19" Column="21" />
+      <File FileName="Assets/Editor/GameStateTests.cs" Line="113" Column="53" />
+      <File FileName="Assets/Scripts/Player.cs" Line="48" Column="27" />
+      <File FileName="Assets/Editor/ScoreTests.cs" Line="67" Column="48" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="KhaosKitchen" expanded="True">
             <Node name="Assets" expanded="True">
-              <Node name="Editor" expanded="True" />
-              <Node name="Scripts" expanded="True">
-                <Node name="Player.cs" selected="True" />
+              <Node name="Editor" expanded="True">
+                <Node name="ScoreTests.cs" selected="True" />
               </Node>
+              <Node name="Scripts" expanded="True" />
               <Node name="Tests" expanded="True" />
             </Node>
           </Node>
