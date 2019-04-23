@@ -38,6 +38,8 @@ public class GameController : NetworkBehaviour
     [SyncVar] private int roundScore = 0;
     [SyncVar] public int roundNumber = 1;
 
+    private bool isGroupActiviy;
+    [SyncVar] public bool isGroupDone;
     public int RoundNumber
     {
         get
@@ -253,11 +255,25 @@ public class GameController : NetworkBehaviour
     {
         if (isGameStarted)
         {
+            
             //Show score and active instructions on server display.
             scoreText.text = score.ToString();
             roundNumberText.text = roundNumber.ToString();
             UpdateRoundTimeLeft();
-            stars.fillAmount = customerSatisfaction / 100;
+            
+            if (score == 2)
+            {
+                //Tells players to wait
+                roundNumberText.text = "Shake";
+                //
+                bool allReady = true;
+                foreach (var player in playerList)
+                {
+                    allReady &= player.isShaking;
+                }
+
+                if (allReady) score = 40;
+            }
 
             if (roundMaxScore - roundScore <= 1)
             {
