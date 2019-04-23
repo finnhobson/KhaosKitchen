@@ -38,7 +38,9 @@ public class GameController : NetworkBehaviour
     [SyncVar] private int roundScore = 0;
     [SyncVar] public int roundNumber = 1;
 
-    private bool isGroupActiviy;
+    [SyncVar] public bool isRoundPaused;
+    [SyncVar] public bool isGameStarted;
+    private bool isGroupActiviy = true;
     [SyncVar] public bool isGroupDone;
     public int RoundNumber
     {
@@ -262,7 +264,11 @@ public class GameController : NetworkBehaviour
             roundNumberText.text = roundNumber.ToString();
             UpdateRoundTimeLeft();
 
-            if (score == 2) startGroupActivity = false;
+            if (score == 2 && isGroupActiviy)
+            {
+                startGroupActivity = true;
+                isGroupActiviy = false;
+            }
             
             if (startGroupActivity)
             {
