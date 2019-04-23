@@ -84,7 +84,7 @@ public class GameController : NetworkBehaviour
             LoadSettings(); 
         }
 
-        StartCoroutine(Setup(4));
+        StartCoroutine(Setup(8));
     }
     
     private IEnumerator Setup(int x)
