@@ -44,8 +44,8 @@ public class Player : NetworkBehaviour
     //Player
     [SyncVar] public string PlayerUserName;
     [SyncVar] public Color PlayerColour;
+    [SyncVar (hook = "UpdateScore") ] public int PlayerScore;
     [SyncVar] public int PlayerId;
-    [SyncVar] public int PlayerScore;
     public uint PlayerNetworkID;
 
     [SyncVar (hook = "DisplayTopChef")] private string topChef;
@@ -110,7 +110,6 @@ public class Player : NetworkBehaviour
     private bool timerStarted = false;
     [SyncVar] public bool isSetupComplete;	
 
-
     private void Awake()
     {
         source = GetComponent<AudioSource>();
@@ -158,10 +157,13 @@ public class Player : NetworkBehaviour
     private void Update()
     {
         //Display score.
-        scoreText.text = gameController.score.ToString();
+//        scoreText.text = gameController.score.ToString();
+//        scoreText.text = gameController.score.ToString();
+        
+        
         //if (micActive) micVolumeText.text = micListener.MicLoudness.ToString("F4");
 //        topChefText.text = TopChef;
-        scoreText.text = PlayerScore.ToString();
+//        scoreText.text = PlayerScore.ToString();
 
         if (!timerStarted && gameController.isGameStarted)
         {
@@ -795,6 +797,11 @@ public class Player : NetworkBehaviour
     public void CmdSetNetworkID(uint ID)
     {
         PlayerNetworkID = ID;
+    }
+
+    private void UpdateScore(int x)
+    {
+        scoreText.text = x.ToString();
     }
 }
 

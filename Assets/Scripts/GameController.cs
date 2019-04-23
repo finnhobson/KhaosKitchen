@@ -180,6 +180,13 @@ public class GameController : NetworkBehaviour
 
         if (isServer) LoadSettings();
 
+        StartCoroutine(Setup(4));
+    }
+    
+    private IEnumerator Setup(int x)
+    {
+        yield return new WaitForSecondsRealtime(x);
+
         //Find players
         var players = FindObjectsOfType<Player>();
 
@@ -211,7 +218,7 @@ public class GameController : NetworkBehaviour
                 playerNames[playerIndex].color = p.PlayerColour;
                 playerIndex++;
             }
-            gameStateHandler = new GameStateHandler(UserNames); //Instantiate single gameStateHandler object on the server to hold gamestate data 
+//            gameStateHandler = new GameStateHandler(UserNames); //Instantiate single gameStateHandler object on the server to hold gamestate data 
         }
 
         PlayersInitialisedFromStart();

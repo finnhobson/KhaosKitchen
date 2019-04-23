@@ -28,6 +28,9 @@ sysinfo.txt
 
 *.ide-wal
 
+*.apk
+
+
 *.dylib
 
 build260319 copy 2\.app/Contents/MacOS/
