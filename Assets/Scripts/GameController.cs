@@ -143,7 +143,7 @@ public class GameController : NetworkBehaviour
             return isGameOver;
         }
     }
-    [SyncVar (hook = "SetGroupActiviy")] public bool startGroupActivity;
+    [SyncVar (hook = "SetGroupActivity")] public bool startGroupActivity;
 
     List<string> UserNames = new List<string>(); /* Just here so in future they can set their own usernames from the lobby */
 
