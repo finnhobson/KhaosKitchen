@@ -31,6 +31,9 @@ public class GameController : NetworkBehaviour
 
     [SyncVar] public bool isRoundPaused;
     [SyncVar] public bool isGameStarted;
+    private bool isGroupActiviy;
+    [SyncVar] public bool isGroupDone;
+
 
     [SyncVar] public float roundTimeLeft;
     [SyncVar] public int roundStartTime;
@@ -161,10 +164,25 @@ public class GameController : NetworkBehaviour
     {
         if (isGameStarted)
         {
+            
             //Show score and active instructions on server display.
             scoreText.text = score.ToString();
             roundNumberText.text = roundNumber.ToString();
             UpdateRoundTimeLeft();
+            
+            if (score == 2)
+            {
+                //Tells players to wait
+                roundNumberText.text = "Shake";
+                //
+                bool allReady = true;
+                foreach (var player in playerList)
+                {
+                    allReady &= player.isShaking;
+                }
+
+                if (allReady) score = 40;
+            }
 
             if (roundMaxScore - roundScore <= 1)
             {
@@ -175,7 +193,7 @@ public class GameController : NetworkBehaviour
             {
                 OnRoundComplete();
             }
-            
+                
             else if (roundTimeLeft < 0)
             {
                 SetTimerText("0");

@@ -80,7 +80,9 @@ public class Player : NetworkBehaviour {
     private bool isFail = false;
     private bool isServe = false;
     private bool micActive = false;
-    [SyncVar] public bool isSetupComplete;	
+    [SyncVar] public bool isSetupComplete;
+//    [SyncVar] public bool isGroupActive;
+    [SyncVar] public bool isShaking;
 
     private void Awake()
     {
@@ -133,6 +135,8 @@ public class Player : NetworkBehaviour {
 //        scoreText.text = gameController.score.ToString();
 //        scoreText.text = gameController.score.ToString();
         
+        CmdSetShake(ShakeListener.shaking);
+
         
         //if (micActive) micVolumeText.text = micListener.MicLoudness.ToString("F4");
 //        topChefText.text = TopChef;
@@ -267,6 +271,7 @@ public class Player : NetworkBehaviour {
 
             if (ShakeListener.shaking)
             {
+                
                 //shakeClick(Instruction text to be completed by shaking, matching that in activeInstructions);
                 if (shakePanel.activeSelf)
                 {
@@ -753,6 +758,12 @@ public class Player : NetworkBehaviour {
     private void UpdateScore(int x)
     {
         scoreText.text = x.ToString();
+    }
+
+    [Command]
+    public void CmdSetShake(bool shake)
+    {
+        isShaking = shake;
     }
 }
 
