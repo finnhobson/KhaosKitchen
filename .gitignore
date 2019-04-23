@@ -24,3 +24,7 @@ sysinfo.txt
 *.ide-shm
 
 *.ide-wal
+
+*.apk
+
+*.meta

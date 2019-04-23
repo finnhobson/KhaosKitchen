@@ -44,7 +44,8 @@ public class Player : NetworkBehaviour {
     [SyncVar] public string PlayerUserName;
     [SyncVar] public Color PlayerColour;
     public int PlayerId { get; set; }
-    [SyncVar] public int PlayerScore;
+//    public int PlayerScore { get; set; }
+    [SyncVar (hook = "UpdateScore") ] public int PlayerScore;
     public uint PlayerNetworkID;
 
     [SyncVar (hook = "DisplayTopChef")] private string topChef;
@@ -80,7 +81,6 @@ public class Player : NetworkBehaviour {
     private bool isServe = false;
     private bool micActive = false;
     [SyncVar] public bool isSetupComplete;	
-
 
     private void Awake()
     {
@@ -130,10 +130,13 @@ public class Player : NetworkBehaviour {
     private void Update()
     {
         //Display score.
-        scoreText.text = gameController.score.ToString();
+//        scoreText.text = gameController.score.ToString();
+//        scoreText.text = gameController.score.ToString();
+        
+        
         //if (micActive) micVolumeText.text = micListener.MicLoudness.ToString("F4");
 //        topChefText.text = TopChef;
-        scoreText.text = PlayerScore.ToString();
+//        scoreText.text = PlayerScore.ToString();
 
         if (gameController.roundTimeLeft > 0)
         {
@@ -745,6 +748,11 @@ public class Player : NetworkBehaviour {
     public void CmdSetNetworkID(uint ID)
     {
         PlayerNetworkID = ID;
+    }
+
+    private void UpdateScore(int x)
+    {
+        scoreText.text = x.ToString();
     }
 }
 
