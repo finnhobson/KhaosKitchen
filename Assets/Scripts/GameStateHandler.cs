@@ -11,6 +11,7 @@ public class GameStateHandler
 {
     public int RoundNumber { get; set; }
     public int OverallTeamScore { get; set; }
+    public int GroupActivityNumber { get; set; }
     
     private List<string> userNames = new List<string>();
     private Dictionary<string, int> userProfiles = new Dictionary<string, int>();
@@ -64,4 +65,6 @@ public class GameStateHandler
             Debug.Log("Player: " + userProfile.Key + ", Score: " + userProfile.Value); 
         }        
     }
+    
+    
 }

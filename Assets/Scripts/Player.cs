@@ -83,6 +83,7 @@ public class Player : NetworkBehaviour {
     [SyncVar] public bool isSetupComplete;
     [SyncVar] public bool isGroupActive;
     [SyncVar] public bool isShaking;
+    [SyncVar] public int activityNumber;
 
     private void Awake()
     {
@@ -100,9 +101,9 @@ public class Player : NetworkBehaviour {
         Screen.orientation = ScreenOrientation.Portrait;
         
         // ------------------------------------------------------------------------------
-        fullScreenPanel.SetActive(false);
-        roundCompletePanel.SetActive(false);
-        roundStartPanel.SetActive(false);
+//        fullScreenPanel.SetActive(false);
+//        roundCompletePanel.SetActive(false);
+//        roundStartPanel.SetActive(false);
         // ------------------------------------------------------------------------------
         
         if (isLocalPlayer)
@@ -133,7 +134,7 @@ public class Player : NetworkBehaviour {
     {
         //Display score.
 //        scoreText.text = gameController.score.ToString();
-//        scoreText.text = gameController.score.ToString();
+//        scoreText.text = NfcCheck();
         
         groupMessagePanel.SetActive(isGroupActive);
 
@@ -141,7 +142,7 @@ public class Player : NetworkBehaviour {
         {
             if (isClient)
             {
-                CmdSetShake(ShakeListener.shaking);
+                CheckGroupActivity();
             }
         }
 
@@ -289,7 +290,7 @@ public class Player : NetworkBehaviour {
                 }
             }
 
-            //scoreText.text = nfcValue;
+            instructionText.text = nfcValue;
         }
         else
         {
@@ -772,6 +773,30 @@ public class Player : NetworkBehaviour {
     public void CmdSetShake(bool shake)
     {
         isShaking = shake;
+    }
+    
+    private void CheckGroupActivity()
+    {
+        switch (activityNumber)
+        {
+            case 0: 
+                CmdSetShake(ShakeListener.shaking);
+                break;
+                    
+            case 1:
+                StartNFCRace();
+                break;
+                    
+            default:
+                //
+                Console.WriteLine("Fucked!");
+                break;
+        }
+    }
+
+    private void StartNFCRace()
+    {
+        
     }
 }
 

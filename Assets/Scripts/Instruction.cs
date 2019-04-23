@@ -9,5 +9,4 @@ public class Instruction
     public int InstructionPlayerID { get; set; } //ID of player who's ordering instruction.
     public int ButtonPlayerID { get; set; }      //ID of player who's executing instruction.
     public int ButtonNumber { get; set; }
-
 }

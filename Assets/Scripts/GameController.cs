@@ -7,6 +7,8 @@ using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using UnityEngine.Serialization;
+using UnityEngine.SocialPlatforms.Impl;
 
 
 public class GameController : NetworkBehaviour
@@ -47,16 +49,14 @@ public class GameController : NetworkBehaviour
     [SyncVar] public int MinimumInstructionTime;
 
     [SyncVar] private int playerCount = 3;
-
     public int PlayerCount
     {
         get { return playerCount; }
     }
 
     [SyncVar] public bool easyPhoneInteractions;
-
-
     [SyncVar] public float customerSatisfaction = 100;
+    
 
     //Phone interaction probability = 2/x
     [SyncVar] public int piProb = 21;
@@ -72,7 +72,9 @@ public class GameController : NetworkBehaviour
 
     //Booleans
     private bool isGameOver;
-    [SyncVar (hook = "SetGroupActivity")] public bool startGroupActivity;
+    [FormerlySerializedAs("startGroupActivity")] [SyncVar (hook = "SetGroupActivity")] public bool groupActivityStarted;
+    public int numberOfGroupActivities;
+    [SyncVar (hook = "UpdateActivityNumber")] public int activityNumber;
 
     List<string> UserNames = new List<string>(); /* Just here so in future they can set their own usernames from the lobby */
 
@@ -171,28 +173,14 @@ public class GameController : NetworkBehaviour
             roundNumberText.text = roundNumber.ToString();
             UpdateRoundTimeLeft();
 
-            if (score == 2 && isGroupActiviy)
+            if (score == 2 && isGroupActiviy) //Needs to be changed.
             {
-                startGroupActivity = true;
-                isGroupActiviy = false;
+                InitiateGroupActivity();
             }
             
-            if (startGroupActivity)
+            if (groupActivityStarted)
             {
-                //Tells players to wait
-                roundNumberText.text = "Shake";
-                //
-                bool allReady = true;
-                foreach (var player in playerList)
-                {
-                    allReady &= player.isShaking;
-                }
-
-                if (allReady)
-                {
-                    score++;
-                    startGroupActivity = false;
-                }
+                CheckGroupActivity();
             }
 
             if (roundMaxScore - roundScore <= 1)
@@ -593,6 +581,69 @@ public class GameController : NetworkBehaviour
         {
             player.isGroupActive = active;
         }
+    }
+
+    private void CheckShake()
+    {
+        //Tells players to wait
+        roundNumberText.text = "Shake";
+        //
+        bool allReady = true;
+        foreach (var player in playerList)
+        {
+            allReady &= player.isShaking;
+        }
+
+        if (allReady)
+        {
+            score++;
+            groupActivityStarted = false;
+            IncrementGroupActivity();
+        }
+    }
+
+    private void IncrementGroupActivity()
+    {
+        activityNumber = (activityNumber + 1) % numberOfGroupActivities;
+    }
+
+    private void UpdateActivityNumber(int number)
+    {
+        foreach (var player in playerList)
+        {
+            player.activityNumber = number;
+        }
+    }
+
+    private void InitiateGroupActivity()
+    {
+        groupActivityStarted = true;
+        isGroupActiviy = false;
+    }
+
+    private void CheckGroupActivity()
+    {
+        switch (activityNumber)
+        {
+            case 0: 
+                CheckShake();
+                break;
+                    
+            case 1:
+                //NFC group race
+                StartNFCRace();
+                break;
+                    
+            default:
+                //
+                Console.WriteLine("Fucked!");
+                break;
+        }
+    }
+
+    private void StartNFCRace()
+    {
+        
     }
 
 }
