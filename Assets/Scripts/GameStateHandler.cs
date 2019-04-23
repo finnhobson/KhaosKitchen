@@ -22,6 +22,7 @@ public class GameStateHandler
         }
     }
 
+    public int GroupActivityNumber { get; set; }
     private List<string> userNames = new List<string>();
     private Dictionary<string, int> userProfiles = new Dictionary<string, int>();
     private int overallTeamScore;
@@ -75,4 +76,6 @@ public class GameStateHandler
             Debug.Log("Player: " + userProfile.Key + ", Score: " + userProfile.Value);
         }
     }
+    
+    
 }
