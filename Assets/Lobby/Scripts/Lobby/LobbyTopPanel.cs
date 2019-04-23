@@ -13,18 +13,19 @@ using System.Collections;
         void Start()
         {
             panelImage = GetComponent<Image>();
+            ToggleVisibility(false);
         }
 
 
         void Update()
         {
-            if (!isInGame)
+//            if (!isInGame)
                 return;
 
-            if (Input.GetKeyDown(KeyCode.Escape))
-            {
-                ToggleVisibility(!isDisplayed);
-            }
+//            if (Input.GetKeyDown(KeyCode.Escape))
+//            {
+//                ToggleVisibility(!isDisplayed);
+//            }
 
         }
 

@@ -135,7 +135,7 @@ public class Player : NetworkBehaviour {
 //        scoreText.text = gameController.score.ToString();
 //        scoreText.text = gameController.score.ToString();
         
-        CmdSetShake(ShakeListener.shaking);
+        if(isClient) CmdSetShake(ShakeListener.shaking);
 
         
         //if (micActive) micVolumeText.text = micListener.MicLoudness.ToString("F4");
