@@ -33,7 +33,7 @@ public class Player : NetworkBehaviour {
 
     //Unity GameObjects
     public Text scoreText, instructionText, timerText, gpsText, roundScoreText, topChefText, countdownText, roundNumberText, nameText, micVolumeText;
-    public GameObject nfcPanel, micPanel, shakePanel, gameOverPanel, roundCompletePanel, roundStartPanel;
+    public GameObject nfcPanel, micPanel, shakePanel, gameOverPanel, roundCompletePanel, roundStartPanel, groupMessagePanel;
     public Text nfcText, micText, shakeText;
     public GameObject nfcOkayButton, micOkayButton, shakeOkayButton;
     public GameObject fullScreenPanel;
@@ -81,7 +81,7 @@ public class Player : NetworkBehaviour {
     private bool isServe = false;
     private bool micActive = false;
     [SyncVar] public bool isSetupComplete;
-//    [SyncVar] public bool isGroupActive;
+    [SyncVar] public bool isGroupActive;
     [SyncVar] public bool isShaking;
 
     private void Awake()
@@ -135,7 +135,15 @@ public class Player : NetworkBehaviour {
 //        scoreText.text = gameController.score.ToString();
 //        scoreText.text = gameController.score.ToString();
         
-        if(isClient) CmdSetShake(ShakeListener.shaking);
+        groupMessagePanel.SetActive(isGroupActive);
+
+        if (isGroupActive)
+        {
+            if (isClient)
+            {
+                CmdSetShake(ShakeListener.shaking);
+            }
+        }
 
         
         //if (micActive) micVolumeText.text = micListener.MicLoudness.ToString("F4");
