@@ -143,6 +143,7 @@ public class GameController : NetworkBehaviour
             return isGameOver;
         }
     }
+    [SyncVar (hook = "SetGroupActiviy")] public bool startGroupActivity;
 
     List<string> UserNames = new List<string>(); /* Just here so in future they can set their own usernames from the lobby */
 
@@ -260,8 +261,10 @@ public class GameController : NetworkBehaviour
             scoreText.text = score.ToString();
             roundNumberText.text = roundNumber.ToString();
             UpdateRoundTimeLeft();
+
+            if (score == 2) startGroupActivity = false;
             
-            if (score == 2)
+            if (startGroupActivity)
             {
                 //Tells players to wait
                 roundNumberText.text = "Shake";
@@ -272,7 +275,11 @@ public class GameController : NetworkBehaviour
                     allReady &= player.isShaking;
                 }
 
-                if (allReady) score = 40;
+                if (allReady)
+                {
+                    score++;
+                    startGroupActivity = false;
+                }
             }
 
             if (roundMaxScore - roundScore <= 1)
@@ -692,4 +699,13 @@ public class GameController : NetworkBehaviour
             }
         }
     }
+
+    public void SetGroupActivity(bool active)
+    {
+        foreach (var player in playerList)
+        {
+            player.isGroupActive = active;
+        }
+    }
+
 }
