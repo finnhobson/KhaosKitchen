@@ -1,15 +1,9 @@
 ﻿<Properties StartupConfiguration="{52C1F40A-4867-28BB-65C6-CA582FC72A1A}|">
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/IGameController.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/SplatScript.cs">
     <Files>
-      <File FileName="Assets/Scripts/SplatScript.cs" Line="13" Column="1" />
-      <File FileName="Assets/Scripts/LobbyManager.cs" Line="27" Column="12" />
-      <File FileName="Assets/Scripts/ChefController.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/GameController.cs" Line="195" Column="24" />
-      <File FileName="Assets/Scripts/MusicPlayer.cs" Line="96" Column="6" />
-      <File FileName="Assets/Scripts/MainMenu.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/CameraController.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/GpsListener.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/IGameController.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/ScrollScript.cs" Line="22" Column="1" />
+      <File FileName="Assets/Scripts/Player.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/SplatScript.cs" Line="9" Column="20" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -17,7 +11,7 @@
           <Node name="KhaosKitchenFINAL" expanded="True">
             <Node name="Assets" expanded="True">
               <Node name="Scripts" expanded="True">
-                <Node name="IGameController.cs" selected="True" />
+                <Node name="SplatScript.cs" selected="True" />
               </Node>
             </Node>
           </Node>
