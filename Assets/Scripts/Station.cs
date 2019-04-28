@@ -16,6 +16,11 @@ public class Station : MonoBehaviour
         return StationItems;
     }
     
+    public string GetStationItem(int i)
+    {
+        return StationItems[i];
+    }
+    
     public Station(List<string> items)
     {
         StationItems = items;
