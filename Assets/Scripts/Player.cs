@@ -273,9 +273,7 @@ public class Player : NetworkBehaviour {
                         isWindowA = !isWindowA;
                     }
 
-                }
-
-                
+                } 
             }
 
             if (ShakeListener.shaking)
@@ -290,7 +288,7 @@ public class Player : NetworkBehaviour {
                 }
             }
 
-            instructionText.text = nfcValue;
+//            instructionText.text = nfcValue;
         }
         else
         {
