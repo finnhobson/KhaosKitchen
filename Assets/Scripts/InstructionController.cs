@@ -18,7 +18,7 @@ public class InstructionController : NetworkBehaviour
     //private static List<String> nfcInstructions = new List<string>(new string[] { "Darn! Run to the bin!\n\n\n(RUN TO NFC)", "Quickly! Get that rubbish out of here!\n\n\n(RUN TO NFC)" });
 
     private static List<string> fridge = new List<string>( new string[] {"Carrot", "Bacon", "Apple"});
-    private static List<string> cupboard = new List<string>( new string[] {"D", "E", "F"});
+    private static List<string> cupboard = new List<string>( new string[] {"Tin", "Felix", "Cunt"});
     
     private static List<string> binA = new List<string>( new string[] {"D", "E", "F"});
     private static List<string> binB = new List<string>( new string[] {"A", "B", "C"});
@@ -261,10 +261,9 @@ public class InstructionController : NetworkBehaviour
                 
                 PickNewInstruction(i, action);
                 RpcUpdateInstruction(ActiveInstructions[i], i);
-//                RpcSetNfcPanel(i, "You missed an order! " + System.Environment.NewLine
-//                                                           + "Run to the "+ bin +"!" + System.Environment.NewLine + System.Environment.NewLine
-//                                                           + "(TAP ON "+ bin +" NFC)");
-                RpcSetNfcPanel(i, bin);
+                RpcSetNfcPanel(i, "You missed an order! " + System.Environment.NewLine
+                                                           + "Run to the "+ bin +"!" + System.Environment.NewLine + System.Environment.NewLine
+                                                           + "(TAP ON "+ bin +" NFC)");
             }
         }
     }
