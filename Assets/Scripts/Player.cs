@@ -322,7 +322,7 @@ public class Player : NetworkBehaviour
                 }
             }
 
-//            instructionText.text = nfcValue;
+            instructionText.text = nfcValue;
         }
         else
         {
