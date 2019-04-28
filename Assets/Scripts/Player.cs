@@ -183,9 +183,9 @@ public class Player : NetworkBehaviour {
             if (instTimeLeft < 0 && isLocalPlayer)
             {
                 string tmp = GetBadNextNFC();
-//                scoreText.text = tmp;
-//                CmdFail(instructionText.text, tmp);
-                CmdFail(instructionText.text,(isBinA) ? "Food Waste" : "Recycling Bin");
+                scoreText.text = tmp;
+                CmdFail(instructionText.text, tmp);
+               // CmdFail(instructionText.text,(isBinA) ? "Food Waste" : "Recycling Bin");
                 PlayFailSound();
                 StartInstTimer();
                 isFail = true;
@@ -314,7 +314,7 @@ public class Player : NetworkBehaviour {
                 }
             }
 
-            instructionText.text = nfcValue;
+//            instructionText.text = nfcValue;
         }
         else
         {
@@ -603,7 +603,7 @@ public class Player : NetworkBehaviour {
         {
 
             isServe = true;
-            String window = (isWindowA) ? "Window A" : "Window B";
+            String window = GetGoodNextNFC();
             ResetScoreStreak();
             SetNfcPanel(" Great Work!\n Serve dish to "+ window +"!\n\n (TAP ON "+ window +" NFC)");
             
