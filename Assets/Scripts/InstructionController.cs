@@ -48,7 +48,7 @@ public class InstructionController : NetworkBehaviour
     [SyncVar] public bool SetupFinished = false;
 
     //Phone interaction probability = 2/x
-    [SyncVar] public int piProb = 21;
+    [SyncVar] public int piProb = 4;
 
     /*
      * Called from GC, this is where the IC is setup. 
@@ -149,7 +149,8 @@ public class InstructionController : NetworkBehaviour
 
                 if (ActiveButtonActions.Contains(text)) continue;
                 ActiveButtonActions.Add(text);
-                InstructionHandler.AddValue(text, new Instruction(){IsActive = false, ButtonNumber = 69, InstructionPlayerID = 69, ButtonPlayerID = 69, InstructionTimer = 69f} );
+                InstructionHandler.AddValue(text, new Instruction(){IsActive = false, ButtonNumber = 69,  
+                    InstructionPlayerID = 69, ButtonPlayerID = 69, InstructionTimer = 69f} );
                 duplicate = false;
             }
         }
