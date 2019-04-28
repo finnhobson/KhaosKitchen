@@ -7,63 +7,37 @@ using Random = System.Random;
 
 public class Station : MonoBehaviour
 {
-    public Dictionary<string, bool> StationItems = new Dictionary<string, bool>();
+//    public Dictionary<string, bool> StationItems = new Dictionary<string, bool>();
+    
+    private readonly List<string> StationItems = new List<string>();
 
+    public List<string> GetStationItems()
+    {
+        return StationItems;
+    }
+    
     public Station(List<string> items)
     {
-        foreach (var tag in items)
-        {
-            StationItems.Add(tag, true);
-        }
+        StationItems = items;
     }
 
     public bool CheckForMatch(string check)
     {
-        bool value;
-        if (StationItems.TryGetValue(check, out value))
-        {
-            if(value) UpdateItems(check);
-            return value;
-        }
-        return false;
+        return StationItems.Contains(check);
     }
 
-    private void UpdateItems(string check)
-    {
-        foreach (var key in StationItems.Keys)
-        {
-            StationItems[key] = true;
-        }
-
-        StationItems[check] = false;
-    }
-
-    public string GetItem()
+    public string GetItem(string currentNFC)
     {
         Random rand = new Random();
         string item = "";
         while (true)
         {
             int x = rand.Next(0, StationItems.Count);
-            if (!StationItems.ElementAt(x).Value) continue;
-            item = StationItems.Keys.ElementAt(x);
+            if (StationItems.ElementAt(x).Equals(currentNFC)) continue;
+            item = StationItems.ElementAt(x);
             break;
         }
         
         return item;
-    }
-    
-    
-    
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }

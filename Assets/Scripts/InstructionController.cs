@@ -113,7 +113,7 @@ public class InstructionController : NetworkBehaviour
             if (isServer)
             {
                 InstructionHandler.SetInstructionPlayerID(instruction, player.PlayerId);
-                players[0].printStations();
+//                players[0].printStations();
             }
         }          
     }
@@ -261,9 +261,10 @@ public class InstructionController : NetworkBehaviour
                 
                 PickNewInstruction(i, action);
                 RpcUpdateInstruction(ActiveInstructions[i], i);
-                RpcSetNfcPanel(i, "You missed an order! " + System.Environment.NewLine
-                                                           + "Run to the "+ bin +"!" + System.Environment.NewLine + System.Environment.NewLine
-                                                           + "(TAP ON "+ bin +" NFC)");
+//                RpcSetNfcPanel(i, "You missed an order! " + System.Environment.NewLine
+//                                                           + "Run to the "+ bin +"!" + System.Environment.NewLine + System.Environment.NewLine
+//                                                           + "(TAP ON "+ bin +" NFC)");
+                RpcSetNfcPanel(i, bin);
             }
         }
     }

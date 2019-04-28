@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Sockets;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using Random = System.Random;
 
 /*
  * 1. a BAxnSotfgQ==
@@ -60,7 +62,6 @@ public class Player : NetworkBehaviour {
     public Text fullScreenPanelText;
     public GameObject cameraController, cameraPanel;
     
-
     //Player
     [SyncVar] public string PlayerUserName;
     [SyncVar] public Color PlayerColour;
@@ -70,6 +71,7 @@ public class Player : NetworkBehaviour {
     
     private List<Station> GoodStations = new List<Station>();
     private List<Station> BadStations = new List<Station>();
+    
 
     [SyncVar (hook = "DisplayTopChef")] private string topChef;
     public string TopChef
@@ -80,7 +82,7 @@ public class Player : NetworkBehaviour {
     public string topChefPush;
 
     //Extras
-    private string nfcValue = "";
+    [SyncVar] private string nfcValue = "";
     public int playerCount;
     public int instTime;
     public bool easyPhoneInteractions;
@@ -213,7 +215,10 @@ public class Player : NetworkBehaviour {
             UpdateInstTimeLeft();
             if (instTimeLeft < 0 && isLocalPlayer)
             {
-                CmdFail(instructionText.text, (isBinA) ? "Food Waste" : "Recycling Bin");
+                string tmp = GetBadNextNFC();
+//                scoreText.text = tmp;
+//                CmdFail(instructionText.text, tmp);
+                CmdFail(instructionText.text,(isBinA) ? "Food Waste" : "Recycling Bin");
                 PlayFailSound();
                 StartInstTimer();
                 isFail = true;
@@ -237,7 +242,6 @@ public class Player : NetworkBehaviour {
                 CmdIncreaseScore();
                 StartInstTimer();
             }
-
 
             nfcValue = NfcCheck();
             if (validNfc.Contains(nfcValue))
@@ -334,7 +338,6 @@ public class Player : NetworkBehaviour {
 
             if (ShakeListener.shaking)
             {
-                
                 //shakeClick(Instruction text to be completed by shaking, matching that in activeInstructions);
                 if (shakePanel.activeSelf)
                 {
@@ -868,10 +871,6 @@ public class Player : NetworkBehaviour {
         
     }
 
-    private void CycleNFC()
-    {
-        
-    }
 
     public void GenerateGoodStation(List<List<string>> stations)
     {
@@ -885,7 +884,7 @@ public class Player : NetworkBehaviour {
     {
         foreach (var station in stations)
         {
-            GoodStations.Add(new Station(station));
+            BadStations.Add(new Station(station));
         }
     }
 
@@ -893,18 +892,33 @@ public class Player : NetworkBehaviour {
     {
         foreach (var station in GoodStations)
         {
-            foreach (var item in station.StationItems)
+            foreach (var item in station.GetStationItems())
             {
-                Debug.Log("Item: " + item.Key + ", bool: " + item.Value);
+                Debug.Log("Item: " + item);
             }
         }
         foreach (var station in BadStations)
         {
-            foreach (var item in station.StationItems)
+            foreach (var item in station.GetStationItems())
             {
-                Debug.Log("Item: " + item.Key + ", bool: " + item.Value);
+                Debug.Log("Item: " + item);
             }
         }
     }
+
+    private string GetGoodNextNFC()
+    {
+        Random rand = new Random();
+        int x = rand.Next(0, GoodStations.Count);
+        return GoodStations[x].GetItem(nfcValue);
+    }    
+    
+    private string GetBadNextNFC()
+    {
+        Random rand = new Random();
+        int x = rand.Next(0, BadStations.Count);
+        return BadStations[x].GetItem(nfcValue);
+    }
+
 }
 
