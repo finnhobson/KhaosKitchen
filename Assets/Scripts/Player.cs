@@ -138,7 +138,8 @@ public class Player : NetworkBehaviour {
     [SyncVar] public bool isSetupComplete;	
     [SyncVar] public bool isGroupActive;
     [SyncVar] public bool isShaking;
-    [SyncVar] public int activityNumber;
+    [SyncVar] public int activityNumber = 1;
+    [SyncVar] public bool isNFCRace;
 
     private void Awake()
     {
@@ -190,7 +191,7 @@ public class Player : NetworkBehaviour {
 //        scoreText.text = gameController.score.ToString();
 //        scoreText.text = NfcCheck();
         
-        groupMessagePanel.SetActive(isGroupActive);
+//        groupMessagePanel.SetActive(isGroupActive);
 
         if (isGroupActive)
         {
@@ -786,6 +787,12 @@ public class Player : NetworkBehaviour {
     {
         isShaking = shake;
     }
+
+    [Command]
+    public void CmdSetNFCRace(bool isNFCFinished)
+    {
+        isNFCRace = isNFCFinished;
+    }
     
     private void CheckGroupActivity()
     {
@@ -796,7 +803,7 @@ public class Player : NetworkBehaviour {
                 break;
                     
             case 1:
-                StartNFCRace();
+                CmdSetNFCRace(nfcPanel.activeSelf);
                 break;
                     
             default:
@@ -804,11 +811,6 @@ public class Player : NetworkBehaviour {
                 Console.WriteLine("Fucked!");
                 break;
         }
-    }
-
-    private void StartNFCRace()
-    {
-        
     }
 
 
@@ -858,6 +860,27 @@ public class Player : NetworkBehaviour {
         Random rand = new Random();
         int x = rand.Next(0, BadStations.Count);
         return BadStations[x].GetItem(nfcValue);
+    }
+
+    public void StartNFCRace(int x)
+    {
+        switch (x)
+        {
+            case 0:
+                validNfc = GoodStations[0].GetItem(nfcValue);
+                break;
+            case 1:
+                validNfc = GoodStations[1].GetItem(nfcValue);
+                break;
+            case 2:
+                validNfc = BadStations[0].GetItem(nfcValue);
+                break;
+            case 3:
+                validNfc = BadStations[1].GetItem(nfcValue);
+                break;
+        }
+        
+        SetNfcPanel(validNfc);
     }
 
 }

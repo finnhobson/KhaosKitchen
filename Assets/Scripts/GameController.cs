@@ -143,15 +143,7 @@ public class GameController : NetworkBehaviour
     //Booleans
     [FormerlySerializedAs("startGroupActivity")] [SyncVar (hook = "SetGroupActivity")] public bool groupActivityStarted;
     public int numberOfGroupActivities;
-    [SyncVar (hook = "UpdateActivityNumber")] public int activityNumber;
-    private bool isGameOver = false;
-    public bool IsGameOver
-    {
-        get
-        {
-            return isGameOver;
-        }
-    }
+    [SyncVar (hook = "UpdateActivityNumber")] public int activityNumber = 1;
 
     List<string> UserNames = new List<string>(); /* Just here so in future they can set their own usernames from the lobby */
 
@@ -270,7 +262,7 @@ public class GameController : NetworkBehaviour
             roundNumberText.text = roundNumber.ToString();
             UpdateRoundTimeLeft();
 
-            if (score == 40 && isGroupActiviy) //Needs to be changed.
+            if (score == 2 && isGroupActiviy) //Needs to be changed.
             {
                 InitiateGroupActivity();
             }
@@ -709,12 +701,28 @@ public class GameController : NetworkBehaviour
     private void CheckShake()
     {
         //Tells players to wait
-        roundNumberText.text = "Shake";
+//        roundNumberText.text = "Shake";
         //
         bool allReady = true;
         foreach (var player in playerList)
         {
             allReady &= player.isShaking;
+        }
+
+        if (allReady)
+        {
+            score++;
+            groupActivityStarted = false;
+            IncrementGroupActivity();
+        }
+    }
+
+    private void CheckNFC()
+    {
+        bool allReady = true;
+        foreach (var player in playerList)
+        {
+            allReady &= player.isNFCRace;
         }
 
         if (allReady)
@@ -742,6 +750,8 @@ public class GameController : NetworkBehaviour
     {
         groupActivityStarted = true;
         isGroupActiviy = false;
+        
+        if(activityNumber == 1) RpcStartNFCRace();
     }
 
     private void CheckGroupActivity()
@@ -754,7 +764,7 @@ public class GameController : NetworkBehaviour
                     
             case 1:
                 //NFC group race
-                StartNFCRace();
+                CheckNFC();
                 break;
                     
             default:
@@ -763,10 +773,15 @@ public class GameController : NetworkBehaviour
                 break;
         }
     }
-
-    private void StartNFCRace()
+    
+    [ClientRpc]
+    private void RpcStartNFCRace()
     {
-        
+        int i = 0;
+        foreach (var player in playerList)
+        {
+            player.StartNFCRace(i);
+        }
     }
 
 }
