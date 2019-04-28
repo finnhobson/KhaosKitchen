@@ -55,6 +55,7 @@
           <e p="Player.cs" t="Include" />
           <e p="ShakeListener.cs" t="Include" />
           <e p="ShowLocalCanvas.cs" t="Include" />
+          <e p="Station.cs" t="Include" />
         </e>
       </e>
       <e p="KhaosKitchen.sln" t="IncludeFlat" />

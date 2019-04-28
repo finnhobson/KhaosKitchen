@@ -16,6 +16,16 @@ public class InstructionController : NetworkBehaviour
     private static List<String> verbList = new List<string>(new string[] { "Grab", "Fetch", "Grate", "Grill", "Melt", "Serve", "Stir", "Chop", "Cut", "Mash", "Season", "Flambé", "Bake", "Fry", "Taste", "Microwave", "Tendorise", "Roast", "Cry Into", "Sneeze On" });
     private static List<String> nounList = new List<string>(new string[] { "Minced Beef", "Steak", "Pork Loin", "Ice Cream", "Strawberry", "Bannana", "Toast", "Chocolate", "Pasta", "Bacon", "Tomato", "Sugar", "Salt", "Lettuce", "Sauce", "Mustard", "Sausage", "Chicken", "Ice Cubes" });
     //private static List<String> nfcInstructions = new List<string>(new string[] { "Darn! Run to the bin!\n\n\n(RUN TO NFC)", "Quickly! Get that rubbish out of here!\n\n\n(RUN TO NFC)" });
+
+    private static List<string> fridge = new List<string>( new string[] {"Carrot", "Bacon", "Apple"});
+    private static List<string> cupboard = new List<string>( new string[] {"D", "E", "F"});
+    
+    private static List<string> binA = new List<string>( new string[] {"D", "E", "F"});
+    private static List<string> binB = new List<string>( new string[] {"A", "B", "C"});
+
+    private static List<List<string>> GoodStations = new List<List<string>>{fridge,cupboard};
+    private static List<List<string>> BadStations = new List<List<string>>{binA, binB};
+    
     private static List<String> micInstructions = new List<string>(new string[] { " Waiters won't take the food out fast enough!\n Shout at them to work harder!\n\n (SHOUT INTO THE MIC)",
         " Your team are being useless!\n Shout some sense into them!\n\n (SHOUT INTO THE MIC)"});
     private static List<String> shakeInstructions = new List<string>(new string[] { " Chef underseasoned the dish!\n Shake to salt the food!\n\n (SHAKE YOUR PHONE)",
@@ -94,12 +104,18 @@ public class InstructionController : NetworkBehaviour
                 InstructionHandler.SetButtonNumber(action, i);
                 InstructionHandler.SetButtonPlayerID(action, player.PlayerId);
             }
+            
+            player.GenerateGoodStation(GoodStations);
+            player.GenerateBadStation(BadStations);
 
             string instruction = ActiveInstructions[player.PlayerId];
             player.SetInstruction(instruction);
-            if(isServer) InstructionHandler.SetInstructionPlayerID(instruction, player.PlayerId);
-        }
-                
+            if (isServer)
+            {
+                InstructionHandler.SetInstructionPlayerID(instruction, player.PlayerId);
+                players[0].printStations();
+            }
+        }          
     }
 
     /*
@@ -371,11 +387,5 @@ public class InstructionController : NetworkBehaviour
     }
 }
 
-/*
-  1. 
-  2.
-  3.
-  4.
-  5. 
- */
+
 

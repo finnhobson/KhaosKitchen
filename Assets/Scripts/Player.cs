@@ -8,8 +8,27 @@ using UnityEngine.Networking;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
-public class Player : NetworkBehaviour
-{
+/*
+ * 1. a BAxnSotfgQ==
+ *    b BPlnSotfgA==
+ *    c BA1nSotfgQ==
+ *
+ * 2 a BORnSotfgA==
+ *   b BNBnSotfgA==
+ *   c BPhnSotfgA==
+ *
+ * 3 a BF5nSotfgQ==
+ *   b BHFnSotfgQ==
+ *   c BFVnSotfgA==
+ *
+ * 4 a BFZnSotfgA==
+ *   b BGlnSotfgA==
+ *   c BGpnSotfgA==
+ *
+ *
+ * 
+ */
+public class Player : NetworkBehaviour {
 
     //Custom objects
     public GameController gameController;
@@ -40,6 +59,7 @@ public class Player : NetworkBehaviour
     public GameObject fullScreenPanel;
     public Text fullScreenPanelText;
     public GameObject cameraController, cameraPanel;
+    
 
     //Player
     [SyncVar] public string PlayerUserName;
@@ -47,6 +67,9 @@ public class Player : NetworkBehaviour
     [SyncVar (hook = "UpdateScore") ] public int PlayerScore;
     [SyncVar] public int PlayerId;
     public uint PlayerNetworkID;
+    
+    private List<Station> GoodStations = new List<Station>();
+    private List<Station> BadStations = new List<Station>();
 
     [SyncVar (hook = "DisplayTopChef")] private string topChef;
     public string TopChef
@@ -246,8 +269,7 @@ public class Player : NetworkBehaviour
                         isBinA = !isBinA;
                         isFail = false;
                     }
-
-
+                    
                 }
                 else if (isServe)
                 {
@@ -845,6 +867,44 @@ public class Player : NetworkBehaviour
     {
         
     }
-}
 
+    private void CycleNFC()
+    {
+        
+    }
+
+    public void GenerateGoodStation(List<List<string>> stations)
+    {
+        foreach (var station in stations)
+        {
+            GoodStations.Add(new Station(station));
+        }
+    }    
+    
+    public void GenerateBadStation(List<List<string>> stations)
+    {
+        foreach (var station in stations)
+        {
+            GoodStations.Add(new Station(station));
+        }
+    }
+
+    public void printStations()
+    {
+        foreach (var station in GoodStations)
+        {
+            foreach (var item in station.StationItems)
+            {
+                Debug.Log("Item: " + item.Key + ", bool: " + item.Value);
+            }
+        }
+        foreach (var station in BadStations)
+        {
+            foreach (var item in station.StationItems)
+            {
+                Debug.Log("Item: " + item.Key + ", bool: " + item.Value);
+            }
+        }
+    }
+}
 
