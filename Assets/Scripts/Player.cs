@@ -193,6 +193,8 @@ public class Player : NetworkBehaviour {
         
 //        groupMessagePanel.SetActive(isGroupActive);
         if (gameOverPanel.activeSelf) return;
+        
+        groupMessagePanel.SetActive(isGroupActive);
 
         if (isGroupActive)
         {

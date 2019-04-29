@@ -145,8 +145,8 @@ public class GameController : NetworkBehaviour
 
     //Booleans
     [FormerlySerializedAs("startGroupActivity")] [SyncVar (hook = "SetGroupActivity")] public bool groupActivityStarted;
-    public int numberOfGroupActivities;
-    [SyncVar (hook = "UpdateActivityNumber")] public int activityNumber = 1;
+    public int numberOfGroupActivities = 2;
+    [SyncVar (hook = "UpdateActivityNumber")] public int activityNumber = 0;
 
     List<string> UserNames = new List<string>(); /* Just here so in future they can set their own usernames from the lobby */
 
@@ -740,9 +740,10 @@ public class GameController : NetworkBehaviour
 
         if (allReady)
         {
-            score++;
+            score =+ 10;
             groupActivityStarted = false;
             IncrementGroupActivity();
+            isGroupActiviy = true;
         }
     }
 
@@ -756,9 +757,10 @@ public class GameController : NetworkBehaviour
 
         if (allReady)
         {
-            score++;
+            score =+ 10;
             groupActivityStarted = false;
             IncrementGroupActivity();
+            isGroupActiviy = true;
         }
     }
 
