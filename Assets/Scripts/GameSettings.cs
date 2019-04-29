@@ -5,6 +5,7 @@ using UnityEngine.Networking;
 
 public static class GameSettings
 {
+    
     /*XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
      * HOW TO USE:
      * 
@@ -21,8 +22,19 @@ public static class GameSettings
      * 
      * XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
      */
-    private static int pCount;
 
+    private static int baseInstructionNumber = 16;
+    private static int instructionNumberIncreasePerRound = 2;
+    private static int baseInstructionTime = 15;
+    private static int instructionTimeReductionPerRound = 5;
+    private static int instructionTimeIncreasePerPlayer = 2;
+    private static int minimumInstructionTime = 8;
+    private static int roundTime = 90;
+    private static bool easyPhoneInteraction = true;
+    private static int phoneInteractionProbability = 21;
+    
+    private static int pCount;
+    
     public static int PlayerCount 
     {
         get
@@ -52,5 +64,20 @@ public static class GameSettings
     public static bool EasyPhoneInteractions { get; set; }
 
     public static int PhoneInteractionProbability { get; set; }
+
+    public static void SetDefaultValues()
+    {
+        PlayerCount = pCount;
+        BaseInstructionNumber = baseInstructionNumber;
+        InstructionNumberIncreasePerRound = instructionNumberIncreasePerRound;
+        BaseInstructionTime = baseInstructionTime;
+        InstructionTimeReductionPerRound = instructionTimeReductionPerRound;
+        InstructionTimeIncreasePerPlayer = instructionTimeIncreasePerPlayer;
+        MinimumInstructionTime = minimumInstructionTime;
+        RoundTime = roundTime;
+        EasyPhoneInteractions = easyPhoneInteraction;
+        PhoneInteractionProbability = phoneInteractionProbability;
+
+    }
 
 }

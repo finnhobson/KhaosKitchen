@@ -7,6 +7,8 @@ using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using UnityEngine.Serialization;
+using UnityEngine.SocialPlatforms.Impl;
 
 
 public class GameController : NetworkBehaviour
@@ -38,6 +40,18 @@ public class GameController : NetworkBehaviour
     [SyncVar] private int roundScore = 0;
     [SyncVar] public int roundNumber = 1;
 
+    [SyncVar] public bool isRoundPaused;
+    [SyncVar] public bool isGameStarted;
+    private bool isGroupActiviy = true;
+    [SyncVar] public bool isGroupDone;
+    private bool isGameOver;
+
+    public bool IsGameOver
+    {
+        get { return isGameOver; }
+        set { isGameOver = value; }
+    }
+
     public int RoundNumber
     {
         get
@@ -56,7 +70,6 @@ public class GameController : NetworkBehaviour
         }
     }
 
-    [SyncVar] public bool isRoundPaused = false;
 
     public bool IsRoundPaused
     {
@@ -66,7 +79,6 @@ public class GameController : NetworkBehaviour
         }
     }
 
-    [SyncVar] public bool isGameStarted = false;
 
     public bool IsGameStarted
     {
@@ -105,6 +117,7 @@ public class GameController : NetworkBehaviour
     [SyncVar] public int MinimumInstructionTime;
     [SyncVar] public int playerCount;
 
+
     public int PlayerCount
     {
         get
@@ -133,19 +146,14 @@ public class GameController : NetworkBehaviour
     public GameObject scoreBar;
 
     //Booleans
-    private bool isGameOver = false;
-    public bool IsGameOver
-    {
-        get
-        {
-            return isGameOver;
-        }
-    }
+    [FormerlySerializedAs("startGroupActivity")] [SyncVar (hook = "SetGroupActivity")] public bool groupActivityStarted;
+    public int numberOfGroupActivities;
+    [SyncVar (hook = "UpdateActivityNumber")] public int activityNumber = 1;
 
     List<string> UserNames = new List<string>(); /* Just here so in future they can set their own usernames from the lobby */
 
     //Indicator variables for the animation controller
-    public bool playersInitialised = false;
+    public bool playersInitialised;
 
     public bool PlayersInitialised
     {
@@ -164,13 +172,15 @@ public class GameController : NetworkBehaviour
 
     private void Start()
     {
-        StartCoroutine(SetupGame(2));
+        StartCoroutine(SetupGame(8));
 
         //Show server display only on the server
         if (isServer)
         {
             GetComponentInChildren<Canvas>().enabled = true;
             GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Animation>().Play();
+            
+            Debug.Log("Start");
         }
     }
 
@@ -178,7 +188,20 @@ public class GameController : NetworkBehaviour
     {
         yield return new WaitForSecondsRealtime(x);
 
-        if (isServer) LoadSettings();
+        if (isServer)
+        {
+            LoadSettings();
+            Debug.Log("SetupGame");
+        }
+
+        StartCoroutine(Setup(12));
+    }
+    
+    private IEnumerator Setup(int x)
+    {
+        yield return new WaitForSecondsRealtime(x);
+        
+        Debug.Log("Setup");
 
         //Find players
         var players = FindObjectsOfType<Player>();
@@ -188,7 +211,6 @@ public class GameController : NetworkBehaviour
         foreach (Player p in players)
         {
             playerList.Add(p);
-            UserNames.Add(p.PlayerUserName);
             if (isServer) p.SetGameController(this);
             p.SetInstructionController(InstructionController);
             p.SetPlayerId(playerIndex);
@@ -199,21 +221,52 @@ public class GameController : NetworkBehaviour
 
             playerIndex++;
         }
+        
+        if (isServer)
+        {
+            Debug.Log("Setup 2");
+            GetComponentInChildren<Canvas>().enabled = true; //Show server display only on the server.
+            playerIndex = 0;
+            foreach (var p in players)
+            {
+                UserNames.Add(p.PlayerUserName);
+                playerNames[playerIndex].text = p.PlayerUserName;
+                playerNames[playerIndex].color = p.PlayerColour;
+                playerIndex++;
+            }
+//            gameStateHandler = new GameStateHandler(UserNames); //Instantiate single gameStateHandler object on the server to hold gamestate data 
+        }
 
         PlayersInitialisedFromStart();
+        
+        Debug.Log("Player initialised.");
 
         InstructionController.ICStart(playerCount, numberOfButtons, playerList, this);
         InstructionController.piProb = piProb;
 
         if (isServer)
         {
+            int j = 0;
+            foreach (var p in playerList)
+            {
+//                UserNames.Add(p.PlayerUserName);
+                UserNames.Add("PLayer" + j);
+                j++;
+            }
             gameStateHandler = new GameStateHandler(UserNames); //Instantiate single gameStateHandler object on the server to hold gamestate data 
-        
+            
+            Debug.Log("gameState");
+            
             StartCoroutine(RoundCountdown(10, "3"));
+            Debug.Log("3");
+
             StartCoroutine(RoundCountdown(11, "2"));
+            
             StartCoroutine(RoundCountdown(12, "1"));
             StartCoroutine(StartRound(13));
             StartCoroutine(StartGame(13));
+            
+            Debug.Log("Coroutines finished.");
         }
 
     }
@@ -222,10 +275,12 @@ public class GameController : NetworkBehaviour
     private IEnumerator StartGame(int x)
     {
         yield return new WaitForSecondsRealtime(x);
+        
+
         StartRoundTimer();
         UpdateScoreBar();
         isGameStarted = true;
-
+        Debug.Log("StartGame");
     }
 
 
@@ -233,11 +288,21 @@ public class GameController : NetworkBehaviour
     {
         if (isGameStarted)
         {
+            
             //Show score and active instructions on server display.
             scoreText.text = score.ToString();
             roundNumberText.text = roundNumber.ToString();
             UpdateRoundTimeLeft();
-            stars.fillAmount = customerSatisfaction / 100;
+
+            if (score == 2 && isGroupActiviy) //Needs to be changed.
+            {
+                InitiateGroupActivity();
+            }
+            
+            if (groupActivityStarted)
+            {
+                CheckGroupActivity();
+            }
 
             if (roundMaxScore - roundScore <= 1)
             {
@@ -266,6 +331,7 @@ public class GameController : NetworkBehaviour
                     GameOver();
                 }
             }
+            
             else
             {
                 SetTimerText(roundTimeLeft.ToString("F2"));
@@ -374,6 +440,7 @@ public class GameController : NetworkBehaviour
     {
         if (!isServer || isRoundPaused) return; //Only need to access this function once per round completion.
         roundNumber++;
+        UpdateGamestate();
         isRoundPaused = true;
         UpdateGamestate();
 
@@ -446,6 +513,7 @@ public class GameController : NetworkBehaviour
     private IEnumerator StartRound(int x)
     {
         yield return new WaitForSecondsRealtime(x);
+        Debug.Log("StartRound");
         var players = FindObjectsOfType<Player>();
         for (int i = 0; i < players.Length; i++)
         {
@@ -521,7 +589,7 @@ public class GameController : NetworkBehaviour
         var players = FindObjectsOfType<Player>();
         foreach (Player player in players)
         {
-            Debug.Log("Name = " + player.PlayerUserName + " Score = " + player.PlayerScore);
+            Debug.Log("Player: " + player.PlayerUserName + " :: " + player.PlayerScore);
             if (player.PlayerScore > topScore)
             {
                 topScore = player.PlayerScore;
@@ -530,7 +598,11 @@ public class GameController : NetworkBehaviour
             //gameStateHandler.UpdatePlayerScore(player.PlayerUserName, player.PlayerScore);
             //player.PlayerScore = 0;
         }
-        currentTopChef = topChef;
+
+        if (topChef == "") topChef = "Fucked the lobbynames";
+        RpcSetTopChef("RPC + " + topChef);
+//        SetTopChef("Set + " + topChef);
+        
     }
 
     private void PrintInstructionHandler()
@@ -582,6 +654,7 @@ public class GameController : NetworkBehaviour
         MinimumInstructionTime = GameSettings.MinimumInstructionTime;
 
         piProb = GameSettings.PhoneInteractionProbability;
+        
     }
     
     private void DecreaseCustomerSatisfaction()
@@ -650,4 +723,99 @@ public class GameController : NetworkBehaviour
             }
         }
     }
+
+    public void SetGroupActivity(bool active)
+    {
+        foreach (var player in playerList)
+        {
+            player.isGroupActive = active;
+        }
+    }
+
+    private void CheckShake()
+    {
+        //Tells players to wait
+//        roundNumberText.text = "Shake";
+        //
+        bool allReady = true;
+        foreach (var player in playerList)
+        {
+            allReady &= player.isShaking;
+        }
+
+        if (allReady)
+        {
+            score++;
+            groupActivityStarted = false;
+            IncrementGroupActivity();
+        }
+    }
+
+    private void CheckNFC()
+    {
+        bool allReady = true;
+        foreach (var player in playerList)
+        {
+            allReady &= player.isNFCRace;
+        }
+
+        if (allReady)
+        {
+            score++;
+            groupActivityStarted = false;
+            IncrementGroupActivity();
+        }
+    }
+
+    private void IncrementGroupActivity()
+    {
+        activityNumber = (activityNumber + 1) % numberOfGroupActivities;
+    }
+
+    private void UpdateActivityNumber(int number)
+    {
+        foreach (var player in playerList)
+        {
+            player.activityNumber = number;
+        }
+    }
+
+    private void InitiateGroupActivity()
+    {
+        groupActivityStarted = true;
+        isGroupActiviy = false;
+        
+        if(activityNumber == 1) RpcStartNFCRace();
+    }
+
+    private void CheckGroupActivity()
+    {
+        switch (activityNumber)
+        {
+            case 0: 
+                CheckShake();
+                break;
+                    
+            case 1:
+                //NFC group race
+                CheckNFC();
+                break;
+                    
+            default:
+                //
+                Console.WriteLine("Fucked!");
+                break;
+        }
+    }
+    
+    [ClientRpc]
+    private void RpcStartNFCRace()
+    {
+        int i = 0;
+        foreach (var player in playerList)
+        {
+            player.StartNFCRace(i);
+        }
+    }
+
 }

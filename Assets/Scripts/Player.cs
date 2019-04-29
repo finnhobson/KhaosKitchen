@@ -1,15 +1,37 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Sockets;
+using System.Runtime.Remoting.Messaging;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using Random = System.Random;
 
-public class Player : NetworkBehaviour
-{
+/*
+ * 1. a BAxnSotfgQ==
+ *    b BPlnSotfgA==
+ *    c BA1nSotfgQ==
+ *
+ * 2 a BORnSotfgA==
+ *   b BNBnSotfgA==
+ *   c BPhnSotfgA==
+ *
+ * 3 a BF5nSotfgQ==
+ *   b BHFnSotfgQ==
+ *   c BFVnSotfgA==
+ *
+ * 4 a BFZnSotfgA==
+ *   b BGlnSotfgA==
+ *   c BGpnSotfgA==
+ *
+ *
+ * 
+ */
+public class Player : NetworkBehaviour {
 
     //Custom objects
     public GameController gameController;
@@ -34,25 +56,39 @@ public class Player : NetworkBehaviour
 
     //Unity GameObjects
     public Text scoreText, instructionText, timerText, gpsText, roundScoreText, topChefText, countdownText, roundNumberText, nameText, micVolumeText;
-    public GameObject nfcPanel, micPanel, shakePanel, gameOverPanel, roundCompletePanel, roundStartPanel;
+    public GameObject nfcPanel, micPanel, shakePanel, gameOverPanel, roundCompletePanel, roundStartPanel, groupMessagePanel;
     public Text nfcText, micText, shakeText;
     public GameObject nfcOkayButton, micOkayButton, shakeOkayButton;
     public GameObject fullScreenPanel;
     public Text fullScreenPanelText;
     public GameObject cameraController, cameraPanel;
-
+    
     //Player
     [SyncVar] public string PlayerUserName;
     [SyncVar] public Color PlayerColour;
+    [SyncVar (hook = "UpdateScore") ] public int PlayerScore;
     [SyncVar] public int PlayerId;
-    [SyncVar] public int PlayerScore;
+    public uint PlayerNetworkID;
+    
+    private List<Station> GoodStations = new List<Station>();
+    private List<Station> BadStations = new List<Station>();
+    
+
+    [SyncVar (hook = "DisplayTopChef")] private string topChef;
+    public string TopChef
+    {
+        get { return topChef; }
+        set { topChef = value; }
+    }
+    public string topChefPush;
 
     //Extras
-    private string nfcValue = "";
+    [SyncVar] private string nfcValue = "";
+    private string validNfc = "";
     public int playerCount;
     public int instTime;
     public bool easyPhoneInteractions;
-    private HashSet<String> validNfc = new HashSet<String> { "Food Waste", "Recycling Bin", "Window A", "Window B" };
+//    private HashSet<String> validNfc = new HashSet<String>{"Food Waste","Recycling Bin","Window A","Window B"};
     public MicListener micListener;
 
     //Timer
@@ -99,6 +135,11 @@ public class Player : NetworkBehaviour
 
     private bool micActive = false;
     private bool timerStarted = false;
+    [SyncVar] public bool isSetupComplete;	
+    [SyncVar] public bool isGroupActive;
+    [SyncVar] public bool isShaking;
+    [SyncVar] public int activityNumber = 1;
+    [SyncVar] public bool isNFCRace;
 
     private void Awake()
     {
@@ -113,6 +154,21 @@ public class Player : NetworkBehaviour
         gameController = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
         InstructionController = GameObject.FindGameObjectWithTag("InstructionController").GetComponent<InstructionController>();
         Screen.orientation = ScreenOrientation.Portrait;
+        
+        // ------------------------------------------------------------------------------
+//        fullScreenPanel.SetActive(false);
+//        roundCompletePanel.SetActive(false);
+//        roundStartPanel.SetActive(false);
+        // ------------------------------------------------------------------------------
+        
+        if (isLocalPlayer)
+        {
+            CmdSetNetworkID(PlayerNetworkID);
+            CmdSetNameAndColour(PlayerUserName, PlayerColour);
+            CmdSetPlayerReady();        
+        }
+
+        StartInstTimer();
         VolumeOfSoundEffects = Volume;
         nameText.text += PlayerUserName;
         micListener.enabled = false;
@@ -127,14 +183,28 @@ public class Player : NetworkBehaviour
         {
             isWindowA = false;
         }
-
     }
 
     private void Update()
     {
         //Display score.
-        scoreText.text = gameController.score.ToString();
+//        scoreText.text = gameController.score.ToString();
+//        scoreText.text = NfcCheck();
+        
+//        groupMessagePanel.SetActive(isGroupActive);
+
+        if (isGroupActive)
+        {
+            if (isClient)
+            {
+                CheckGroupActivity();
+            }
+        }
+
+        
         //if (micActive) micVolumeText.text = micListener.MicLoudness.ToString("F4");
+//        topChefText.text = TopChef;
+//        scoreText.text = PlayerScore.ToString();
 
         if (!timerStarted && gameController.isGameStarted)
         {
@@ -148,7 +218,10 @@ public class Player : NetworkBehaviour
             UpdateInstTimeLeft();
             if (instTimeLeft < 0 && isLocalPlayer)
             {
-                CmdFail(instructionText.text, (isBinA) ? "Food Waste" : "Recycling Bin");
+                string tmp = GetBadNextNFC();
+                validNfc = tmp;
+                CmdFail(instructionText.text, tmp);
+               // CmdFail(instructionText.text,(isBinA) ? "Food Waste" : "Recycling Bin");
                 PlayFailSound();
                 StartInstTimer();
                 isFail = true;
@@ -173,102 +246,14 @@ public class Player : NetworkBehaviour
                 StartInstTimer();
             }
 
-
             nfcValue = NfcCheck();
-            if (validNfc.Contains(nfcValue))
+            if (validNfc.Equals(nfcValue) && nfcPanel.activeSelf)
             {
-                if (isFail)
-                {
-                    if ((nfcValue == "Food Waste") && (isBinA))
-                    {
-                        validNfc.Remove("Food Waste");
-                        if (!validNfc.Contains("Recycling Bin")) validNfc.Add("Recycling Bin");
-                        if (nfcPanel.activeSelf)
-                        {
-                            nfcPanel.SetActive(false);
-                            StartInstTimer();
-                        }
-                        isBinA = !isBinA;
-                        isFail = false;
+                nfcPanel.SetActive(false);
+                CmdIncreaseScore();
+                StartInstTimer();                       
+            } 
 
-                    }
-                    else if (nfcValue == "Recycling Bin" && !isBinA)
-                    {
-                        validNfc.Remove("Recycling Bin");
-                        if (!validNfc.Contains("Food Waste")) validNfc.Add("Food Waste");
-                        if (nfcPanel.activeSelf)
-                        {
-                            nfcPanel.SetActive(false);
-                            StartInstTimer();
-                        }
-                        isBinA = !isBinA;
-                        isFail = false;
-                    }
-
-
-                }
-                else if (isServe)
-                {
-                    if (nfcValue == "Window A" && isWindowA)
-                    {
-                        validNfc.Remove("Window A");
-                        if (!validNfc.Contains("Window B")) validNfc.Add("Window B");
-                        if (nfcPanel.activeSelf)
-                        {
-                            nfcPanel.SetActive(false);
-                            CmdIncreaseScore();
-                            StartInstTimer();
-                        }
-                        isWindowA = !isWindowA;
-                        isServe = false;
-
-                    }
-                    else if (nfcValue == "Window B" && !isWindowA)
-                    {
-                        validNfc.Remove("Window B");
-                        if (!validNfc.Contains("Window A")) validNfc.Add("Window A");
-                        if (nfcPanel.activeSelf)
-                        {
-                            nfcPanel.SetActive(false);
-                            CmdIncreaseScore();
-                            StartInstTimer();
-                        }
-                        isWindowA = !isWindowA;
-                        isServe = false;
-
-                    }
-                }
-                else
-                {
-                    if ((nfcValue == "Food Waste") && (isBinA))
-                    {
-                        validNfc.Remove("Food Waste");
-                        if (!validNfc.Contains("Recycling Bin")) validNfc.Add("Recycling Bin");
-                        isBinA = !isBinA;
-                    }
-                    else if (nfcValue == "Recycling Bin" && !isBinA)
-                    {
-                        validNfc.Remove("Recycling Bin");
-                        if (!validNfc.Contains("Food Waste")) validNfc.Add("Food Waste");
-                        isBinA = !isBinA;
-                    }
-                    if (nfcValue == "Window A" && isWindowA)
-                    {
-                        validNfc.Remove("Window A");
-                        if (!validNfc.Contains("Window B")) validNfc.Add("Window B");
-                        isWindowA = !isWindowA;
-                    }
-                    else if (nfcValue == "Window B" && !isWindowA)
-                    {
-                        validNfc.Remove("Window B");
-                        if (!validNfc.Contains("Window A")) validNfc.Add("Window A");
-                        isWindowA = !isWindowA;
-                    }
-
-                }
-
-
-            }
 
             if (ShakeListener.shaking)
             {
@@ -281,7 +266,7 @@ public class Player : NetworkBehaviour
                 }
             }
 
-            //scoreText.text = nfcValue;
+//            instructionText.text = nfcValue;
         }
         else
         {
@@ -292,7 +277,7 @@ public class Player : NetworkBehaviour
 
     public void GameOver()
     {
-        gameOverPanel.SetActive(true);
+//        gameOverPanel.SetActive(true);
         SetTimerText("0");
     }
 
@@ -309,31 +294,52 @@ public class Player : NetworkBehaviour
     private string NfcCheck()
     {
         string value = NFCListener.GetValue();
+        
+        //Group 1
+        if (value == "BAxnSotfgQ==") return GoodStations[0].GetStationItem(0);
+        if (value == "BPlnSotfgA==")return GoodStations[0].GetStationItem(1);
+        if (value == "BA1nSotfgQ==")return GoodStations[0].GetStationItem(2);
 
-        if (value == "BFTT4mEzgA==")
-        {
-            NFCListener.SetValue("");
-            return "Food Waste";
-        }
-        else if (value == "BFXT4mEzgA==")
-        {
-            NFCListener.SetValue("");
-            return "Recycling Bin";
-        }
-        else if (value == "BDbT4mEzgA==")
-        {
-            NFCListener.SetValue("");
-            return "Window A";
-        }
-        else if (value == "BBrT4mEzgA==")
-        {
-            NFCListener.SetValue("");
-            return "Window B";
-        }
-        else
-        {
-            return value;
-        }
+        //nfc 2
+        if (value == "BORnSotfgA==")return GoodStations[1].GetStationItem(0);
+        if (value == "BNBnSotfgA==")return GoodStations[1].GetStationItem(1);
+        if (value == "BPhnSotfgA==")return GoodStations[1].GetStationItem(2);
+    //nfc 3
+        if (value == "BF5nSotfgQ==")return BadStations[0].GetStationItem(0);
+        if (value == "BHFnSotfgQ==")return BadStations[0].GetStationItem(1);
+        if (value == "BFVnSotfgA==")return BadStations[0].GetStationItem(2);
+    //nfc 4
+        if (value == "BFZnSotfgA==")return BadStations[1].GetStationItem(0);
+        if (value == "BGlnSotfgA==")return BadStations[1].GetStationItem(1);
+        if (value == "BGpnSotfgA==")return BadStations[1].GetStationItem(2);
+        return value;
+
+
+
+
+//        if (value == "BFTT4mEzgA==")
+//        {
+//            NFCListener.SetValue("");
+//            return "Food Waste";
+//        } else if (value == "BFXT4mEzgA==")
+//        {
+//            NFCListener.SetValue("");
+//            return "Recycling Bin";
+//        }
+//        else if (value == "BDbT4mEzgA==")
+//        {
+//            NFCListener.SetValue("");
+//            return "Window A";
+//        } 
+//        else if (value == "BBrT4mEzgA==")
+//        {
+//            NFCListener.SetValue("");
+//            return "Window B";
+//        }
+//        else
+//        {
+//            return value;
+//        }
     }
 
     /**
@@ -581,7 +587,8 @@ public class Player : NetworkBehaviour
         {
 
             isServe = true;
-            String window = (isWindowA) ? "Window A" : "Window B";
+            String window = GetGoodNextNFC();
+            validNfc = window;
             ResetScoreStreak();
             SetNfcPanel(" Great Work!\n Serve dish to " + window + "!\n\n (TAP ON " + window + " NFC)");
 
@@ -633,9 +640,10 @@ public class Player : NetworkBehaviour
     private void ThisButtonWasPressed(int buttonNumber)
     {
         //Activate feedback on this button
-        CmdPrint(buttonNumber);
+//        CmdPrint(buttonNumber);
         AllButtons[buttonNumber].GetComponent<Image>().color = Color.green;
-
+        CmdIncrementScore();
+        
         PlayCorrectSound();
         CmdIncreasePlayerScore();
         
@@ -731,6 +739,149 @@ public class Player : NetworkBehaviour
     {
         Application.Quit();
     }
-}
 
+    private void DisplayTopChef(string topChef)
+    {
+        topChefText.text = topChef;
+    }
+
+    [Command]
+    public void CmdIncrementScore()
+    {
+        PlayerScore++;
+    }
+    
+    [Command]
+    public void CmdSetNameAndColour(string name, Color colour)
+    {
+        PlayerUserName = name;
+        PlayerColour = colour;
+    }
+
+    public void SetRndCompletePanel()
+    {
+        if (topChefPush == "") topChefText.text = "Fuck";
+        else topChefText.text = topChefPush;
+        roundCompletePanel.SetActive(true);
+    }
+    
+    [Command]
+    public void CmdSetPlayerReady()
+    {
+        isSetupComplete = true;
+    }
+
+    [Command]
+    public void CmdSetNetworkID(uint ID)
+    {
+        PlayerNetworkID = ID;
+    }
+
+    private void UpdateScore(int x)
+    {
+        scoreText.text = x.ToString();
+    }
+
+    [Command]
+    public void CmdSetShake(bool shake)
+    {
+        isShaking = shake;
+    }
+
+    [Command]
+    public void CmdSetNFCRace(bool isNFCFinished)
+    {
+        isNFCRace = isNFCFinished;
+    }
+    
+    private void CheckGroupActivity()
+    {
+        switch (activityNumber)
+        {
+            case 0: 
+                CmdSetShake(ShakeListener.shaking);
+                break;
+                    
+            case 1:
+                CmdSetNFCRace(nfcPanel.activeSelf);
+                break;
+                    
+            default:
+                //
+                Console.WriteLine("Fucked!");
+                break;
+        }
+    }
+
+
+    public void GenerateGoodStation(List<List<string>> stations)
+    {
+        foreach (var station in stations)
+        {
+            GoodStations.Add(new Station(station));
+        }
+    }    
+    
+    public void GenerateBadStation(List<List<string>> stations)
+    {
+        foreach (var station in stations)
+        {
+            BadStations.Add(new Station(station));
+        }
+    }
+
+    public void printStations()
+    {
+        foreach (var station in GoodStations)
+        {
+            foreach (var item in station.GetStationItems())
+            {
+                Debug.Log("Item: " + item);
+            }
+        }
+        foreach (var station in BadStations)
+        {
+            foreach (var item in station.GetStationItems())
+            {
+                Debug.Log("Item: " + item);
+            }
+        }
+    }
+
+    private string GetGoodNextNFC()
+    {
+        Random rand = new Random();
+        int x = rand.Next(0, GoodStations.Count);
+        return GoodStations[x].GetItem(nfcValue);
+    }    
+    
+    private string GetBadNextNFC()
+    {
+        Random rand = new Random();
+        int x = rand.Next(0, BadStations.Count);
+        return BadStations[x].GetItem(nfcValue);
+    }
+
+    public void StartNFCRace(int x)
+    {
+        switch (x)
+        {
+            case 0:
+                validNfc = GoodStations[0].GetItem(nfcValue);
+                break;
+            case 1:
+                validNfc = GoodStations[1].GetItem(nfcValue);
+                break;
+            case 2:
+                validNfc = BadStations[0].GetItem(nfcValue);
+                break;
+            case 3:
+                validNfc = BadStations[1].GetItem(nfcValue);
+                break;
+        }
+        
+        SetNfcPanel(validNfc);
+    }
+
+}
 
