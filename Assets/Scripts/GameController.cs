@@ -44,6 +44,14 @@ public class GameController : NetworkBehaviour
     [SyncVar] public bool isGameStarted;
     private bool isGroupActiviy = true;
     [SyncVar] public bool isGroupDone;
+    private bool isGameOver;
+
+    public bool IsGameOver
+    {
+        get { return isGameOver; }
+        set { isGameOver = value; }
+    }
+
     public int RoundNumber
     {
         get
@@ -62,7 +70,6 @@ public class GameController : NetworkBehaviour
         }
     }
 
-    [SyncVar] public bool isRoundPaused = false;
 
     public bool IsRoundPaused
     {
@@ -72,7 +79,6 @@ public class GameController : NetworkBehaviour
         }
     }
 
-    [SyncVar] public bool isGameStarted = false;
 
     public bool IsGameStarted
     {
@@ -111,7 +117,6 @@ public class GameController : NetworkBehaviour
     [SyncVar] public int MinimumInstructionTime;
     [SyncVar] public int playerCount;
 
-    [SyncVar] private int playerCount = 3;
 
     public int PlayerCount
     {
@@ -167,13 +172,15 @@ public class GameController : NetworkBehaviour
 
     private void Start()
     {
-        StartCoroutine(SetupGame(2));
+        StartCoroutine(SetupGame(8));
 
         //Show server display only on the server
         if (isServer)
         {
             GetComponentInChildren<Canvas>().enabled = true;
             GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Animation>().Play();
+            
+            Debug.Log("Start");
         }
     }
 
@@ -181,14 +188,20 @@ public class GameController : NetworkBehaviour
     {
         yield return new WaitForSecondsRealtime(x);
 
-        if (isServer) LoadSettings();
+        if (isServer)
+        {
+            LoadSettings();
+            Debug.Log("SetupGame");
+        }
 
-        StartCoroutine(Setup(8));
+        StartCoroutine(Setup(12));
     }
     
     private IEnumerator Setup(int x)
     {
         yield return new WaitForSecondsRealtime(x);
+        
+        Debug.Log("Setup");
 
         //Find players
         var players = FindObjectsOfType<Player>();
@@ -198,7 +211,6 @@ public class GameController : NetworkBehaviour
         foreach (Player p in players)
         {
             playerList.Add(p);
-            UserNames.Add(p.PlayerUserName);
             if (isServer) p.SetGameController(this);
             p.SetInstructionController(InstructionController);
             p.SetPlayerId(playerIndex);
@@ -212,6 +224,7 @@ public class GameController : NetworkBehaviour
         
         if (isServer)
         {
+            Debug.Log("Setup 2");
             GetComponentInChildren<Canvas>().enabled = true; //Show server display only on the server.
             playerIndex = 0;
             foreach (var p in players)
@@ -225,19 +238,35 @@ public class GameController : NetworkBehaviour
         }
 
         PlayersInitialisedFromStart();
+        
+        Debug.Log("Player initialised.");
 
         InstructionController.ICStart(playerCount, numberOfButtons, playerList, this);
         InstructionController.piProb = piProb;
 
         if (isServer)
         {
+            int j = 0;
+            foreach (var p in playerList)
+            {
+//                UserNames.Add(p.PlayerUserName);
+                UserNames.Add("PLayer" + j);
+                j++;
+            }
             gameStateHandler = new GameStateHandler(UserNames); //Instantiate single gameStateHandler object on the server to hold gamestate data 
-        
+            
+            Debug.Log("gameState");
+            
             StartCoroutine(RoundCountdown(10, "3"));
+            Debug.Log("3");
+
             StartCoroutine(RoundCountdown(11, "2"));
+            
             StartCoroutine(RoundCountdown(12, "1"));
             StartCoroutine(StartRound(13));
             StartCoroutine(StartGame(13));
+            
+            Debug.Log("Coroutines finished.");
         }
 
     }
@@ -246,9 +275,12 @@ public class GameController : NetworkBehaviour
     private IEnumerator StartGame(int x)
     {
         yield return new WaitForSecondsRealtime(x);
+        
+
         StartRoundTimer();
         UpdateScoreBar();
         isGameStarted = true;
+        Debug.Log("StartGame");
     }
 
 
@@ -481,6 +513,7 @@ public class GameController : NetworkBehaviour
     private IEnumerator StartRound(int x)
     {
         yield return new WaitForSecondsRealtime(x);
+        Debug.Log("StartRound");
         var players = FindObjectsOfType<Player>();
         for (int i = 0; i < players.Length; i++)
         {
