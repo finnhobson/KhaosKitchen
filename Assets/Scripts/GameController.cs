@@ -226,7 +226,6 @@ public class GameController : NetworkBehaviour
             playerIndex = 0;
             foreach (var p in players)
             {
-                Debug.Log(p.PlayerUserName);
                 UserNames.Add(p.PlayerUserName);
                 playerNames[playerIndex].text = p.PlayerUserName;
                 playerNames[playerIndex].color = p.PlayerColour;
@@ -312,14 +311,14 @@ public class GameController : NetworkBehaviour
             else if (roundTimeLeft < 0 || customerSatisfaction == 0)
             {
                 SetTimerText("0");
-                RpcGameOver();
+                if(isServer) RpcGameOver();
                 gameOverText.transform.SetAsLastSibling();
                 gameOverText.SetActive(true);
                 backButton.SetActive(true);
-                foreach (Player p in playerList)
-                {
-                    p.GameOver();
-                }
+//                foreach (Player p in playerList)
+//                {
+//                    p.GameOver();
+//                }
 
                 if (!isGameOver)
                 {
