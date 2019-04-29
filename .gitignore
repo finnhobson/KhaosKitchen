@@ -16,7 +16,6 @@
 
 # Unity3D generated meta files
 *.pidb.meta
-*.meta
 *.apk
 *.exe
 
@@ -28,8 +27,6 @@ sysinfo.txt
 
 *.ide-wal
 
-*.apk
-
 
 *.dylib
 
@@ -40,3 +37,5 @@ build260319 copy 2\.app/Contents/Mono/etc/mono/2\.0/Browsers/
 *.config
 
 B/
+
+Build/
