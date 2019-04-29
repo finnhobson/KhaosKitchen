@@ -277,7 +277,7 @@ public class Player : NetworkBehaviour {
 
     public void GameOver()
     {
-//        gameOverPanel.SetActive(true);
+        gameOverPanel.SetActive(true);
         SetTimerText("0");
     }
 
