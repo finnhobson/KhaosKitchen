@@ -192,6 +192,7 @@ public class Player : NetworkBehaviour {
 //        scoreText.text = NfcCheck();
         
 //        groupMessagePanel.SetActive(isGroupActive);
+        if (gameOverPanel.activeSelf) return;
 
         if (isGroupActive)
         {
@@ -274,10 +275,9 @@ public class Player : NetworkBehaviour {
         }
     }
 
-
     public void GameOver()
     {
-//        gameOverPanel.SetActive(true);
+        gameOverPanel.SetActive(true);
         SetTimerText("0");
     }
 
