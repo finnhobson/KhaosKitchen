@@ -289,7 +289,7 @@ public class GameController : NetworkBehaviour
             roundNumberText.text = roundNumber.ToString();
             UpdateRoundTimeLeft();
 
-            if (score == 2 && isGroupActiviy) //Needs to be changed.
+            if ((score%50 == 10) && isGroupActiviy) //Needs to be changed.
             {
                 InitiateGroupActivity();
             }
