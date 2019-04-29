@@ -589,6 +589,7 @@ public class GameController : NetworkBehaviour
         var players = FindObjectsOfType<Player>();
         foreach (Player player in players)
         {
+            Debug.Log("Player: " + player.PlayerUserName + " :: " + player.PlayerScore);
             if (player.PlayerScore > topScore)
             {
                 topScore = player.PlayerScore;
