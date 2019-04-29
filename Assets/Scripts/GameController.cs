@@ -70,7 +70,6 @@ public class GameController : NetworkBehaviour
         }
     }
 
-
     public bool IsRoundPaused
     {
         get
@@ -78,7 +77,6 @@ public class GameController : NetworkBehaviour
             return isRoundPaused;
         }
     }
-
 
     public bool IsGameStarted
     {
@@ -163,7 +161,6 @@ public class GameController : NetworkBehaviour
         }
     }
 
-
     //Functions-----------------------------------------------------------------------------------------------------
 
     //--------------------------------------------------------------------------------------------------------------
@@ -246,13 +243,13 @@ public class GameController : NetworkBehaviour
 
         if (isServer)
         {
-            int j = 0;
-            foreach (var p in playerList)
-            {
-//                UserNames.Add(p.PlayerUserName);
-                UserNames.Add("PLayer" + j);
-                j++;
-            }
+//            int j = 0;
+//            foreach (var p in playerList)
+//            {
+////                UserNames.Add(p.PlayerUserName);
+//                UserNames.Add("PLayer" + j);
+//                j++;
+//            }
             gameStateHandler = new GameStateHandler(UserNames); //Instantiate single gameStateHandler object on the server to hold gamestate data 
             
             Debug.Log("gameState");
@@ -271,7 +268,6 @@ public class GameController : NetworkBehaviour
 
     }
 
-
     private IEnumerator StartGame(int x)
     {
         yield return new WaitForSecondsRealtime(x);
@@ -282,7 +278,6 @@ public class GameController : NetworkBehaviour
         isGameStarted = true;
         Debug.Log("StartGame");
     }
-
 
     private void Update()
     {
@@ -316,14 +311,14 @@ public class GameController : NetworkBehaviour
             else if (roundTimeLeft < 0 || customerSatisfaction == 0)
             {
                 SetTimerText("0");
-                RpcGameOver();
+                if(isServer) RpcGameOver();
                 gameOverText.transform.SetAsLastSibling();
                 gameOverText.SetActive(true);
                 backButton.SetActive(true);
-                foreach (Player p in playerList)
-                {
-                    p.GameOver();
-                }
+//                foreach (Player p in playerList)
+//                {
+//                    p.GameOver();
+//                }
 
                 if (!isGameOver)
                 {
@@ -816,6 +811,11 @@ public class GameController : NetworkBehaviour
         {
             player.StartNFCRace(i);
         }
+    }
+
+    private void ResetGame()
+    {
+        
     }
 
 }
