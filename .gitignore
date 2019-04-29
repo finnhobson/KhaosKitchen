@@ -39,3 +39,6 @@ build260319 copy 2\.app/Contents/Mono/etc/mono/2\.0/Browsers/
 B/
 
 Build/
+
+*.DS_Store
+
