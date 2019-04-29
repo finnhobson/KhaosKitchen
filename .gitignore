@@ -35,3 +35,5 @@ build260319 copy 2\.app/Contents/MacOS/
 build260319 copy 2\.app/Contents/Mono/etc/mono/2\.0/Browsers/
 
 *.config
+
+B/
