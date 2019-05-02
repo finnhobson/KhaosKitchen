@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class OldMainMenu : MonoBehaviour {
 
-    public LobbyManager lobbyManager;
+    public OldLobbyManager lobbyManager;
     public GameObject lobby, mainMenu;
     public MyNetworkDiscovery networkDiscovery;
     private bool host = false;
