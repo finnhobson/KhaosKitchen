@@ -23,6 +23,11 @@ public class ChefController : MonoBehaviour
     public Image arrow;
 
     public List<GameObject> hat;
+    public List<GameObject> skin;
+    public GameObject crown;
+    public GameObject ogreEars;
+    public GameObject roller;
+    public Material ogreColour;
 
     // Use this for initialization
     void Start()

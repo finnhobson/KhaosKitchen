@@ -543,6 +543,7 @@ public class GameController : NetworkBehaviour
         foreach (var player in playerList)
         {
             player.roundCompletePanel.SetActive(true);
+            if (player.PlayerUserName == currentTopChef) player.shopPanel.SetActive(true);
             player.PausePlayer();
         }
     }

@@ -703,25 +703,73 @@ public class Player : NetworkBehaviour {
     }
 
     [Command]
-    public void CmdUpdateChefPrefab()
+    public void CmdUpdateChefPrefab(int item)
     {
         var chefs = GameObject.FindGameObjectsWithTag("ChefPrefab");
         foreach (GameObject chef in chefs)
         {
             if (chef.GetComponent<ChefController>().arrow.GetComponent<Image>().color == PlayerColour)
             {
-                //UPDATE PREFAB HERE
-                List<GameObject> hatParts = chef.GetComponent<ChefController>().hat;
+                if (item == 1)
+                {
+                    GameObject roller = chef.GetComponent<ChefController>().roller;
+                    roller.SetActive(true);
+                }
+
+                if (item == 2)
+                {
+                    GameObject ogreEars = chef.GetComponent<ChefController>().ogreEars;
+                    ogreEars.SetActive(true);
+                    Material ogreColour = chef.GetComponent<ChefController>().ogreColour;
+                    List<GameObject> skin = chef.GetComponent<ChefController>().skin;
+                    foreach (GameObject s in skin)
+                    {
+                        s.GetComponent<MeshRenderer>().material = ogreColour;
+                    }
+                }
+
+                if (item == 3)
+                {
+                    GameObject crown = chef.GetComponent<ChefController>().crown;
+                    List<GameObject> hatParts = chef.GetComponent<ChefController>().hat;
+                    crown.SetActive(true);
+                    foreach (GameObject part in hatParts)
+                    {
+                        part.SetActive(false);
+                    }
+                }
+                
+                /* UPDATE HAT COLOUR
+                 * List<GameObject> hatParts = chef.GetComponent<ChefController>().hat;
                 foreach (GameObject part in hatParts)
                 {
                     Material hatColour = new Material(part.GetComponent<MeshRenderer>().material);
                     hatColour.color = PlayerColour;
                     part.GetComponent<MeshRenderer>().material = hatColour;
-                }
+                }*/
             }
         }
     }
-    
+
+    public void OnClickShopButton1()
+    {
+        CmdUpdateChefPrefab(1);
+        shopPanel.SetActive(false);
+    }
+
+    public void OnClickShopButton2()
+    {
+        CmdUpdateChefPrefab(2);
+        shopPanel.SetActive(false);
+    }
+
+    public void OnClickShopButton3()
+    {
+        CmdUpdateChefPrefab(3);
+        shopPanel.SetActive(false);
+    }
+
+
 
     private void Vibrate()
     {
