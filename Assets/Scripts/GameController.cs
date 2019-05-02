@@ -286,6 +286,7 @@ public class GameController : NetworkBehaviour
             
             //Show score and active instructions on server display.
             scoreText.text = score.ToString();
+            stars.fillAmount = customerSatisfaction / 100;
             roundNumberText.text = roundNumber.ToString();
             UpdateRoundTimeLeft();
 
@@ -393,7 +394,7 @@ public class GameController : NetworkBehaviour
     {
         score += 10;
         roundScore++;
-        customerSatisfaction += 5.0f;
+        customerSatisfaction += 2.0f;
         UpdateScoreBar();
     }
          
@@ -654,7 +655,7 @@ public class GameController : NetworkBehaviour
     
     private void DecreaseCustomerSatisfaction()
     {
-        customerSatisfaction -= 0.5f;
+        customerSatisfaction -= 1;
         if (customerSatisfaction > 100) customerSatisfaction = 100;
         if (customerSatisfaction < 0) customerSatisfaction = 0;
     }
