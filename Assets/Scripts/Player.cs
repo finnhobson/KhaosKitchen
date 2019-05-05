@@ -805,7 +805,7 @@ public class Player : NetworkBehaviour {
     [Command]
     public void CmdSetNFCRace(bool isNFCFinished)
     {
-        IsNFCRaceCompleted = !isNFCFinished;
+        IsNFCRaceCompleted = isNFCFinished;
         if (IsNFCRaceCompleted) i = -1000000;
     }
     
@@ -827,12 +827,7 @@ public class Player : NetworkBehaviour {
                     i = 0;
                     CmdSetNFCRace(validNfc.Equals(nfcValue));
                 }
-                else
-                {
-                    
-                    i += 1000;
-                    wait = true;
-                }
+             
                 break;
                     
             default:
@@ -910,7 +905,8 @@ public class Player : NetworkBehaviour {
                 validNfc = BadStations[1].GetItem(nfcValue);
                 break;
         }
-        
+
+        IsNFCRaceCompleted = false;
         groupMessageText.text = validNfc;
         SetNfcPanel(validNfc);
         isNFCRaceStarted = true;
