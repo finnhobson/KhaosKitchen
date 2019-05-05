@@ -57,7 +57,7 @@ public class Player : NetworkBehaviour {
     private float Volume = 2f;
 
     //Unity GameObjects
-    public Text scoreText, instructionText, timerText, gpsText, roundScoreText, topChefText, countdownText, roundNumberText, nameText, micVolumeText;
+    public Text scoreText, instructionText, timerText, gpsText, roundScoreText, topChefText, countdownText, roundNumberText, nameText, micVolumeText, groupMessageText;
     public GameObject nfcPanel, micPanel, shakePanel, gameOverPanel, roundCompletePanel, roundStartPanel, groupMessagePanel;
     public Text nfcText, micText, shakeText;
     public GameObject nfcOkayButton, micOkayButton, shakeOkayButton;
@@ -519,7 +519,6 @@ public class Player : NetworkBehaviour {
     {
         nfcPanel.SetActive(true);
         nfcText.text = text;
-
     }
 
     public void SetShakePanel(string text)
@@ -804,11 +803,11 @@ public class Player : NetworkBehaviour {
             case 0: 
                 CmdSetShake(ShakeListener.shaking);
                 break;
-                    
+
             case 1:
-                if(!isNFCRaceStarted) StartNFCRace();
-//                else CmdSetNFCRace(validNfc.Equals(NfcCheck()));
-                else if (!IsNFCRaceCompleted && isNFCRaceStarted) CmdSetNFCRace(nfcPanel.activeSelf);
+                if (!isNFCRaceStarted) StartNFCRace();
+//                else if (!IsNFCRaceCompleted && isNFCRaceStarted) CmdSetNFCRace(nfcPanel.activeSelf);
+                else if (!IsNFCRaceCompleted && isNFCRaceStarted) CmdSetNFCRace(validNfc.Equals(NfcCheck()));
                 else wait = true;
                 break;
                     
@@ -887,7 +886,7 @@ public class Player : NetworkBehaviour {
                 break;
         }
         
-        SetNfcPanel(validNfc);
+        groupMessageText.text = validNfc;
         isNFCRaceStarted = true;
     }
 
