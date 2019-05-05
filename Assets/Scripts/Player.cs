@@ -816,21 +816,25 @@ public class Player : NetworkBehaviour {
 
             case 1:
                 nfcValue = NfcCheck();
-                i += 2;
 
                 if (!isNFCRaceStarted) StartNFCRace();
 //                else if (!IsNFCRaceCompleted && isNFCRaceStarted) CmdSetNFCRace(nfcPanel.activeSelf);
                 else if (!IsNFCRaceCompleted && isNFCRaceStarted)
                 {
-                    i += 1000;
+                    i += 2;
                     CmdSetNFCRace(validNfc.Equals(nfcValue));
                 }
-                else wait = true;
+                else
+                {
+                    i += 1000;
+                    wait = true;
+                }
                 break;
                     
             default:
                 //
                 Console.WriteLine("Fucked!");
+                i -= 999999999;
                 break;
         }
     }

@@ -770,7 +770,6 @@ public class GameController : NetworkBehaviour
 
         if (raceWinnersList.Count == playerCount)
         {
-            Debug.Log("In");
 
             //TODO: Get finn to put this list on the board.
             foreach (var player in playerList)
