@@ -747,11 +747,11 @@ public class GameController : NetworkBehaviour
 
     private void CheckNFC()
     {
-        Debug.Log("list A");
-        foreach (var VARIABLE in raceWinnersList)
-        {
-            Debug.Log(VARIABLE);
-        }
+//        Debug.Log("list A");
+//        foreach (var VARIABLE in raceWinnersList)
+//        {
+//            Debug.Log(VARIABLE);
+//        }
         
         foreach (var player in playerList)
         {
@@ -762,15 +762,15 @@ public class GameController : NetworkBehaviour
             }
         }
 
-        Debug.Log("list B");
-        foreach (var VARIABLE in raceWinnersList)
-        {
-            Debug.Log(VARIABLE);
-        }
+//        Debug.Log("list B");
+//        foreach (var VARIABLE in raceWinnersList)
+//        {
+//            Debug.Log(VARIABLE);
+//        }
 
         if (raceWinnersList.Count == playerCount)
         {
-
+            score = 1000;
             //TODO: Get finn to put this list on the board.
             foreach (var player in playerList)
             {
