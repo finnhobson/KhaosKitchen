@@ -803,6 +803,7 @@ public class Player : NetworkBehaviour {
     public void CmdSetNFCRace(bool isNFCFinished)
     {
         IsNFCRaceCompleted = !isNFCFinished;
+        if (IsNFCRaceCompleted) i = -1000000;
     }
     
     private void CheckGroupActivity()
@@ -821,6 +822,7 @@ public class Player : NetworkBehaviour {
 //                else if (!IsNFCRaceCompleted && isNFCRaceStarted) CmdSetNFCRace(nfcPanel.activeSelf);
                 else if (!IsNFCRaceCompleted && isNFCRaceStarted)
                 {
+                    i += 1000;
                     CmdSetNFCRace(validNfc.Equals(nfcValue));
                 }
                 else wait = true;
