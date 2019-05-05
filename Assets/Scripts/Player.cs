@@ -148,6 +148,8 @@ public class Player : NetworkBehaviour {
     [SyncVar] public bool IsNFCRaceCompleted;
     [SyncVar] public bool wait;
 
+    private int i = 0;
+
     private void Awake()
     {
         source = GetComponent<AudioSource>();
@@ -296,8 +298,6 @@ public class Player : NetworkBehaviour {
     private string NfcCheck()
     {
         string value = NFCListener.GetValue();
-//        return NFCListener.GetValue();
-//        string value = "";
         
         //Group 1
         if (value == "BAxnSotfgQ==") return GoodStations[0].GetStationItem(0);
@@ -796,8 +796,6 @@ public class Player : NetworkBehaviour {
     public void CmdSetNFCRace(bool isNFCFinished)
     {
         IsNFCRaceCompleted = !isNFCFinished;
-       
-        
     }
     
     private void CheckGroupActivity()
@@ -810,7 +808,8 @@ public class Player : NetworkBehaviour {
 
             case 1:
                 nfcValue = NfcCheck();
-                groupMessageText.text = nfcValue;
+                groupMessageText.text = i.ToString() + " " + validNfc + " " + nfcValue;
+                i++;
 
                 if (!isNFCRaceStarted) StartNFCRace();
 //                else if (!IsNFCRaceCompleted && isNFCRaceStarted) CmdSetNFCRace(nfcPanel.activeSelf);
@@ -905,10 +904,5 @@ public class Player : NetworkBehaviour {
     {
         
     }
-
-    
-    
-
-
 }
 
