@@ -295,7 +295,9 @@ public class Player : NetworkBehaviour {
 
     private string NfcCheck()
     {
-        string value = NFCListener.GetValue();
+//        string value = NFCListener.GetValue();
+        return NFCListener.GetValue();
+        string value = "";
         
         //Group 1
         if (value == "BAxnSotfgQ==") return GoodStations[0].GetStationItem(0);
