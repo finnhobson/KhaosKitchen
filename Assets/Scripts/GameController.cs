@@ -21,7 +21,7 @@ public class GameController : NetworkBehaviour
 
     //Unity GameObjects
     public Text scoreText, roundTimerText, scoreBarText, roundNumberText;
-    public GameObject roundTimerBar, gameOverText, backButton;
+    public GameObject roundTimerBar, gameOverText, backButton, lobbyTopPanel;
     public Image stars;
 
     public List<Player> playerList = new List<Player>();
@@ -169,13 +169,14 @@ public class GameController : NetworkBehaviour
 
     private void Start()
     {
-        StartCoroutine(SetupGame(8));
+        StartCoroutine(SetupGame(5));
 
         //Show server display only on the server
         if (isServer)
         {
             GetComponentInChildren<Canvas>().enabled = true;
             GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Animation>().Play();
+            GameObject.FindGameObjectWithTag("LobbyTopPanel").SetActive(false);
             
             Debug.Log("Start");
         }
@@ -191,7 +192,7 @@ public class GameController : NetworkBehaviour
             Debug.Log("SetupGame");
         }
 
-        StartCoroutine(Setup(12));
+        StartCoroutine(Setup(5));
     }
     
     private IEnumerator Setup(int x)
@@ -596,8 +597,7 @@ public class GameController : NetworkBehaviour
             //player.PlayerScore = 0;
         }
 
-        if (topChef == "") topChef = "Fucked the lobbynames";
-        RpcSetTopChef("RPC + " + topChef);
+        RpcSetTopChef(topChef);
 //        SetTopChef("Set + " + topChef);
         
     }

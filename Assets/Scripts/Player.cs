@@ -213,7 +213,7 @@ public class Player : NetworkBehaviour {
         {
             StartInstTimer();
             timerStarted = true;
-            if (isLocalPlayer) CmdUpdateChefPrefab();
+            //if (isLocalPlayer) CmdUpdateChefPrefab();
         }
 
         if (gameController.isGameStarted && gameController.roundTimeLeft > 0)
