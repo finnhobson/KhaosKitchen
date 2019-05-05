@@ -878,7 +878,7 @@ public class GameController : NetworkBehaviour
 
         score += 10;
         groupActivityStarted = false;
-        RpcSetGroupActivity(false);
+        RpcResetGroupActivity();
         IncrementGroupActivity();
         isGroupActiviy = true;
         raceWinnersList = new List<string>();

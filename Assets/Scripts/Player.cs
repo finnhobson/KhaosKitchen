@@ -187,7 +187,7 @@ public class Player : NetworkBehaviour {
 
     private void Update()
     {
-        if (wait) return;
+//        if (wait) return;
         //Display score.
 //        scoreText.text = gameController.score.ToString();
 //        scoreText.text = NfcCheck();
@@ -197,13 +197,20 @@ public class Player : NetworkBehaviour {
         
         groupMessagePanel.SetActive(isGroupActive);
 
+        groupMessageText.text = "Not going in\n" + isGroupActive.ToString();
+
+
         if (isGroupActive)
         {
-            if (isClient)
+            if (isLocalPlayer)
             {
+                groupMessageText.text = i.ToString() + " " + validNfc + " \n" + nfcValue + "\n" + activityNumber.ToString();                
                 CheckGroupActivity();
+                
             }
         }
+
+        i--;
 
         if (groupMessagePanel.activeSelf) return;
 
@@ -808,8 +815,7 @@ public class Player : NetworkBehaviour {
 
             case 1:
                 nfcValue = NfcCheck();
-                groupMessageText.text = i.ToString() + " " + validNfc + " " + nfcValue;
-                i++;
+                i += 2;
 
                 if (!isNFCRaceStarted) StartNFCRace();
 //                else if (!IsNFCRaceCompleted && isNFCRaceStarted) CmdSetNFCRace(nfcPanel.activeSelf);
