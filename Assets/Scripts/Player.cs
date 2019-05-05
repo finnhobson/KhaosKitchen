@@ -794,6 +794,7 @@ public class Player : NetworkBehaviour {
     public void CmdSetNFCRace(bool isNFCFinished)
     {
         IsNFCRaceCompleted = !isNFCFinished;
+       
         
     }
     
@@ -807,9 +808,14 @@ public class Player : NetworkBehaviour {
 
             case 1:
                 nfcValue = NfcCheck();
+                groupMessageText.text = nfcValue;
+
                 if (!isNFCRaceStarted) StartNFCRace();
 //                else if (!IsNFCRaceCompleted && isNFCRaceStarted) CmdSetNFCRace(nfcPanel.activeSelf);
-                else if (!IsNFCRaceCompleted && isNFCRaceStarted) CmdSetNFCRace(validNfc.Equals(nfcValue));
+                else if (!IsNFCRaceCompleted && isNFCRaceStarted)
+                {
+                    CmdSetNFCRace(validNfc.Equals(nfcValue));
+                }
                 else wait = true;
                 break;
                     
