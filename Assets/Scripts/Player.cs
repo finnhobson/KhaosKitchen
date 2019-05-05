@@ -202,7 +202,7 @@ public class Player : NetworkBehaviour {
                 CheckGroupActivity();
             }
         }
-        
+
         if (groupMessagePanel.activeSelf) return;
 
         
@@ -299,21 +299,22 @@ public class Player : NetworkBehaviour {
         
         //Group 1
         if (value == "BAxnSotfgQ==") return GoodStations[0].GetStationItem(0);
-        if (value == "BPlnSotfgA==")return GoodStations[0].GetStationItem(1);
-        if (value == "BA1nSotfgQ==")return GoodStations[0].GetStationItem(2);
+        if (value == "BPlnSotfgA==") return GoodStations[0].GetStationItem(1);
+        if (value == "BA1nSotfgQ==") return GoodStations[0].GetStationItem(2);
 
         //nfc 2
-        if (value == "BORnSotfgA==")return GoodStations[1].GetStationItem(0);
-        if (value == "BNBnSotfgA==")return GoodStations[1].GetStationItem(1);
-        if (value == "BPhnSotfgA==")return GoodStations[1].GetStationItem(2);
+        if (value == "BORnSotfgA==") return GoodStations[1].GetStationItem(0);
+        if (value == "BNBnSotfgA==") return GoodStations[1].GetStationItem(1);
+        if (value == "BPhnSotfgA==") return GoodStations[1].GetStationItem(2);
     //nfc 3
-        if (value == "BF5nSotfgQ==")return BadStations[0].GetStationItem(0);
-        if (value == "BHFnSotfgQ==")return BadStations[0].GetStationItem(1);
-        if (value == "BFVnSotfgA==")return BadStations[0].GetStationItem(2);
+        if (value == "BF5nSotfgQ==") return BadStations[0].GetStationItem(0);
+        if (value == "BHFnSotfgQ==") return BadStations[0].GetStationItem(1);
+        if (value == "BFVnSotfgA==") return BadStations[0].GetStationItem(2);
     //nfc 4
-        if (value == "BFZnSotfgA==")return BadStations[1].GetStationItem(0);
-        if (value == "BGlnSotfgA==")return BadStations[1].GetStationItem(1);
-        if (value == "BGpnSotfgA==")return BadStations[1].GetStationItem(2);
+        if (value == "BFZnSotfgA==") return BadStations[1].GetStationItem(0);
+        if (value == "BGlnSotfgA==") return BadStations[1].GetStationItem(1);
+        if (value == "BGpnSotfgA==") return BadStations[1].GetStationItem(2);
+        
         return value;
 
 
@@ -805,9 +806,10 @@ public class Player : NetworkBehaviour {
                 break;
 
             case 1:
+                nfcValue = NfcCheck();
                 if (!isNFCRaceStarted) StartNFCRace();
-                else if (!IsNFCRaceCompleted && isNFCRaceStarted) CmdSetNFCRace(nfcPanel.activeSelf);
-//                else if (!IsNFCRaceCompleted && isNFCRaceStarted) CmdSetNFCRace(validNfc.Equals(NfcCheck()));
+//                else if (!IsNFCRaceCompleted && isNFCRaceStarted) CmdSetNFCRace(nfcPanel.activeSelf);
+                else if (!IsNFCRaceCompleted && isNFCRaceStarted) CmdSetNFCRace(validNfc.Equals(nfcValue));
                 else wait = true;
                 break;
                     

@@ -808,7 +808,7 @@ public class GameController : NetworkBehaviour
     private void InitiateGroupActivity()
     {
         Debug.Log("initiate");
-        NfcRaceAssignStation();
+        RpcNfcRaceAssignStation();
         groupActivityStarted = true;
         RpcSetGroupActivity(true);
         //TODO: HERE
@@ -852,7 +852,8 @@ public class GameController : NetworkBehaviour
         }
     }
 
-    private void NfcRaceAssignStation()
+    [ClientRpc]
+    private void RpcNfcRaceAssignStation()
     {
         Random rand = new Random();
         int i = rand.Next(0, playerCount);
