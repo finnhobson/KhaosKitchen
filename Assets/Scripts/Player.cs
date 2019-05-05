@@ -142,7 +142,7 @@ public class Player : NetworkBehaviour {
     [SyncVar] public bool isGroupActive;
     [FormerlySerializedAs("isGroupComplete")] [SyncVar] public bool isGroupActivityPlayerComplete;
     [SyncVar] public bool isShaking;
-    [SyncVar] public int activityNumber;
+    [SyncVar] public int activityNumber = 1;
     [FormerlySerializedAs("isNFCRace")] [SyncVar] public bool isNFCRaceStarted;
     [SyncVar] public int nfcStation;
     [SyncVar] public bool IsNFCRaceCompleted;
