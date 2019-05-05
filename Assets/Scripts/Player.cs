@@ -806,8 +806,8 @@ public class Player : NetworkBehaviour {
 
             case 1:
                 if (!isNFCRaceStarted) StartNFCRace();
-//                else if (!IsNFCRaceCompleted && isNFCRaceStarted) CmdSetNFCRace(nfcPanel.activeSelf);
-                else if (!IsNFCRaceCompleted && isNFCRaceStarted) CmdSetNFCRace(validNfc.Equals(NfcCheck()));
+                else if (!IsNFCRaceCompleted && isNFCRaceStarted) CmdSetNFCRace(nfcPanel.activeSelf);
+//                else if (!IsNFCRaceCompleted && isNFCRaceStarted) CmdSetNFCRace(validNfc.Equals(NfcCheck()));
                 else wait = true;
                 break;
                     
@@ -887,6 +887,7 @@ public class Player : NetworkBehaviour {
         }
         
         groupMessageText.text = validNfc;
+        SetNfcPanel(validNfc);
         isNFCRaceStarted = true;
     }
 
