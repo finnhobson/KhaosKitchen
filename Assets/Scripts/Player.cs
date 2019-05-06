@@ -64,6 +64,7 @@ public class Player : NetworkBehaviour {
     public GameObject fullScreenPanel;
     public Text fullScreenPanelText;
     public GameObject cameraController, cameraPanel;
+    public GameObject backgroundPanel;
     
     //Player
     [SyncVar] public string PlayerUserName;
@@ -199,6 +200,7 @@ public class Player : NetworkBehaviour {
 
         groupMessageText.text = "Not going in\n" + isGroupActive.ToString();
 
+        MoveBackground();
 
         if (isGroupActive)
         {
@@ -287,6 +289,14 @@ public class Player : NetworkBehaviour {
         {
             SetTimerText("0");
         }
+    }
+
+    public void MoveBackground()
+    {
+        //Transform current = backgroundPanel.transform;
+
+        //Vector2 offset = new Vector2(current.position.x+10, 0f);
+        //backgroundPanel.GetComponent<Renderer>().sharedMaterial.SetTextureOffset("_MainTex", offset);
     }
 
     public void GameOver()
