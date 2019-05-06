@@ -28,10 +28,13 @@ public class InstructionController : NetworkBehaviour
     
     private static List<String> micInstructions = new List<string>(new string[] { " Waiters won't take the food out fast enough!\n Shout at them to work harder!\n\n (SHOUT INTO THE MIC)",
         " Your team are being useless!\n Shout some sense into them!\n\n (SHOUT INTO THE MIC)"});
+
     private static List<String> shakeInstructions = new List<string>(new string[] { " Chef underseasoned the dish!\n Shake to salt the food!\n\n (SHAKE YOUR PHONE)",
         " Food runner dropped the dish!\n Shake some sense into the boy!\n\n (SHAKE YOUR PHONE)",
         " Pan set on fire!\n Shake to put it out!\n\n (SHAKE YOUR PHONE)"});
-        
+
+    private static List<String> cameraInstructions = new List<string>(new string[] { " Red", "Orange", "Yellow", "Green", "Blue"});
+
     private SyncListString activeButtonActions = new SyncListString();
     private SyncListString activeInstructions = new SyncListString();
     
@@ -237,8 +240,8 @@ public class InstructionController : NetworkBehaviour
                 }
                 else if (rand == 3)
                 {
-                    // Pick a colour/food
-                    // Rpc cameraPanel
+                    rand = UnityEngine.Random.Range(0, cameraInstructions.Count);
+                    RpcSetCameraPanel(i, cameraInstructions[rand]);
                 }
             }
         }
@@ -337,7 +340,13 @@ public class InstructionController : NetworkBehaviour
     {
         Players[playerID].SetShakePanel(text);
     }
-    
+
+    [ClientRpc]
+    public void RpcSetCameraPanel(int playerID, string text)
+    {
+        Players[playerID].SetCameraPanel(text);
+    }
+
     [ClientRpc]
     public void RpcShowPaused()
     {

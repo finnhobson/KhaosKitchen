@@ -38,6 +38,7 @@ public class Player : NetworkBehaviour {
     //Custom objects
     public GameController gameController;
     public InstructionController InstructionController;
+    public CameraController cameraController;
 
     //Buttons
     public Button button1, button2, button3, button4;
@@ -58,12 +59,11 @@ public class Player : NetworkBehaviour {
 
     //Unity GameObjects
     public Text scoreText, instructionText, timerText, gpsText, roundScoreText, topChefText, countdownText, roundNumberText, nameText, micVolumeText, groupMessageText;
-    public GameObject nfcPanel, micPanel, shakePanel, gameOverPanel, roundCompletePanel, roundStartPanel, shopPanel, groupMessagePanel;
-    public Text nfcText, micText, shakeText;
+    public GameObject nfcPanel, micPanel, shakePanel, gameOverPanel, roundCompletePanel, roundStartPanel, shopPanel, groupMessagePanel, cameraPanel;
+    public Text nfcText, micText, shakeText, cameraText;
     public GameObject nfcOkayButton, micOkayButton, shakeOkayButton;
     public GameObject fullScreenPanel;
     public Text fullScreenPanelText;
-    public GameObject cameraController, cameraPanel;
     public GameObject backgroundPanel;
     
     //Player
@@ -137,6 +137,7 @@ public class Player : NetworkBehaviour {
 
     private bool micActive = false;
     private bool timerStarted = false;
+    private bool cameraBool = false;
     [SyncVar] public bool isSetupComplete;	
     
     //Group activity
@@ -259,6 +260,19 @@ public class Player : NetworkBehaviour {
                 micPanel.SetActive(false);
                 micActive = false;
                 micListener.enabled = false;
+                CmdIncreaseScore();
+                StartInstTimer();
+            }
+
+            if (cameraText.text == "Red") cameraBool = cameraController.red;
+            if (cameraText.text == "Orange") cameraBool = cameraController.orange;
+            if (cameraText.text == "Yellow") cameraBool = cameraController.yellow;
+            if (cameraText.text == "Green") cameraBool = cameraController.green;
+            if (cameraText.text == "Blue") cameraBool = cameraController.blue;
+            if (cameraPanel.activeInHierarchy && cameraBool)
+            {
+                cameraPanel.SetActive(false);
+                cameraController.enabled = false;
                 CmdIncreaseScore();
                 StartInstTimer();
             }
@@ -554,7 +568,13 @@ public class Player : NetworkBehaviour {
     {
         micPanel.SetActive(true);
         micText.text = text;
+    }
 
+    public void SetCameraPanel(string text)
+    {
+        cameraController.enabled = true;
+        cameraPanel.SetActive(true);
+        cameraText.text = text;
     }
 
     public void OnClickNfcButton()
@@ -591,7 +611,7 @@ public class Player : NetworkBehaviour {
         }
     }
 
-    public void OnClickCameraButton()
+    /*public void OnClickCameraButton()
     {
         if (cameraPanel.activeInHierarchy)
         {
@@ -603,7 +623,7 @@ public class Player : NetworkBehaviour {
             cameraController.SetActive(true);
             cameraPanel.SetActive(true);
         }
-    }
+    }*/
 
     public void ScoreStreakCheck()
     {
