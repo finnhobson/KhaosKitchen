@@ -203,9 +203,6 @@ public class Player : NetworkBehaviour {
         {
             if (isLocalPlayer)
             {
-//                nfcValue = NfcCheck();
-//                groupMessageText.text = i.ToString() + "\n" + validNfc + "\n" + isNFCRaceStarted + " \n" +
-//                                        IsNFCRaceCompleted + "\n" + validNfc.Equals(nfcValue);
 
 
                 CheckGroupActivity();

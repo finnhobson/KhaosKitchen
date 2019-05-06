@@ -811,8 +811,7 @@ public class GameController : NetworkBehaviour
     [Server]
     private void InitiateGroupActivity()
     {
-        IncrementGroupActivity();
-        RpcUpdateActivityNumber(activityNumber);
+        
         Debug.Log("initiate");
         RpcNfcRaceAssignStation();
         groupActivityStarted = true;
@@ -889,6 +888,7 @@ public class GameController : NetworkBehaviour
         isGroupActiviy = true;
         raceWinnersList = new List<string>();
         Debug.Log("... Ready");
+        IncrementGroupActivity();
     }
     
         
@@ -901,6 +901,7 @@ public class GameController : NetworkBehaviour
             player.isNFCRaceStarted = false;
             player.IsNFCRaceCompleted = false;
             player.wait = false;
+            player.activityNumber = activityNumber;
         }
     }
 
