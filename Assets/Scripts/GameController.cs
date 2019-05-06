@@ -45,6 +45,7 @@ public class GameController : NetworkBehaviour
 
     [SyncVar] public bool isRoundPaused;
     [SyncVar] public bool isGameStarted;
+    private bool isGroupActivityEnabled = false; // To enable group activities
     private bool isGameOver;
     
     //Group activity
@@ -286,7 +287,7 @@ public class GameController : NetworkBehaviour
 
             if (isServer)
             {
-                if ((score % 50 == 10) && isGroupActiviy) //Needs to be changed.
+                if ((score % 50 == 10) && isGroupActiviy && isGroupActivityEnabled) //Needs to be changed.
                 {
                     Debug.Log("Call1");
                     InitiateGroupActivity();
