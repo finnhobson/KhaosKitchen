@@ -9,6 +9,7 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
 using UnityEngine.SocialPlatforms.Impl;
+using Random = System.Random;
 
 
 public class GameController : NetworkBehaviour
@@ -27,6 +28,8 @@ public class GameController : NetworkBehaviour
     public List<Player> playerList = new List<Player>();
     public List<Text> playerNames = new List<Text>();
 
+    public List<string> raceWinnersList = new List<string>();
+
     [SyncVar] public int score = 0;
 
     public int Score
@@ -42,9 +45,11 @@ public class GameController : NetworkBehaviour
 
     [SyncVar] public bool isRoundPaused;
     [SyncVar] public bool isGameStarted;
+    private bool isGameOver;
+    
+    //Group activity
     private bool isGroupActiviy = true;
     [SyncVar] public bool isGroupDone;
-    private bool isGameOver;
 
     public bool IsGameOver
     {
@@ -144,9 +149,9 @@ public class GameController : NetworkBehaviour
     public GameObject scoreBar;
 
     //Booleans
-    [FormerlySerializedAs("startGroupActivity")] [SyncVar (hook = "SetGroupActivity")] public bool groupActivityStarted;
+    [FormerlySerializedAs("startGroupActivity")] [SyncVar] public bool groupActivityStarted;
     public int numberOfGroupActivities = 2;
-    [SyncVar (hook = "UpdateActivityNumber")] public int activityNumber = 0;
+    [SyncVar (hook = "UpdateActivityNumber")] public int activityNumber = 1;
 
     List<string> UserNames = new List<string>(); /* Just here so in future they can set their own usernames from the lobby */
 
@@ -189,7 +194,6 @@ public class GameController : NetworkBehaviour
         if (isServer)
         {
             LoadSettings();
-            Debug.Log("SetupGame");
         }
 
         StartCoroutine(Setup(5));
@@ -199,8 +203,6 @@ public class GameController : NetworkBehaviour
     {
         yield return new WaitForSecondsRealtime(x);
         
-        Debug.Log("Setup");
-
         //Find players
         var players = FindObjectsOfType<Player>();
 
@@ -222,7 +224,6 @@ public class GameController : NetworkBehaviour
         
         if (isServer)
         {
-            Debug.Log("Setup 2");
             GetComponentInChildren<Canvas>().enabled = true; //Show server display only on the server.
             playerIndex = 0;
             foreach (var p in players)
@@ -236,7 +237,6 @@ public class GameController : NetworkBehaviour
 
         PlayersInitialisedFromStart();
         
-        Debug.Log("Player initialised.");
 
         InstructionController.ICStart(playerCount, numberOfButtons, playerList, this);
         InstructionController.piProb = piProb;
@@ -252,18 +252,11 @@ public class GameController : NetworkBehaviour
 //            }
             gameStateHandler = new GameStateHandler(UserNames); //Instantiate single gameStateHandler object on the server to hold gamestate data 
             
-            Debug.Log("gameState");
-            
             StartCoroutine(RoundCountdown(10, "3"));
-            Debug.Log("3");
-
-            StartCoroutine(RoundCountdown(11, "2"));
-            
+            StartCoroutine(RoundCountdown(11, "2"));            
             StartCoroutine(RoundCountdown(12, "1"));
             StartCoroutine(StartRound(13));
             StartCoroutine(StartGame(13));
-            
-            Debug.Log("Coroutines finished.");
         }
 
     }
@@ -290,14 +283,21 @@ public class GameController : NetworkBehaviour
             roundNumberText.text = roundNumber.ToString();
             UpdateRoundTimeLeft();
 
-            if ((score%50 == 10) && isGroupActiviy) //Needs to be changed.
+            if (isServer)
             {
-                InitiateGroupActivity();
-            }
-            
-            if (groupActivityStarted)
-            {
-                CheckGroupActivity();
+                if ((score % 5000 == 10) && isGroupActiviy) //Needs to be changed.
+                {
+                    Debug.Log("Call1");
+                    InitiateGroupActivity();
+                }
+
+                else if (groupActivityStarted)
+                {
+                    Debug.Log("call2");
+
+                    CheckGroupActivity();
+                }
+                else ResetGroup();
             }
 
             if (roundMaxScore - roundScore <= 1)
@@ -718,10 +718,11 @@ public class GameController : NetworkBehaviour
         }
     }
 
-
-
-    public void SetGroupActivity(bool active)
+    [ClientRpc]
+    public void RpcSetGroupActivity(bool active)
     {
+        Debug.Log("set group active");
+
         foreach (var player in playerList)
         {
             player.isGroupActive = active;
@@ -741,27 +742,51 @@ public class GameController : NetworkBehaviour
 
         if (allReady)
         {
-            score =+ 10;
-            groupActivityStarted = false;
-            IncrementGroupActivity();
-            isGroupActiviy = true;
+            AllAreReady();
         }
     }
 
     private void CheckNFC()
     {
-        bool allReady = true;
+//        Debug.Log("list A");
+//        foreach (var VARIABLE in raceWinnersList)
+//        {
+//            Debug.Log(VARIABLE);
+//        }
+        
         foreach (var player in playerList)
         {
-            allReady &= player.isNFCRace;
+            Debug.Log("is race started: " + player.isNFCRaceStarted);
+            if (player.IsNFCRaceCompleted && !raceWinnersList.Contains(player.PlayerUserName))
+            {
+                raceWinnersList.Add(player.PlayerUserName);    
+            }
         }
 
-        if (allReady)
+//        Debug.Log("list B");
+//        foreach (var VARIABLE in raceWinnersList)
+//        {
+//            Debug.Log(VARIABLE);
+//        }
+
+        if (raceWinnersList.Count == playerCount)
         {
-            score =+ 10;
-            groupActivityStarted = false;
-            IncrementGroupActivity();
-            isGroupActiviy = true;
+            score = 1000;
+            //TODO: Get finn to put this list on the board.
+            foreach (var player in playerList)
+            {
+                for (int i = 0; i < raceWinnersList.Count; i++)
+                {
+                    if (player.PlayerUserName == raceWinnersList[i])
+                    {
+                        int scoreAdjustment = ( 10 * ( playerCount - i ) );
+                        player.PlayerScore += scoreAdjustment;
+                    }
+                    Debug.Log(raceWinnersList[i]);
+                }
+            }
+            
+            AllAreReady();
         }
     }
 
@@ -774,20 +799,41 @@ public class GameController : NetworkBehaviour
     {
         foreach (var player in playerList)
         {
-            player.activityNumber = number;
+            if (player != null) player.activityNumber = number;
+            else Debug.Log("not player at UpdateActivityNumber");
         }
     }
 
+    [Server]
     private void InitiateGroupActivity()
     {
+        Debug.Log("initiate");
+        RpcNfcRaceAssignStation();
         groupActivityStarted = true;
-        isGroupActiviy = false;
+        RpcSetGroupActivity(true);
+        //TODO: HERE
+        isGroupActiviy = false;     
         
-        if(activityNumber == 1) RpcStartNFCRace();
+        foreach (var player in playerList)
+        {
+            Debug.Log("isGroupActive : " + player.isGroupActive);
+            Debug.Log("isNFCRaceStarted : " + player.isNFCRaceStarted);
+            Debug.Log("nfcStation : " + player.nfcStation);
+            Debug.Log("IsNFCRaceCompleted : " + player.IsNFCRaceCompleted);
+            Debug.Log("isGroupActiviy : " + isGroupActiviy);
+            Debug.Log("isGroupActiviy : " + isGroupActiviy);
+            Debug.Log("raceWinnersList : " + raceWinnersList);
+            player.SetNfcPanel("CUNT");
+            
+        }
     }
+    
 
+    [Server]
     private void CheckGroupActivity()
     {
+        bool completeItMate = false;
+
         switch (activityNumber)
         {
             case 0: 
@@ -805,20 +851,51 @@ public class GameController : NetworkBehaviour
                 break;
         }
     }
-    
+
     [ClientRpc]
-    private void RpcStartNFCRace()
+    private void RpcNfcRaceAssignStation()
     {
-        int i = 0;
+        Random rand = new Random();
+        int i = rand.Next(0, playerCount);
+        
         foreach (var player in playerList)
         {
-            player.StartNFCRace(i);
+            player.nfcStation = i;
+            i = (i + 1) % playerCount;
         }
     }
-
-    private void ResetGame()
+    
+    [Server]
+    private void ResetGroup()
     {
+        RpcResetGroupActivity();
+    }
+
+    [Server]
+    private void AllAreReady()
+    {
+        Debug.Log("All");
+
+        score += 10;
+        groupActivityStarted = false;
+        RpcResetGroupActivity();
+        IncrementGroupActivity();
+        isGroupActiviy = true;
+        raceWinnersList = new List<string>();
+        Debug.Log("... Ready");
+    }
+    
         
+    [ClientRpc]
+    public void RpcResetGroupActivity()
+    {
+        foreach (var player in playerList)
+        {
+            player.isGroupActive = false;
+            player.isNFCRaceStarted = false;
+            player.IsNFCRaceCompleted = false;
+            player.wait = false;
+        }
     }
 
 }

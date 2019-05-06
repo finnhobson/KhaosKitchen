@@ -4,11 +4,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Sockets;
 using System.Runtime.Remoting.Messaging;
+using System.Text;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using UnityEngine.Serialization;
 using Random = System.Random;
 
 /*
@@ -55,7 +57,7 @@ public class Player : NetworkBehaviour {
     private float Volume = 2f;
 
     //Unity GameObjects
-    public Text scoreText, instructionText, timerText, gpsText, roundScoreText, topChefText, countdownText, roundNumberText, nameText, micVolumeText;
+    public Text scoreText, instructionText, timerText, gpsText, roundScoreText, topChefText, countdownText, roundNumberText, nameText, micVolumeText, groupMessageText;
     public GameObject nfcPanel, micPanel, shakePanel, gameOverPanel, roundCompletePanel, roundStartPanel, shopPanel, groupMessagePanel;
     public Text nfcText, micText, shakeText;
     public GameObject nfcOkayButton, micOkayButton, shakeOkayButton;
@@ -72,7 +74,6 @@ public class Player : NetworkBehaviour {
     
     private List<Station> GoodStations = new List<Station>();
     private List<Station> BadStations = new List<Station>();
-    
 
     [SyncVar (hook = "DisplayTopChef")] private string topChef;
     public string TopChef
@@ -87,7 +88,7 @@ public class Player : NetworkBehaviour {
     private string validNfc = "";
     public int playerCount;
     public int instTime;
-    public bool easyPhoneInteractions;
+    public bool easyPhoneInteractions = true;
 //    private HashSet<String> validNfc = new HashSet<String>{"Food Waste","Recycling Bin","Window A","Window B"};
     public MicListener micListener;
 
@@ -136,10 +137,18 @@ public class Player : NetworkBehaviour {
     private bool micActive = false;
     private bool timerStarted = false;
     [SyncVar] public bool isSetupComplete;	
+    
+    //Group activity
     [SyncVar] public bool isGroupActive;
+    [FormerlySerializedAs("isGroupComplete")] [SyncVar] public bool isGroupActivityPlayerComplete;
     [SyncVar] public bool isShaking;
     [SyncVar] public int activityNumber = 1;
-    [SyncVar] public bool isNFCRace;
+    [FormerlySerializedAs("isNFCRace")] [SyncVar] public bool isNFCRaceStarted;
+    [SyncVar] public int nfcStation;
+    [SyncVar] public bool IsNFCRaceCompleted;
+    [SyncVar] public bool wait;
+
+    private int i = 0;
 
     private void Awake()
     {
@@ -173,20 +182,12 @@ public class Player : NetworkBehaviour {
         nameText.text += PlayerUserName;
         micListener.enabled = false;
 
-        int rand = UnityEngine.Random.Range(0, 1);
-        if (rand == 0)
-        {
-            isBinA = false;
-        }
-        rand = UnityEngine.Random.Range(0, 1);
-        if (rand == 0)
-        {
-            isWindowA = false;
-        }
+
     }
 
     private void Update()
     {
+//        if (wait) return;
         //Display score.
 //        scoreText.text = gameController.score.ToString();
 //        scoreText.text = NfcCheck();
@@ -196,13 +197,25 @@ public class Player : NetworkBehaviour {
         
         groupMessagePanel.SetActive(isGroupActive);
 
+        groupMessageText.text = "Not going in\n" + isGroupActive.ToString();
+
+
         if (isGroupActive)
         {
-            if (isClient)
+            if (isLocalPlayer)
             {
+                nfcValue = NfcCheck();
+                groupMessageText.text = i.ToString() + " " + isNFCRaceStarted + " \n" + IsNFCRaceCompleted + "\n" + validNfc.Equals(nfcValue);                
+                
+                
                 CheckGroupActivity();
+                
             }
         }
+
+        i--;
+
+        if (groupMessagePanel.activeSelf) return;
 
         
         //if (micActive) micVolumeText.text = micListener.MicLoudness.ToString("F4");
@@ -224,7 +237,6 @@ public class Player : NetworkBehaviour {
                 string tmp = GetBadNextNFC();
                 validNfc = tmp;
                 CmdFail(instructionText.text, tmp);
-               // CmdFail(instructionText.text,(isBinA) ? "Food Waste" : "Recycling Bin");
                 PlayFailSound();
                 StartInstTimer();
                 isFail = true;
@@ -299,21 +311,22 @@ public class Player : NetworkBehaviour {
         
         //Group 1
         if (value == "BAxnSotfgQ==") return GoodStations[0].GetStationItem(0);
-        if (value == "BPlnSotfgA==")return GoodStations[0].GetStationItem(1);
-        if (value == "BA1nSotfgQ==")return GoodStations[0].GetStationItem(2);
+        if (value == "BPlnSotfgA==") return GoodStations[0].GetStationItem(1);
+        if (value == "BA1nSotfgQ==") return GoodStations[0].GetStationItem(2);
 
         //nfc 2
-        if (value == "BORnSotfgA==")return GoodStations[1].GetStationItem(0);
-        if (value == "BNBnSotfgA==")return GoodStations[1].GetStationItem(1);
-        if (value == "BPhnSotfgA==")return GoodStations[1].GetStationItem(2);
+        if (value == "BORnSotfgA==") return GoodStations[1].GetStationItem(0);
+        if (value == "BNBnSotfgA==") return GoodStations[1].GetStationItem(1);
+        if (value == "BPhnSotfgA==") return GoodStations[1].GetStationItem(2);
     //nfc 3
-        if (value == "BF5nSotfgQ==")return BadStations[0].GetStationItem(0);
-        if (value == "BHFnSotfgQ==")return BadStations[0].GetStationItem(1);
-        if (value == "BFVnSotfgA==")return BadStations[0].GetStationItem(2);
+        if (value == "BF5nSotfgQ==") return BadStations[0].GetStationItem(0);
+        if (value == "BHFnSotfgQ==") return BadStations[0].GetStationItem(1);
+        if (value == "BFVnSotfgA==") return BadStations[0].GetStationItem(2);
     //nfc 4
-        if (value == "BFZnSotfgA==")return BadStations[1].GetStationItem(0);
-        if (value == "BGlnSotfgA==")return BadStations[1].GetStationItem(1);
-        if (value == "BGpnSotfgA==")return BadStations[1].GetStationItem(2);
+        if (value == "BFZnSotfgA==") return BadStations[1].GetStationItem(0);
+        if (value == "BGlnSotfgA==") return BadStations[1].GetStationItem(1);
+        if (value == "BGpnSotfgA==") return BadStations[1].GetStationItem(2);
+        
         return value;
 
 
@@ -519,7 +532,6 @@ public class Player : NetworkBehaviour {
     {
         nfcPanel.SetActive(true);
         nfcText.text = text;
-
     }
 
     public void SetShakePanel(string text)
@@ -853,7 +865,8 @@ public class Player : NetworkBehaviour {
     [Command]
     public void CmdSetNFCRace(bool isNFCFinished)
     {
-        isNFCRace = isNFCFinished;
+        IsNFCRaceCompleted = isNFCFinished;
+        if (IsNFCRaceCompleted) i = -1000000;
     }
     
     private void CheckGroupActivity()
@@ -863,14 +876,24 @@ public class Player : NetworkBehaviour {
             case 0: 
                 CmdSetShake(ShakeListener.shaking);
                 break;
-                    
+
             case 1:
-                CmdSetNFCRace(nfcPanel.activeSelf);
+                nfcValue = NfcCheck();
+
+                if (!isNFCRaceStarted) StartNFCRace();
+//                else if (!IsNFCRaceCompleted && isNFCRaceStarted) CmdSetNFCRace(nfcPanel.activeSelf);
+                else if (!IsNFCRaceCompleted && isNFCRaceStarted)
+                {
+                    i = 0;
+                    CmdSetNFCRace(validNfc.Equals(nfcValue));
+                }
+             
                 break;
                     
             default:
                 //
                 Console.WriteLine("Fucked!");
+                i -= 999999999;
                 break;
         }
     }
@@ -924,9 +947,10 @@ public class Player : NetworkBehaviour {
         return BadStations[x].GetItem(nfcValue);
     }
 
-    public void StartNFCRace(int x)
+    public void StartNFCRace()
     {
-        switch (x)
+        Debug.Log("StartNFC");
+        switch (nfcStation)
         {
             case 0:
                 validNfc = GoodStations[0].GetItem(nfcValue);
@@ -941,9 +965,16 @@ public class Player : NetworkBehaviour {
                 validNfc = BadStations[1].GetItem(nfcValue);
                 break;
         }
-        
+
+        IsNFCRaceCompleted = false;
+        groupMessageText.text = validNfc;
         SetNfcPanel(validNfc);
+        isNFCRaceStarted = true;
     }
 
+    public void GroupActivityHandler()
+    {
+        
+    }
 }
 
