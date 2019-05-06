@@ -735,9 +735,7 @@ public class GameController : NetworkBehaviour
 
     private void CheckShake()
     {
-        //Tells players to wait
-//        roundNumberText.text = "Shake";
-        //
+
         bool allReady = true;
         foreach (var player in playerList)
         {
@@ -818,32 +816,18 @@ public class GameController : NetworkBehaviour
         RpcSetGroupActivity(true);
         //TODO: HERE
         isGroupActiviy = false;     
-        
-//        foreach (var player in playerList)
-//        {
-//            Debug.Log("isGroupActive : " + player.isGroupActive);
-//            Debug.Log("isNFCRaceStarted : " + player.isNFCRaceStarted);
-//            Debug.Log("nfcStation : " + player.nfcStation);
-//            Debug.Log("IsNFCRaceCompleted : " + player.IsNFCRaceCompleted);
-//            Debug.Log("isGroupActiviy : " + isGroupActiviy);
-//            Debug.Log("isGroupActiviy : " + isGroupActiviy);
-//            Debug.Log("raceWinnersList : " + raceWinnersList);
-//            player.SetNfcPanel("CUNT");
-//            
-//        }
+
     }
     
 
     [Server]
     private void CheckGroupActivity()
     {
-//        score = score == 10 ? 11 : score;
 
         switch (activityNumber)
         {
             case 0: 
                 CheckShake();
-                score = 5000;
                 break;
                     
             case 1:
@@ -852,7 +836,7 @@ public class GameController : NetworkBehaviour
                 break;
                     
             default:
-                //
+                
                 score = 9999;
                 break;
         }
@@ -902,6 +886,7 @@ public class GameController : NetworkBehaviour
             player.IsNFCRaceCompleted = false;
             player.wait = false;
             player.activityNumber = activityNumber;
+            player.instTime = instructionStartTime;
         }
     }
 

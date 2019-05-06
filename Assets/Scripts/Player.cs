@@ -209,9 +209,7 @@ public class Player : NetworkBehaviour {
 
             }
         }
-        else groupMessageText.text = "done";
 
-        i--;
 
         if (groupMessagePanel.activeSelf) return;
 
@@ -872,6 +870,7 @@ public class Player : NetworkBehaviour {
         switch (activityNumber)
         {
             case 0: 
+                groupMessageText.text = "Everyone Shake \n look at main screen";
                 CmdSetShake(ShakeListener.shaking);
                 break;
 
@@ -969,7 +968,7 @@ public class Player : NetworkBehaviour {
         }
 
         IsNFCRaceCompleted = false;
-        groupMessageText.text = validNfc;
+        groupMessageText.text = validNfc + "/n look at main screen";
         //SetNfcPanel(validNfc);
         isNFCRaceStarted = true;
     }
