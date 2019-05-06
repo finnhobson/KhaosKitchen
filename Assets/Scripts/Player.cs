@@ -205,13 +205,15 @@ public class Player : NetworkBehaviour {
             if (isLocalPlayer)
             {
                 nfcValue = NfcCheck();
-                groupMessageText.text = i.ToString() + " " + isNFCRaceStarted + " \n" + IsNFCRaceCompleted + "\n" + validNfc.Equals(nfcValue);                
-                
-                
+                groupMessageText.text = i.ToString() + "\n" + validNfc + "\n" + isNFCRaceStarted + " \n" +
+                                        IsNFCRaceCompleted + "\n" + validNfc.Equals(nfcValue);
+
+
                 CheckGroupActivity();
-                
+
             }
         }
+        else groupMessageText.text = "done";
 
         i--;
 
@@ -967,8 +969,8 @@ public class Player : NetworkBehaviour {
         }
 
         IsNFCRaceCompleted = false;
-        groupMessageText.text = validNfc;
-        SetNfcPanel(validNfc);
+        //groupMessageText.text = validNfc;
+        //SetNfcPanel(validNfc);
         isNFCRaceStarted = true;
     }
 
