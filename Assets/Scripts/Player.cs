@@ -187,7 +187,7 @@ public class Player : NetworkBehaviour {
 
     private void Update()
     {
-//        if (wait) return;
+        if (wait) return;
         //Display score.
 //        scoreText.text = gameController.score.ToString();
 //        scoreText.text = NfcCheck();
@@ -888,6 +888,10 @@ public class Player : NetworkBehaviour {
                 {
                     i = 0;
                     CmdSetNFCRace(validNfc.Equals(nfcValue));
+                }
+                else
+                {
+                    wait = true;
                 }
              
                 break;

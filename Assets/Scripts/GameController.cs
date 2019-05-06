@@ -298,7 +298,12 @@ public class GameController : NetworkBehaviour
 
                     CheckGroupActivity();
                 }
-                else ResetGroup();
+                else
+                {
+                    score = -10;
+                    ResetGroup();
+                }
+
             }
 
             if (roundMaxScore - roundScore <= 1)
@@ -754,15 +759,16 @@ public class GameController : NetworkBehaviour
 //        {
 //            Debug.Log(VARIABLE);
 //        }
-        
+        score = score == 11 ? 12 : score;
+
         foreach (var player in playerList)
         {
-            score = 11;
+            score = score == 12 ? 13 : score;
             Debug.Log("is race started: " + player.isNFCRaceStarted);
             if (player.IsNFCRaceCompleted && !raceWinnersList.Contains(player.PlayerUserName))
             {
                 raceWinnersList.Add(player.PlayerUserName);
-                score = 12;
+                score = 14;
             }
         }
 
@@ -837,6 +843,7 @@ public class GameController : NetworkBehaviour
     [Server]
     private void CheckGroupActivity()
     {
+        score = score == 10 ? 11 : score;
         bool completeItMate = false;
 
         switch (activityNumber)
