@@ -300,7 +300,6 @@ public class GameController : NetworkBehaviour
                 }
                 else
                 {
-                    score = -10;
                     ResetGroup();
                 }
 
