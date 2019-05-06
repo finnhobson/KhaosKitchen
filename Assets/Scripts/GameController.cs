@@ -285,7 +285,7 @@ public class GameController : NetworkBehaviour
 
             if (isServer)
             {
-                if ((score % 5000 == 10) && isGroupActiviy) //Needs to be changed.
+                if ((score % 50 == 1000) && isGroupActiviy) //Needs to be changed.
                 {
                     Debug.Log("Call1");
                     InitiateGroupActivity();
