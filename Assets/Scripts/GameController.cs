@@ -542,7 +542,6 @@ public class GameController : NetworkBehaviour
             if (player.topChefText.text == "YOU!!")
             {
                 player.shopPanel.SetActive(true);
-                player.roundCompletePanel.SetActive(false);
             }
             player.PausePlayer();
         }
