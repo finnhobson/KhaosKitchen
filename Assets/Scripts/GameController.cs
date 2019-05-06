@@ -45,6 +45,7 @@ public class GameController : NetworkBehaviour
 
     [SyncVar] public bool isRoundPaused;
     [SyncVar] public bool isGameStarted;
+    private bool isGroupActivityEnabled = false; // To enable group activities
     private bool isGameOver;
     
     //Group activity
@@ -66,6 +67,7 @@ public class GameController : NetworkBehaviour
     }
 
     [SyncVar] public int fireCount = 0;
+    int stationCount = 4;
 
     public int FireCount
     {
@@ -151,7 +153,7 @@ public class GameController : NetworkBehaviour
     //Booleans
     [FormerlySerializedAs("startGroupActivity")] [SyncVar] public bool groupActivityStarted;
     public int numberOfGroupActivities = 2;
-    [SyncVar (hook = "UpdateActivityNumber")] public int activityNumber = 1;
+    [SyncVar] public int activityNumber = 0;
 
     List<string> UserNames = new List<string>(); /* Just here so in future they can set their own usernames from the lobby */
 
@@ -285,7 +287,7 @@ public class GameController : NetworkBehaviour
 
             if (isServer)
             {
-                if ((score % 50 == 1000) && isGroupActiviy) //Needs to be changed.
+                if ((score % 50 == 10) && isGroupActiviy && isGroupActivityEnabled) //Needs to be changed.
                 {
                     Debug.Log("Call1");
                     InitiateGroupActivity();
@@ -297,7 +299,11 @@ public class GameController : NetworkBehaviour
 
                     CheckGroupActivity();
                 }
-                else ResetGroup();
+                else
+                {
+                    ResetGroup();
+                }
+
             }
 
             if (roundMaxScore - roundScore <= 1)
@@ -434,7 +440,6 @@ public class GameController : NetworkBehaviour
         roundNumber++;
         UpdateGamestate();
         isRoundPaused = true;
-        UpdateGamestate();
 
         RoundPaused();
         fireCount = 0;
@@ -521,7 +526,7 @@ public class GameController : NetworkBehaviour
         PenultimateAction(false);
         roundMaxScore = CalculateInstructionNumber();
         customerSatisfaction = 50;
-        InvokeRepeating("DecreaseCustomerSatisfaction", 1.0f, 1.0f);
+//        InvokeRepeating("DecreaseCustomerSatisfaction", 1.0f, 1.0f);
         UpdateScoreBar();
     }
 
@@ -730,9 +735,7 @@ public class GameController : NetworkBehaviour
 
     private void CheckShake()
     {
-        //Tells players to wait
-//        roundNumberText.text = "Shake";
-        //
+
         bool allReady = true;
         foreach (var player in playerList)
         {
@@ -752,13 +755,13 @@ public class GameController : NetworkBehaviour
 //        {
 //            Debug.Log(VARIABLE);
 //        }
-        
+
         foreach (var player in playerList)
         {
             Debug.Log("is race started: " + player.isNFCRaceStarted);
             if (player.IsNFCRaceCompleted && !raceWinnersList.Contains(player.PlayerUserName))
             {
-                raceWinnersList.Add(player.PlayerUserName);    
+                raceWinnersList.Add(player.PlayerUserName);
             }
         }
 
@@ -770,7 +773,6 @@ public class GameController : NetworkBehaviour
 
         if (raceWinnersList.Count == playerCount)
         {
-            score = 1000;
             //TODO: Get finn to put this list on the board.
             foreach (var player in playerList)
             {
@@ -792,9 +794,10 @@ public class GameController : NetworkBehaviour
     private void IncrementGroupActivity()
     {
         activityNumber = (activityNumber + 1) % numberOfGroupActivities;
+//        activityNumber = 1;
     }
 
-    private void UpdateActivityNumber(int number)
+    private void RpcUpdateActivityNumber(int number)
     {
         foreach (var player in playerList)
         {
@@ -806,32 +809,21 @@ public class GameController : NetworkBehaviour
     [Server]
     private void InitiateGroupActivity()
     {
+        
         Debug.Log("initiate");
-        RpcNfcRaceAssignStation();
+        Random rand = new Random();
+        RpcNfcRaceAssignStation(rand.Next(0, stationCount));
         groupActivityStarted = true;
         RpcSetGroupActivity(true);
         //TODO: HERE
         isGroupActiviy = false;     
-        
-        foreach (var player in playerList)
-        {
-            Debug.Log("isGroupActive : " + player.isGroupActive);
-            Debug.Log("isNFCRaceStarted : " + player.isNFCRaceStarted);
-            Debug.Log("nfcStation : " + player.nfcStation);
-            Debug.Log("IsNFCRaceCompleted : " + player.IsNFCRaceCompleted);
-            Debug.Log("isGroupActiviy : " + isGroupActiviy);
-            Debug.Log("isGroupActiviy : " + isGroupActiviy);
-            Debug.Log("raceWinnersList : " + raceWinnersList);
-            player.SetNfcPanel("CUNT");
-            
-        }
+
     }
     
 
     [Server]
     private void CheckGroupActivity()
     {
-        bool completeItMate = false;
 
         switch (activityNumber)
         {
@@ -845,22 +837,21 @@ public class GameController : NetworkBehaviour
                 break;
                     
             default:
-                //
-                Console.WriteLine("Fucked!");
+                
+                score = 9999;
                 break;
         }
     }
 
     [ClientRpc]
-    private void RpcNfcRaceAssignStation()
+    private void RpcNfcRaceAssignStation(int i)
     {
-        Random rand = new Random();
-        int i = rand.Next(0, playerCount);
+        
         
         foreach (var player in playerList)
         {
             player.nfcStation = i;
-            i = (i + 1) % playerCount;
+            i = (i + 1) % stationCount;
         }
     }
     
@@ -878,10 +869,17 @@ public class GameController : NetworkBehaviour
         score += 10;
         groupActivityStarted = false;
         RpcResetGroupActivity();
-        IncrementGroupActivity();
+        foreach (var player in playerList)
+        {
+            player.isNFCRaceStarted = false;
+            player.IsNFCRaceCompleted = false;
+        }
+
         isGroupActiviy = true;
         raceWinnersList = new List<string>();
+        raceWinnersList.Clear();
         Debug.Log("... Ready");
+        IncrementGroupActivity();
     }
     
         
@@ -890,10 +888,12 @@ public class GameController : NetworkBehaviour
     {
         foreach (var player in playerList)
         {
+            player.instTime = instructionStartTime;
             player.isGroupActive = false;
             player.isNFCRaceStarted = false;
             player.IsNFCRaceCompleted = false;
             player.wait = false;
+            player.activityNumber = activityNumber;
         }
     }
 

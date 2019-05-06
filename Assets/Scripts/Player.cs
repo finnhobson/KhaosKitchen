@@ -87,6 +87,7 @@ public class Player : NetworkBehaviour {
     //Extras
     [SyncVar] private string nfcValue = "";
     private string validNfc = "";
+    private string validNfcRace = "";
     public int playerCount;
     public int instTime;
     public bool easyPhoneInteractions = true;
@@ -194,7 +195,7 @@ public class Player : NetworkBehaviour {
 
     private void Update()
     {
-//        if (wait) return;
+        if (wait) return;
         //Display score.
 //        scoreText.text = gameController.score.ToString();
 //        scoreText.text = NfcCheck();
@@ -204,7 +205,6 @@ public class Player : NetworkBehaviour {
         
         groupMessagePanel.SetActive(isGroupActive);
 
-        groupMessageText.text = "Not going in\n" + isGroupActive.ToString();
 
         MoveBackground();
 
@@ -212,16 +212,14 @@ public class Player : NetworkBehaviour {
         {
             if (isLocalPlayer)
             {
-                nfcValue = NfcCheck();
-                groupMessageText.text = i.ToString() + " " + isNFCRaceStarted + " \n" + IsNFCRaceCompleted + "\n" + validNfc.Equals(nfcValue);                
                 
-                
+
+
                 CheckGroupActivity();
-                
+
             }
         }
 
-        i--;
 
         if (groupMessagePanel.activeSelf) return;
 
@@ -902,7 +900,7 @@ public class Player : NetworkBehaviour {
     public void CmdSetNFCRace(bool isNFCFinished)
     {
         IsNFCRaceCompleted = isNFCFinished;
-        if (IsNFCRaceCompleted) i = -1000000;
+        if (IsNFCRaceCompleted) validNfcRace = "";
     }
     
     private void CheckGroupActivity()
@@ -910,6 +908,7 @@ public class Player : NetworkBehaviour {
         switch (activityNumber)
         {
             case 0: 
+                groupMessageText.text = "Everyone Shake \n look at main screen";
                 CmdSetShake(ShakeListener.shaking);
                 break;
 
@@ -920,8 +919,12 @@ public class Player : NetworkBehaviour {
 //                else if (!IsNFCRaceCompleted && isNFCRaceStarted) CmdSetNFCRace(nfcPanel.activeSelf);
                 else if (!IsNFCRaceCompleted && isNFCRaceStarted)
                 {
-                    i = 0;
-                    CmdSetNFCRace(validNfc.Equals(nfcValue));
+                    CmdSetNFCRace(validNfcRace.Equals(nfcValue));
+                }
+                else
+                {
+                    groupMessageText.text = "Done!";
+                    wait = true;
                 }
              
                 break;
@@ -989,22 +992,22 @@ public class Player : NetworkBehaviour {
         switch (nfcStation)
         {
             case 0:
-                validNfc = GoodStations[0].GetItem(nfcValue);
+                validNfcRace = GoodStations[0].GetItem(nfcValue);
                 break;
             case 1:
-                validNfc = GoodStations[1].GetItem(nfcValue);
+                validNfcRace = GoodStations[1].GetItem(nfcValue);
                 break;
             case 2:
-                validNfc = BadStations[0].GetItem(nfcValue);
+                validNfcRace = BadStations[0].GetItem(nfcValue);
                 break;
             case 3:
-                validNfc = BadStations[1].GetItem(nfcValue);
+                validNfcRace = BadStations[1].GetItem(nfcValue);
                 break;
         }
 
         IsNFCRaceCompleted = false;
-        groupMessageText.text = validNfc;
-        SetNfcPanel(validNfc);
+        groupMessageText.text = validNfcRace + "\n look at main screen";
+        //SetNfcPanel(validNfc);
         isNFCRaceStarted = true;
     }
 
