@@ -151,7 +151,7 @@ public class GameController : NetworkBehaviour
     //Booleans
     [FormerlySerializedAs("startGroupActivity")] [SyncVar] public bool groupActivityStarted;
     public int numberOfGroupActivities = 2;
-    [SyncVar (hook = "UpdateActivityNumber")] public int activityNumber = 1;
+    [SyncVar] public int activityNumber = 1;
 
     List<string> UserNames = new List<string>(); /* Just here so in future they can set their own usernames from the lobby */
 
@@ -800,7 +800,7 @@ public class GameController : NetworkBehaviour
         activityNumber = 1;
     }
 
-    private void UpdateActivityNumber(int number)
+    private void RpcUpdateActivityNumber(int number)
     {
         foreach (var player in playerList)
         {
@@ -885,6 +885,7 @@ public class GameController : NetworkBehaviour
         groupActivityStarted = false;
         RpcResetGroupActivity();
         IncrementGroupActivity();
+        RpcUpdateActivityNumber(activityNumber);
         isGroupActiviy = true;
         raceWinnersList = new List<string>();
         Debug.Log("... Ready");
