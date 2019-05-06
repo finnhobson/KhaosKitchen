@@ -177,6 +177,8 @@ public class GameController : NetworkBehaviour
     private void Start()
     {
         StartCoroutine(SetupGame(2));
+        GameObject.FindGameObjectWithTag("lobbyBackground").SetActive(false);
+
 
         //Show server display only on the server
         if (isServer)

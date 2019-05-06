@@ -3,15 +3,15 @@ using System.Collections;
 
 public class BackgroundScroll : MonoBehaviour
 {
-    public float XscrollSpeedPerSec = 20;
-    public float YscrollSpeedPerSec = 40;
+    private float XscrollSpeedPerSec = 20;
+    private float YscrollSpeedPerSec = 40;
     public float maxYsize = 2023f;
     public float maxXsize = 1174f;
 
-    public float startY;
-    public float startX;
-    public float offsetY;
-    public float offsetX;
+    private float startY;
+    private float startX;
+    private float offsetY;
+    private float offsetX;
 
     void Start ()
     {
