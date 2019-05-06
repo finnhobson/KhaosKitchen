@@ -225,7 +225,6 @@ public class InstructionController : NetworkBehaviour
                 RpcStartInstTimer(i);
 
                 int rand = UnityEngine.Random.Range(0, piProb);
-//                int rand = 1;
                 if (rand == 1)
                 {
                     rand = UnityEngine.Random.Range(0, micInstructions.Count);
@@ -235,6 +234,11 @@ public class InstructionController : NetworkBehaviour
                 {
                     rand = UnityEngine.Random.Range(0, shakeInstructions.Count);
                     RpcSetShakePanel(i, shakeInstructions[rand]);
+                }
+                else if (rand == 3)
+                {
+                    // Pick a colour/food
+                    // Rpc cameraPanel
                 }
             }
         }
