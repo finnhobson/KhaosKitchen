@@ -811,7 +811,8 @@ public class GameController : NetworkBehaviour
     {
         
         Debug.Log("initiate");
-        RpcNfcRaceAssignStation();
+        Random rand = new Random();
+        RpcNfcRaceAssignStation(rand.Next(0, stationCount));
         groupActivityStarted = true;
         RpcSetGroupActivity(true);
         //TODO: HERE
@@ -843,15 +844,14 @@ public class GameController : NetworkBehaviour
     }
 
     [ClientRpc]
-    private void RpcNfcRaceAssignStation()
+    private void RpcNfcRaceAssignStation(int i)
     {
-        Random rand = new Random();
-        int i = rand.Next(0, stationCount);
+        
         
         foreach (var player in playerList)
         {
             player.nfcStation = i;
-            i = (i + 1) % playerCount;
+            i = (i + 1) % stationCount;
         }
     }
     
@@ -878,7 +878,6 @@ public class GameController : NetworkBehaviour
         isGroupActiviy = true;
         raceWinnersList = new List<string>();
         raceWinnersList.Clear();
-        RpcNfcRaceAssignStation();
         Debug.Log("... Ready");
         IncrementGroupActivity();
     }
