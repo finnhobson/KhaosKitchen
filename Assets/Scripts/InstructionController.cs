@@ -17,11 +17,11 @@ public class InstructionController : NetworkBehaviour
     private static List<String> nounList = new List<string>(new string[] { "Minced Beef", "Steak", "Pork Loin", "Ice Cream", "Strawberry", "Bannana", "Toast", "Chocolate", "Pasta", "Bacon", "Tomato", "Sugar", "Salt", "Lettuce", "Sauce", "Mustard", "Sausage", "Chicken", "Ice Cubes" });
     //private static List<String> nfcInstructions = new List<string>(new string[] { "Darn! Run to the bin!\n\n\n(RUN TO NFC)", "Quickly! Get that rubbish out of here!\n\n\n(RUN TO NFC)" });
 
-    private static List<string> fridge = new List<string>( new string[] {"Carrot", "Bacon", "Apple"});
-    private static List<string> cupboard = new List<string>( new string[] {"Tin", "Felix", "Cunt"});
+    private static List<string> fridge = new List<string>( new string[] {"1a", "1b", "1c"});
+    private static List<string> cupboard = new List<string>( new string[] {"2a", "2b", "2c"});
     
-    private static List<string> binA = new List<string>( new string[] {"D", "E", "F"});
-    private static List<string> binB = new List<string>( new string[] {"A", "B", "C"});
+    private static List<string> binA = new List<string>( new string[] {"3a", "3b", "3c"});
+    private static List<string> binB = new List<string>( new string[] {"4a", "4b", "4c"});
 
     private static List<List<string>> GoodStations = new List<List<string>>{fridge,cupboard};
     private static List<List<string>> BadStations = new List<List<string>>{binA, binB};

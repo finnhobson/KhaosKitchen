@@ -869,6 +869,12 @@ public class GameController : NetworkBehaviour
         score += 10;
         groupActivityStarted = false;
         RpcResetGroupActivity();
+        foreach (var player in playerList)
+        {
+            player.isNFCRaceStarted = false;
+            player.IsNFCRaceCompleted = false;
+        }
+
         isGroupActiviy = true;
         raceWinnersList = new List<string>();
         raceWinnersList.Clear();
