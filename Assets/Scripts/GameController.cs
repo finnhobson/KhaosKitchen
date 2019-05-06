@@ -796,7 +796,8 @@ public class GameController : NetworkBehaviour
 
     private void IncrementGroupActivity()
     {
-        activityNumber = (activityNumber + 1) % numberOfGroupActivities;
+//        activityNumber = (activityNumber + 1) % numberOfGroupActivities;
+        activityNumber = 1;
     }
 
     private void UpdateActivityNumber(int number)
