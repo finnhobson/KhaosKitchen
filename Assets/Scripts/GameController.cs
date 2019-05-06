@@ -232,7 +232,6 @@ public class GameController : NetworkBehaviour
                 playerNames[playerIndex].color = p.PlayerColour;
                 playerIndex++;
             }
-//            gameStateHandler = new GameStateHandler(UserNames); //Instantiate single gameStateHandler object on the server to hold gamestate data 
         }
 
         PlayersInitialisedFromStart();
@@ -446,7 +445,6 @@ public class GameController : NetworkBehaviour
         CancelInvoke();
         PauseMusic();
         PlayRoundBreakMusic();
-        RpcSetTopChef(currentTopChef);
         RpcPausePlayers();
 
         foreach (Player p in playerList)
@@ -596,10 +594,7 @@ public class GameController : NetworkBehaviour
             //gameStateHandler.UpdatePlayerScore(player.PlayerUserName, player.PlayerScore);
             //player.PlayerScore = 0;
         }
-
-        RpcSetTopChef(topChef);
-//        SetTopChef("Set + " + topChef);
-        
+        RpcSetTopChef(topChef);        
     }
 
     private void PrintInstructionHandler()
@@ -720,6 +715,8 @@ public class GameController : NetworkBehaviour
             }
         }
     }
+
+
 
     public void SetGroupActivity(bool active)
     {

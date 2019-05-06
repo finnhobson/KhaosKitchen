@@ -880,7 +880,7 @@ public class Player : NetworkBehaviour {
         }
     }
 
-    public void printStations()
+    public void PrintStations()
     {
         foreach (var station in GoodStations)
         {
