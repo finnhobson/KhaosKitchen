@@ -169,7 +169,7 @@ public class GameController : NetworkBehaviour
 
     private void Start()
     {
-        StartCoroutine(SetupGame(5));
+        StartCoroutine(SetupGame(2));
 
         //Show server display only on the server
         if (isServer)
@@ -312,14 +312,10 @@ public class GameController : NetworkBehaviour
             else if (roundTimeLeft < 0 || customerSatisfaction == 0)
             {
                 SetTimerText("0");
-                if(isServer) RpcGameOver();
+                if (isServer) RpcGameOver();
                 gameOverText.transform.SetAsLastSibling();
                 gameOverText.SetActive(true);
                 backButton.SetActive(true);
-//                foreach (Player p in playerList)
-//                {
-//                    p.GameOver();
-//                }
 
                 if (!isGameOver)
                 {
@@ -454,11 +450,11 @@ public class GameController : NetworkBehaviour
 
         ReadyInstructionController();
 
-        StartCoroutine(PlayXCountAfterNSeconds(5, 2));
-        StartCoroutine(StartNewRoundAfterXSeconds(5));
-        StartCoroutine(RoundCountdown(6, "2"));
-        StartCoroutine(RoundCountdown(7, "1"));
-        StartCoroutine(StartRound(8));
+        StartCoroutine(PlayXCountAfterNSeconds(8, 2));
+        StartCoroutine(StartNewRoundAfterXSeconds(8));
+        StartCoroutine(RoundCountdown(9, "2"));
+        StartCoroutine(RoundCountdown(10, "1"));
+        StartCoroutine(StartRound(11));
     }
 
     public void RoundPaused()
@@ -502,6 +498,7 @@ public class GameController : NetworkBehaviour
             p.countdownText.text = "3";
             p.roundStartPanel.SetActive(true);
             p.roundCompletePanel.SetActive(false);
+            p.shopPanel.SetActive(false);
         }
     }
 
@@ -542,7 +539,11 @@ public class GameController : NetworkBehaviour
         foreach (var player in playerList)
         {
             player.roundCompletePanel.SetActive(true);
-            if (player.PlayerUserName == currentTopChef) player.shopPanel.SetActive(true);
+            if (player.topChefText.text == "YOU!!")
+            {
+                player.shopPanel.SetActive(true);
+                player.roundCompletePanel.SetActive(false);
+            }
             player.PausePlayer();
         }
     }
@@ -594,6 +595,7 @@ public class GameController : NetworkBehaviour
             //gameStateHandler.UpdatePlayerScore(player.PlayerUserName, player.PlayerScore);
             //player.PlayerScore = 0;
         }
+        currentTopChef = topChef;
         RpcSetTopChef(topChef);        
     }
 

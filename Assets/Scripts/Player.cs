@@ -713,18 +713,26 @@ public class Player : NetworkBehaviour {
                 if (item == 1)
                 {
                     GameObject roller = chef.GetComponent<ChefController>().roller;
-                    roller.SetActive(true);
+                    if (roller.activeInHierarchy == false && PlayerScore >= 25)
+                    {
+                        roller.SetActive(true);
+                        PlayerScore -= 25;
+                    }
                 }
 
                 if (item == 2)
                 {
                     GameObject ogreEars = chef.GetComponent<ChefController>().ogreEars;
-                    ogreEars.SetActive(true);
                     Material ogreColour = chef.GetComponent<ChefController>().ogreColour;
                     List<GameObject> skin = chef.GetComponent<ChefController>().skin;
-                    foreach (GameObject s in skin)
+                    if (ogreEars.activeInHierarchy == false && PlayerScore >= 50)
                     {
-                        s.GetComponent<MeshRenderer>().material = ogreColour;
+                        ogreEars.SetActive(true);
+                        foreach (GameObject s in skin)
+                        {
+                            s.GetComponent<MeshRenderer>().material = ogreColour;
+                        }
+                        PlayerScore -= 50;
                     }
                 }
 
@@ -732,10 +740,14 @@ public class Player : NetworkBehaviour {
                 {
                     GameObject crown = chef.GetComponent<ChefController>().crown;
                     List<GameObject> hatParts = chef.GetComponent<ChefController>().hat;
-                    crown.SetActive(true);
-                    foreach (GameObject part in hatParts)
+                    if (crown.activeInHierarchy == false && PlayerScore >= 100)
                     {
-                        part.SetActive(false);
+                        crown.SetActive(true);
+                        foreach (GameObject part in hatParts)
+                        {
+                            part.SetActive(false);
+                        }
+                        PlayerScore -= 100;
                     }
                 }
                 
