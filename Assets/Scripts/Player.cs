@@ -197,7 +197,6 @@ public class Player : NetworkBehaviour {
         
         groupMessagePanel.SetActive(isGroupActive);
 
-        groupMessageText.text = "Not going in\n" + isGroupActive.ToString();
 
 
         if (isGroupActive)

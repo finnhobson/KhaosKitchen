@@ -151,7 +151,7 @@ public class GameController : NetworkBehaviour
     //Booleans
     [FormerlySerializedAs("startGroupActivity")] [SyncVar] public bool groupActivityStarted;
     public int numberOfGroupActivities = 2;
-    [SyncVar] public int activityNumber = 1;
+    [SyncVar] public int activityNumber = 0;
 
     List<string> UserNames = new List<string>(); /* Just here so in future they can set their own usernames from the lobby */
 
@@ -285,8 +285,7 @@ public class GameController : NetworkBehaviour
 
             if (isServer)
             {
-//                if ((score % 50 == 10) && isGroupActiviy) //Needs to be changed.
-                if (score < 999 && (score >= 10) && isGroupActiviy) //Needs to be changed.
+                if ((score % 50 == 10) && isGroupActiviy) //Needs to be changed.
                 {
                     Debug.Log("Call1");
                     InitiateGroupActivity();
@@ -796,8 +795,8 @@ public class GameController : NetworkBehaviour
 
     private void IncrementGroupActivity()
     {
-//        activityNumber = (activityNumber + 1) % numberOfGroupActivities;
-        activityNumber = 1;
+        activityNumber = (activityNumber + 1) % numberOfGroupActivities;
+//        activityNumber = 1;
     }
 
     private void RpcUpdateActivityNumber(int number)
@@ -812,6 +811,8 @@ public class GameController : NetworkBehaviour
     [Server]
     private void InitiateGroupActivity()
     {
+        IncrementGroupActivity();
+        RpcUpdateActivityNumber(activityNumber);
         Debug.Log("initiate");
         RpcNfcRaceAssignStation();
         groupActivityStarted = true;
@@ -819,18 +820,18 @@ public class GameController : NetworkBehaviour
         //TODO: HERE
         isGroupActiviy = false;     
         
-        foreach (var player in playerList)
-        {
-            Debug.Log("isGroupActive : " + player.isGroupActive);
-            Debug.Log("isNFCRaceStarted : " + player.isNFCRaceStarted);
-            Debug.Log("nfcStation : " + player.nfcStation);
-            Debug.Log("IsNFCRaceCompleted : " + player.IsNFCRaceCompleted);
-            Debug.Log("isGroupActiviy : " + isGroupActiviy);
-            Debug.Log("isGroupActiviy : " + isGroupActiviy);
-            Debug.Log("raceWinnersList : " + raceWinnersList);
-            player.SetNfcPanel("CUNT");
-            
-        }
+//        foreach (var player in playerList)
+//        {
+//            Debug.Log("isGroupActive : " + player.isGroupActive);
+//            Debug.Log("isNFCRaceStarted : " + player.isNFCRaceStarted);
+//            Debug.Log("nfcStation : " + player.nfcStation);
+//            Debug.Log("IsNFCRaceCompleted : " + player.IsNFCRaceCompleted);
+//            Debug.Log("isGroupActiviy : " + isGroupActiviy);
+//            Debug.Log("isGroupActiviy : " + isGroupActiviy);
+//            Debug.Log("raceWinnersList : " + raceWinnersList);
+//            player.SetNfcPanel("CUNT");
+//            
+//        }
     }
     
 
@@ -838,12 +839,12 @@ public class GameController : NetworkBehaviour
     private void CheckGroupActivity()
     {
 //        score = score == 10 ? 11 : score;
-        bool completeItMate = false;
 
-        switch (1)
+        switch (activityNumber)
         {
             case 0: 
                 CheckShake();
+                score = 5000;
                 break;
                     
             case 1:
@@ -853,7 +854,7 @@ public class GameController : NetworkBehaviour
                     
             default:
                 //
-                Console.WriteLine("Fucked!");
+                score = 9999;
                 break;
         }
     }
@@ -885,8 +886,6 @@ public class GameController : NetworkBehaviour
         score += 10;
         groupActivityStarted = false;
         RpcResetGroupActivity();
-        IncrementGroupActivity();
-        RpcUpdateActivityNumber(activityNumber);
         isGroupActiviy = true;
         raceWinnersList = new List<string>();
         Debug.Log("... Ready");
