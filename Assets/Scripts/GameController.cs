@@ -66,6 +66,7 @@ public class GameController : NetworkBehaviour
     }
 
     [SyncVar] public int fireCount = 0;
+    int stationCount = 4;
 
     public int FireCount
     {
@@ -846,7 +847,7 @@ public class GameController : NetworkBehaviour
     private void RpcNfcRaceAssignStation()
     {
         Random rand = new Random();
-        int i = rand.Next(0, playerCount);
+        int i = rand.Next(0, stationCount);
         
         foreach (var player in playerList)
         {
@@ -881,12 +882,12 @@ public class GameController : NetworkBehaviour
     {
         foreach (var player in playerList)
         {
+            player.instTime = instructionStartTime;
             player.isGroupActive = false;
             player.isNFCRaceStarted = false;
             player.IsNFCRaceCompleted = false;
             player.wait = false;
             player.activityNumber = activityNumber;
-            player.instTime = instructionStartTime;
         }
     }
 

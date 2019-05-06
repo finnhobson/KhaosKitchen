@@ -203,6 +203,7 @@ public class Player : NetworkBehaviour {
         {
             if (isLocalPlayer)
             {
+                
 
 
                 CheckGroupActivity();
@@ -881,11 +882,11 @@ public class Player : NetworkBehaviour {
 //                else if (!IsNFCRaceCompleted && isNFCRaceStarted) CmdSetNFCRace(nfcPanel.activeSelf);
                 else if (!IsNFCRaceCompleted && isNFCRaceStarted)
                 {
-                    i = 0;
                     CmdSetNFCRace(validNfc.Equals(nfcValue));
                 }
                 else
                 {
+                    groupMessageText.text = "Done!";
                     wait = true;
                 }
              
@@ -968,7 +969,7 @@ public class Player : NetworkBehaviour {
         }
 
         IsNFCRaceCompleted = false;
-        groupMessageText.text = validNfc + "/n look at main screen";
+        groupMessageText.text = validNfc + "\n look at main screen";
         //SetNfcPanel(validNfc);
         isNFCRaceStarted = true;
     }
