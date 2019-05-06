@@ -285,7 +285,8 @@ public class GameController : NetworkBehaviour
 
             if (isServer)
             {
-                if ((score % 50 == 10) && isGroupActiviy) //Needs to be changed.
+//                if ((score % 50 == 10) && isGroupActiviy) //Needs to be changed.
+                if (score < 999 && (score >= 10) && isGroupActiviy) //Needs to be changed.
                 {
                     Debug.Log("Call1");
                     InitiateGroupActivity();
@@ -521,7 +522,7 @@ public class GameController : NetworkBehaviour
         PenultimateAction(false);
         roundMaxScore = CalculateInstructionNumber();
         customerSatisfaction = 50;
-        InvokeRepeating("DecreaseCustomerSatisfaction", 1.0f, 1.0f);
+//        InvokeRepeating("DecreaseCustomerSatisfaction", 1.0f, 1.0f);
         UpdateScoreBar();
     }
 
@@ -756,10 +757,12 @@ public class GameController : NetworkBehaviour
         
         foreach (var player in playerList)
         {
+            score = 11;
             Debug.Log("is race started: " + player.isNFCRaceStarted);
             if (player.IsNFCRaceCompleted && !raceWinnersList.Contains(player.PlayerUserName))
             {
-                raceWinnersList.Add(player.PlayerUserName);    
+                raceWinnersList.Add(player.PlayerUserName);
+                score = 12;
             }
         }
 
@@ -768,6 +771,7 @@ public class GameController : NetworkBehaviour
 //        {
 //            Debug.Log(VARIABLE);
 //        }
+        score = 10 + raceWinnersList.Count * 10;
 
         if (raceWinnersList.Count == playerCount)
         {
