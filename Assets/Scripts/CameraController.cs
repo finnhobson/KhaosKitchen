@@ -7,7 +7,8 @@ public class CameraController : MonoBehaviour
     private bool camAvailable;
     private WebCamTexture backCam;
     public RawImage panel;
-    public GameObject cameraButton;
+    public GameObject colourPanel;
+    public Text R, G, B;
 
     // Use this for initialization
     void Start()
@@ -41,7 +42,7 @@ public class CameraController : MonoBehaviour
         camAvailable = true;
     }
 
-    /*
+    
     // Update is called once per frame
     void Update()
     {
@@ -63,23 +64,26 @@ public class CameraController : MonoBehaviour
             avgGreen = avgGreen / pixelCount;
             avgBlue = avgBlue / pixelCount;
 
-            if (avgRed > 0.8 && avgBlue < 0.5 && avgGreen < 0.5)
-            {
-                //print red
-                cameraButton.GetComponent<Image>().color = Color.red;
-            }
+            R.text = avgRed.ToString("F3");
+            G.text = avgGreen.ToString("F3");
+            B.text = avgBlue.ToString("F3");
 
-            if (avgBlue > 0.8 && avgRed < 0.5 && avgGreen < 0.5)
-            {
-                //print blue
-                cameraButton.GetComponent<Image>().color = Color.blue;
-            }
+            //Red
+            if (avgRed > 0.6 && avgBlue < 0.3 && avgGreen < 0.3) colourPanel.GetComponent<Image>().color = Color.red;
 
-            if (avgGreen > 0.8 && avgBlue < 0.5 && avgRed < 0.5)
-            {
-                //print green
-                cameraButton.GetComponent<Image>().color = Color.green;
-            }
+            //Dark Blue
+            if (avgBlue > 0.6 && avgRed < 0.3 && avgGreen < 0.3) colourPanel.GetComponent<Image>().color = Color.blue;
+
+            //Green
+            if (avgGreen > 0.6 && avgBlue < 0.3 && avgRed < 0.3) colourPanel.GetComponent<Image>().color = Color.green;
+
+            //Orange
+            if (avgRed > 0.6 && avgGreen > 0.3 && avgGreen < 0.5 && avgBlue < 0.2) colourPanel.GetComponent<Image>().color = new Color(1, 0.5f, 0, 1);
+
+            //Yellow
+            if (avgRed > 0.5 && avgGreen > 0.5 && avgBlue < 0.2) colourPanel.GetComponent<Image>().color = Color.yellow;
+
+
         }
-    }*/
+    }
 }
