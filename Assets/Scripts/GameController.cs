@@ -758,16 +758,13 @@ public class GameController : NetworkBehaviour
 //        {
 //            Debug.Log(VARIABLE);
 //        }
-        score = score == 11 ? 12 : score;
 
         foreach (var player in playerList)
         {
-            score = score == 12 ? 13 : score;
             Debug.Log("is race started: " + player.isNFCRaceStarted);
             if (player.IsNFCRaceCompleted && !raceWinnersList.Contains(player.PlayerUserName))
             {
                 raceWinnersList.Add(player.PlayerUserName);
-                score = 14;
             }
         }
 
@@ -776,11 +773,9 @@ public class GameController : NetworkBehaviour
 //        {
 //            Debug.Log(VARIABLE);
 //        }
-        score = 10 + raceWinnersList.Count * 10;
 
         if (raceWinnersList.Count == playerCount)
         {
-            score = 1000;
             //TODO: Get finn to put this list on the board.
             foreach (var player in playerList)
             {
@@ -842,10 +837,10 @@ public class GameController : NetworkBehaviour
     [Server]
     private void CheckGroupActivity()
     {
-        score = score == 10 ? 11 : score;
+//        score = score == 10 ? 11 : score;
         bool completeItMate = false;
 
-        switch (activityNumber)
+        switch (1)
         {
             case 0: 
                 CheckShake();
