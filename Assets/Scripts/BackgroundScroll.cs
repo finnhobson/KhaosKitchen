@@ -3,29 +3,40 @@ using System.Collections;
 
 public class BackgroundScroll : MonoBehaviour
 {
-    public float scrollSpeedPerSec = 20;
+    public float XscrollSpeedPerSec = 20;
+    public float YscrollSpeedPerSec = 40;
     public float maxYsize = 1920f;
-    public float startY;
-    public float offset;
+    public float maxXsize = 1080f;
 
-    private int updateCount;
+    public float startY;
+    public float startX;
+    public float offsetY;
+    public float offsetX;
 
     void Start ()
     {
         startY = transform.position.y;
-        offset = 0f;
-        updateCount = 0;
+        startX = transform.position.x;
+        offsetY = 0f;
+        offsetX = 0f;
+
     }
 
     void MoveBackground()
     {
-        offset += scrollSpeedPerSec*Time.deltaTime;
+        offsetY += YscrollSpeedPerSec*Time.deltaTime;
+        offsetX += XscrollSpeedPerSec*Time.deltaTime;
 
-        if (offset >= maxYsize)
+
+        if (offsetY >= maxYsize)
         {
-            offset = 0f;
+            offsetY = 0f;
         }
-        transform.position = new Vector2(transform.position.x, startY + offset);
+         if (offsetX >= maxXsize)
+        {
+            offsetX = 0f;
+        }
+        transform.position = new Vector2(startX + offsetX, startY + offsetY);
 
     }
 

@@ -56,6 +56,7 @@ public class LobbyManager : NetworkLobbyManager
 
     void Start()
     {
+        Screen.orientation = ScreenOrientation.Portrait;
         s_Singleton = this;
         _lobbyHooks = GetComponent<LobbyHook>();
         currentPanel = mainMenuPanel;
