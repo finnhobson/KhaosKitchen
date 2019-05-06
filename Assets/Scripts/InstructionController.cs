@@ -228,6 +228,7 @@ public class InstructionController : NetworkBehaviour
                 RpcStartInstTimer(i);
 
                 int rand = UnityEngine.Random.Range(0, piProb);
+                //rand = 3;
                 if (rand == 1)
                 {
                     rand = UnityEngine.Random.Range(0, micInstructions.Count);

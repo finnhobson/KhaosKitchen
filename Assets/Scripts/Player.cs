@@ -38,7 +38,7 @@ public class Player : NetworkBehaviour {
     //Custom objects
     public GameController gameController;
     public InstructionController InstructionController;
-    public CameraController cameraController;
+    public GameObject cameraController;
 
     //Buttons
     public Button button1, button2, button3, button4;
@@ -137,9 +137,14 @@ public class Player : NetworkBehaviour {
 
     private bool micActive = false;
     private bool timerStarted = false;
-    private bool cameraBool = false;
-    [SyncVar] public bool isSetupComplete;	
-    
+    [SyncVar] public bool isSetupComplete;
+
+    public bool cameraRed = false;
+    public bool cameraOrange = false;
+    public bool cameraYellow = false;
+    public bool cameraGreen = false;
+    public bool cameraBlue = false;
+
     //Group activity
     [SyncVar] public bool isGroupActive;
     [FormerlySerializedAs("isGroupComplete")] [SyncVar] public bool isGroupActivityPlayerComplete;
@@ -264,15 +269,16 @@ public class Player : NetworkBehaviour {
                 StartInstTimer();
             }
 
-            if (cameraText.text == "Red") cameraBool = cameraController.red;
-            if (cameraText.text == "Orange") cameraBool = cameraController.orange;
-            if (cameraText.text == "Yellow") cameraBool = cameraController.yellow;
-            if (cameraText.text == "Green") cameraBool = cameraController.green;
-            if (cameraText.text == "Blue") cameraBool = cameraController.blue;
+            bool cameraBool = false;
+            if (cameraText.text == "Red") cameraBool = cameraRed;
+            if (cameraText.text == "Orange") cameraBool = cameraOrange;
+            if (cameraText.text == "Yellow") cameraBool = cameraYellow;
+            if (cameraText.text == "Green") cameraBool = cameraGreen;
+            if (cameraText.text == "Blue") cameraBool = cameraBlue;
             if (cameraPanel.activeInHierarchy && cameraBool)
             {
                 cameraPanel.SetActive(false);
-                cameraController.enabled = false;
+                cameraController.SetActive(false);
                 CmdIncreaseScore();
                 StartInstTimer();
             }
@@ -572,7 +578,7 @@ public class Player : NetworkBehaviour {
 
     public void SetCameraPanel(string text)
     {
-        cameraController.enabled = true;
+        cameraController.SetActive(true);
         cameraPanel.SetActive(true);
         cameraText.text = text;
     }

@@ -10,6 +10,7 @@ public class CameraController : MonoBehaviour
     public GameObject colourPanel;
     public Text R, G, B;
     public bool red, orange, yellow, green, blue;
+    public Player player;
 
     // Use this for initialization
     void Start()
@@ -73,41 +74,41 @@ public class CameraController : MonoBehaviour
             if (avgRed > 0.6 && avgBlue < 0.3 && avgGreen < 0.3)
             {
                 colourPanel.GetComponent<Image>().color = Color.red;
-                red = true;
+                player.cameraRed = true;
             }
-            else red = false;
+            else player.cameraRed = false;
 
             //Dark Blue
             if (avgBlue > 0.6 && avgRed < 0.3 && avgGreen < 0.3)
             {
                 colourPanel.GetComponent<Image>().color = Color.blue;
-                blue = true;
+                player.cameraBlue = true;
             }
-            else blue = false;
+            else player.cameraBlue = false;
 
             //Green
             if (avgGreen > 0.6 && avgBlue < 0.3 && avgRed < 0.3)
             {
                 colourPanel.GetComponent<Image>().color = Color.green;
-                green = true;
+                player.cameraGreen = true;
             }
-            else green = false;
+            else player.cameraGreen = false;
 
             //Orange
             if (avgRed > 0.6 && avgGreen > 0.3 && avgGreen < 0.5 && avgBlue < 0.2)
             {
                 colourPanel.GetComponent<Image>().color = new Color(1, 0.5f, 0, 1);
-                orange = true;
+                player.cameraOrange = true;
             }
-            else orange = false;
+            else player.cameraOrange = false;
 
             //Yellow
             if (avgRed > 0.5 && avgGreen > 0.5 && avgBlue < 0.2)
             {
                 colourPanel.GetComponent<Image>().color = Color.yellow;
-                yellow = true;
+                player.cameraYellow = true;
             }
-            else yellow = false;
+            else player.cameraYellow = false;
 
         }
     }
