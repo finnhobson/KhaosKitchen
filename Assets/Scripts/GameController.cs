@@ -439,7 +439,6 @@ public class GameController : NetworkBehaviour
         roundNumber++;
         UpdateGamestate();
         isRoundPaused = true;
-        UpdateGamestate();
 
         RoundPaused();
         fireCount = 0;
@@ -872,6 +871,8 @@ public class GameController : NetworkBehaviour
         RpcResetGroupActivity();
         isGroupActiviy = true;
         raceWinnersList = new List<string>();
+        raceWinnersList.Clear();
+        RpcNfcRaceAssignStation();
         Debug.Log("... Ready");
         IncrementGroupActivity();
     }

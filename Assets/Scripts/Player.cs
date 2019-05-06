@@ -86,6 +86,7 @@ public class Player : NetworkBehaviour {
     //Extras
     [SyncVar] private string nfcValue = "";
     private string validNfc = "";
+    private string validNfc2 = "";
     public int playerCount;
     public int instTime;
     public bool easyPhoneInteractions = true;
@@ -863,7 +864,7 @@ public class Player : NetworkBehaviour {
     public void CmdSetNFCRace(bool isNFCFinished)
     {
         IsNFCRaceCompleted = isNFCFinished;
-        if (IsNFCRaceCompleted) i = -1000000;
+        if (IsNFCRaceCompleted) validNfcRace = "";
     }
     
     private void CheckGroupActivity()
@@ -882,7 +883,7 @@ public class Player : NetworkBehaviour {
 //                else if (!IsNFCRaceCompleted && isNFCRaceStarted) CmdSetNFCRace(nfcPanel.activeSelf);
                 else if (!IsNFCRaceCompleted && isNFCRaceStarted)
                 {
-                    CmdSetNFCRace(validNfc.Equals(nfcValue));
+                    CmdSetNFCRace(validNfcRace.Equals(nfcValue));
                 }
                 else
                 {
@@ -955,21 +956,21 @@ public class Player : NetworkBehaviour {
         switch (nfcStation)
         {
             case 0:
-                validNfc = GoodStations[0].GetItem(nfcValue);
+                validNfcRace = GoodStations[0].GetItem(nfcValue);
                 break;
             case 1:
-                validNfc = GoodStations[1].GetItem(nfcValue);
+                validNfcRace = GoodStations[1].GetItem(nfcValue);
                 break;
             case 2:
-                validNfc = BadStations[0].GetItem(nfcValue);
+                validNfcRace = BadStations[0].GetItem(nfcValue);
                 break;
             case 3:
-                validNfc = BadStations[1].GetItem(nfcValue);
+                validNfcRace = BadStations[1].GetItem(nfcValue);
                 break;
         }
 
         IsNFCRaceCompleted = false;
-        groupMessageText.text = validNfc + "\n look at main screen";
+        groupMessageText.text = validNfcRace + "\n look at main screen";
         //SetNfcPanel(validNfc);
         isNFCRaceStarted = true;
     }
