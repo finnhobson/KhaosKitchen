@@ -56,7 +56,7 @@ public class Player : NetworkBehaviour {
 
     //Unity GameObjects
     public Text scoreText, instructionText, timerText, gpsText, roundScoreText, topChefText, countdownText, roundNumberText, nameText, micVolumeText;
-    public GameObject nfcPanel, micPanel, shakePanel, gameOverPanel, roundCompletePanel, roundStartPanel, groupMessagePanel;
+    public GameObject nfcPanel, micPanel, shakePanel, gameOverPanel, roundCompletePanel, roundStartPanel, shopPanel, groupMessagePanel;
     public Text nfcText, micText, shakeText;
     public GameObject nfcOkayButton, micOkayButton, shakeOkayButton;
     public GameObject fullScreenPanel;
@@ -213,7 +213,7 @@ public class Player : NetworkBehaviour {
         {
             StartInstTimer();
             timerStarted = true;
-            if (isLocalPlayer) CmdUpdateChefPrefab();
+            //if (isLocalPlayer) CmdUpdateChefPrefab();
         }
 
         if (gameController.isGameStarted && gameController.roundTimeLeft > 0)
@@ -703,25 +703,85 @@ public class Player : NetworkBehaviour {
     }
 
     [Command]
-    public void CmdUpdateChefPrefab()
+    public void CmdUpdateChefPrefab(int item)
     {
         var chefs = GameObject.FindGameObjectsWithTag("ChefPrefab");
         foreach (GameObject chef in chefs)
         {
             if (chef.GetComponent<ChefController>().arrow.GetComponent<Image>().color == PlayerColour)
             {
-                //UPDATE PREFAB HERE
-                List<GameObject> hatParts = chef.GetComponent<ChefController>().hat;
+                if (item == 1)
+                {
+                    GameObject roller = chef.GetComponent<ChefController>().roller;
+                    if (roller.activeInHierarchy == false && PlayerScore >= 25)
+                    {
+                        roller.SetActive(true);
+                        PlayerScore -= 25;
+                    }
+                }
+
+                if (item == 2)
+                {
+                    GameObject ogreEars = chef.GetComponent<ChefController>().ogreEars;
+                    Material ogreColour = chef.GetComponent<ChefController>().ogreColour;
+                    List<GameObject> skin = chef.GetComponent<ChefController>().skin;
+                    if (ogreEars.activeInHierarchy == false && PlayerScore >= 50)
+                    {
+                        ogreEars.SetActive(true);
+                        foreach (GameObject s in skin)
+                        {
+                            s.GetComponent<MeshRenderer>().material = ogreColour;
+                        }
+                        PlayerScore -= 50;
+                    }
+                }
+
+                if (item == 3)
+                {
+                    GameObject crown = chef.GetComponent<ChefController>().crown;
+                    List<GameObject> hatParts = chef.GetComponent<ChefController>().hat;
+                    if (crown.activeInHierarchy == false && PlayerScore >= 100)
+                    {
+                        crown.SetActive(true);
+                        foreach (GameObject part in hatParts)
+                        {
+                            part.SetActive(false);
+                        }
+                        PlayerScore -= 100;
+                    }
+                }
+                
+                /* UPDATE HAT COLOUR
+                 * List<GameObject> hatParts = chef.GetComponent<ChefController>().hat;
                 foreach (GameObject part in hatParts)
                 {
                     Material hatColour = new Material(part.GetComponent<MeshRenderer>().material);
                     hatColour.color = PlayerColour;
                     part.GetComponent<MeshRenderer>().material = hatColour;
-                }
+                }*/
             }
         }
     }
-    
+
+    public void OnClickShopButton1()
+    {
+        CmdUpdateChefPrefab(1);
+        shopPanel.SetActive(false);
+    }
+
+    public void OnClickShopButton2()
+    {
+        CmdUpdateChefPrefab(2);
+        shopPanel.SetActive(false);
+    }
+
+    public void OnClickShopButton3()
+    {
+        CmdUpdateChefPrefab(3);
+        shopPanel.SetActive(false);
+    }
+
+
 
     private void Vibrate()
     {
@@ -832,7 +892,7 @@ public class Player : NetworkBehaviour {
         }
     }
 
-    public void printStations()
+    public void PrintStations()
     {
         foreach (var station in GoodStations)
         {

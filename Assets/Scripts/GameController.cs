@@ -21,7 +21,7 @@ public class GameController : NetworkBehaviour
 
     //Unity GameObjects
     public Text scoreText, roundTimerText, scoreBarText, roundNumberText;
-    public GameObject roundTimerBar, gameOverText, backButton;
+    public GameObject roundTimerBar, gameOverText, backButton, lobbyTopPanel;
     public Image stars;
 
     public List<Player> playerList = new List<Player>();
@@ -169,13 +169,14 @@ public class GameController : NetworkBehaviour
 
     private void Start()
     {
-        StartCoroutine(SetupGame(8));
+        StartCoroutine(SetupGame(2));
 
         //Show server display only on the server
         if (isServer)
         {
             GetComponentInChildren<Canvas>().enabled = true;
             GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Animation>().Play();
+            GameObject.FindGameObjectWithTag("LobbyTopPanel").SetActive(false);
             
             Debug.Log("Start");
         }
@@ -191,7 +192,7 @@ public class GameController : NetworkBehaviour
             Debug.Log("SetupGame");
         }
 
-        StartCoroutine(Setup(12));
+        StartCoroutine(Setup(5));
     }
     
     private IEnumerator Setup(int x)
@@ -231,7 +232,6 @@ public class GameController : NetworkBehaviour
                 playerNames[playerIndex].color = p.PlayerColour;
                 playerIndex++;
             }
-//            gameStateHandler = new GameStateHandler(UserNames); //Instantiate single gameStateHandler object on the server to hold gamestate data 
         }
 
         PlayersInitialisedFromStart();
@@ -286,6 +286,7 @@ public class GameController : NetworkBehaviour
             
             //Show score and active instructions on server display.
             scoreText.text = score.ToString();
+            stars.fillAmount = customerSatisfaction / 100;
             roundNumberText.text = roundNumber.ToString();
             UpdateRoundTimeLeft();
 
@@ -311,14 +312,10 @@ public class GameController : NetworkBehaviour
             else if (roundTimeLeft < 0 || customerSatisfaction == 0)
             {
                 SetTimerText("0");
-                if(isServer) RpcGameOver();
+                if (isServer) RpcGameOver();
                 gameOverText.transform.SetAsLastSibling();
                 gameOverText.SetActive(true);
                 backButton.SetActive(true);
-//                foreach (Player p in playerList)
-//                {
-//                    p.GameOver();
-//                }
 
                 if (!isGameOver)
                 {
@@ -393,7 +390,7 @@ public class GameController : NetworkBehaviour
     {
         score += 10;
         roundScore++;
-        customerSatisfaction += 5.0f;
+        customerSatisfaction += 2.0f;
         UpdateScoreBar();
     }
          
@@ -444,7 +441,6 @@ public class GameController : NetworkBehaviour
         CancelInvoke();
         PauseMusic();
         PlayRoundBreakMusic();
-        RpcSetTopChef(currentTopChef);
         RpcPausePlayers();
 
         foreach (Player p in playerList)
@@ -454,11 +450,11 @@ public class GameController : NetworkBehaviour
 
         ReadyInstructionController();
 
-        StartCoroutine(PlayXCountAfterNSeconds(5, 2));
-        StartCoroutine(StartNewRoundAfterXSeconds(5));
-        StartCoroutine(RoundCountdown(6, "2"));
-        StartCoroutine(RoundCountdown(7, "1"));
-        StartCoroutine(StartRound(8));
+        StartCoroutine(PlayXCountAfterNSeconds(8, 2));
+        StartCoroutine(StartNewRoundAfterXSeconds(8));
+        StartCoroutine(RoundCountdown(9, "2"));
+        StartCoroutine(RoundCountdown(10, "1"));
+        StartCoroutine(StartRound(11));
     }
 
     public void RoundPaused()
@@ -502,6 +498,7 @@ public class GameController : NetworkBehaviour
             p.countdownText.text = "3";
             p.roundStartPanel.SetActive(true);
             p.roundCompletePanel.SetActive(false);
+            p.shopPanel.SetActive(false);
         }
     }
 
@@ -542,6 +539,11 @@ public class GameController : NetworkBehaviour
         foreach (var player in playerList)
         {
             player.roundCompletePanel.SetActive(true);
+            if (player.topChefText.text == "YOU!!")
+            {
+                player.shopPanel.SetActive(true);
+                player.roundCompletePanel.SetActive(false);
+            }
             player.PausePlayer();
         }
     }
@@ -593,11 +595,8 @@ public class GameController : NetworkBehaviour
             //gameStateHandler.UpdatePlayerScore(player.PlayerUserName, player.PlayerScore);
             //player.PlayerScore = 0;
         }
-
-        if (topChef == "") topChef = "Fucked the lobbynames";
-        RpcSetTopChef("RPC + " + topChef);
-//        SetTopChef("Set + " + topChef);
-        
+        currentTopChef = topChef;
+        RpcSetTopChef(topChef);        
     }
 
     private void PrintInstructionHandler()
@@ -654,7 +653,7 @@ public class GameController : NetworkBehaviour
     
     private void DecreaseCustomerSatisfaction()
     {
-        customerSatisfaction -= 0.5f;
+        customerSatisfaction -= 1;
         if (customerSatisfaction > 100) customerSatisfaction = 100;
         if (customerSatisfaction < 0) customerSatisfaction = 0;
     }
@@ -718,6 +717,8 @@ public class GameController : NetworkBehaviour
             }
         }
     }
+
+
 
     public void SetGroupActivity(bool active)
     {
