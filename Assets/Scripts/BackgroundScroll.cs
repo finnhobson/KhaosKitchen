@@ -5,8 +5,11 @@ public class BackgroundScroll : MonoBehaviour
 {
     private float XscrollSpeedPerSec = 20;
     private float YscrollSpeedPerSec = 40;
-    public float maxYsize = 2023f;
-    public float maxXsize = 1174f;
+    //public float maxYsize = 2023f;
+    //public float maxXsize = 1174f;
+
+    private float maxYsize = 1011.5f;
+    private float maxXsize = 587f;
 
     private float startY;
     private float startX;

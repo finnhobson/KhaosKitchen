@@ -845,6 +845,7 @@ public class Player : NetworkBehaviour {
 
     public void BackToMainMenu()
     {
+        GameObject.FindGameObjectWithTag("lobbyBackground").SetActive(true);
         Application.Quit();
     }
 
