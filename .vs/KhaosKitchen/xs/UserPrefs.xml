@@ -1,23 +1,45 @@
 ﻿<Properties StartupConfiguration="{5AAD9717-E92E-BFD1-71EB-1C3207432BAB}|">
   <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="Unity.Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/BackgroundScroll.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Lobby/Scripts/Lobby/LobbyMainMenu.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/ScriptCalculator/Readme.txt">
     <Files>
       <File FileName="Assets/Editor/InstructionTests.cs" Line="34" Column="6" />
-      <File FileName="Assets/Editor/GameStateTests.cs" Line="113" Column="53" />
-      <File FileName="Assets/Editor/ScoreTests.cs" Line="67" Column="48" />
-      <File FileName="Assets/Scripts/BackgroundScroll.cs" Line="8" Column="3" />
+      <File FileName="Assets/Editor/GameStateTests.cs" Line="118" Column="6" />
+      <File FileName="Assets/Editor/ScoreTests.cs" Line="70" Column="11" />
+      <File FileName="Assets/Scripts/BackgroundScroll.cs" Line="1" Column="1" />
       <File FileName="Assets/Scripts/ButtonBounce.cs" Line="68" Column="42" />
-      <File FileName="Assets/Lobby/Scripts/Lobby/LobbyPlayer.cs" Line="13" Column="39" />
-      <File FileName="Assets/Lobby/Scripts/Lobby/LobbyManager.cs" Line="59" Column="57" />
+      <File FileName="Assets/Lobby/Scripts/Lobby/LobbyPlayer.cs" Line="45" Column="35" />
+      <File FileName="Assets/Lobby/Scripts/Lobby/LobbyManager.cs" Line="181" Column="46" />
       <File FileName="Assets/Scripts/SplatScript.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/Player.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/GameController.cs" Line="182" Column="1" />
+      <File FileName="Assets/Scripts/Player.cs" Line="842" Column="6" />
+      <File FileName="Assets/Scripts/GameController.cs" Line="190" Column="13" />
+      <File FileName="Assets/Lobby/Scripts/Lobby/LobbyMainMenu.cs" Line="31" Column="43" />
+      <File FileName="Assets/Scripts/MicListener.cs" Line="32" Column="46" />
+      <File FileName="Assets/Scripts/GameController.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/InstructionController.cs" Line="207" Column="23" />
+      <File FileName="Assets/Scripts/NFCListener.cs" Line="17" Column="41" />
+      <File FileName="Assets/ScriptCalculator/Readme.txt" Line="1" Column="1" />
     </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="KhaosKitchen" expanded="True">
+            <Node name="Assets" expanded="True">
+              <Node name="ScriptCalculator" expanded="True">
+                <Node name="Readme.txt" selected="True" />
+              </Node>
+              <Node name="Scripts" expanded="True" />
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
   </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="7eb0cf6d-24c0-48f3-9b42-3392429d6869" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
-  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MultiItemStartupConfigurations />
 </Properties>

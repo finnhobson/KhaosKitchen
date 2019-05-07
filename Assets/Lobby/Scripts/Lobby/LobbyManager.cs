@@ -28,6 +28,9 @@ public class LobbyManager : NetworkLobbyManager
     public LobbyInfoPanel infoPanel;
     public LobbyCountdownPanel countdownPanel;
     public GameObject addPlayerButton;
+    public GameObject hostButton;
+    public GameObject joinButton;
+    public GameObject background;
 
     protected RectTransform currentPanel;
 
@@ -67,14 +70,25 @@ public class LobbyManager : NetworkLobbyManager
         DontDestroyOnLoad(gameObject);
 
         SetServerInfo("Offline", "None");
-        
+        background.SetActive(true);
+
+
+
+
 #if UNITY_ANDROID
-        settingsButton.enabled = false;
+        settingsButton.gameObject.SetActive(false);
+        hostButton.gameObject.SetActive(false);
+#else
+        //joinButton.gameObject.SetActive(false);
+        //TURN ON FOR GAMESDAY!!!
+
 #endif
     }
 
     public override void OnLobbyClientSceneChanged(NetworkConnection conn)
     {
+        background.SetActive(true);
+
         if (SceneManager.GetSceneAt(0).name == lobbyScene)
         {
             if (topPanel.isInGame)
@@ -109,6 +123,7 @@ public class LobbyManager : NetworkLobbyManager
             topPanel.isInGame = true;
             topPanel.ToggleVisibility(false);
         }
+
     }
 
     public void ChangeTo(RectTransform newPanel)

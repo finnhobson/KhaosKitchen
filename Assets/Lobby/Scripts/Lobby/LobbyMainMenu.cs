@@ -15,7 +15,7 @@ public class LobbyMainMenu : MonoBehaviour
     public void OnEnable()
     {
         lobbyManager.topPanel.ToggleVisibility(true);
-
+        lobbyManager.background.SetActive(true);
         ipInput.onEndEdit.RemoveAllListeners();
         ipInput.onEndEdit.AddListener(onEndEditIP);
 

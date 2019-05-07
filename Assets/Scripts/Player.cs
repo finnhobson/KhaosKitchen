@@ -65,7 +65,7 @@ public class Player : NetworkBehaviour {
     public GameObject fullScreenPanel;
     public Text fullScreenPanelText;
     public GameObject backgroundPanel;
-    
+
     //Player
     [SyncVar] public string PlayerUserName;
     [SyncVar] public Color PlayerColour;
@@ -166,13 +166,14 @@ public class Player : NetworkBehaviour {
         gameController = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
         InstructionController = GameObject.FindGameObjectWithTag("InstructionController").GetComponent<InstructionController>();
         Screen.orientation = ScreenOrientation.Portrait;
-        
+        transform.SetAsLastSibling();
+
         // ------------------------------------------------------------------------------
-//        fullScreenPanel.SetActive(false);
-//        roundCompletePanel.SetActive(false);
-//        roundStartPanel.SetActive(false);
+        //        fullScreenPanel.SetActive(false);
+        //        roundCompletePanel.SetActive(false);
+        //        roundStartPanel.SetActive(false);
         // ------------------------------------------------------------------------------
-        
+
         if (isLocalPlayer)
         {
             CmdSetNetworkID(PlayerNetworkID);
@@ -183,6 +184,8 @@ public class Player : NetworkBehaviour {
         StartInstTimer();
         VolumeOfSoundEffects = Volume;
         nameText.text += PlayerUserName;
+        nameText.color = PlayerColour;
+        scoreText.color = PlayerColour;
         micListener.enabled = false;
         cameraController.enabled = false;
     }
@@ -199,9 +202,7 @@ public class Player : NetworkBehaviour {
         
         groupMessagePanel.SetActive(isGroupActive);
 
-
-        MoveBackground();
-
+        
         if (isGroupActive)
         {
             if (isLocalPlayer)
@@ -304,14 +305,6 @@ public class Player : NetworkBehaviour {
         {
             SetTimerText("0");
         }
-    }
-
-    public void MoveBackground()
-    {
-        //Transform current = backgroundPanel.transform;
-
-        //Vector2 offset = new Vector2(current.position.x+10, 0f);
-        //backgroundPanel.GetComponent<Renderer>().sharedMaterial.SetTextureOffset("_MainTex", offset);
     }
 
     public void GameOver()
