@@ -38,7 +38,7 @@ public class Player : NetworkBehaviour {
     //Custom objects
     public GameController gameController;
     public InstructionController InstructionController;
-    public GameObject cameraController;
+    public CameraController cameraController;
 
     //Buttons
     public Button button1, button2, button3, button4;
@@ -140,11 +140,6 @@ public class Player : NetworkBehaviour {
     private bool timerStarted = false;
     [SyncVar] public bool isSetupComplete;
 
-    public bool cameraRed = false;
-    public bool cameraOrange = false;
-    public bool cameraYellow = false;
-    public bool cameraGreen = false;
-    public bool cameraBlue = false;
 
     //Group activity
     [SyncVar] public bool isGroupActive;
@@ -189,8 +184,7 @@ public class Player : NetworkBehaviour {
         VolumeOfSoundEffects = Volume;
         nameText.text += PlayerUserName;
         micListener.enabled = false;
-
-
+        cameraController.enabled = false;
     }
 
     private void Update()
@@ -212,17 +206,11 @@ public class Player : NetworkBehaviour {
         {
             if (isLocalPlayer)
             {
-                
-
-
                 CheckGroupActivity();
-
             }
         }
 
-
         if (groupMessagePanel.activeSelf) return;
-
         
         //if (micActive) micVolumeText.text = micListener.MicLoudness.ToString("F4");
 //        topChefText.text = TopChef;
@@ -267,18 +255,27 @@ public class Player : NetworkBehaviour {
                 StartInstTimer();
             }
 
-            bool cameraBool = false;
-            if (cameraText.text == "Red") cameraBool = cameraRed;
-            if (cameraText.text == "Orange") cameraBool = cameraOrange;
-            if (cameraText.text == "Yellow") cameraBool = cameraYellow;
-            if (cameraText.text == "Green") cameraBool = cameraGreen;
-            if (cameraText.text == "Blue") cameraBool = cameraBlue;
-            if (cameraPanel.activeInHierarchy && cameraBool)
+            
+            if (cameraPanel.activeInHierarchy)
             {
-                cameraPanel.SetActive(false);
-                cameraController.SetActive(false);
-                CmdIncreaseScore();
-                StartInstTimer();
+                bool cameraBool = false;
+                if (cameraText.text == "Red") cameraBool = cameraController.red;
+                if (cameraText.text == "Orange") cameraBool = cameraController.orange;
+                if (cameraText.text == "Yellow") cameraBool = cameraController.yellow;
+                if (cameraText.text == "Green") cameraBool = cameraController.green;
+                if (cameraText.text == "Blue") cameraBool = cameraController.blue;
+                if (cameraBool)
+                {
+                    cameraPanel.SetActive(false);
+                    cameraController.red = false;
+                    cameraController.blue = false;
+                    cameraController.green = false;
+                    cameraController.orange = false;
+                    cameraController.yellow = false;
+                    cameraController.enabled = false;
+                    CmdIncreaseScore();
+                    StartInstTimer();
+                }
             }
 
             nfcValue = NfcCheck();
@@ -576,7 +573,7 @@ public class Player : NetworkBehaviour {
 
     public void SetCameraPanel(string text)
     {
-        cameraController.SetActive(true);
+        cameraController.enabled = true;
         cameraPanel.SetActive(true);
         cameraText.text = text;
     }
@@ -615,25 +612,24 @@ public class Player : NetworkBehaviour {
         }
     }
 
-    /*public void OnClickCameraButton()
+    public void OnClickCameraButton()
     {
         if (cameraPanel.activeInHierarchy)
         {
             cameraPanel.SetActive(false);
-            cameraController.SetActive(false);
+            cameraController.enabled = false;
         }
         else
         {
-            cameraController.SetActive(true);
+            cameraController.enabled = true;
             cameraPanel.SetActive(true);
         }
-    }*/
+    }
 
     public void ScoreStreakCheck()
     {
         if (scoreStreak >= scoreStreakMax)
         {
-
             isServe = true;
             String window = GetGoodNextNFC();
             validNfc = window;

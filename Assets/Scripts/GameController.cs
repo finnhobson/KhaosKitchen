@@ -46,7 +46,7 @@ public class GameController : NetworkBehaviour
 
     [SyncVar] public bool isRoundPaused;
     [SyncVar] public bool isGameStarted;
-    private bool isGroupActivityEnabled = true; // To enable group activities
+    private bool isGroupActivityEnabled = false; // To enable group activities
     private bool isGameOver;
     
     //Group activity
@@ -140,7 +140,7 @@ public class GameController : NetworkBehaviour
     [SyncVar] public float customerSatisfaction = 50;
 
     //Phone interaction probability = 2/x
-    [SyncVar] public int piProb = 21;
+    [SyncVar] public int piProb = 6;
 
     public float pointMultiplier;
 

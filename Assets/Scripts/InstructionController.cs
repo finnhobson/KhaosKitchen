@@ -70,7 +70,7 @@ public class InstructionController : NetworkBehaviour
     [SyncVar] public bool SetupFinished = false;
 
     //Phone interaction probability = 2/x
-    [SyncVar] public int piProb = 4;
+    [SyncVar] public int piProb = 5;
 
     /*
      * Called from GC, this is where the IC is setup. 
@@ -228,7 +228,6 @@ public class InstructionController : NetworkBehaviour
                 RpcStartInstTimer(i);
 
                 int rand = UnityEngine.Random.Range(0, piProb);
-                //rand = 3;
                 if (rand == 1)
                 {
                     rand = UnityEngine.Random.Range(0, micInstructions.Count);
@@ -239,11 +238,11 @@ public class InstructionController : NetworkBehaviour
                     rand = UnityEngine.Random.Range(0, shakeInstructions.Count);
                     RpcSetShakePanel(i, shakeInstructions[rand]);
                 }
-                /*else if (rand == 3)
+                else if (rand == 3)
                 {
                     rand = UnityEngine.Random.Range(0, cameraInstructions.Count);
                     RpcSetCameraPanel(i, cameraInstructions[rand]);
-                }*/
+                }
             }
         }
         if (!match)
