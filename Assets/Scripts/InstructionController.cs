@@ -33,7 +33,7 @@ public class InstructionController : NetworkBehaviour
         " Food runner dropped the dish!\n Shake some sense into the boy!\n\n (SHAKE YOUR PHONE)",
         " Pan set on fire!\n Shake to put it out!\n\n (SHAKE YOUR PHONE)"});
 
-    private static List<String> cameraInstructions = new List<string>(new string[] { " Red", "Orange", "Yellow", "Green", "Blue"});
+    private static List<String> cameraInstructions = new List<string>(new string[] { "Red", "Orange", "Yellow", "Green", "Blue"});
 
     private SyncListString activeButtonActions = new SyncListString();
     private SyncListString activeInstructions = new SyncListString();
@@ -239,11 +239,11 @@ public class InstructionController : NetworkBehaviour
                     rand = UnityEngine.Random.Range(0, shakeInstructions.Count);
                     RpcSetShakePanel(i, shakeInstructions[rand]);
                 }
-                else if (rand == 3)
+                /*else if (rand == 3)
                 {
                     rand = UnityEngine.Random.Range(0, cameraInstructions.Count);
                     RpcSetCameraPanel(i, cameraInstructions[rand]);
-                }
+                }*/
             }
         }
         if (!match)
