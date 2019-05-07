@@ -13,9 +13,8 @@ public class InstructionController : NetworkBehaviour
     public InstructionHandler InstructionHandler;
     
     //Store of the combinations of instructions possible
-    private static List<String> verbList = new List<string>(new string[] { "Grab", "Fetch", "Grate", "Grill", "Melt", "Serve", "Stir", "Chop", "Cut", "Mash", "Season", "Flambé", "Bake", "Fry", "Taste", "Microwave", "Tendorise", "Roast", "Cry Into", "Sneeze On" });
-    private static List<String> nounList = new List<string>(new string[] { "Minced Beef", "Steak", "Pork Loin", "Ice Cream", "Strawberry", "Bannana", "Toast", "Chocolate", "Pasta", "Bacon", "Tomato", "Sugar", "Salt", "Lettuce", "Sauce", "Mustard", "Sausage", "Chicken", "Ice Cubes" });
-    //private static List<String> nfcInstructions = new List<string>(new string[] { "Darn! Run to the bin!\n\n\n(RUN TO NFC)", "Quickly! Get that rubbish out of here!\n\n\n(RUN TO NFC)" });
+    private static List<String> verbList = new List<string>(new string[] { "Grab", "Fetch", "Grate", "Grill", "Melt", "Serve", "Stir", "Chop", "Cut", "Mash", "Season", "Flambé", "Bake", "Fry", "Taste", "Microwave", "Tendorise", "Roast", "Cry Into", "Sneeze On", "Slap", "Dice", "Sous Vide", "Spit into", "Lick", "Fart on", "Inhale", "Smell", "Hug", "Punch", "Bite" });
+    private static List<String> nounList = new List<string>(new string[] { "Minced Beef", "Steak", "Pork Loin", "Ice Cream", "Strawberry", "Bannana", "Toast", "Chocolate", "Pasta", "Bacon", "Tomato", "Sugar", "Salt", "Lettuce", "Sauce", "Mustard", "Sausage", "Chicken", "Ice Cubes", "Cheese", "Chicken Nuggets", "Brie", "Cheddar", "Camembert", "Wine", "Beer", "Whiskey", "Vodka", "Wasabi" });
 
     private static List<string> fridge = new List<string>( new string[] {"1a", "1b", "1c"});
     private static List<string> cupboard = new List<string>( new string[] {"2a", "2b", "2c"});
@@ -167,8 +166,8 @@ public class InstructionController : NetworkBehaviour
             duplicate = true;
             while (duplicate)
             {
-                verbNo = UnityEngine.Random.Range(0, nounList.Count-1);
-                nounNo = UnityEngine.Random.Range(0, verbList.Count-1); 
+                verbNo = UnityEngine.Random.Range(0, verbList.Count-1);
+                nounNo = UnityEngine.Random.Range(0, nounList.Count-1); 
                 text = verbList[verbNo] + " " + nounList[nounNo];
 
                 if (ActiveButtonActions.Contains(text)) continue;
