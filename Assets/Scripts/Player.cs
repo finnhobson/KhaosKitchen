@@ -201,6 +201,7 @@ public class Player : NetworkBehaviour {
             if (isLocalPlayer)
             {
                 CheckGroupActivity();
+                nfcPanel.SetActive(false);
             }
         }
 
