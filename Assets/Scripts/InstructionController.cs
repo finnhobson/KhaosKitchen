@@ -21,6 +21,10 @@ public class InstructionController : NetworkBehaviour
     
     private static List<string> binA = new List<string>( new string[] {"3a", "3b", "3c"});
     private static List<string> binB = new List<string>( new string[] {"4a", "4b", "4c"});
+    
+    private static List<string> WinnersList = new List<string>( new string[] {"Winner","2nd","3rd","4th", "5th", "6th"});
+    
+    
 
     private static List<List<string>> GoodStations = new List<List<string>>{fridge,cupboard};
     private static List<List<string>> BadStations = new List<List<string>>{binA, binB};
@@ -129,6 +133,12 @@ public class InstructionController : NetworkBehaviour
         ClearInstructionHandler();
         SelectButtonActions();  //Create synced list of executables, one for each button in the game
         SetFirstInstructions(); //Select one instruction per player from Action Button List
+    }
+
+    public string getPositionWord(int i)
+    {
+        if (i >= PlayerCount) return "error";
+        return WinnersList[i];
     }
 
     [ClientRpc]
