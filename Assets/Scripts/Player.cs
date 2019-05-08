@@ -299,6 +299,8 @@ public class Player : NetworkBehaviour {
         {
             SetTimerText("0");
             nfcPanel.SetActive(false);
+            shakePanel.SetActive(false);
+            micPanel.SetActive(false);
         }
     }
 
