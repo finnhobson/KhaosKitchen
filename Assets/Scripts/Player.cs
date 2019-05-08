@@ -987,7 +987,7 @@ public class Player : NetworkBehaviour {
         switch (nfcStation)
         {
             case 0:
-                string tmp =(GoodStations[0].GetItem(nfcValue));
+                validNfcRace =(GoodStations[0].GetItem(nfcValue));
                 break;
             case 1:
                 validNfcRace = (GoodStations[1].GetItem(nfcValue));
