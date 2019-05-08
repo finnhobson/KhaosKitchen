@@ -85,6 +85,7 @@ public class LobbyManager : NetworkLobbyManager
 #if UNITY_ANDROID
         settingsButton.gameObject.SetActive(false);
         hostButton.gameObject.SetActive(false);
+        joinButton.GetComponent<RectTransform>().localPosition -= new Vector3(0, 60, 0);
 #else
         //joinButton.gameObject.SetActive(false);
         //TURN ON FOR GAMESDAY!!!
