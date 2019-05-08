@@ -946,7 +946,7 @@ public class GameController : NetworkBehaviour
 
     IEnumerator leaveUpLeaderboard()
     {
-        yield return new WaitForSeconds(3 * (activityNumber+1)%2);s
+        yield return new WaitForSeconds(3 * (activityNumber+1)%2);
 
         if (activityNumber == 0)
         {
