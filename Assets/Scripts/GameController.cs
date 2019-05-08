@@ -772,8 +772,10 @@ public class GameController : NetworkBehaviour
             if (player.IsNFCRaceCompleted && !raceWinnersList.Contains(player.PlayerUserName))
             {
                 raceWinnersList.Add(player.PlayerUserName);
+                //todo : print raceWinners on pannel as leader board, positions in order
             }
         }
+
 
         //        Debug.Log("list B");
         //        foreach (var VARIABLE in raceWinnersList)
