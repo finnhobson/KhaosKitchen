@@ -820,8 +820,8 @@ public class GameController : NetworkBehaviour
 
     private void IncrementGroupActivity()
     {
-        activityNumber = (activityNumber + 1) % numberOfGroupActivities;
-        //        activityNumber = 1;
+//        activityNumber = (activityNumber + 1) % numberOfGroupActivities;
+        activityNumber = 1;
     }
 
     private void RpcUpdateActivityNumber(int number)
