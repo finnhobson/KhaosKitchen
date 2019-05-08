@@ -14,23 +14,30 @@ public class InstructionController : NetworkBehaviour
     
     //Store of the combinations of instructions possible
     private static List<String> verbList = new List<string>(new string[] { "Grab", "Fetch", "Grate", "Grill", "Melt", "Serve", "Stir", "Chop", "Cut", "Mash", "Season", "Flambé", "Bake", "Fry", "Taste", "Microwave", "Tendorise", "Roast", "Cry Into", "Sneeze On", "Slap", "Dice", "Sous Vide", "Spit into", "Lick", "Fart on", "Inhale", "Smell", "Hug", "Punch", "Bite" });
-    private static List<String> nounList = new List<string>(new string[] { "Minced Beef", "Steak", "Pork Loin", "Ice Cream", "Strawberry", "Bannana", "Toast", "Chocolate", "Pasta", "Bacon", "Tomato", "Sugar", "Salt", "Lettuce", "Sauce", "Mustard", "Sausage", "Chicken", "Ice Cubes", "Cheese", "Chicken Nuggets", "Brie", "Cheddar", "Camembert", "Wine", "Beer", "Whiskey", "Vodka", "Wasabi" });
+    private static List<String> nounList = new List<string>(new string[] { "Minced Beef", "Steak", "Pork Loin", "Ice Cream", "Strawberry", "Bannana", "Toast", "Chocolate", "Pasta", "Bacon", "Tomato", "Sugar", "Salt", "Lettuce", "Sauce", "Mustard", "Sausage", "Chicken", "Ice Cubes", "Cheese", "Chicken Nuggets", "Brie", "Cheddar", "Camembert", "Wine", "Beer", "Whiskey", "Vodka", "Wasabi", "Salmon", "Tuna", "Mushroom", "Grass", "Lard", "Bowling Ball" });
 
     private static List<string> fridge = new List<string>( new string[] {"1a", "1b", "1c"});
     private static List<string> cupboard = new List<string>( new string[] {"2a", "2b", "2c"});
     
     private static List<string> binA = new List<string>( new string[] {"3a", "3b", "3c"});
     private static List<string> binB = new List<string>( new string[] {"4a", "4b", "4c"});
+    
+    private static List<string> WinnersList = new List<string>( new string[] {"Winner","2nd","3rd","4th", "5th", "6th"});
+    
+    
 
     private static List<List<string>> GoodStations = new List<List<string>>{fridge,cupboard};
     private static List<List<string>> BadStations = new List<List<string>>{binA, binB};
     
-    private static List<String> micInstructions = new List<string>(new string[] { " Waiters won't take the food out fast enough!\n Shout at them to work harder!\n\n (SHOUT INTO THE MIC)",
-        " Your team are being useless!\n Shout some sense into them!\n\n (SHOUT INTO THE MIC)"});
+    private static List<String> micInstructions = new List<string>(new string[] { " Waiters won't take the food out fast enough!\n Shout at them to work harder!\n\n (SHOUT INTO THE MIC)", " Your team are being useless!\n Shout some sense into them!\n\n (SHOUT INTO THE MIC)",
+                                                                                  " Rats have been spotted in the kitchen!\n Scream to scare them away!\n\n (SHOUT INTO THE MIC)", " Whoops! You just set your chopping board on fire!\n Try to blow it out!\n\n (BLOW INTO THE MIC)", 
+                                                                                  " The person you have a crush on just walked in!\n Shout at them to confess your love!\n\n (SHOUT INTO THE MIC)", " Whoopsie! You've just set yourself on fire!\n Better try and blow the fire out!\n\n (BLOW INTO THE MIC)",
+                                                                                  " The human race is on the brink of extinction and no one seems to care!\n Scream in despair!\n\n (SHOUT, SCREAM OR CRY INTO THE MIC"});
 
-    private static List<String> shakeInstructions = new List<string>(new string[] { " Chef underseasoned the dish!\n Shake to salt the food!\n\n (SHAKE YOUR PHONE)",
-        " Food runner dropped the dish!\n Shake some sense into the boy!\n\n (SHAKE YOUR PHONE)",
-        " Pan set on fire!\n Shake to put it out!\n\n (SHAKE YOUR PHONE)"});
+    private static List<String> shakeInstructions = new List<string>(new string[] { " Chef underseasoned the dish!\n Shake to salt the food!\n\n (SHAKE YOUR PHONE)", " The Queen has decided to dine here for some reason!\n Better give her a wave!\n\n (SHAKE YOUR PHONE)",
+                                                                                    " Food runner dropped the dish!\n Shake some sense into the boy!\n\n (SHAKE YOUR PHONE)", " It's Virgin PornStar Martini time!\n Better shake that cocktail and thank the deveopers!\n\n (SHAKE YOUR PHONE)",
+                                                                                    " Pan set on fire!\n Shake to put it out!\n\n (SHAKE YOUR PHONE)", " We are ten years away from irreversible climate damage!\n This isn't really an instruction, just thought you needed to know, but shake the phone anyway\n\n (SHAKE YOUR PHONE)",
+                                                                                    " Your arch nemisis just walked in!\n Shake your fist at them angrily!\n\n (SHAKE YOUR PHONE)"});
 
     private static List<String> cameraInstructions = new List<string>(new string[] { "Red", "Orange", "Yellow", "Green", "Blue"});
 
@@ -69,7 +76,7 @@ public class InstructionController : NetworkBehaviour
     [SyncVar] public bool SetupFinished = false;
 
     //Phone interaction probability = 2/x
-    [SyncVar] public int piProb = 5;
+    [SyncVar] public int piProb = 15;
 
     /*
      * Called from GC, this is where the IC is setup. 
@@ -129,6 +136,12 @@ public class InstructionController : NetworkBehaviour
         ClearInstructionHandler();
         SelectButtonActions();  //Create synced list of executables, one for each button in the game
         SetFirstInstructions(); //Select one instruction per player from Action Button List
+    }
+
+    public string getPositionWord(int i)
+    {
+        if (i >= PlayerCount) return "error";
+        return WinnersList[i];
     }
 
     [ClientRpc]

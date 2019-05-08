@@ -38,6 +38,12 @@ public class LobbyPlayer : NetworkLobbyPlayer
 
     //static Color OddRowColor = new Color(250.0f / 255.0f, 250.0f / 255.0f, 250.0f / 255.0f, 1.0f);
     //static Color EvenRowColor = new Color(180.0f / 255.0f, 180.0f / 255.0f, 180.0f / 255.0f, 1.0f);
+    private void Update()
+    {
+        if(isLocalPlayer){
+            if(playerName != nameInput.text) CmdNameChanged(nameInput.text);
+        }
+    }
 
 
     public override void OnClientEnterLobby()
@@ -117,18 +123,15 @@ public class LobbyPlayer : NetworkLobbyPlayer
 
         //have to use child count of player prefab already setup as "this.slot" is not set yet
         if (playerName == "")
-//            CmdNameChanged("Player" + (LobbyPlayerList._instance.playerListContentTransform.childCount-1));
+            CmdNameChanged("Player" + (LobbyPlayerList._instance.playerListContentTransform.childCount-1));
 
 
         //we switch from simple name display to name input
-        colorButton.interactable = true;
+        colorButton.interactable = false;
         nameInput.interactable = true;
 
         nameInput.onEndEdit.RemoveAllListeners();
         nameInput.onEndEdit.AddListener(OnNameChanged);
-
-        colorButton.onClick.RemoveAllListeners();
-        colorButton.onClick.AddListener(OnColorClicked);
 
         readyButton.onClick.RemoveAllListeners();
         readyButton.onClick.AddListener(OnReadyClicked);

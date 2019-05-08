@@ -2,18 +2,10 @@
   <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="Unity.Editor" />
   <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/InstructionController.cs">
     <Files>
-      <File FileName="Assets/Editor/InstructionTests.cs" Line="34" Column="6" />
-      <File FileName="Assets/Editor/GameStateTests.cs" Line="118" Column="6" />
-      <File FileName="Assets/Editor/ScoreTests.cs" Line="70" Column="11" />
-      <File FileName="Assets/Scripts/BackgroundScroll.cs" Line="7" Column="40" />
-      <File FileName="Assets/Scripts/ButtonBounce.cs" Line="68" Column="42" />
-      <File FileName="Assets/Lobby/Scripts/Lobby/LobbyPlayer.cs" Line="45" Column="35" />
-      <File FileName="Assets/Lobby/Scripts/Lobby/LobbyManager.cs" Line="181" Column="46" />
-      <File FileName="Assets/Scripts/SplatScript.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/Player.cs" Line="842" Column="6" />
-      <File FileName="Assets/Scripts/GameController.cs" Line="190" Column="13" />
-      <File FileName="Assets/Lobby/Scripts/Lobby/LobbyMainMenu.cs" Line="24" Column="30" />
-      <File FileName="Assets/Scripts/InstructionController.cs" Line="16" Column="264" />
+      <File FileName="Assets/Scripts/GameSettings.cs" Line="48" Column="6" />
+      <File FileName="Assets/Lobby/Scripts/Lobby/LobbyManager.cs" Line="416" Column="65" />
+      <File FileName="Assets/Scripts/GameController.cs" Line="143" Column="37" />
+      <File FileName="Assets/Scripts/InstructionController.cs" Line="77" Column="39" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />

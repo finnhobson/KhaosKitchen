@@ -23,7 +23,10 @@ public class GameController : NetworkBehaviour
 
     //Unity GameObjects
     public Text scoreText, roundTimerText, scoreBarText, roundNumberText;
-    public GameObject roundTimerBar, gameOverText, backButton, lobbyTopPanel;
+    public List<Text> groupDisplayNames = new List<Text>();
+    public List<Text> groupDisplayTasks = new List<Text>();
+
+    public GameObject roundTimerBar, gameOverText, backButton, lobbyTopPanel,groupShakePannel, groupRacePannel;
     public Image stars;
 
     public List<Player> playerList = new List<Player>();
@@ -48,6 +51,7 @@ public class GameController : NetworkBehaviour
     [SyncVar] public bool isGameStarted;
     private bool isGroupActivityEnabled = true; // To enable group activities
     private bool isGameOver;
+    private bool step;
 
     //Group activity
     private bool isGroupActiviy = true;
@@ -144,6 +148,8 @@ public class GameController : NetworkBehaviour
 
     public float pointMultiplier;
 
+    public bool printCompleted;
+
     private static int numberOfButtons = 4;
     //[SyncVar] public int playerCount = GameSettings.PlayerCount;
     //public float roundStartTime = 90;
@@ -154,7 +160,7 @@ public class GameController : NetworkBehaviour
     //Booleans
     [FormerlySerializedAs("startGroupActivity")] [SyncVar] public bool groupActivityStarted;
     public int numberOfGroupActivities = 2;
-    [SyncVar] public int activityNumber = 0;
+    [SyncVar] public int activityNumber = 1;
 
     List<string> UserNames = new List<string>(); /* Just here so in future they can set their own usernames from the lobby */
 
@@ -290,14 +296,20 @@ public class GameController : NetworkBehaviour
             if (isServer)
             {
                 int scoreRemaining = (roundMaxScore) - (roundScore - roundStartScore);
-                if ((score % 100 == 10) && isGroupActiviy && isGroupActivityEnabled && (scoreRemaining > playerCount) )//Needs to be changed.
+                if ((score % 30 == 10) && isGroupActiviy && isGroupActivityEnabled && (scoreRemaining > playerCount) )//Needs to be changed.
                 {
                     Debug.Log("Call1");
                     InitiateGroupActivity();
+                    printCompleted = false;
                 }
 
                 else if (groupActivityStarted)
                 {
+                    if (activityNumber == 1)
+                    {
+                        DisplayGroupNfcActivityInstruction();
+                    } else if (activityNumber == 0) {DisplayGroupShakeActivityInstruction();}
+
                     Debug.Log("call2");
 
                     CheckGroupActivity();
@@ -325,19 +337,14 @@ public class GameController : NetworkBehaviour
                 gameOverText.transform.SetAsLastSibling();
                 gameOverText.SetActive(true);
                 backButton.SetActive(true);
-                if (roundTimeLeft <= 0)
+
+                if (customerSatisfaction <= 0)
                 {
                     foreach (Player p in playerList)
                     {
-                        p.gameOverText.text = "Time Up!\nGame Over!";
+                        p.gameOverText.text = "SHUT DOWN!\n\nGAME OVER!";
                     }
                 }
-
-                else if (customerSatisfaction <= 0)
-                    foreach (Player p in playerList)
-                    {
-                        p.gameOverText.text = "Your Restaurant was Closed Down!\nGame Over!";
-                    }
 
                 if (!isGameOver)
                 {
@@ -607,7 +614,7 @@ public class GameController : NetworkBehaviour
         foreach (Player player in players)
         {
             //Debug.Log("Player: " + player.PlayerUserName + " :: " + player.PlayerScore);
-            player.roundScoreText.text = player.PlayerScore.ToString();
+            //player.roundScoreText.text = player.PlayerScore.ToString();
             if (player.PlayerScore > topScore)
             {
                 topScore = player.PlayerScore;
@@ -760,6 +767,7 @@ public class GameController : NetworkBehaviour
         if (allReady)
         {
             AllAreReady();
+
         }
     }
 
@@ -777,8 +785,10 @@ public class GameController : NetworkBehaviour
             if (player.IsNFCRaceCompleted && !raceWinnersList.Contains(player.PlayerUserName))
             {
                 raceWinnersList.Add(player.PlayerUserName);
+                groupDisplayTasks[playerList.IndexOf(player)].text = InstructionController.getPositionWord(raceWinnersList.IndexOf(player.PlayerUserName));
             }
         }
+
 
         //        Debug.Log("list B");
         //        foreach (var VARIABLE in raceWinnersList)
@@ -788,7 +798,8 @@ public class GameController : NetworkBehaviour
 
         if (raceWinnersList.Count == playerCount)
         {
-            //TODO: Get finn to put this list on the board.
+            
+            
             foreach (var player in playerList)
             {
                 for (int i = 0; i < raceWinnersList.Count; i++)
@@ -801,7 +812,8 @@ public class GameController : NetworkBehaviour
                     Debug.Log(raceWinnersList[i]);
                 }
             }
-
+            
+            
             AllAreReady();
         }
     }
@@ -832,6 +844,7 @@ public class GameController : NetworkBehaviour
         RpcSetGroupActivity(true);
         //TODO: HERE
         isGroupActiviy = false;
+        
 
     }
 
@@ -876,19 +889,27 @@ public class GameController : NetworkBehaviour
         RpcResetGroupActivity();
     }
 
-    [Server]
-    private void AllAreReady()
+    public void AllAreReady()
     {
+        if (activityNumber == 0)
+        {
+            groupShakePannel.SetActive(false);
+            
+        } else if (activityNumber == 1)
+        {
+            //yield return new WaitForSecondsRealtime(3);
+            groupRacePannel.SetActive(false);
+        }
+
+        
+
         Debug.Log("All");
 
         score += 10;
         groupActivityStarted = false;
+        
+        
         RpcResetGroupActivity();
-        foreach (var player in playerList)
-        {
-            player.isNFCRaceStarted = false;
-            player.IsNFCRaceCompleted = false;
-        }
 
         isGroupActiviy = true;
         raceWinnersList = new List<string>();
@@ -911,4 +932,23 @@ public class GameController : NetworkBehaviour
             player.activityNumber = activityNumber;
         }
     }
+
+    private void DisplayGroupNfcActivityInstruction()
+    {
+        groupRacePannel.SetActive(true);
+        for (int i = 0; i < playerCount; i++)
+        {
+            if (!playerList[i].IsNFCRaceCompleted)
+            {
+                groupDisplayNames[i].text = playerList[i].PlayerUserName;
+                groupDisplayTasks[i].text = playerList[i].validNfcRace;
+            }
+        }
+    }
+    
+    private void DisplayGroupShakeActivityInstruction()
+    {
+        groupShakePannel.SetActive(true);
+    }
+    
 }
