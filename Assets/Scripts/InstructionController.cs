@@ -33,8 +33,8 @@ public class InstructionController : NetworkBehaviour
                                                                                   " Rats have been spotted in the kitchen!\n Scream to scare them away!\n\n (SHOUT INTO THE MIC)", " Whoops! You just set your chopping board on fire!\n Try to blow it out!\n\n (BLOW INTO THE MIC)", 
                                                                                   " The person you have a crush on just walked in!\n Shout at them to confess your love!\n\n (SHOUT INTO THE MIC)", " Whoopsie! You've just set yourself on fire!\n Better try and blow the fire out!\n\n (BLOW INTO THE MIC)"});
 
-    private static List<String> shakeInstructions = new List<string>(new string[] { " Chef underseasoned the dish!\n Shake to salt the food!\n\n (SHAKE YOUR PHONE)", " The Queen has decided to dine here for some reason!\n Better give her a wave!\n\n (SHAKE YOUR PHONE)"
-                                                                                    " Food runner dropped the dish!\n Shake some sense into the boy!\n\n (SHAKE YOUR PHONE)", " It's Virgin PornStar Martini time!\n Better shake that cocktail and thank the deveopers!\n\n (SHAKE YOUR PHONE)"
+    private static List<String> shakeInstructions = new List<string>(new string[] { " Chef underseasoned the dish!\n Shake to salt the food!\n\n (SHAKE YOUR PHONE)", " The Queen has decided to dine here for some reason!\n Better give her a wave!\n\n (SHAKE YOUR PHONE)",
+                                                                                    " Food runner dropped the dish!\n Shake some sense into the boy!\n\n (SHAKE YOUR PHONE)", " It's Virgin PornStar Martini time!\n Better shake that cocktail and thank the deveopers!\n\n (SHAKE YOUR PHONE)",
                                                                                     " Pan set on fire!\n Shake to put it out!\n\n (SHAKE YOUR PHONE)",
                                                                                     " Your arch nemisis just walked in!\n Shake your fist at them angrily!\n\n (SHAKE YOUR PHONE)"});
 
