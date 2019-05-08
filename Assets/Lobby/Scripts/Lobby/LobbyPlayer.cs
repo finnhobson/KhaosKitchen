@@ -41,8 +41,7 @@ public class LobbyPlayer : NetworkLobbyPlayer
     private void Update()
     {
         if(isLocalPlayer){
-            CmdNameChanged(nameInput.text);
-            
+            if(playerName != nameInput.text) CmdNameChanged(nameInput.text);
         }
     }
 
@@ -128,14 +127,11 @@ public class LobbyPlayer : NetworkLobbyPlayer
 
 
         //we switch from simple name display to name input
-        colorButton.interactable = true;
+        colorButton.interactable = false;
         nameInput.interactable = true;
 
         nameInput.onEndEdit.RemoveAllListeners();
         nameInput.onEndEdit.AddListener(OnNameChanged);
-
-        colorButton.onClick.RemoveAllListeners();
-        colorButton.onClick.AddListener(OnColorClicked);
 
         readyButton.onClick.RemoveAllListeners();
         readyButton.onClick.AddListener(OnReadyClicked);
