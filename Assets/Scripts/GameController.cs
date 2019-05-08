@@ -762,7 +762,7 @@ public class GameController : NetworkBehaviour
 
         if (allReady)
         {
-            AllAreReady();
+            StartCoroutine(AllAreReady());
             groupShakePannel.SetActive(false);
 
         }
@@ -811,7 +811,7 @@ public class GameController : NetworkBehaviour
             }
             
             
-            AllAreReady();
+            StartCoroutine(AllAreReady());
             groupRacePannel.SetActive(false);
         }
     }
