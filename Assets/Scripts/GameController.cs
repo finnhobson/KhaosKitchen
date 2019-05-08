@@ -23,7 +23,10 @@ public class GameController : NetworkBehaviour
 
     //Unity GameObjects
     public Text scoreText, roundTimerText, scoreBarText, roundNumberText;
-    public GameObject roundTimerBar, gameOverText, backButton, lobbyTopPanel;
+    public List<Text> groupDisplayNames = new List<Text>();
+    public List<Text> groupDisplayTasks = new List<Text>();
+
+    public GameObject roundTimerBar, gameOverText, backButton, lobbyTopPanel,groupShakePannel, groupRacePannel;
     public Image stars;
 
     public List<Player> playerList = new List<Player>();
@@ -294,6 +297,11 @@ public class GameController : NetworkBehaviour
                 {
                     Debug.Log("Call1");
                     InitiateGroupActivity();
+                    if (activityNumber == 1)
+                    {
+                        DisplayGroupNfcActivityInstruction();
+                    } else if (activityNumber == 0) DisplayGroupShakeActivityInstruction();
+                    else Debug.Log("Error above");
                 }
 
                 else if (groupActivityStarted)
@@ -755,6 +763,8 @@ public class GameController : NetworkBehaviour
         if (allReady)
         {
             AllAreReady();
+            groupShakePannel.SetActive(false);
+
         }
     }
 
@@ -772,7 +782,7 @@ public class GameController : NetworkBehaviour
             if (player.IsNFCRaceCompleted && !raceWinnersList.Contains(player.PlayerUserName))
             {
                 raceWinnersList.Add(player.PlayerUserName);
-                //todo : print raceWinners on pannel as leader board, positions in order
+                groupDisplayTasks[playerList.IndexOf(player)].text = InstructionController.getPositionWord(raceWinnersList.IndexOf(player.PlayerUserName));
             }
         }
 
@@ -785,7 +795,8 @@ public class GameController : NetworkBehaviour
 
         if (raceWinnersList.Count == playerCount)
         {
-            //TODO: Get finn to put this list on the board.
+            
+            
             foreach (var player in playerList)
             {
                 for (int i = 0; i < raceWinnersList.Count; i++)
@@ -798,8 +809,10 @@ public class GameController : NetworkBehaviour
                     Debug.Log(raceWinnersList[i]);
                 }
             }
-
+            
+            
             AllAreReady();
+            groupRacePannel.SetActive(false);
         }
     }
 
@@ -829,6 +842,7 @@ public class GameController : NetworkBehaviour
         RpcSetGroupActivity(true);
         //TODO: HERE
         isGroupActiviy = false;
+        
 
     }
 
@@ -874,12 +888,15 @@ public class GameController : NetworkBehaviour
     }
 
     [Server]
-    private void AllAreReady()
+    IEnumerator AllAreReady()
     {
         Debug.Log("All");
 
         score += 10;
         groupActivityStarted = false;
+        
+        yield return new WaitForSecondsRealtime(3);
+        
         RpcResetGroupActivity();
         foreach (var player in playerList)
         {
@@ -907,5 +924,20 @@ public class GameController : NetworkBehaviour
             player.wait = false;
             player.activityNumber = activityNumber;
         }
+    }
+
+    private void DisplayGroupNfcActivityInstruction()
+    {
+        groupRacePannel.SetActive(true);
+        for (int i = 0; i < playerCount; i++)
+        {
+            groupDisplayNames[i].text = playerList[i].PlayerUserName;
+            groupDisplayTasks[i].text = playerList[i].validNfcRace;
+        }
+    }
+    
+    private void DisplayGroupShakeActivityInstruction()
+    {
+        groupShakePannel.SetActive(true);
     }
 }
