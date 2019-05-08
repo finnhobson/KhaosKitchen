@@ -148,6 +148,8 @@ public class GameController : NetworkBehaviour
 
     public float pointMultiplier;
 
+    public bool printCompleted;
+
     private static int numberOfButtons = 4;
     //[SyncVar] public int playerCount = GameSettings.PlayerCount;
     //public float roundStartTime = 90;
@@ -298,17 +300,16 @@ public class GameController : NetworkBehaviour
                 {
                     Debug.Log("Call1");
                     InitiateGroupActivity();
-                    step = true;
+                    printCompleted = false;
                 }
 
                 else if (groupActivityStarted)
                 {
-                    if (activityNumber == 1 && step)
+                    if (activityNumber == 1 && !printCompleted)
                     {
                         DisplayGroupNfcActivityInstruction();
                     } else if (activityNumber == 0) {DisplayGroupShakeActivityInstruction();}
 
-                    step = false;
                     Debug.Log("call2");
 
                     CheckGroupActivity();
@@ -940,6 +941,7 @@ public class GameController : NetworkBehaviour
         {
             groupDisplayNames[i].text = playerList[i].PlayerUserName;
             groupDisplayTasks[i].text = playerList[i].validNfcRace;
+            if (playerList[i].validNfcRace != "") printCompleted = true;
         }
     }
     
