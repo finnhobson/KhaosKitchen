@@ -939,9 +939,11 @@ public class GameController : NetworkBehaviour
         groupRacePannel.SetActive(true);
         for (int i = 0; i < playerCount; i++)
         {
-            groupDisplayNames[i].text = playerList[i].PlayerUserName;
-            groupDisplayTasks[i].text = playerList[i].validNfcRace;
-            if (playerList[i].validNfcRace != "") printCompleted = true;
+            if (!playerList[i].IsNFCRaceCompleted)
+            {
+                groupDisplayNames[i].text = playerList[i].PlayerUserName;
+                groupDisplayTasks[i].text = playerList[i].validNfcRace;
+            }
         }
     }
     
