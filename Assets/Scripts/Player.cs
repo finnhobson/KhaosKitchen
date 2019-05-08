@@ -87,7 +87,7 @@ public class Player : NetworkBehaviour {
     //Extras
     [SyncVar] private string nfcValue = "";
     private string validNfc = "";
-    private string validNfcRace = "";
+    [SyncVar] public string validNfcRace = "";
     public int playerCount;
     public int instTime;
     public bool easyPhoneInteractions = true;
@@ -987,28 +987,32 @@ public class Player : NetworkBehaviour {
         switch (nfcStation)
         {
             case 0:
-                validNfcRace = GoodStations[0].GetItem(nfcValue);
+                validNfcRace =(GoodStations[0].GetItem(nfcValue));
                 break;
             case 1:
-                validNfcRace = GoodStations[1].GetItem(nfcValue);
+                validNfcRace = (GoodStations[1].GetItem(nfcValue));
                 break;
             case 2:
-                validNfcRace = BadStations[0].GetItem(nfcValue);
+                validNfcRace = (BadStations[0].GetItem(nfcValue));
                 break;
             case 3:
-                validNfcRace = BadStations[1].GetItem(nfcValue);
+                validNfcRace = (BadStations[1].GetItem(nfcValue));
                 break;
         }
 
+        CmdSetValidNfcRace(validNfcRace);
+
         IsNFCRaceCompleted = false;
         groupMessageText.text = validNfcRace + "\n look at main screen";
-        //SetNfcPanel(validNfc);
         isNFCRaceStarted = true;
     }
 
-    public void GroupActivityHandler()
+    [Command]
+    public void CmdSetValidNfcRace(string tmp)
     {
-        
+        validNfcRace = tmp;
     }
+
+
 }
 
