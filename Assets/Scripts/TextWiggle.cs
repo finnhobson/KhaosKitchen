@@ -4,7 +4,7 @@ using System.Collections;
 public class TextWiggle : MonoBehaviour
 {
    
-    private float maxXDist = 50;
+    private float maxXDist = 80;
     private float maxYDist = 30;
 
 
@@ -28,7 +28,7 @@ public class TextWiggle : MonoBehaviour
     void MoveText()
     {
         if(movingUp){
-            offsetY += Time.deltaTime * maxYDist;
+            offsetY += 1.46F*Time.deltaTime * maxYDist;
             if(offsetY>=maxYDist){
                 movingUp = false;
             }
@@ -51,7 +51,7 @@ public class TextWiggle : MonoBehaviour
         else
         {
             offsetX -= Time.deltaTime * maxXDist;
-            if (offsetX <= -maxYDist)
+            if (offsetX <= -maxXDist)
             {
                 movingRight = true;
             }
