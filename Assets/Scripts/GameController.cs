@@ -907,7 +907,7 @@ public class GameController : NetworkBehaviour
         raceWinnersList = new List<string>();
         raceWinnersList.Clear();
         Debug.Log("... Ready");
-        StartCoroutine(leaveUpLeaderboard(activityNumber*3));
+        StartCoroutine(leaveUpLeaderboard(3));
         IncrementGroupActivity();
     }
 
