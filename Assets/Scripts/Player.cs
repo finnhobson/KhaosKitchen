@@ -1000,7 +1000,7 @@ public class Player : NetworkBehaviour {
                 break;
         }
 
-        CmdSetValidNfcRace(validNfcRace);
+        //CmdSetValidNfcRace(validNfcRace);
 
         IsNFCRaceCompleted = false;
         groupMessageText.text = validNfcRace + "\n look at main screen";
