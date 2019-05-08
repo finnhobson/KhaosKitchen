@@ -69,7 +69,7 @@ public class InstructionController : NetworkBehaviour
     [SyncVar] public bool SetupFinished = false;
 
     //Phone interaction probability = 2/x
-    [SyncVar] public int piProb = 5;
+    [SyncVar] public int piProb = 6;
 
     /*
      * Called from GC, this is where the IC is setup. 

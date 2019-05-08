@@ -876,6 +876,7 @@ public class Player : NetworkBehaviour {
     private void UpdateScore(int x)
     {
         scoreText.text = x.ToString();
+        roundScoreText.text = x.ToString();
     }
 
     [Command]

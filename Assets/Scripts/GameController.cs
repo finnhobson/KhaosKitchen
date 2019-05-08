@@ -594,7 +594,7 @@ public class GameController : NetworkBehaviour
         foreach (Player player in players)
         {
             //Debug.Log("Player: " + player.PlayerUserName + " :: " + player.PlayerScore);
-            player.roundScoreText.text = player.PlayerScore.ToString();
+            //player.roundScoreText.text = player.PlayerScore.ToString();
             if (player.PlayerScore > topScore)
             {
                 topScore = player.PlayerScore;
