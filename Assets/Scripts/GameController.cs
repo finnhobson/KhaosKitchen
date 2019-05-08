@@ -898,7 +898,7 @@ public class GameController : NetworkBehaviour
             
         } else if (activityNumber == 1)
         {
-            yield return new WaitForSecondsRealtime(3);
+            //yield return new WaitForSecondsRealtime(3);
             groupRacePannel.SetActive(false);
         }
 
