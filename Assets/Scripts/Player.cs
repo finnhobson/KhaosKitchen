@@ -202,6 +202,9 @@ public class Player : NetworkBehaviour {
             {
                 CheckGroupActivity();
                 nfcPanel.SetActive(false);
+                shakePanel.SetActive(false);
+                micPanel.SetActive(false);
+                
             }
         }
 
@@ -298,6 +301,9 @@ public class Player : NetworkBehaviour {
         else
         {
             SetTimerText("0");
+            nfcPanel.SetActive(false);
+            shakePanel.SetActive(false);
+            micPanel.SetActive(false);
         }
     }
 
