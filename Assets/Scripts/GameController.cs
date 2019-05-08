@@ -296,7 +296,7 @@ public class GameController : NetworkBehaviour
             if (isServer)
             {
                 int scoreRemaining = (roundMaxScore) - (roundScore - roundStartScore);
-                if ((score % 30 == 10) && isGroupActiviy && isGroupActivityEnabled && (scoreRemaining > playerCount) )//Needs to be changed.
+                if ((score % 50 == 30) && isGroupActiviy && isGroupActivityEnabled && (scoreRemaining > playerCount) )//Needs to be changed.
                 {
                     Debug.Log("Call1");
                     InitiateGroupActivity();
@@ -907,8 +907,8 @@ public class GameController : NetworkBehaviour
         raceWinnersList = new List<string>();
         raceWinnersList.Clear();
         Debug.Log("... Ready");
+        StartCoroutine(leaveUpLeaderboard(activityNumber*3));
         IncrementGroupActivity();
-        StartCoroutine(leaveUpLeaderboard());
     }
 
 
@@ -944,18 +944,13 @@ public class GameController : NetworkBehaviour
         groupShakePannel.SetActive(true);
     }
 
-    IEnumerator leaveUpLeaderboard()
+    IEnumerator leaveUpLeaderboard(int waitTime)
     {
-        yield return new WaitForSeconds(3 * (activityNumber+1)%2);
+        yield return new WaitForSeconds(waitTime);
 
-        if (activityNumber == 0)
-        {
             groupShakePannel.SetActive(false);
-            
-        } else if (activityNumber == 1)
-        {
             groupRacePannel.SetActive(false);
-        }
+
     }
     
 }
