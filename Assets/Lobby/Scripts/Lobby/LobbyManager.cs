@@ -415,7 +415,7 @@ public class LobbyManager : NetworkLobbyManager
         GameSettings.MinimumInstructionTime = string.IsNullOrEmpty(MinimumInstructionTimeText.text) ? 5 : int.Parse(MinimumInstructionTimeText.text);
         GameSettings.PlayerCount = (int)playerCountSlider.value;
         GameSettings.EasyPhoneInteractions = easyPhoneInteractions.isOn;
-        GameSettings.PhoneInteractionProbability = string.IsNullOrEmpty(phoneInteractionText.text) ? 42 : 2*int.Parse(phoneInteractionText.text);
+        GameSettings.PhoneInteractionProbability = string.IsNullOrEmpty(phoneInteractionText.text) ? 15 : 3*int.Parse(phoneInteractionText.text);
 
         s_Singleton.minPlayers = GameSettings.PlayerCount;
     }

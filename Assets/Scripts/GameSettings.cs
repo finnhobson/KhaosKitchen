@@ -28,10 +28,10 @@ public static class GameSettings
     private static int baseInstructionTime = 15;
     private static int instructionTimeReductionPerRound = 5;
     private static int instructionTimeIncreasePerPlayer = 2;
-    private static int minimumInstructionTime = 8;
+    private static int minimumInstructionTime = 3;
     private static int roundTime = 90;
     private static bool easyPhoneInteraction = true;
-    private static int phoneInteractionProbability = 6;
+    private static int phoneInteractionProbability = 15;
     
     private static int pCount;
     
