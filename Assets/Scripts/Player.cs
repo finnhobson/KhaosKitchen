@@ -987,29 +987,32 @@ public class Player : NetworkBehaviour {
         switch (nfcStation)
         {
             case 0:
-                CmdSetValidNfcRaceServer(GoodStations[0].GetItem(nfcValue));
+                string tmp =(GoodStations[0].GetItem(nfcValue));
                 break;
             case 1:
-                CmdSetValidNfcRaceServer(GoodStations[1].GetItem(nfcValue));
+                validNfcRace = (GoodStations[1].GetItem(nfcValue));
                 break;
             case 2:
-                CmdSetValidNfcRaceServer(BadStations[0].GetItem(nfcValue));
+                validNfcRace = (BadStations[0].GetItem(nfcValue));
                 break;
             case 3:
-                CmdSetValidNfcRaceServer(BadStations[1].GetItem(nfcValue));
+                validNfcRace = (BadStations[1].GetItem(nfcValue));
                 break;
         }
 
+        cmdSetValidNfcRace(validNfcRace);
+
         IsNFCRaceCompleted = false;
         groupMessageText.text = validNfcRace + "\n look at main screen";
-        //SetNfcPanel(validNfc);
         isNFCRaceStarted = true;
     }
 
     [Command]
-    public void CmdSetValidNfcRaceServer(string stationNfc)
+    public void cmdSetValidNfcRace(string tmp)
     {
-        validNfcRace = stationNfc;
+        validNfcRace = tmp;
     }
+
+
 }
 
