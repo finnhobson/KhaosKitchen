@@ -325,6 +325,19 @@ public class GameController : NetworkBehaviour
                 gameOverText.transform.SetAsLastSibling();
                 gameOverText.SetActive(true);
                 backButton.SetActive(true);
+                if (roundTimeLeft <= 0)
+                {
+                    foreach (Player p in playerList)
+                    {
+                        p.gameOverText.text = "Time Up!\nGame Over!";
+                    }
+                }
+
+                else if (customerSatisfaction <= 0)
+                    foreach (Player p in playerList)
+                    {
+                        p.gameOverText.text = "Your Restaurant was Closed Down!\nGame Over!";
+                    }
 
                 if (!isGameOver)
                 {
@@ -594,7 +607,7 @@ public class GameController : NetworkBehaviour
         foreach (Player player in players)
         {
             //Debug.Log("Player: " + player.PlayerUserName + " :: " + player.PlayerScore);
-            player.roundScoreText.text = player.PlayerScore.ToString();
+            //player.roundScoreText.text = player.PlayerScore.ToString();
             if (player.PlayerScore > topScore)
             {
                 topScore = player.PlayerScore;
