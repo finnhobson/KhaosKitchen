@@ -60,7 +60,6 @@ public class LobbyPlayer : NetworkLobbyPlayer
         if (isLocalPlayer)
         {
             SetupLocalPlayer();
-            colorButton.enabled = false;
         }
         else
         {
@@ -128,14 +127,11 @@ public class LobbyPlayer : NetworkLobbyPlayer
 
 
         //we switch from simple name display to name input
-        colorButton.interactable = true;
+        colorButton.interactable = false;
         nameInput.interactable = true;
 
         nameInput.onEndEdit.RemoveAllListeners();
         nameInput.onEndEdit.AddListener(OnNameChanged);
-
-        colorButton.onClick.RemoveAllListeners();
-        colorButton.onClick.AddListener(OnColorClicked);
 
         readyButton.onClick.RemoveAllListeners();
         readyButton.onClick.AddListener(OnReadyClicked);
