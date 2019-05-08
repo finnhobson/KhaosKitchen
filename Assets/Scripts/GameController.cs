@@ -305,7 +305,7 @@ public class GameController : NetworkBehaviour
 
                 else if (groupActivityStarted)
                 {
-                    if (activityNumber == 1 && !printCompleted)
+                    if (activityNumber == 1)
                     {
                         DisplayGroupNfcActivityInstruction();
                     } else if (activityNumber == 0) {DisplayGroupShakeActivityInstruction();}
