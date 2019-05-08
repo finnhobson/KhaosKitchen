@@ -58,7 +58,7 @@ public class Player : NetworkBehaviour {
     private float Volume = 2f;
 
     //Unity GameObjects
-    public Text scoreText, instructionText, timerText, gpsText, roundScoreText, topChefText, countdownText, roundNumberText, nameText, micVolumeText, groupMessageText;
+    public Text scoreText, instructionText, timerText, gpsText, roundScoreText, topChefText, countdownText, roundNumberText, nameText, micVolumeText, groupMessageText, gameOverText;
     public GameObject nfcPanel, micPanel, shakePanel, gameOverPanel, roundCompletePanel, roundStartPanel, shopPanel, groupMessagePanel, cameraPanel;
     public Text nfcText, micText, shakeText, cameraText;
     public GameObject nfcOkayButton, micOkayButton, shakeOkayButton;
@@ -202,6 +202,9 @@ public class Player : NetworkBehaviour {
             {
                 CheckGroupActivity();
                 nfcPanel.SetActive(false);
+                shakePanel.SetActive(false);
+                micPanel.SetActive(false);
+                
             }
         }
 
@@ -299,6 +302,8 @@ public class Player : NetworkBehaviour {
         {
             SetTimerText("0");
             nfcPanel.SetActive(false);
+            shakePanel.SetActive(false);
+            micPanel.SetActive(false);
         }
     }
 

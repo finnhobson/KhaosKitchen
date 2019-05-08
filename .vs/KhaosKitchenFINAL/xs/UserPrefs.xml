@@ -1,13 +1,13 @@
 ﻿<Properties StartupConfiguration="{52C1F40A-4867-28BB-65C6-CA582FC72A1A}|">
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/MainMenu.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Player.cs">
     <Files>
-      <File FileName="Assets/Scripts/ScrollScript.cs" Line="22" Column="1" />
-      <File FileName="Assets/Scripts/Player.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/Player.cs" Line="307" Column="27" />
       <File FileName="Assets/Scripts/SplatScript.cs" Line="9" Column="20" />
       <File FileName="Assets/Scripts/CustomerController.cs" Line="1" Column="1" />
       <File FileName="Assets/Scripts/ChefAnimationController.cs" Line="1" Column="1" />
       <File FileName="Assets/Scripts/AnimationController.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/MainMenu.cs" Line="25" Column="23" />
+      <File FileName="Assets/Scripts/GameController.cs" Line="365" Column="49" />
+      <File FileName="Assets/Scripts/OldMainMenu.cs" Line="1" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -15,7 +15,7 @@
           <Node name="KhaosKitchenFINAL" expanded="True">
             <Node name="Assets" expanded="True">
               <Node name="Scripts" expanded="True">
-                <Node name="MainMenu.cs" selected="True" />
+                <Node name="Player.cs" selected="True" />
               </Node>
             </Node>
           </Node>

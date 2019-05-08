@@ -49,6 +49,8 @@ public class LobbyPlayer : NetworkLobbyPlayer
         LobbyPlayerList._instance.AddPlayer(this);
         LobbyPlayerList._instance.DisplayDirectServerWarning(isServer && LobbyManager.s_Singleton.matchMaker == null);
 
+//        playerName = "Player" + (LobbyPlayerList._instance.playerListContentTransform.childCount-1);
+
         if (isLocalPlayer)
         {
             SetupLocalPlayer();
@@ -115,7 +117,8 @@ public class LobbyPlayer : NetworkLobbyPlayer
 
         //have to use child count of player prefab already setup as "this.slot" is not set yet
         if (playerName == "")
-            CmdNameChanged("Player" + (LobbyPlayerList._instance.playerListContentTransform.childCount-1));
+//            CmdNameChanged("Player" + (LobbyPlayerList._instance.playerListContentTransform.childCount-1));
+
 
         //we switch from simple name display to name input
         colorButton.interactable = true;
