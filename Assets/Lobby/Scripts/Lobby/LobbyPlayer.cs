@@ -41,8 +41,7 @@ public class LobbyPlayer : NetworkLobbyPlayer
     private void Update()
     {
         if(isLocalPlayer){
-            CmdNameChanged(nameInput.text);
-            
+            if(playerName != nameInput.text) CmdNameChanged(nameInput.text);
         }
     }
 
@@ -61,6 +60,7 @@ public class LobbyPlayer : NetworkLobbyPlayer
         if (isLocalPlayer)
         {
             SetupLocalPlayer();
+            colorButton.enabled = false;
         }
         else
         {
