@@ -298,6 +298,7 @@ public class Player : NetworkBehaviour {
         else
         {
             SetTimerText("0");
+            nfcPanel.SetActive(false);
         }
     }
 
