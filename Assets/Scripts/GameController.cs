@@ -325,19 +325,14 @@ public class GameController : NetworkBehaviour
                 gameOverText.transform.SetAsLastSibling();
                 gameOverText.SetActive(true);
                 backButton.SetActive(true);
-                if (roundTimeLeft <= 0)
-                {
-                    foreach (Player p in playerList)
-                    {
-                        p.gameOverText.text = "TIME UP!\n\nGAME OVER!";
-                    }
-                }
 
-                else if (customerSatisfaction <= 0)
+                if (customerSatisfaction <= 0)
+                {
                     foreach (Player p in playerList)
                     {
                         p.gameOverText.text = "SHUT DOWN!\n\nGAME OVER!";
                     }
+                }
 
                 if (!isGameOver)
                 {
