@@ -168,12 +168,6 @@ public class Player : NetworkBehaviour {
         Screen.orientation = ScreenOrientation.Portrait;
         transform.SetAsLastSibling();
 
-        // ------------------------------------------------------------------------------
-        //        fullScreenPanel.SetActive(false);
-        //        roundCompletePanel.SetActive(false);
-        //        roundStartPanel.SetActive(false);
-        // ------------------------------------------------------------------------------
-
         if (isLocalPlayer)
         {
             CmdSetNetworkID(PlayerNetworkID);
@@ -201,7 +195,6 @@ public class Player : NetworkBehaviour {
         if (gameOverPanel.activeSelf) return;
         
         groupMessagePanel.SetActive(isGroupActive);
-
         
         if (isGroupActive)
         {
@@ -760,14 +753,14 @@ public class Player : NetworkBehaviour {
                     GameObject ogreEars = chef.GetComponent<ChefController>().ogreEars;
                     Material ogreColour = chef.GetComponent<ChefController>().ogreColour;
                     List<GameObject> skin = chef.GetComponent<ChefController>().skin;
-                    if (ogreEars.activeInHierarchy == false && PlayerScore >= 50)
+                    if (ogreEars.activeInHierarchy == false && PlayerScore >= 100)
                     {
                         ogreEars.SetActive(true);
                         foreach (GameObject s in skin)
                         {
                             s.GetComponent<MeshRenderer>().material = ogreColour;
                         }
-                        PlayerScore -= 50;
+                        PlayerScore -= 100;
                     }
                 }
 
@@ -775,25 +768,36 @@ public class Player : NetworkBehaviour {
                 {
                     GameObject crown = chef.GetComponent<ChefController>().crown;
                     List<GameObject> hatParts = chef.GetComponent<ChefController>().hat;
-                    if (crown.activeInHierarchy == false && PlayerScore >= 100)
+                    if (crown.activeInHierarchy == false && PlayerScore >= 500)
                     {
                         crown.SetActive(true);
                         foreach (GameObject part in hatParts)
                         {
                             part.SetActive(false);
                         }
-                        PlayerScore -= 100;
+                        PlayerScore -= 500;
                     }
                 }
-                
-                /* UPDATE HAT COLOUR
-                 * List<GameObject> hatParts = chef.GetComponent<ChefController>().hat;
+            }
+        }
+    }
+
+    [Command]
+    public void CmdChangeHatColour(int item)
+    {
+        var chefs = GameObject.FindGameObjectsWithTag("ChefPrefab");
+        foreach (GameObject chef in chefs)
+        {
+            if (chef.GetComponent<ChefController>().arrow.GetComponent<Image>().color == PlayerColour)
+            {
+                //UPDATE HAT COLOUR
+                List<GameObject> hatParts = chef.GetComponent<ChefController>().hat;
                 foreach (GameObject part in hatParts)
                 {
                     Material hatColour = new Material(part.GetComponent<MeshRenderer>().material);
                     hatColour.color = PlayerColour;
                     part.GetComponent<MeshRenderer>().material = hatColour;
-                }*/
+                }
             }
         }
     }
@@ -854,13 +858,6 @@ public class Player : NetworkBehaviour {
     {
         PlayerUserName = name;
         PlayerColour = colour;
-    }
-
-    public void SetRndCompletePanel()
-    {
-        if (topChefPush == "") topChefText.text = "Fuck";
-        else topChefText.text = topChefPush;
-        roundCompletePanel.SetActive(true);
     }
     
     [Command]

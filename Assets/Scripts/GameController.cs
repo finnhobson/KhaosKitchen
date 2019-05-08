@@ -270,7 +270,6 @@ public class GameController : NetworkBehaviour
     {
         yield return new WaitForSecondsRealtime(x);
 
-
         StartRoundTimer();
         UpdateScoreBar();
         isGameStarted = true;
@@ -290,7 +289,7 @@ public class GameController : NetworkBehaviour
 
             if (isServer)
             {
-                if ((score % 50 == 10) && isGroupActiviy && isGroupActivityEnabled) //Needs to be changed.
+                if ((score % 100 == 10) && isGroupActiviy && isGroupActivityEnabled) //Needs to be changed.
                 {
                     Debug.Log("Call1");
                     InitiateGroupActivity();
@@ -318,7 +317,7 @@ public class GameController : NetworkBehaviour
             {
                 OnRoundComplete();
             }
-            else if (roundTimeLeft < 0 || customerSatisfaction == 0)
+            else if (roundTimeLeft <= 0 || customerSatisfaction <= 0)
             {
                 SetTimerText("0");
                 if (isServer) RpcGameOver();
@@ -399,7 +398,7 @@ public class GameController : NetworkBehaviour
     {
         score += 10;
         roundScore++;
-        customerSatisfaction += 2.0f;
+        customerSatisfaction += 3.0f;
         UpdateScoreBar();
     }
 
@@ -529,7 +528,7 @@ public class GameController : NetworkBehaviour
         PenultimateAction(false);
         roundMaxScore = CalculateInstructionNumber();
         customerSatisfaction = 50;
-        //        InvokeRepeating("DecreaseCustomerSatisfaction", 1.0f, 1.0f);
+        InvokeRepeating("DecreaseCustomerSatisfaction", 1.0f, 1.0f);
         UpdateScoreBar();
     }
 
@@ -593,14 +592,14 @@ public class GameController : NetworkBehaviour
         var players = FindObjectsOfType<Player>();
         foreach (Player player in players)
         {
-            Debug.Log("Player: " + player.PlayerUserName + " :: " + player.PlayerScore);
+            //Debug.Log("Player: " + player.PlayerUserName + " :: " + player.PlayerScore);
+            player.roundScoreText.text = player.PlayerScore.ToString();
             if (player.PlayerScore > topScore)
             {
                 topScore = player.PlayerScore;
                 topChef = player.PlayerUserName;
             }
             //gameStateHandler.UpdatePlayerScore(player.PlayerUserName, player.PlayerScore);
-            //player.PlayerScore = 0;
         }
         currentTopChef = topChef;
         RpcSetTopChef(topChef);
@@ -713,7 +712,6 @@ public class GameController : NetworkBehaviour
         Debug.Log("TOP CHEF = " + topChef);
         foreach (var player in playerList)
         {
-            player.roundScoreText.text = player.PlayerScore.ToString();
             if (topChef != null)
             {
                 if (topChef == player.PlayerUserName)
