@@ -106,7 +106,7 @@ public class CameraController : MonoBehaviour
             if (avgRed > 0.6 && avgBlue < 0.3 && avgGreen < 0.3) red = true;
 
             //Dark Blue
-            if (avgBlue > 0.6 && avgRed < 0.3 && avgGreen < 0.3) blue = true;
+            if (avgBlue > 0.6 && avgRed < 0.3 && avgGreen < 0.5) blue = true;
 
             //Green
             if (avgGreen > 0.6 && avgBlue < 0.3 && avgRed < 0.3) green = true;
