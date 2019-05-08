@@ -890,19 +890,15 @@ public class GameController : NetworkBehaviour
     [Server]
     IEnumerator AllAreReady()
     {
+        yield return new WaitForSecondsRealtime(3);
+
         Debug.Log("All");
 
         score += 10;
         groupActivityStarted = false;
         
-        yield return new WaitForSecondsRealtime(3);
         
         RpcResetGroupActivity();
-        foreach (var player in playerList)
-        {
-            player.isNFCRaceStarted = false;
-            player.IsNFCRaceCompleted = false;
-        }
 
         isGroupActiviy = true;
         raceWinnersList = new List<string>();
