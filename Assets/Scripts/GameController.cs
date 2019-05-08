@@ -907,7 +907,9 @@ public class GameController : NetworkBehaviour
         raceWinnersList = new List<string>();
         raceWinnersList.Clear();
         Debug.Log("... Ready");
-        StartCoroutine(leaveUpLeaderboard(activityNumber*3));
+//        StartCoroutine(leaveUpLeaderboard(3));
+        groupShakePannel.SetActive(false);
+        groupRacePannel.SetActive(false);
         IncrementGroupActivity();
     }
 
@@ -948,8 +950,7 @@ public class GameController : NetworkBehaviour
     {
         yield return new WaitForSeconds(waitTime);
 
-            groupShakePannel.SetActive(false);
-            groupRacePannel.SetActive(false);
+            
 
     }
     
