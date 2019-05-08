@@ -202,6 +202,9 @@ public class Player : NetworkBehaviour {
             {
                 CheckGroupActivity();
                 nfcPanel.SetActive(false);
+                shakePanel.SetActive(false);
+                micPanel.SetActive(false);
+                
             }
         }
 
