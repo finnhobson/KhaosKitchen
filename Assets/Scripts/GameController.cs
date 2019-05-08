@@ -329,14 +329,14 @@ public class GameController : NetworkBehaviour
                 {
                     foreach (Player p in playerList)
                     {
-                        p.gameOverText.text = "Time Up!\nGame Over!";
+                        p.gameOverText.text = "TIME UP!\n\nGAME OVER!";
                     }
                 }
 
                 else if (customerSatisfaction <= 0)
                     foreach (Player p in playerList)
                     {
-                        p.gameOverText.text = "Your Restaurant was Closed Down!\nGame Over!";
+                        p.gameOverText.text = "SHUT DOWN!\n\nGAME OVER!";
                     }
 
                 if (!isGameOver)
