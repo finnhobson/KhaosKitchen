@@ -946,14 +946,14 @@ public class GameController : NetworkBehaviour
 
     IEnumerator leaveUpLeaderboard()
     {
+        yield return new WaitForSeconds(3 * (activityNumber+1)%2);s
+
         if (activityNumber == 0)
         {
-            yield return new WaitForSeconds(0);
             groupShakePannel.SetActive(false);
             
         } else if (activityNumber == 1)
         {
-            yield return new WaitForSeconds(3);
             groupRacePannel.SetActive(false);
         }
     }
