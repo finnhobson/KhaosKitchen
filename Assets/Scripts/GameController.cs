@@ -289,7 +289,8 @@ public class GameController : NetworkBehaviour
 
             if (isServer)
             {
-                if ((score % 100 == 10) && isGroupActiviy && isGroupActivityEnabled) //Needs to be changed.
+                int scoreRemaining = (roundMaxScore) - (roundScore - roundStartScore);
+                if ((score % 100 == 10) && isGroupActiviy && isGroupActivityEnabled && (scoreRemaining > playerCount) )//Needs to be changed.
                 {
                     Debug.Log("Call1");
                     InitiateGroupActivity();
