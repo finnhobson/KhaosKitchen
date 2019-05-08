@@ -51,6 +51,7 @@ public class GameController : NetworkBehaviour
     [SyncVar] public bool isGameStarted;
     private bool isGroupActivityEnabled = true; // To enable group activities
     private bool isGameOver;
+    private bool step;
 
     //Group activity
     private bool isGroupActiviy = true;
@@ -297,15 +298,17 @@ public class GameController : NetworkBehaviour
                 {
                     Debug.Log("Call1");
                     InitiateGroupActivity();
-                    if (activityNumber == 1)
-                    {
-                        DisplayGroupNfcActivityInstruction();
-                    } else if (activityNumber == 0) DisplayGroupShakeActivityInstruction();
-                    else Debug.Log("Error above");
+                    step = true;
                 }
 
                 else if (groupActivityStarted)
                 {
+                    if (activityNumber == 1 && step)
+                    {
+                        DisplayGroupNfcActivityInstruction();
+                    } else if (activityNumber == 0) {DisplayGroupShakeActivityInstruction();}
+
+                    step = false;
                     Debug.Log("call2");
 
                     CheckGroupActivity();
