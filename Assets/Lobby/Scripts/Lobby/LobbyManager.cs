@@ -5,6 +5,7 @@ using UnityEngine.Networking;
 using UnityEngine.Networking.Types;
 using UnityEngine.Networking.Match;
 using System.Collections;
+using System.Collections.Generic;
 
 
 
@@ -57,6 +58,10 @@ public class LobbyManager : NetworkLobbyManager
     public Toggle easyPhoneInteractions;
     public Text phoneInteractionText;
 
+    public Text Feedback;
+
+    private static List<string> feedbackList = new List<string>(new string[] { "Pretty much the perfect game", "This game gets 4.7/5 tomatoes - Tomato Critic", "Good game, needs more nuggets and cheese", "The only kitchen game worth your time", "As far as mobile games go, this is suprisingly decent", "The developers have certainly earned a few pints for this", "Graphics to rival any console game", "I don't think these people know how to spell chaos", "Angry birds would be scared if it was still 2010", "This game is powered by coffee, redbull and pro plus", "Space team? Overcooked? Never heard of them", "Look mum I finally made a game!", "Cat in the wall? Now you’re talking my language!", "Brexits a mess, but at least its not Trump", "Basically one step away from photo realism ", "The original NFC capable mobile game!", "KFC is better than McDonalds. Fight me.", "Fun Fact: Our planet is dying!", "This shout out goes to spoons for being an OG", "help me, im trapped in the phone, send rescue" });
+
     void Start()
     {
         Screen.orientation = ScreenOrientation.Portrait;
@@ -72,6 +77,8 @@ public class LobbyManager : NetworkLobbyManager
         SetServerInfo("Offline", "None");
         background.SetActive(true);
 
+        int quoteNo = UnityEngine.Random.Range(0, feedbackList.Count - 1);
+        Feedback.text = "\"" + feedbackList[quoteNo] + "\"";
 
 
 
