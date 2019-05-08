@@ -766,7 +766,7 @@ public class GameController : NetworkBehaviour
 
         if (allReady)
         {
-            StartCoroutine(AllAreReady());
+            AllAreReady();
 
         }
     }
@@ -814,7 +814,7 @@ public class GameController : NetworkBehaviour
             }
             
             
-            StartCoroutine(AllAreReady());
+            AllAreReady();
         }
     }
 
@@ -889,8 +889,7 @@ public class GameController : NetworkBehaviour
         RpcResetGroupActivity();
     }
 
-    [Server]
-    IEnumerator AllAreReady()
+    public void AllAreReady()
     {
         if (activityNumber == 0)
         {
