@@ -891,15 +891,7 @@ public class GameController : NetworkBehaviour
 
     public void AllAreReady()
     {
-        if (activityNumber == 0)
-        {
-            groupShakePannel.SetActive(false);
-            
-        } else if (activityNumber == 1)
-        {
-            //yield return new WaitForSecondsRealtime(3);
-            groupRacePannel.SetActive(false);
-        }
+        
 
         
 
@@ -916,6 +908,7 @@ public class GameController : NetworkBehaviour
         raceWinnersList.Clear();
         Debug.Log("... Ready");
         IncrementGroupActivity();
+        StartCoroutine(leaveUpLeaderboard());
     }
 
 
@@ -949,6 +942,20 @@ public class GameController : NetworkBehaviour
     private void DisplayGroupShakeActivityInstruction()
     {
         groupShakePannel.SetActive(true);
+    }
+
+    IEnumerator leaveUpLeaderboard()
+    {
+        if (activityNumber == 0)
+        {
+            yield return new WaitForSeconds(0);
+            groupShakePannel.SetActive(false);
+            
+        } else if (activityNumber == 1)
+        {
+            yield return new WaitForSeconds(3);
+            groupRacePannel.SetActive(false);
+        }
     }
     
 }
