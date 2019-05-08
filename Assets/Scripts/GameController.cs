@@ -828,7 +828,7 @@ public class GameController : NetworkBehaviour
     {
         foreach (var player in playerList)
         {
-            if (player != null) player.activityNumber = number;
+            if (player != null) player.activityNumber = 1;
             else Debug.Log("not player at UpdateActivityNumber");
         }
     }
@@ -853,7 +853,7 @@ public class GameController : NetworkBehaviour
     private void CheckGroupActivity()
     {
 
-        switch (activityNumber)
+        switch (1)
         {
             case 0:
                 CheckShake();
@@ -924,7 +924,7 @@ public class GameController : NetworkBehaviour
             player.isNFCRaceStarted = false;
             player.IsNFCRaceCompleted = false;
             player.wait = false;
-            player.activityNumber = activityNumber;
+            player.activityNumber = 1;
         }
     }
 
