@@ -903,7 +903,7 @@ public class Player : NetworkBehaviour {
         switch (activityNumber)
         {
             case 0: 
-                groupMessageText.text = "Everyone Shake \n look at main screen";
+                groupMessageText.text = "Look at main screen \n (shaking)";
                 CmdSetShake(ShakeListener.shaking);
                 break;
 
@@ -1004,7 +1004,7 @@ public class Player : NetworkBehaviour {
         CmdSetValidNfcRace(validNfcRace);
 
         IsNFCRaceCompleted = false;
-        groupMessageText.text = validNfcRace + "\n look at main screen";
+        groupMessageText.text = (validNfcRace + "\n look at main screen \n (nfc above for testing)");
         isNFCRaceStarted = true;
     }
 
