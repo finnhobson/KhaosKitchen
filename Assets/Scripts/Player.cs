@@ -87,7 +87,7 @@ public class Player : NetworkBehaviour {
     //Extras
     [SyncVar] private string nfcValue = "";
     private string validNfc = "";
-    [SyncVar] public string validNfcRace = "";
+     public string validNfcRace = "";
     public int playerCount;
     public int instTime;
     public bool easyPhoneInteractions = true;
@@ -983,20 +983,21 @@ public class Player : NetworkBehaviour {
 
     public void StartNFCRace()
     {
+        nfcValue = NfcCheck();
         Debug.Log("StartNFC");
-        switch (nfcStation)
+        switch ((nfcStation + PlayerScore)%4)
         {
             case 0:
-                validNfcRace =(GoodStations[0].GetItem(nfcValue));
+                validNfcRace = GoodStations[0].GetItem(nfcValue) ;
                 break;
             case 1:
-                validNfcRace = (GoodStations[1].GetItem(nfcValue));
+                validNfcRace = GoodStations[1].GetItem(nfcValue);
                 break;
             case 2:
-                validNfcRace = (BadStations[0].GetItem(nfcValue));
+                validNfcRace = BadStations[0].GetItem(nfcValue);
                 break;
             case 3:
-                validNfcRace = (BadStations[1].GetItem(nfcValue));
+                validNfcRace = BadStations[1].GetItem(nfcValue);
                 break;
         }
 
