@@ -785,7 +785,7 @@ public class GameController : NetworkBehaviour
             if (player.IsNFCRaceCompleted && !raceWinnersList.Contains(player.PlayerUserName))
             {
                 raceWinnersList.Add(player.PlayerUserName);
-                groupDisplayTasks[playerList.IndexOf(player)].text = InstructionController.getPositionWord(raceWinnersList.IndexOf(player.PlayerUserName));
+               // groupDisplayTasks[playerList.IndexOf(player)].text = InstructionController.getPositionWord(raceWinnersList.IndexOf(player.PlayerUserName));
             }
         }
 
@@ -902,6 +902,11 @@ public class GameController : NetworkBehaviour
         
         
         RpcResetGroupActivity();
+        foreach (var player in playerList)
+        {
+            player.isNFCRaceStarted = false;
+            player.IsNFCRaceCompleted = false;
+        }
 
         isGroupActiviy = true;
         raceWinnersList = new List<string>();

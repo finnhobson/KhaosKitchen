@@ -87,7 +87,7 @@ public class Player : NetworkBehaviour {
     //Extras
     [SyncVar] private string nfcValue = "";
     private string validNfc = "";
-     public string validNfcRace = "";
+    public string validNfcRace = "";
     public int playerCount;
     public int instTime;
     public bool easyPhoneInteractions = true;
