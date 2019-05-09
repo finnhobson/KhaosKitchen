@@ -48,28 +48,148 @@ public class CustomerController : MonoBehaviour
     void Update()
     {
         time += Time.deltaTime;
+        int rand;
 
         if (!gameController.isRoundPaused && gameController.isGameStarted)
         {
-            if (transform.localPosition.x > xMax + 2)
+            //WALKING DOWN PATH
+            /*if (transform.localPosition.x > xMax)
             {
                 x = -maxSpeed;
                 transform.localRotation = Quaternion.Euler(0, 270, 0);
                 time = 0.0f;
             }
 
-            if (transform.localPosition.x < xMin - 2)
+            if (transform.localPosition.x < -xMax)
             {
                 x = maxSpeed;
                 transform.localRotation = Quaternion.Euler(0, 90, 0);
                 time = 0.0f;
+            }*/
+
+            //MOVING INSIDE RESTAURANT
+            if (transform.localPosition.x > 17 && transform.localPosition.x < 18 && transform.localPosition.z == -28)
+            {
+                rand = Random.Range(0, 3);
+                if (rand == 0)
+                {
+                    x = 0;
+                    z = Random.Range(0.0f, -maxSpeed);
+                    transform.localRotation = Quaternion.Euler(0, 180, 0);
+                }
+                if (rand == 1)
+                {
+                    z = 0;
+                    x = Random.Range(0.0f, -maxSpeed);
+                    transform.localRotation = Quaternion.Euler(0, 270, 0);
+                }
+                if (rand == 2)
+                {
+                    x = 0;
+                    z = Random.Range(0.0f, maxSpeed);
+                    transform.localRotation = Quaternion.Euler(0, 0, 0);
+                } 
             }
 
-            if (transform.localPosition.x > xMax)
+            if (transform.localPosition.x < -17 && transform.localPosition.x > -18 && transform.localPosition.z == -28)
+            {
+                rand = Random.Range(0, 3);
+                if (rand == 0)
+                {
+                    x = 0;
+                    z = Random.Range(0.0f, -maxSpeed);
+                    transform.localRotation = Quaternion.Euler(0, 180, 0);
+                }
+                if (rand == 1)
+                {
+                    z = 0;
+                    x = Random.Range(0.0f, maxSpeed);
+                    transform.localRotation = Quaternion.Euler(0, 90, 0);
+                }
+                if (rand == 2)
+                {
+                    x = 0;
+                    z = Random.Range(0.0f, maxSpeed);
+                    transform.localRotation = Quaternion.Euler(0, 0, 0);
+                }
+            }
+
+            //TOP RIGHT
+            if (transform.localPosition.x < -17.8 && transform.localPosition.x > -18 && transform.localPosition.z > -38.2 && transform.localPosition.z < -38)
+            {
+                if (z != 0)
+                {
+                    z = 0;
+                    x = Random.Range(0.03f, maxSpeed);
+                    transform.localRotation = Quaternion.Euler(0, 90, 0);
+                }
+                else if (x != 0)
+                {
+                    x = 0;
+                    z = Random.Range(0.03f, maxSpeed);
+                    transform.localRotation = Quaternion.Euler(0, 0, 0);
+                }
+            }
+
+            //TOP LEFT
+            if (transform.localPosition.x > 17.8 && transform.localPosition.x < 18 && transform.localPosition.z > -38.2 && transform.localPosition.z < -38)
+            {
+                //Moving in z direction
+                if (z != 0)
+                {
+                    z = 0;
+                    x = Random.Range(-0.03f, -maxSpeed);
+                    transform.localRotation = Quaternion.Euler(0, 270, 0);
+                }
+                //Moving in x direction
+                else if (x != 0)
+                {
+                    x = 0;
+                    z = Random.Range(0.03f, maxSpeed);
+                    transform.localRotation = Quaternion.Euler(0, 0, 0);
+                }
+            }
+
+            //BOTTOM LEFT
+            if (transform.localPosition.x > 17.8 && transform.localPosition.x < 18 && transform.localPosition.z > -20.2 && transform.localPosition.z < -20)
+            {
+                if (z != 0)
+                {
+                    z = 0;
+                    x = Random.Range(-0.03f, -maxSpeed);
+                    transform.localRotation = Quaternion.Euler(0, 270, 0);
+                }
+                else if (x != 0)
+                {
+                    x = 0;
+                    z = Random.Range(-0.03f, -maxSpeed);
+                    transform.localRotation = Quaternion.Euler(0, 180, 0);
+                }
+            }
+
+            //BOTTOM RIGHT
+            if (transform.localPosition.x < -17.8 && transform.localPosition.x > -18 && transform.localPosition.z > -20.2 && transform.localPosition.z < -20)
+            {
+                //Moving in z direction
+                if (z != 0)
+                {
+                    z = 0;
+                    x = Random.Range(0.03f, maxSpeed);
+                    transform.localRotation = Quaternion.Euler(0, 90, 0);
+                }
+                else if (x != 0)
+                {
+                    x = 0;
+                    z = Random.Range(-0.03f, -maxSpeed);
+                    transform.localRotation = Quaternion.Euler(0, 180, 0);
+                }
+            }
+
+            /*if (transform.localPosition.x > xMax)
             {
                 x = Random.Range(-maxSpeed, 0.0f);
                 angle = Mathf.Atan2(x, z) * (180 / 3.141592f);
-                transform.localRotation = Quaternion.Euler(0, angle, 0);
+
                 time = 0.0f;
             }
 
@@ -105,7 +225,7 @@ public class CustomerController : MonoBehaviour
                 angle = Mathf.Atan2(x, z) * (180 / 3.141592f);
                 transform.localRotation = Quaternion.Euler(0, angle, 0);
                 time = 0.0f;
-            }
+            }*/
 
             transform.localPosition = new Vector3(transform.localPosition.x + x, transform.localPosition.y, transform.localPosition.z + z);
         }
