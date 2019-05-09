@@ -24,10 +24,21 @@ public class CustomerController : MonoBehaviour
     {
         gameController = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
 
-        x = Random.Range(-maxSpeed, maxSpeed);
-        z = Random.Range(-maxSpeed, maxSpeed);
-        angle = Mathf.Atan2(x, z) * (180 / 3.141592f);
-        transform.localRotation = Quaternion.Euler(0, angle, 0);
+        if (transform.localPosition.x > xMax + 5)
+        {
+            x = -maxSpeed;
+            z = 0;
+            transform.localRotation = Quaternion.Euler(0, 270, 0);
+            time = 0.0f;
+        }
+
+        if (transform.localPosition.x < xMin - 5)
+        {
+            x = maxSpeed;
+            z = 0;
+            transform.localRotation = Quaternion.Euler(0, 90, 0);
+            time = 0.0f;
+        }
     }
 
     // Update is called once per frame
@@ -37,6 +48,20 @@ public class CustomerController : MonoBehaviour
 
         if (!gameController.isRoundPaused && gameController.isGameStarted)
         {
+            if (transform.localPosition.x > xMax + 2)
+            {
+                x = -maxSpeed;
+                transform.localRotation = Quaternion.Euler(0, 270, 0);
+                time = 0.0f;
+            }
+
+            if (transform.localPosition.x < xMin - 2)
+            {
+                x = maxSpeed;
+                transform.localRotation = Quaternion.Euler(0, 90, 0);
+                time = 0.0f;
+            }
+
             if (transform.localPosition.x > xMax)
             {
                 x = Random.Range(-maxSpeed, 0.0f);
@@ -44,6 +69,7 @@ public class CustomerController : MonoBehaviour
                 transform.localRotation = Quaternion.Euler(0, angle, 0);
                 time = 0.0f;
             }
+
             if (transform.localPosition.x < xMin)
             {
                 x = Random.Range(0.0f, maxSpeed);
@@ -51,6 +77,7 @@ public class CustomerController : MonoBehaviour
                 transform.localRotation = Quaternion.Euler(0, angle, 0);
                 time = 0.0f;
             }
+
             if (transform.localPosition.z > zMax)
             {
                 z = Random.Range(-maxSpeed, 0.0f);
@@ -58,6 +85,7 @@ public class CustomerController : MonoBehaviour
                 transform.localRotation = Quaternion.Euler(0, angle, 0);
                 time = 0.0f;
             }
+
             if (transform.localPosition.z < zMin)
             {
                 z = Random.Range(0.0f, maxSpeed);
@@ -67,7 +95,7 @@ public class CustomerController : MonoBehaviour
             }
 
 
-            if (time > 1.0f)
+            if (time > 2.0f)
             {
                 x = Random.Range(-maxSpeed, maxSpeed);
                 z = Random.Range(-maxSpeed, maxSpeed);

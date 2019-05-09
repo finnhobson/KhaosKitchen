@@ -70,7 +70,8 @@ public class AnimationController : MonoBehaviour
 
     private void SpawnCustomers()
     {
-        for (int i = 0; i < 2; i++) Instantiate(customerPrefab);
+        Instantiate(customerPrefab, new Vector3(-50, 1, -28), transform.rotation);
+        Instantiate(customerPrefab, new Vector3(60, 1, -28), transform.rotation);
     }
 
     private void DestroyFires()
