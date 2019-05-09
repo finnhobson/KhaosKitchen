@@ -891,10 +891,6 @@ public class GameController : NetworkBehaviour
 
     public void AllAreReady()
     {
-        
-
-        
-
         Debug.Log("All");
 
         score += 10;

@@ -85,6 +85,7 @@ public class Player : NetworkBehaviour {
     public string topChefPush;
 
     //Extras
+    private string cameraColour;
     [SyncVar] private string nfcValue = "";
     private string validNfc = "";
     [SyncVar]public string validNfcRace = "";
@@ -257,11 +258,11 @@ public class Player : NetworkBehaviour {
             if (cameraPanel.activeInHierarchy)
             {
                 bool cameraBool = false;
-                if (cameraText.text == "Red") cameraBool = cameraController.red;
-                if (cameraText.text == "Orange") cameraBool = cameraController.orange;
-                if (cameraText.text == "Yellow") cameraBool = cameraController.yellow;
-                if (cameraText.text == "Green") cameraBool = cameraController.green;
-                if (cameraText.text == "Blue") cameraBool = cameraController.blue;
+                if (cameraColour == "Red") cameraBool = cameraController.red;
+                if (cameraColour == "Orange") cameraBool = cameraController.orange;
+                if (cameraColour == "Yellow") cameraBool = cameraController.yellow;
+                if (cameraColour == "Green") cameraBool = cameraController.green;
+                if (cameraColour == "Blue") cameraBool = cameraController.blue;
                 if (cameraBool)
                 {
                     cameraPanel.SetActive(false);
@@ -564,10 +565,11 @@ public class Player : NetworkBehaviour {
         micText.text = text;
     }
 
-    public void SetCameraPanel(string text)
+    public void SetCameraPanel(string colour, string text)
     {
         cameraController.enabled = true;
         cameraPanel.SetActive(true);
+        cameraColour = colour;
         cameraText.text = text;
     }
 
@@ -902,8 +904,9 @@ public class Player : NetworkBehaviour {
     {
         switch (activityNumber)
         {
-            case 0: 
-                groupMessageText.text = "Look at main screen \n (shaking)";
+            case 0:
+                //groupMessageText.text = "Look at main screen \n (shaking)";
+                groupMessageText.text = "ALL HANDS ON DECK!\n\nLOOK AT THE MAIN SCREEN!";
                 CmdSetShake(ShakeListener.shaking);
                 break;
 
@@ -918,7 +921,7 @@ public class Player : NetworkBehaviour {
                 }
                 else
                 {
-                    groupMessageText.text = "Done!";
+                    groupMessageText.text = "DONE!";
                     wait = true;
                 }
              
@@ -1004,7 +1007,8 @@ public class Player : NetworkBehaviour {
         CmdSetValidNfcRace(validNfcRace);
 
         IsNFCRaceCompleted = false;
-        groupMessageText.text = (validNfcRace + "\n look at main screen \n (nfc above for testing)");
+        //groupMessageText.text = (validNfcRace + "\n look at main screen \n (nfc above for testing)");
+        groupMessageText.text = "ALL HANDS ON DECK!\n\nLOOK AT THE MAIN SCREEN!";
         isNFCRaceStarted = true;
     }
 
