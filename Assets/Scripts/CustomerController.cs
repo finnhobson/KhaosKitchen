@@ -68,7 +68,7 @@ public class CustomerController : MonoBehaviour
             }*/
 
             //MOVING INSIDE RESTAURANT
-            if (transform.localPosition.x > 17 && transform.localPosition.x < 18 && transform.localPosition.z == -28)
+            if (transform.localPosition.x > 17.8 && transform.localPosition.x < 18 && transform.localPosition.z == -28)
             {
                 rand = Random.Range(0, 3);
                 if (rand == 0)
@@ -91,7 +91,7 @@ public class CustomerController : MonoBehaviour
                 } 
             }
 
-            if (transform.localPosition.x < -17 && transform.localPosition.x > -18 && transform.localPosition.z == -28)
+            if (transform.localPosition.x < -17.8 && transform.localPosition.x > -18 && transform.localPosition.z == -28)
             {
                 rand = Random.Range(0, 3);
                 if (rand == 0)

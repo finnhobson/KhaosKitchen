@@ -9,6 +9,7 @@ public class LobbyInfoPanel : MonoBehaviour
     public Text infoText;
     public Text buttonText;
     public Button singleButton;
+    public GameObject settings;
 
     public void Display(string info, string buttonInfo, UnityEngine.Events.UnityAction buttonClbk)
     {
@@ -23,7 +24,7 @@ public class LobbyInfoPanel : MonoBehaviour
             singleButton.onClick.AddListener(buttonClbk);
         }
 
-        singleButton.onClick.AddListener(() => { gameObject.SetActive(false); });
+        singleButton.onClick.AddListener(() => { gameObject.SetActive(false); settings.SetActive(false); });
 
         gameObject.SetActive(true);
     }

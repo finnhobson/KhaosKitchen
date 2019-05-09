@@ -813,20 +813,32 @@ public class Player : NetworkBehaviour {
 
     public void OnClickShopButton1()
     {
-        CmdUpdateChefPrefab(1);
-        shopPanel.SetActive(false);
+        if (PlayerScore >= 25)
+        {
+            CmdUpdateChefPrefab(1);
+            shopPanel.SetActive(false);
+        }
+        else Vibrate();
     }
 
     public void OnClickShopButton2()
     {
-        CmdUpdateChefPrefab(2);
-        shopPanel.SetActive(false);
+        if (PlayerScore >= 100)
+        {
+            CmdUpdateChefPrefab(2);
+            shopPanel.SetActive(false);
+        }
+        else Vibrate();
     }
 
     public void OnClickShopButton3()
     {
-        CmdUpdateChefPrefab(3);
-        shopPanel.SetActive(false);
+        if (PlayerScore >= 500)
+        {
+            CmdUpdateChefPrefab(3);
+            shopPanel.SetActive(false);
+        }
+        else Vibrate();
     }
 
 

@@ -333,7 +333,7 @@ public class GameController : NetworkBehaviour
             else if (roundTimeLeft <= 0 || customerSatisfaction <= 0)
             {
                 SetTimerText("0");
-                if (isServer) RpcGameOver();
+                roundTimerBar.GetComponent<RectTransform>().localScale = new Vector3(0, 1, 1);
                 gameOverText.transform.SetAsLastSibling();
                 gameOverText.SetActive(true);
                 backButton.SetActive(true);
@@ -342,9 +342,11 @@ public class GameController : NetworkBehaviour
                 {
                     foreach (Player p in playerList)
                     {
-                        p.gameOverText.text = "SHUT DOWN!\n\nGAME OVER!";
+                        p.gameOverText.text = "TERRIBLE REVIEWS!\n\nGAME OVER!";
                     }
                 }
+
+                if (isServer) RpcGameOver();
 
                 if (!isGameOver)
                 {
@@ -806,7 +808,7 @@ public class GameController : NetworkBehaviour
                 {
                     if (player.PlayerUserName == raceWinnersList[i])
                     {
-                        int scoreAdjustment = (10 * (playerCount - i));
+                        int scoreAdjustment = (5 * (playerCount - i));
                         player.PlayerScore += scoreAdjustment;
                     }
                     Debug.Log(raceWinnersList[i]);
