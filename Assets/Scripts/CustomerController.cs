@@ -19,6 +19,9 @@ public class CustomerController : MonoBehaviour
 
     private GameController gameController;
 
+    public GameObject shirt;
+    public List<GameObject> hatParts;
+
     // Use this for initialization
     void Start()
     {

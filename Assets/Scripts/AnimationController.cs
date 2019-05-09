@@ -70,8 +70,50 @@ public class AnimationController : MonoBehaviour
 
     private void SpawnCustomers()
     {
-        Instantiate(customerPrefab, new Vector3(-50, 1, -28), transform.rotation);
-        Instantiate(customerPrefab, new Vector3(60, 1, -28), transform.rotation);
+        GameObject customer = Instantiate(customerPrefab, new Vector3(-50, 0.5f, -28), transform.rotation);
+        GameObject shirt = customer.GetComponent<CustomerController>().shirt;
+        Material randColour = new Material(shirt.GetComponent<MeshRenderer>().material);
+        List<GameObject> hatParts = customer.GetComponent<CustomerController>().hatParts;
+        int rand = UnityEngine.Random.Range(0, 7);
+        if (rand == 0) randColour.color = Color.red;
+        if (rand == 1) randColour.color = Color.yellow;
+        if (rand == 2) randColour.color = Color.green;
+        if (rand == 3) randColour.color = Color.blue;
+        if (rand == 4) randColour.color = Color.cyan;
+        if (rand == 5) randColour.color = Color.magenta;
+        if (rand == 6) randColour.color = Color.white;
+        shirt.GetComponent<MeshRenderer>().material = randColour;
+
+        rand = UnityEngine.Random.Range(0, 3);
+        if (rand == 0) randColour.color = Color.red;
+        if (rand == 1) randColour.color = Color.blue;
+        if (rand == 2) randColour.color = Color.cyan;
+        foreach (GameObject part in hatParts)
+        {
+            part.GetComponent<MeshRenderer>().material = randColour;
+        }
+
+        customer = Instantiate(customerPrefab, new Vector3(60, 0.5f, -28), transform.rotation);
+        shirt = customer.GetComponent<CustomerController>().shirt;
+        randColour = new Material(shirt.GetComponent<MeshRenderer>().material);
+        rand = UnityEngine.Random.Range(0, 7);
+        if (rand == 0) randColour.color = Color.red;
+        if (rand == 1) randColour.color = Color.yellow;
+        if (rand == 2) randColour.color = Color.green;
+        if (rand == 3) randColour.color = Color.blue;
+        if (rand == 4) randColour.color = Color.cyan;
+        if (rand == 5) randColour.color = Color.magenta;
+        if (rand == 6) randColour.color = Color.white;
+        shirt.GetComponent<MeshRenderer>().material = randColour;
+
+        rand = UnityEngine.Random.Range(0, 3);
+        if (rand == 0) randColour.color = Color.red;
+        if (rand == 1) randColour.color = Color.blue;
+        if (rand == 2) randColour.color = Color.cyan;
+        foreach (GameObject part in hatParts)
+        {
+            part.GetComponent<MeshRenderer>().material = randColour;
+        }
     }
 
     private void DestroyFires()
