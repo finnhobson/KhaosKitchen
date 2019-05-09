@@ -87,7 +87,7 @@ public class Player : NetworkBehaviour {
     //Extras
     [SyncVar] private string nfcValue = "";
     private string validNfc = "";
-    public string validNfcRace = "";
+    [SyncVar]public string validNfcRace = "";
     public int playerCount;
     public int instTime;
     public bool easyPhoneInteractions = true;
@@ -1001,7 +1001,7 @@ public class Player : NetworkBehaviour {
                 break;
         }
 
-        //CmdSetValidNfcRace(validNfcRace);
+        CmdSetValidNfcRace(validNfcRace);
 
         IsNFCRaceCompleted = false;
         groupMessageText.text = validNfcRace + "\n look at main screen";

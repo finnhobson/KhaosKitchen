@@ -305,10 +305,10 @@ public class GameController : NetworkBehaviour
 
                 else if (groupActivityStarted)
                 {
-//                    if (activityNumber == 1)
-//                    {
-//                        DisplayGroupNfcActivityInstruction();
-//                    } else if (activityNumber == 0) {DisplayGroupShakeActivityInstruction();}
+                    if (activityNumber == 1)
+                    {
+                        DisplayGroupNfcActivityInstruction();
+                    } else if (activityNumber == 0) {DisplayGroupShakeActivityInstruction();}
 
                     Debug.Log("call2");
 
@@ -785,7 +785,7 @@ public class GameController : NetworkBehaviour
             if (player.IsNFCRaceCompleted && !raceWinnersList.Contains(player.PlayerUserName))
             {
                 raceWinnersList.Add(player.PlayerUserName);
-               // groupDisplayTasks[playerList.IndexOf(player)].text = InstructionController.getPositionWord(raceWinnersList.IndexOf(player.PlayerUserName));
+               groupDisplayTasks[playerList.IndexOf(player)].text = InstructionController.getPositionWord(raceWinnersList.IndexOf(player.PlayerUserName));
             }
         }
 
@@ -820,15 +820,15 @@ public class GameController : NetworkBehaviour
 
     private void IncrementGroupActivity()
     {
-//        activityNumber = (activityNumber + 1) % numberOfGroupActivities;
-        activityNumber = 1;
+        activityNumber = (activityNumber + 1) % numberOfGroupActivities;
+//        activityNumber = 1;
     }
 
     private void RpcUpdateActivityNumber(int number)
     {
         foreach (var player in playerList)
         {
-            if (player != null) player.activityNumber = 1;
+            if (player != null) player.activityNumber = activityNumber;
             else Debug.Log("not player at UpdateActivityNumber");
         }
     }
@@ -853,7 +853,7 @@ public class GameController : NetworkBehaviour
     private void CheckGroupActivity()
     {
 
-        switch (1)
+        switch (activityNumber)
         {
             case 0:
                 CheckShake();
@@ -912,9 +912,9 @@ public class GameController : NetworkBehaviour
         raceWinnersList = new List<string>();
         raceWinnersList.Clear();
         Debug.Log("... Ready");
-//        StartCoroutine(leaveUpLeaderboard(3));
-//        groupShakePannel.SetActive(false);
-//        groupRacePannel.SetActive(false);
+        StartCoroutine(leaveUpLeaderboard(3));
+        groupShakePannel.SetActive(false);
+        groupRacePannel.SetActive(false);
         IncrementGroupActivity();
     }
 
@@ -929,7 +929,7 @@ public class GameController : NetworkBehaviour
             player.isNFCRaceStarted = false;
             player.IsNFCRaceCompleted = false;
             player.wait = false;
-            player.activityNumber = 1;
+            player.activityNumber = activityNumber;
         }
     }
 
