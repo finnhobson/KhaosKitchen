@@ -202,24 +202,19 @@ public class Player : NetworkBehaviour {
             if (isLocalPlayer)
             {
                 CheckGroupActivity();
-                nfcPanel.SetActive(false);
-                shakePanel.SetActive(false);
-                micPanel.SetActive(false);
-                
+                TurnEverythingOff();
             }
         }
 
         if (groupMessagePanel.activeSelf) return;
-        
-        //if (micActive) micVolumeText.text = micListener.MicLoudness.ToString("F4");
-//        topChefText.text = TopChef;
-//        scoreText.text = PlayerScore.ToString();
+
+        if (roundCompletePanel.activeInHierarchy) TurnEverythingOff();
 
         if (!timerStarted && gameController.isGameStarted)
         {
             StartInstTimer();
             timerStarted = true;
-            //if (isLocalPlayer) CmdUpdateChefPrefab();
+            if (isLocalPlayer) CmdChangeHatColour();
         }
 
         if (gameController.isGameStarted && gameController.roundTimeLeft > 0)
@@ -792,7 +787,7 @@ public class Player : NetworkBehaviour {
     }
 
     [Command]
-    public void CmdChangeHatColour(int item)
+    public void CmdChangeHatColour()
     {
         var chefs = GameObject.FindGameObjectsWithTag("ChefPrefab");
         foreach (GameObject chef in chefs)
@@ -1030,6 +1025,20 @@ public class Player : NetworkBehaviour {
         validNfcRace = tmp;
     }
 
-
+    private void TurnEverythingOff()
+    {
+        nfcPanel.SetActive(false);
+        shakePanel.SetActive(false);
+        micPanel.SetActive(false);
+        micActive = false;
+        micListener.enabled = false;
+        cameraPanel.SetActive(false);
+        cameraController.enabled = false;
+        cameraController.red = false;
+        cameraController.blue = false;
+        cameraController.green = false;
+        cameraController.orange = false;
+        cameraController.yellow = false;
+    }
 }
 
