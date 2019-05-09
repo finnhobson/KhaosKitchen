@@ -914,7 +914,6 @@ public class GameController : NetworkBehaviour
         Debug.Log("... Ready");
         StartCoroutine(leaveUpLeaderboard(5));
         groupShakePannel.SetActive(false);
-        groupRacePannel.SetActive(false);
         IncrementGroupActivity();
     }
 
@@ -954,6 +953,8 @@ public class GameController : NetworkBehaviour
     IEnumerator leaveUpLeaderboard(int waitTime)
     {
         yield return new WaitForSeconds(waitTime);
+        groupRacePannel.SetActive(false);
+
 
             
 
