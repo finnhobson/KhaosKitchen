@@ -23,7 +23,7 @@ public static class GameSettings
      * XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
      */
 
-    private static int baseInstructionNumber = 16;
+    private static int baseInstructionNumber = 20;
     private static int instructionNumberIncreasePerRound = 2;
     private static int baseInstructionTime = 15;
     private static int instructionTimeReductionPerRound = 5;

@@ -407,12 +407,12 @@ public class LobbyManager : NetworkLobbyManager
     public void SetSettings()
     {
         GameSettings.RoundTime = string.IsNullOrEmpty(roundTimeText.text) ? 90 : int.Parse(roundTimeText.text);
-        GameSettings.BaseInstructionNumber = string.IsNullOrEmpty(BaseInstructionNumberText.text) ? 10 : int.Parse(BaseInstructionNumberText.text);
+        GameSettings.BaseInstructionNumber = string.IsNullOrEmpty(BaseInstructionNumberText.text) ? 20 : int.Parse(BaseInstructionNumberText.text);
         GameSettings.InstructionNumberIncreasePerRound = string.IsNullOrEmpty(InstructionNumberIncreasePerRoundText.text) ? 5 : int.Parse(InstructionNumberIncreasePerRoundText.text);
         GameSettings.BaseInstructionTime = string.IsNullOrEmpty(BaseInstructionTimeText.text) ? 15 : int.Parse(BaseInstructionTimeText.text);
         GameSettings.InstructionTimeReductionPerRound = string.IsNullOrEmpty(InstructionTimeReductionPerRoundText.text) ? 2 : int.Parse(InstructionTimeReductionPerRoundText.text);
         GameSettings.InstructionTimeIncreasePerPlayer = string.IsNullOrEmpty(InstructionTimeIncreasePerPlayerText.text) ? 2 : int.Parse(InstructionTimeIncreasePerPlayerText.text);
-        GameSettings.MinimumInstructionTime = string.IsNullOrEmpty(MinimumInstructionTimeText.text) ? 5 : int.Parse(MinimumInstructionTimeText.text);
+        GameSettings.MinimumInstructionTime = string.IsNullOrEmpty(MinimumInstructionTimeText.text) ? 3 : int.Parse(MinimumInstructionTimeText.text);
         GameSettings.PlayerCount = (int)playerCountSlider.value;
         GameSettings.EasyPhoneInteractions = easyPhoneInteractions.isOn;
         GameSettings.PhoneInteractionProbability = string.IsNullOrEmpty(phoneInteractionText.text) ? 15 : 3*int.Parse(phoneInteractionText.text);

@@ -26,7 +26,7 @@ public class GameController : NetworkBehaviour
     public List<Text> groupDisplayNames = new List<Text>();
     public List<Text> groupDisplayTasks = new List<Text>();
 
-    public GameObject roundTimerBar, gameOverText, backButton, lobbyTopPanel,groupShakePannel, groupRacePannel;
+    public GameObject roundTimerBar, gameOverText, backButton, lobbyTopPanel,groupShakePanel, groupRacePanel;
     public Image stars;
 
     public List<Player> playerList = new List<Player>();
@@ -337,6 +337,8 @@ public class GameController : NetworkBehaviour
                 gameOverText.transform.SetAsLastSibling();
                 gameOverText.SetActive(true);
                 backButton.SetActive(true);
+                groupShakePanel.SetActive(false);
+                groupRacePanel.SetActive(false);
 
                 if (customerSatisfaction <= 0)
                 {
@@ -911,7 +913,7 @@ public class GameController : NetworkBehaviour
         raceWinnersList.Clear();
         Debug.Log("... Ready");
         StartCoroutine(leaveUpLeaderboard(5));
-        groupShakePannel.SetActive(false);
+        groupShakePanel.SetActive(false);
         IncrementGroupActivity();
     }
 
@@ -932,7 +934,7 @@ public class GameController : NetworkBehaviour
 
     private void DisplayGroupNfcActivityInstruction()
     {
-        groupRacePannel.SetActive(true);
+        groupRacePanel.SetActive(true);
         for (int i = 0; i < playerCount; i++)
         {
             if (!playerList[i].IsNFCRaceCompleted)
@@ -945,13 +947,13 @@ public class GameController : NetworkBehaviour
     
     private void DisplayGroupShakeActivityInstruction()
     {
-        groupShakePannel.SetActive(true);
+        groupShakePanel.SetActive(true);
     }
 
     IEnumerator leaveUpLeaderboard(int waitTime)
     {
         yield return new WaitForSeconds(waitTime);
-        groupRacePannel.SetActive(false);
+        groupRacePanel.SetActive(false);
 
 
             
