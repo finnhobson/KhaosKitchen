@@ -18,6 +18,7 @@ public class CustomerController : MonoBehaviour
     private float angle;
 
     private GameController gameController;
+    private AnimationController animationController;
 
     public GameObject shirt;
     public List<GameObject> hatParts;
@@ -361,6 +362,36 @@ public class CustomerController : MonoBehaviour
                     z = 0;
                     x = Random.Range(0.0f, -maxSpeed);
                     // transform.localRotation = Quaternion.Euler(0, 90, 0);
+                }
+            }
+            //LEFT EXIT
+            if (transform.localPosition.x < 17.8 && transform.localPosition.x > 18 && transform.localPosition.z > -28.2 && transform.localPosition.z < -28)
+            {
+                if (gameController.customerSatisfaction <= 30 && animationController.customerNumber >= 1)
+                {
+                    z = 0; 
+                    x = Random.Range(0.0f, maxSpeed);
+                    animationController.customerNumber--; 
+                }
+                else
+                {
+                    z = 0;
+                    x = Random.Range(0.0f, -maxSpeed);
+                }
+            }
+            //RIGHT EXIT
+            if (transform.localPosition.x < 17.8 && transform.localPosition.x > 18 && transform.localPosition.z > -28.2 && transform.localPosition.z < -28)
+            {
+                if (gameController.customerSatisfaction <= 30 && animationController.customerNumber >= 1)
+                {
+                    z = 0;
+                    x = Random.Range(0.0f, -maxSpeed);
+                    animationController.customerNumber--;
+                }
+                else
+                {
+                    z = 0;
+                    x = Random.Range(0.0f, maxSpeed);
                 }
             }
             /*if (transform.localPosition.x > xMax)

@@ -14,10 +14,12 @@ public class AnimationController : MonoBehaviour
     public GameObject customerPrefab;
     public GameObject kitchenPrefab;
     public GameObject firePrefab;
+    public int customerNumber = 0;
 
     private bool chefsSpawned = false;
     private int currentRound = 0;
     private int fireCount = 0;
+    private bool bonusCustomers = false;
 
     // Start is called before the first frame update
     void Start()
@@ -44,12 +46,20 @@ public class AnimationController : MonoBehaviour
         {
             SpawnCustomers();
             currentRound = gameController.roundNumber;
+            bonusCustomers = false; 
         }
 
         if (fireCount < gameController.fireCount)
         {
             SpawnFire();
             fireCount = gameController.fireCount;
+        }
+        if (gameController.customerSatisfaction > 75 && customerNumber < 20 && bonusCustomers == false && !gameController.isRoundPaused)
+        {
+            bonusCustomers = true;
+            SpawnCustomers();
+
+
         }
     }
 
@@ -70,7 +80,9 @@ public class AnimationController : MonoBehaviour
 
     private void SpawnCustomers()
     {
+
         GameObject customer = Instantiate(customerPrefab, new Vector3(-50, 0.5f, -28), transform.rotation);
+        customerNumber++;
         GameObject shirt = customer.GetComponent<CustomerController>().shirt;
         Material randColour = new Material(shirt.GetComponent<MeshRenderer>().material);
         List<GameObject> hatParts = customer.GetComponent<CustomerController>().hatParts;
@@ -94,6 +106,7 @@ public class AnimationController : MonoBehaviour
         }
 
         customer = Instantiate(customerPrefab, new Vector3(60, 0.5f, -28), transform.rotation);
+        customerNumber++;
         shirt = customer.GetComponent<CustomerController>().shirt;
         randColour = new Material(shirt.GetComponent<MeshRenderer>().material);
         rand = UnityEngine.Random.Range(0, 7);
