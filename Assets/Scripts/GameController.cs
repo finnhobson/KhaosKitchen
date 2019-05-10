@@ -339,20 +339,24 @@ public class GameController : NetworkBehaviour
                         p.gameOverText.text = "TERRIBLE REVIEWS!\n\nGAME OVER!";
                     }
                 }
+
                 if (isServer) RpcGameOver();
                 SetTimerText("0");
                 roundTimerBar.GetComponent<RectTransform>().localScale = new Vector3(0, 1, 1);
                 gameOverText.transform.SetAsLastSibling();
                 gameOverText.SetActive(true);
                 backButton.SetActive(true);
-                groupShakePanel.SetActive(false);
-                groupRacePanel.SetActive(false);
 
                 if (!isGameOver)
                 {
                     PlayGameOver();
                     GameOver();
                 }
+
+                groupShakePanel.SetActive(false);
+                groupRacePanel.SetActive(false);
+
+
             }
 
             else
