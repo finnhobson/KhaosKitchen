@@ -54,7 +54,7 @@ public class AnimationController : MonoBehaviour
             SpawnFire();
             fireCount = gameController.fireCount;
         }
-        if (gameController.customerSatisfaction > 75 && customerNumber < 20 && bonusCustomers == false && !gameController.isRoundPaused)
+        if (gameController.customerSatisfaction > 80 && customerNumber < 20 && bonusCustomers == false && !gameController.isRoundPaused)
         {
             bonusCustomers = true;
             SpawnCustomers();

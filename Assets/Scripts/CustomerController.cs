@@ -58,7 +58,7 @@ public class CustomerController : MonoBehaviour
             {
                 if (z > 0)
                 {
-                    transform.localRotation = Quaternion.Euler(0, 0, 0); 
+                    transform.localRotation = Quaternion.Euler(0, 0, 0);
                 }
                 else if (z < 0)
                 {
@@ -78,6 +78,7 @@ public class CustomerController : MonoBehaviour
                 }
 
             }
+        }
 
             //WALKING DOWN PATH
             /*if (transform.localPosition.x > xMax)
@@ -95,8 +96,8 @@ public class CustomerController : MonoBehaviour
             }*/
 
             //MOVING INSIDE RESTAURANT
-            if (transform.localPosition.x > 17.8 && transform.localPosition.x < 18 && transform.localPosition.z == -28)
-            {
+            if (transform.localPosition.x > 17.8 && transform.localPosition.x < 18 && transform.localPosition.z < -28 && transform.localPosition.z > -28.2 && gameController.customerSatisfaction >= 25)
+            { 
                 rand = Random.Range(0, 3);
                 if (rand == 0)
                 {
@@ -115,10 +116,18 @@ public class CustomerController : MonoBehaviour
                     x = 0;
                     z = Random.Range(0.0f, maxSpeed);
                     //transform.localRotation = Quaternion.Euler(0, 0, 0);
-                } 
-            }
+                }
 
-            if (transform.localPosition.x < -17.8 && transform.localPosition.x > -18 && transform.localPosition.z == -28)
+                else
+                {
+                z = 0;
+                x = Random.Range(0.0f, -maxSpeed);
+                animationController.customerNumber--;
+                }
+            }
+        
+
+            if (transform.localPosition.x < -17.8 && transform.localPosition.x > -18 && transform.localPosition.z < -28 && transform.localPosition.z > -28.2 && gameController.customerSatisfaction >= 25)
             {
                 rand = Random.Range(0, 3);
                 if (rand == 0)
@@ -139,7 +148,13 @@ public class CustomerController : MonoBehaviour
                     z = Random.Range(0.0f, maxSpeed);
                   //  transform.localRotation = Quaternion.Euler(0, 0, 0);
                 }
-            }
+                else
+                {
+                    z = 0;
+                    x = Random.Range(0.0f, -maxSpeed);
+                    animationController.customerNumber--;
+                }
+        }
 
             //TOP RIGHT
             if (transform.localPosition.x < -17.8 && transform.localPosition.x > -18 && transform.localPosition.z > -38.2 && transform.localPosition.z < -38)
