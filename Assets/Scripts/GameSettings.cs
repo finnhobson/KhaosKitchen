@@ -31,7 +31,7 @@ public static class GameSettings
     private static int minimumInstructionTime = 3;
     private static int roundTime = 90;
     private static bool easyPhoneInteraction = true;
-    private static int phoneInteractionProbability = 15;
+    private static int phoneInteractionProbability = 12;
     
     private static int pCount;
     
