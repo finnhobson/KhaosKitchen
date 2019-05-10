@@ -227,12 +227,18 @@ public class CustomerController : MonoBehaviour
                     x = Random.Range(0.0f, maxSpeed);
                     // transform.localRotation = Quaternion.Euler(0, 90, 0);
                 }
+                if (rand == 2)
+                {
+                    z = 0;
+                    x = Random.Range(0.0f, -maxSpeed);
+                    // transform.localRotation = Quaternion.Euler(0, 90, 0);
+                }
 
             }
             //BOTTOM LEFT MIDDLE 
             if (transform.localPosition.x < 5.8 && transform.localPosition.x > 6 && transform.localPosition.z > -20.2 && transform.localPosition.z < -20)
             {
-                rand = Random.Range(0, 2);
+                rand = Random.Range(0, 3);
                 if (rand == 0)
                 {
                     x = 0;
@@ -245,13 +251,17 @@ public class CustomerController : MonoBehaviour
                     x = Random.Range(0.0f, -maxSpeed);
                     // transform.localRotation = Quaternion.Euler(0, 90, 0);
                 }
-
-
+                if (rand == 2)
+                {
+                    z = 0;
+                    x = Random.Range(0.0f, maxSpeed);
+                    // transform.localRotation = Quaternion.Euler(0, 90, 0);
+                }
             }
             //TOP LEFT MIDDLE 
             if (transform.localPosition.x < 5.8 && transform.localPosition.x > 6 && transform.localPosition.z > -38.2 && transform.localPosition.z < -38)
             {
-                rand = Random.Range(0, 2);
+                rand = Random.Range(0, 3);
                 if (rand == 0)
                 {
                     x = 0;
@@ -264,11 +274,17 @@ public class CustomerController : MonoBehaviour
                     x = Random.Range(0.0f, -maxSpeed);
                     // transform.localRotation = Quaternion.Euler(0, 90, 0);
                 }
+                if (rand == 2)
+                {
+                    z = 0;
+                    x = Random.Range(0.0f, maxSpeed);
+                    // transform.localRotation = Quaternion.Euler(0, 90, 0);
+                }
             }
             //TOP RIGHT MIDDLE 
             if (transform.localPosition.x < -5.8 && transform.localPosition.x > -6 && transform.localPosition.z > -38.2 && transform.localPosition.z < -38)
             {
-                rand = Random.Range(0, 2);
+                rand = Random.Range(0, 3);
                 if (rand == 0)
                 {
                     x = 0;
@@ -279,6 +295,12 @@ public class CustomerController : MonoBehaviour
                 {
                     z = 0;
                     x = Random.Range(0.0f, -maxSpeed);
+                    // transform.localRotation = Quaternion.Euler(0, 90, 0);
+                }
+                if (rand == 2)
+                {
+                    z = 0;
+                    x = Random.Range(0.0f, maxSpeed);
                     // transform.localRotation = Quaternion.Euler(0, 90, 0);
                 }
             }
