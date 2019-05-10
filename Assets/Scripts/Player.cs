@@ -214,7 +214,7 @@ public class Player : NetworkBehaviour {
         {
             StartInstTimer();
             timerStarted = true;
-            if (isLocalPlayer) CmdChangeHatColour();
+            //if (isLocalPlayer) CmdChangeHatColour();
         }
 
         if (gameController.isGameStarted && gameController.roundTimeLeft > 0)
@@ -749,6 +749,7 @@ public class Player : NetworkBehaviour {
                     {
                         roller.SetActive(true);
                         PlayerScore -= 25;
+                        shopPanel.SetActive(false);
                     }
                 }
 
@@ -765,6 +766,7 @@ public class Player : NetworkBehaviour {
                             s.GetComponent<MeshRenderer>().material = ogreColour;
                         }
                         PlayerScore -= 100;
+                        shopPanel.SetActive(false);
                     }
                 }
 
@@ -780,7 +782,9 @@ public class Player : NetworkBehaviour {
                             part.SetActive(false);
                         }
                         PlayerScore -= 500;
+                        shopPanel.SetActive(false);
                     }
+                    else Vibrate();
                 }
             }
         }
@@ -808,32 +812,17 @@ public class Player : NetworkBehaviour {
 
     public void OnClickShopButton1()
     {
-        if (PlayerScore >= 25)
-        {
-            CmdUpdateChefPrefab(1);
-            shopPanel.SetActive(false);
-        }
-        else Vibrate();
+        CmdUpdateChefPrefab(1);
     }
 
     public void OnClickShopButton2()
     {
-        if (PlayerScore >= 100)
-        {
-            CmdUpdateChefPrefab(2);
-            shopPanel.SetActive(false);
-        }
-        else Vibrate();
+        CmdUpdateChefPrefab(2);
     }
 
     public void OnClickShopButton3()
     {
-        if (PlayerScore >= 500)
-        {
-            CmdUpdateChefPrefab(3);
-            shopPanel.SetActive(false);
-        }
-        else Vibrate();
+        CmdUpdateChefPrefab(3);
     }
 
 

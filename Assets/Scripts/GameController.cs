@@ -332,14 +332,6 @@ public class GameController : NetworkBehaviour
             }
             else if (roundTimeLeft <= 0 || customerSatisfaction <= 0)
             {
-                SetTimerText("0");
-                roundTimerBar.GetComponent<RectTransform>().localScale = new Vector3(0, 1, 1);
-                gameOverText.transform.SetAsLastSibling();
-                gameOverText.SetActive(true);
-                backButton.SetActive(true);
-                groupShakePanel.SetActive(false);
-                groupRacePanel.SetActive(false);
-
                 if (customerSatisfaction <= 0)
                 {
                     foreach (Player p in playerList)
@@ -347,8 +339,14 @@ public class GameController : NetworkBehaviour
                         p.gameOverText.text = "TERRIBLE REVIEWS!\n\nGAME OVER!";
                     }
                 }
-
                 if (isServer) RpcGameOver();
+                SetTimerText("0");
+                roundTimerBar.GetComponent<RectTransform>().localScale = new Vector3(0, 1, 1);
+                gameOverText.transform.SetAsLastSibling();
+                gameOverText.SetActive(true);
+                backButton.SetActive(true);
+                groupShakePanel.SetActive(false);
+                groupRacePanel.SetActive(false);
 
                 if (!isGameOver)
                 {
