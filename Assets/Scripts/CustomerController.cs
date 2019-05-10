@@ -52,6 +52,32 @@ public class CustomerController : MonoBehaviour
 
         if (!gameController.isRoundPaused && gameController.isGameStarted)
         {
+
+            if (x == 0)
+            {
+                if (z > 0)
+                {
+                    transform.localRotation = Quaternion.Euler(0, 0, 0); 
+                }
+                else if (z < 0)
+                {
+                    transform.localRotation = Quaternion.Euler(0, 180, 0);
+                }
+
+            }
+            if (z == 0)
+            {
+                if (x > 0)
+                {
+                    transform.localRotation = Quaternion.Euler(0, 90, 0);
+                }
+                else if (x < 0)
+                {
+                    transform.localRotation = Quaternion.Euler(0, 270, 0);
+                }
+
+            }
+
             //WALKING DOWN PATH
             /*if (transform.localPosition.x > xMax)
             {
@@ -75,19 +101,19 @@ public class CustomerController : MonoBehaviour
                 {
                     x = 0;
                     z = Random.Range(0.0f, -maxSpeed);
-                    transform.localRotation = Quaternion.Euler(0, 180, 0);
+                   // transform.localRotation = Quaternion.Euler(0, 180, 0);
                 }
                 if (rand == 1)
                 {
                     z = 0;
                     x = Random.Range(0.0f, -maxSpeed);
-                    transform.localRotation = Quaternion.Euler(0, 270, 0);
+                   // transform.localRotation = Quaternion.Euler(0, 270, 0);
                 }
                 if (rand == 2)
                 {
                     x = 0;
                     z = Random.Range(0.0f, maxSpeed);
-                    transform.localRotation = Quaternion.Euler(0, 0, 0);
+                    //transform.localRotation = Quaternion.Euler(0, 0, 0);
                 } 
             }
 
@@ -98,19 +124,19 @@ public class CustomerController : MonoBehaviour
                 {
                     x = 0;
                     z = Random.Range(0.0f, -maxSpeed);
-                    transform.localRotation = Quaternion.Euler(0, 180, 0);
+                   // transform.localRotation = Quaternion.Euler(0, 180, 0);
                 }
                 if (rand == 1)
                 {
                     z = 0;
                     x = Random.Range(0.0f, maxSpeed);
-                    transform.localRotation = Quaternion.Euler(0, 90, 0);
+                   // transform.localRotation = Quaternion.Euler(0, 90, 0);
                 }
                 if (rand == 2)
                 {
                     x = 0;
                     z = Random.Range(0.0f, maxSpeed);
-                    transform.localRotation = Quaternion.Euler(0, 0, 0);
+                  //  transform.localRotation = Quaternion.Euler(0, 0, 0);
                 }
             }
 
@@ -121,13 +147,13 @@ public class CustomerController : MonoBehaviour
                 {
                     z = 0;
                     x = Random.Range(0.03f, maxSpeed);
-                    transform.localRotation = Quaternion.Euler(0, 90, 0);
+                    //transform.localRotation = Quaternion.Euler(0, 90, 0);
                 }
                 else if (x != 0)
                 {
                     x = 0;
                     z = Random.Range(0.03f, maxSpeed);
-                    transform.localRotation = Quaternion.Euler(0, 0, 0);
+                  // transform.localRotation = Quaternion.Euler(0, 0, 0);
                 }
             }
 
@@ -139,14 +165,14 @@ public class CustomerController : MonoBehaviour
                 {
                     z = 0;
                     x = Random.Range(-0.03f, -maxSpeed);
-                    transform.localRotation = Quaternion.Euler(0, 270, 0);
+                   // transform.localRotation = Quaternion.Euler(0, 270, 0);
                 }
                 //Moving in x direction
                 else if (x != 0)
                 {
                     x = 0;
                     z = Random.Range(0.03f, maxSpeed);
-                    transform.localRotation = Quaternion.Euler(0, 0, 0);
+                   // transform.localRotation = Quaternion.Euler(0, 0, 0);
                 }
             }
 
@@ -157,13 +183,13 @@ public class CustomerController : MonoBehaviour
                 {
                     z = 0;
                     x = Random.Range(-0.03f, -maxSpeed);
-                    transform.localRotation = Quaternion.Euler(0, 270, 0);
+                   // transform.localRotation = Quaternion.Euler(0, 270, 0);
                 }
                 else if (x != 0)
                 {
                     x = 0;
                     z = Random.Range(-0.03f, -maxSpeed);
-                    transform.localRotation = Quaternion.Euler(0, 180, 0);
+                   // transform.localRotation = Quaternion.Euler(0, 180, 0);
                 }
             }
 
@@ -175,16 +201,146 @@ public class CustomerController : MonoBehaviour
                 {
                     z = 0;
                     x = Random.Range(0.03f, maxSpeed);
-                    transform.localRotation = Quaternion.Euler(0, 90, 0);
+                   // transform.localRotation = Quaternion.Euler(0, 90, 0);
                 }
                 else if (x != 0)
                 {
                     x = 0;
                     z = Random.Range(-0.03f, -maxSpeed);
-                    transform.localRotation = Quaternion.Euler(0, 180, 0);
+                  // transform.localRotation = Quaternion.Euler(0, 180, 0);
                 }
             }
 
+            //BOTTOM RIGHT MIDDLE 
+            if (transform.localPosition.x < -5.8 && transform.localPosition.x > -6 && transform.localPosition.z > -20.2 && transform.localPosition.z < -20)
+            {
+                rand = Random.Range(0, 2);
+                if (rand == 0)
+                {
+                    x = 0;
+                    z = Random.Range(0.0f, -maxSpeed);
+                    // transform.localRotation = Quaternion.Euler(0, 180, 0);
+                }
+                if (rand == 1)
+                {
+                    z = 0;
+                    x = Random.Range(0.0f, maxSpeed);
+                    // transform.localRotation = Quaternion.Euler(0, 90, 0);
+                }
+
+            }
+            //BOTTOM LEFT MIDDLE 
+            if (transform.localPosition.x < 5.8 && transform.localPosition.x > 6 && transform.localPosition.z > -20.2 && transform.localPosition.z < -20)
+            {
+                rand = Random.Range(0, 2);
+                if (rand == 0)
+                {
+                    x = 0;
+                    z = Random.Range(0.0f, -maxSpeed);
+                    // transform.localRotation = Quaternion.Euler(0, 180, 0);
+                }
+                if (rand == 1)
+                {
+                    z = 0;
+                    x = Random.Range(0.0f, -maxSpeed);
+                    // transform.localRotation = Quaternion.Euler(0, 90, 0);
+                }
+
+
+            }
+            //TOP LEFT MIDDLE 
+            if (transform.localPosition.x < 5.8 && transform.localPosition.x > 6 && transform.localPosition.z > -38.2 && transform.localPosition.z < -38)
+            {
+                rand = Random.Range(0, 2);
+                if (rand == 0)
+                {
+                    x = 0;
+                    z = Random.Range(0.0f, maxSpeed);
+                    // transform.localRotation = Quaternion.Euler(0, 180, 0);
+                }
+                if (rand == 1)
+                {
+                    z = 0;
+                    x = Random.Range(0.0f, -maxSpeed);
+                    // transform.localRotation = Quaternion.Euler(0, 90, 0);
+                }
+            }
+            //TOP RIGHT MIDDLE 
+            if (transform.localPosition.x < -5.8 && transform.localPosition.x > -6 && transform.localPosition.z > -38.2 && transform.localPosition.z < -38)
+            {
+                rand = Random.Range(0, 2);
+                if (rand == 0)
+                {
+                    x = 0;
+                    z = Random.Range(0.0f, maxSpeed);
+                    // transform.localRotation = Quaternion.Euler(0, 180, 0);
+                }
+                if (rand == 1)
+                {
+                    z = 0;
+                    x = Random.Range(0.0f, -maxSpeed);
+                    // transform.localRotation = Quaternion.Euler(0, 90, 0);
+                }
+            }
+            //RIGHT MIDDLE 
+            if (transform.localPosition.x < -5.8 && transform.localPosition.x > -6 && transform.localPosition.z > -28.2 && transform.localPosition.z < -28)
+            {
+                rand = Random.Range(0, 4);
+                if (rand == 0)
+                {
+                    x = 0;
+                    z = Random.Range(0.0f, maxSpeed);
+                    // transform.localRotation = Quaternion.Euler(0, 180, 0);
+                }
+                if (rand == 1)
+                {
+                    x = 0;
+                    z = Random.Range(0.0f, -maxSpeed);
+                    // transform.localRotation = Quaternion.Euler(0, 90, 0);
+                }
+                if (rand == 2)
+                {
+                    z = 0;
+                    x = Random.Range(0.0f, maxSpeed);
+                    // transform.localRotation = Quaternion.Euler(0, 180, 0);
+                }
+                if (rand == 3)
+                {
+                    z = 0;
+                    x = Random.Range(0.0f, -maxSpeed);
+                    // transform.localRotation = Quaternion.Euler(0, 90, 0);
+                }
+            }
+           
+            //LEFT MIDDLE 
+             if (transform.localPosition.x < 5.8 && transform.localPosition.x > 6 && transform.localPosition.z > -28.2 && transform.localPosition.z < -28)
+            {
+                rand = Random.Range(0, 4);
+                if (rand == 0)
+                {
+                    x = 0;
+                    z = Random.Range(0.0f, maxSpeed);
+                    // transform.localRotation = Quaternion.Euler(0, 180, 0);
+                }
+                if (rand == 1)
+                {
+                    x = 0;
+                    z = Random.Range(0.0f, -maxSpeed);
+                    // transform.localRotation = Quaternion.Euler(0, 90, 0);
+                }
+                if (rand == 2)
+                {
+                    z = 0;
+                    x = Random.Range(0.0f, maxSpeed);
+                    // transform.localRotation = Quaternion.Euler(0, 180, 0);
+                }
+                if (rand == 3)
+                {
+                    z = 0;
+                    x = Random.Range(0.0f, -maxSpeed);
+                    // transform.localRotation = Quaternion.Euler(0, 90, 0);
+                }
+            }
             /*if (transform.localPosition.x > xMax)
             {
                 x = Random.Range(-maxSpeed, 0.0f);
