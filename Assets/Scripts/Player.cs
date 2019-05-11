@@ -82,7 +82,7 @@ public class Player : NetworkBehaviour {
     public string topChefPush;
 
     //Extras
-    private int cameraColour;
+    public int cameraColour = -1;
     [SyncVar] private string nfcValue = "";
     private string validNfc = "";
     [SyncVar]public string validNfcRace = "";
@@ -570,6 +570,12 @@ public class Player : NetworkBehaviour {
         cameraPanel.SetActive(true);
         cameraColour = colour;
         cameraText.text = text;
+    }
+
+    public void OnClickRefresh()
+    {
+        cameraController.enabled = false;
+        cameraController.enabled = true;
     }
 
     public void OnClickCameraButton()
