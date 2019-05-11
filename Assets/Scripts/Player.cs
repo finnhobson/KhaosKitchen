@@ -190,7 +190,7 @@ public class Player : NetworkBehaviour {
         if (wait) return;
         //Display score.
 //        scoreText.text = gameController.score.ToString();
-        scoreText.text = NfcCheck();
+        instructionText.text = NfcCheck();
         
 //        groupMessagePanel.SetActive(isGroupActive);
         if (gameOverPanel.activeSelf) return;
