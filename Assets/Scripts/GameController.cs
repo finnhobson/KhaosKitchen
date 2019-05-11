@@ -333,7 +333,7 @@ public class GameController : NetworkBehaviour
 
                 if (isServer) RpcGameOver();
                 SetTimerText("0");
-                roundTimerBar.GetComponent<RectTransform>().localScale = new Vector3(0, 1, 1);
+                roundTimerBar.GetComponent<RectTransform>().localScale = new Vector3(0, 1.09f, 1.09f);
                 gameOverText.transform.SetAsLastSibling();
                 gameOverText.SetActive(true);
                 backButton.SetActive(true);
@@ -428,7 +428,7 @@ public class GameController : NetworkBehaviour
     private void UpdateRoundTimeLeft()
     {
         roundTimeLeft -= Time.deltaTime;
-        if (roundTimeLeft >= 0) roundTimerBar.GetComponent<RectTransform>().localScale = new Vector3(roundTimeLeft / roundStartTime, 1, 1);
+        if (roundTimeLeft >= 0) roundTimerBar.GetComponent<RectTransform>().localScale = new Vector3(roundTimeLeft / roundStartTime, 1.09f, 1.09f);
         //SetTimerText(roundTimeLeft.ToString("F2"));
     }
 
@@ -445,7 +445,7 @@ public class GameController : NetworkBehaviour
     private void UpdateScoreBar()
     {
         scoreBarText.text = (roundScore - roundStartScore).ToString() + " / " + roundMaxScore.ToString();
-        scoreBar.GetComponent<RectTransform>().localScale = new Vector3((float)(roundScore - roundStartScore) / roundMaxScore, 1, 1);
+        scoreBar.GetComponent<RectTransform>().localScale = new Vector3((float)(roundScore - roundStartScore) / roundMaxScore, 1.09f, 1.09f);
     }
 
     private bool IsRoundComplete()
