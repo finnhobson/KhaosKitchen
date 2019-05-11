@@ -3,10 +3,15 @@ using System.Collections;
 
 public class BackgroundScroll : MonoBehaviour
 {
-    private float XscrollSpeedPerSec = 20;
+    private float XscrollSpeedPerSec; // = 4*22.5f
     private float YscrollSpeedPerSec = 40;
-    public float maxYsize = 2023f;
-    public float maxXsize = 1174f;
+    //private float maxYsize = 2023f;
+    private float maxXsize = 1174f;
+    private float maxYsize = 2160f +100;
+
+
+    //private float maxYsize = 1011.5f;
+    //private float maxXsize = 587f;
 
     private float startY;
     private float startX;
@@ -19,23 +24,28 @@ public class BackgroundScroll : MonoBehaviour
         startX = transform.position.x;
         offsetY = 0f;
         offsetX = 0f;
+        XscrollSpeedPerSec = (maxXsize * YscrollSpeedPerSec) / maxYsize;
 
     }
 
     void MoveBackground()
     {
-        offsetY += YscrollSpeedPerSec*Time.deltaTime;
-        offsetX += XscrollSpeedPerSec*Time.deltaTime;
+
 
 
         if (offsetY >= maxYsize)
         {
-            offsetY = 0f;
+            offsetY -= maxYsize;
+            offsetY += 10;
         }
          if (offsetX >= maxXsize)
         {
-            offsetX = 0f;
+            offsetX -= maxXsize;
+            offsetX += 5.19469f;
         }
+        offsetY += YscrollSpeedPerSec * Time.deltaTime;
+        offsetX += XscrollSpeedPerSec * Time.deltaTime;
+
         transform.position = new Vector2(startX + offsetX, startY + offsetY);
 
     }

@@ -15,6 +15,11 @@ public class CameraController : MonoBehaviour
     // Use this for initialization
     void Start()
     {
+        InitCamera();
+    }
+
+    void InitCamera()
+    {
         WebCamDevice[] devices = WebCamTexture.devices;
 
         if (devices.Length == 0)
@@ -44,72 +49,62 @@ public class CameraController : MonoBehaviour
         camAvailable = true;
     }
 
-    
+    private void OnDisable()
+    {
+        if (camAvailable) backCam.Stop();
+        camAvailable = false;
+        red = false;
+        blue = false;
+        green = false;
+        orange = false;
+        yellow = false;
+    }
+
+    private void OnEnable()
+    {
+        InitCamera();
+        red = false;
+        blue = false;
+        green = false;
+        orange = false;
+        yellow = false;
+    }
+
+
     // Update is called once per frame
     void Update()
     {
+        red = false;
+        blue = false;
+        green = false;
+        orange = false;
+        yellow = false;
+
         if (camAvailable)
         {
-            float avgRed = 0.0f;
-            float avgGreen = 0.0f;
-            float avgBlue = 0.0f;
             int pixelCount = 0;
+            int redCount = 0;
+            int orangeCount = 0;
+            int yellowCount = 0;
+            int greenCount = 0;
+            int blueCount = 0;
+
             Color[] pixels = backCam.GetPixels();
             foreach (Color pixel in pixels)
             {
-                avgRed += pixel.r;
-                avgGreen += pixel.g;
-                avgBlue += pixel.b;
+                if (pixel.r > 0.7 && pixel.g < 0.3 && pixel.b < 0.3) redCount++;
+                if (pixel.r > 0.7 && pixel.g > 0.3 && pixel.g < 0.5 && pixel.b < 0.3) orangeCount++;
+                if (pixel.r > 0.7 && pixel.g > 0.7 && pixel.b < 0.2) yellowCount++;
+                if (pixel.r < 0.5 && pixel.g > 0.6 && pixel.b < 0.3) greenCount++;
+                if (pixel.r < 0.3 && pixel.g < 0.5 && pixel.b > 0.6) blueCount++;
                 pixelCount++;
             }
-            avgRed = avgRed / pixelCount;
-            avgGreen = avgGreen / pixelCount;
-            avgBlue = avgBlue / pixelCount;
 
-            R.text = avgRed.ToString("F3");
-            G.text = avgGreen.ToString("F3");
-            B.text = avgBlue.ToString("F3");
-
-            //Red
-            if (avgRed > 0.6 && avgBlue < 0.3 && avgGreen < 0.3)
-            {
-                colourPanel.GetComponent<Image>().color = Color.red;
-                player.cameraRed = true;
-            }
-            else player.cameraRed = false;
-
-            //Dark Blue
-            if (avgBlue > 0.6 && avgRed < 0.3 && avgGreen < 0.3)
-            {
-                colourPanel.GetComponent<Image>().color = Color.blue;
-                player.cameraBlue = true;
-            }
-            else player.cameraBlue = false;
-
-            //Green
-            if (avgGreen > 0.6 && avgBlue < 0.3 && avgRed < 0.3)
-            {
-                colourPanel.GetComponent<Image>().color = Color.green;
-                player.cameraGreen = true;
-            }
-            else player.cameraGreen = false;
-
-            //Orange
-            if (avgRed > 0.6 && avgGreen > 0.3 && avgGreen < 0.5 && avgBlue < 0.2)
-            {
-                colourPanel.GetComponent<Image>().color = new Color(1, 0.5f, 0, 1);
-                player.cameraOrange = true;
-            }
-            else player.cameraOrange = false;
-
-            //Yellow
-            if (avgRed > 0.5 && avgGreen > 0.5 && avgBlue < 0.2)
-            {
-                colourPanel.GetComponent<Image>().color = Color.yellow;
-                player.cameraYellow = true;
-            }
-            else player.cameraYellow = false;
-
+            if (redCount / pixelCount > 0.3) red = true;
+            if (orangeCount / pixelCount > 0.3) orange = true;
+            if (yellowCount / pixelCount > 0.3) yellow = true;
+            if (greenCount / pixelCount > 0.3) green = true;
+            if (blueCount / pixelCount > 0.3) blue = true;
         }
     }
 }

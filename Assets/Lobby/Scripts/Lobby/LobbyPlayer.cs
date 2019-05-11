@@ -9,7 +9,7 @@ using System.Linq;
 //Any LobbyHook can then grab it and pass those value to the game player prefab (see the Pong Example in the Samples Scenes)
 public class LobbyPlayer : NetworkLobbyPlayer
 {
-    static Color[] Colors = new Color[] { Color.magenta, Color.red, Color.cyan, Color.blue, Color.green, Color.yellow };
+    static Color[] Colors = new Color[] { Color.magenta, Color.cyan, Color.blue, Color.green, Color.yellow, Color.white };
     //used on server to avoid assigning the same color to two player
     static List<int> _colorInUse = new List<int>();
 
@@ -38,6 +38,12 @@ public class LobbyPlayer : NetworkLobbyPlayer
 
     //static Color OddRowColor = new Color(250.0f / 255.0f, 250.0f / 255.0f, 250.0f / 255.0f, 1.0f);
     //static Color EvenRowColor = new Color(180.0f / 255.0f, 180.0f / 255.0f, 180.0f / 255.0f, 1.0f);
+    private void Update()
+    {
+        if(isLocalPlayer){
+            if(playerName != nameInput.text) CmdNameChanged(nameInput.text);
+        }
+    }
 
 
     public override void OnClientEnterLobby()
@@ -48,6 +54,8 @@ public class LobbyPlayer : NetworkLobbyPlayer
 
         LobbyPlayerList._instance.AddPlayer(this);
         LobbyPlayerList._instance.DisplayDirectServerWarning(isServer && LobbyManager.s_Singleton.matchMaker == null);
+
+//        playerName = "Player" + (LobbyPlayerList._instance.playerListContentTransform.childCount-1);
 
         if (isLocalPlayer)
         {
@@ -117,15 +125,13 @@ public class LobbyPlayer : NetworkLobbyPlayer
         if (playerName == "")
             CmdNameChanged("Player" + (LobbyPlayerList._instance.playerListContentTransform.childCount-1));
 
+
         //we switch from simple name display to name input
-        colorButton.interactable = true;
+        colorButton.interactable = false;
         nameInput.interactable = true;
 
         nameInput.onEndEdit.RemoveAllListeners();
         nameInput.onEndEdit.AddListener(OnNameChanged);
-
-        colorButton.onClick.RemoveAllListeners();
-        colorButton.onClick.AddListener(OnColorClicked);
 
         readyButton.onClick.RemoveAllListeners();
         readyButton.onClick.AddListener(OnReadyClicked);

@@ -13,27 +13,34 @@ public class InstructionController : NetworkBehaviour
     public InstructionHandler InstructionHandler;
     
     //Store of the combinations of instructions possible
-    private static List<String> verbList = new List<string>(new string[] { "Grab", "Fetch", "Grate", "Grill", "Melt", "Serve", "Stir", "Chop", "Cut", "Mash", "Season", "Flambé", "Bake", "Fry", "Taste", "Microwave", "Tendorise", "Roast", "Cry Into", "Sneeze On" });
-    private static List<String> nounList = new List<string>(new string[] { "Minced Beef", "Steak", "Pork Loin", "Ice Cream", "Strawberry", "Bannana", "Toast", "Chocolate", "Pasta", "Bacon", "Tomato", "Sugar", "Salt", "Lettuce", "Sauce", "Mustard", "Sausage", "Chicken", "Ice Cubes" });
-    //private static List<String> nfcInstructions = new List<string>(new string[] { "Darn! Run to the bin!\n\n\n(RUN TO NFC)", "Quickly! Get that rubbish out of here!\n\n\n(RUN TO NFC)" });
+    private static List<String> verbList = new List<string>(new string[] { "Grab", "Fetch", "Grate", "Grill", "Melt", "Serve", "Stir", "Chop", "Cut", "Mash", "Season", "Flambé", "Bake", "Fry", "Taste", "Microwave", "Tendorise", "Roast", "Cry Into", "Mince", "Juice", "Freeze", "Purée", "Sneeze On", "Dice", "Cube", "Boil", "Brine", "Sous Vide", "Slice", "Poach",  "Deep Fry", "Lick", "Inhale", "Smell" });
+    private static List<String> nounList = new List<string>(new string[] { "Minced Beef", "Steak", "Pork Loin", "Ice Cream", "Strawberry", "Bannana", "Toast", "Chocolate", "Pasta", "Bacon", "Tomato", "Sugar", "Salt", "Lettuce", "Sauce", "Mustard", "Sausage", "Apple", "Orange", "Chicken", "Ice Cubes", "Cheese", "Chicken Nuggets", "Brie", "Cheddar", "Camembert", "Wine", "Beer", "Whiskey", "Vodka", "Wasabi", "Salmon", "Tuna", "Mushroom", "Lard", "Bowling Ball", "Burger" });
 
-    private static List<string> fridge = new List<string>( new string[] {"1a", "1b", "1c"});
-    private static List<string> cupboard = new List<string>( new string[] {"2a", "2b", "2c"});
+    private static List<string> fridge = new List<string>( new string[] { "MILK", "CHEESE" } );
+    private static List<string> cupboard = new List<string>( new string[] { "PASTA", "LENTILS" } );
+    private static List<string> prep = new List<string>( new string[] { "WHISK", "CHOPPING BOARD" } );
+    private static List<string> serve = new List<string>( new string[] { "SPOON", "PLATE" } );
     
-    private static List<string> binA = new List<string>( new string[] {"3a", "3b", "3c"});
-    private static List<string> binB = new List<string>( new string[] {"4a", "4b", "4c"});
-
-    private static List<List<string>> GoodStations = new List<List<string>>{fridge,cupboard};
-    private static List<List<string>> BadStations = new List<List<string>>{binA, binB};
+    private static List<string> binA = new List<string>( new string[] { "GLASS", "FOOD WASTE" } );
+    private static List<string> binB = new List<string>( new string[] { "INTERGALACTIC\nBLACK HOLE", "PLASTIC" } );
     
-    private static List<String> micInstructions = new List<string>(new string[] { " Waiters won't take the food out fast enough!\n Shout at them to work harder!\n\n (SHOUT INTO THE MIC)",
-        " Your team are being useless!\n Shout some sense into them!\n\n (SHOUT INTO THE MIC)"});
+    private static List<string> WinnersList = new List<string>( new string[] {"WINNER!!","2nd","3rd","4th", "5th", "6th"});
+    
+    private static List<List<string>> GoodStations = new List<List<string>>{ fridge, cupboard, prep, serve };
+    private static List<List<string>> BadStations = new List<List<string>>{ binA, binB };
+    
+    private static List<String> micInstructions = new List<string>(new string[] { " Waiters won't take the food out fast enough!\n Shout at them to work harder!\n\n (SHOUT INTO THE MIC)", " Your team are being useless!\n Shout some sense into them!\n\n (SHOUT INTO THE MIC)",
+                                                                                  " Rats have been spotted in the kitchen!\n Scream to scare them away!\n\n (SHOUT INTO THE MIC)", " Whoops! You just set your chopping board on fire!\n Try to blow it out!\n\n (BLOW INTO THE MIC)", 
+                                                                                  " The person you have a crush on just walked in!\n Shout at them to confess your love!\n\n (SHOUT INTO THE MIC)", " Whoopsie! You've just set yourself on fire!\n Better try and blow the fire out!\n\n (BLOW INTO THE MIC)",
+                                                                                  " The human race is on the brink of extinction and no one seems to care!\n Scream in despair!\n\n (SHOUT, SCREAM OR CRY INTO THE MIC"});
 
-    private static List<String> shakeInstructions = new List<string>(new string[] { " Chef underseasoned the dish!\n Shake to salt the food!\n\n (SHAKE YOUR PHONE)",
-        " Food runner dropped the dish!\n Shake some sense into the boy!\n\n (SHAKE YOUR PHONE)",
-        " Pan set on fire!\n Shake to put it out!\n\n (SHAKE YOUR PHONE)"});
+    private static List<String> shakeInstructions = new List<string>(new string[] { " Chef underseasoned the dish!\n Shake to salt the food!\n\n(SHAKE YOUR PHONE)", " The Queen has decided to dine here for some reason!\n Better give her a wave!\n\n(SHAKE YOUR PHONE)",
+                                                                                    " Food runner dropped the dish!\n Shake some sense into the boy!\n\n (SHAKE YOUR PHONE)", " It's Virgin PornStar Martini time!\n Better shake that cocktail and thank the deveopers!\n\n (SHAKE YOUR PHONE)",
+                                                                                    " Pan set on fire!\n Shake to put it out!\n\n (SHAKE YOUR PHONE)", " We are ten years away from irreversible climate damage!\n This isn't really an instruction, just thought you needed to know, but shake the phone anyway\n\n (SHAKE YOUR PHONE)",
+                                                                                    " Your arch nemisis just walked in!\n Shake your fist at them angrily!\n\n (SHAKE YOUR PHONE)"});
 
-    private static List<String> cameraInstructions = new List<string>(new string[] { "Red", "Orange", "Yellow", "Green", "Blue"});
+    private static List<String> cameraInstructionText = new List<string>(new string[] { "FIND THE TOMATO!", "FIND THE ORANGE!", "FIND THE BANANAS!", "FIND THE APPLE!", "FIND THE EU FLAG TO REVOKE ARTICLE 50!" });
+
 
     private SyncListString activeButtonActions = new SyncListString();
     private SyncListString activeInstructions = new SyncListString();
@@ -70,7 +77,7 @@ public class InstructionController : NetworkBehaviour
     [SyncVar] public bool SetupFinished = false;
 
     //Phone interaction probability = 2/x
-    [SyncVar] public int piProb = 4;
+    [SyncVar] public int piProb = 12;
 
     /*
      * Called from GC, this is where the IC is setup. 
@@ -132,6 +139,12 @@ public class InstructionController : NetworkBehaviour
         SetFirstInstructions(); //Select one instruction per player from Action Button List
     }
 
+    public string getPositionWord(int i)
+    {
+        if (i >= PlayerCount) return "error";
+        return WinnersList[i];
+    }
+
     [ClientRpc]
     public void RpcResetPlayers()
     {
@@ -167,8 +180,8 @@ public class InstructionController : NetworkBehaviour
             duplicate = true;
             while (duplicate)
             {
-                verbNo = UnityEngine.Random.Range(0, nounList.Count-1);
-                nounNo = UnityEngine.Random.Range(0, verbList.Count-1); 
+                verbNo = UnityEngine.Random.Range(0, verbList.Count-1);
+                nounNo = UnityEngine.Random.Range(0, nounList.Count-1); 
                 text = verbList[verbNo] + " " + nounList[nounNo];
 
                 if (ActiveButtonActions.Contains(text)) continue;
@@ -227,8 +240,7 @@ public class InstructionController : NetworkBehaviour
                 RpcUpdateInstruction(ActiveInstructions[i], i);
                 RpcStartInstTimer(i);
 
-                int rand = UnityEngine.Random.Range(0, piProb);
-                //rand = 3;
+                int rand = UnityEngine.Random.Range(0, 12);
                 if (rand == 1)
                 {
                     rand = UnityEngine.Random.Range(0, micInstructions.Count);
@@ -239,17 +251,17 @@ public class InstructionController : NetworkBehaviour
                     rand = UnityEngine.Random.Range(0, shakeInstructions.Count);
                     RpcSetShakePanel(i, shakeInstructions[rand]);
                 }
-                /*else if (rand == 3)
-                {
-                    rand = UnityEngine.Random.Range(0, cameraInstructions.Count);
-                    RpcSetCameraPanel(i, cameraInstructions[rand]);
-                }*/
+//                else if (rand == 3 || rand == 4 || rand == 5 || rand == 6)
+//                {
+//                    rand = UnityEngine.Random.Range(0, 5);
+//                    RpcSetCameraPanel(i, rand, cameraInstructionText[rand]);
+//                }
             }
         }
         if (!match)
         {
             GameController.fireCount++;
-            GameController.customerSatisfaction -= 5;
+            GameController.customerSatisfaction -= 3;
         }
     }
     
@@ -343,9 +355,9 @@ public class InstructionController : NetworkBehaviour
     }
 
     [ClientRpc]
-    public void RpcSetCameraPanel(int playerID, string text)
+    public void RpcSetCameraPanel(int playerID, int colour, string text)
     {
-        Players[playerID].SetCameraPanel(text);
+        Players[playerID].SetCameraPanel(colour, text);
     }
 
     [ClientRpc]

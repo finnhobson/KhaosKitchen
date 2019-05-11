@@ -12,6 +12,7 @@ using UnityEngine.SocialPlatforms.Impl;
 using Random = System.Random;
 
 
+
 public class GameController : NetworkBehaviour
 {
     //Custom GameObjects
@@ -22,7 +23,10 @@ public class GameController : NetworkBehaviour
 
     //Unity GameObjects
     public Text scoreText, roundTimerText, scoreBarText, roundNumberText;
-    public GameObject roundTimerBar, gameOverText, backButton, lobbyTopPanel;
+    public List<Text> groupDisplayNames = new List<Text>();
+    public List<Text> groupDisplayTasks = new List<Text>();
+
+    public GameObject roundTimerBar, gameOverText, backButton, lobbyTopPanel,groupShakePanel, groupRacePanel;
     public Image stars;
 
     public List<Player> playerList = new List<Player>();
@@ -32,14 +36,6 @@ public class GameController : NetworkBehaviour
 
     [SyncVar] public int score = 0;
 
-    public int Score
-    {
-        get
-        {
-            return score;
-        }
-    }
-
     [SyncVar] private int roundScore = 0;
     [SyncVar] public int roundNumber = 1;
 
@@ -47,10 +43,19 @@ public class GameController : NetworkBehaviour
     [SyncVar] public bool isGameStarted;
     private bool isGroupActivityEnabled = true; // To enable group activities
     private bool isGameOver;
-    
+    private bool step;
+
     //Group activity
     private bool isGroupActiviy = true;
     [SyncVar] public bool isGroupDone;
+
+    public int Score
+    {
+        get
+        {
+            return score;
+        }
+    }
 
     public bool IsGameOver
     {
@@ -67,7 +72,7 @@ public class GameController : NetworkBehaviour
     }
 
     [SyncVar] public int fireCount = 0;
-    int stationCount = 4;
+    int stationCount = 6;
 
     public int FireCount
     {
@@ -113,6 +118,14 @@ public class GameController : NetworkBehaviour
         }
     }
 
+    public int PlayerCount
+    {
+        get
+        {
+            return playerCount;
+        }
+    }
+
     [SyncVar] public int instructionStartTime;
     [SyncVar] public int BaseInstructionNumber;
     [SyncVar] public int InstructionNumberIncreasePerRound;
@@ -122,26 +135,19 @@ public class GameController : NetworkBehaviour
     [SyncVar] public int MinimumInstructionTime;
     [SyncVar] public int playerCount;
 
-
-    public int PlayerCount
-    {
-        get
-        {
-            return playerCount;
-        }
-    }
-
     [SyncVar] public bool easyPhoneInteractions;
 
     //[SyncVar(hook = "SetTopChef")] public string currentTopChef;
     [SyncVar] public string currentTopChef;
 
-    [SyncVar] public float customerSatisfaction = 50;
+    [SyncVar] public float customerSatisfaction = 60;
 
     //Phone interaction probability = 2/x
-    [SyncVar] public int piProb = 21;
+    [SyncVar] public int piProb = 6;
 
     public float pointMultiplier;
+
+    public bool printCompleted;
 
     private static int numberOfButtons = 4;
     //[SyncVar] public int playerCount = GameSettings.PlayerCount;
@@ -153,7 +159,7 @@ public class GameController : NetworkBehaviour
     //Booleans
     [FormerlySerializedAs("startGroupActivity")] [SyncVar] public bool groupActivityStarted;
     public int numberOfGroupActivities = 2;
-    [SyncVar] public int activityNumber = 0;
+    [SyncVar] public int activityNumber = 1;
 
     List<string> UserNames = new List<string>(); /* Just here so in future they can set their own usernames from the lobby */
 
@@ -168,7 +174,6 @@ public class GameController : NetworkBehaviour
         }
     }
 
-    //Functions-----------------------------------------------------------------------------------------------------
 
     //--------------------------------------------------------------------------------------------------------------
     // FUNCTIONS ---------------------------------------------------------------------------------------------------
@@ -186,7 +191,7 @@ public class GameController : NetworkBehaviour
             GetComponentInChildren<Canvas>().enabled = true;
             GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Animation>().Play();
             GameObject.FindGameObjectWithTag("LobbyTopPanel").SetActive(false);
-            
+
             Debug.Log("Start");
         }
     }
@@ -202,11 +207,11 @@ public class GameController : NetworkBehaviour
 
         StartCoroutine(Setup(5));
     }
-    
+
     private IEnumerator Setup(int x)
     {
         yield return new WaitForSecondsRealtime(x);
-        
+
         //Find players
         var players = FindObjectsOfType<Player>();
 
@@ -225,7 +230,7 @@ public class GameController : NetworkBehaviour
 
             playerIndex++;
         }
-        
+
         if (isServer)
         {
             GetComponentInChildren<Canvas>().enabled = true; //Show server display only on the server.
@@ -240,24 +245,17 @@ public class GameController : NetworkBehaviour
         }
 
         PlayersInitialisedFromStart();
-        
+
 
         InstructionController.ICStart(playerCount, numberOfButtons, playerList, this);
         InstructionController.piProb = piProb;
 
         if (isServer)
         {
-//            int j = 0;
-//            foreach (var p in playerList)
-//            {
-////                UserNames.Add(p.PlayerUserName);
-//                UserNames.Add("PLayer" + j);
-//                j++;
-//            }
             gameStateHandler = new GameStateHandler(UserNames); //Instantiate single gameStateHandler object on the server to hold gamestate data 
-            
+
             StartCoroutine(RoundCountdown(10, "3"));
-            StartCoroutine(RoundCountdown(11, "2"));            
+            StartCoroutine(RoundCountdown(11, "2"));
             StartCoroutine(RoundCountdown(12, "1"));
             StartCoroutine(StartRound(13));
             StartCoroutine(StartGame(13));
@@ -268,7 +266,6 @@ public class GameController : NetworkBehaviour
     private IEnumerator StartGame(int x)
     {
         yield return new WaitForSecondsRealtime(x);
-        
 
         StartRoundTimer();
         UpdateScoreBar();
@@ -280,7 +277,7 @@ public class GameController : NetworkBehaviour
     {
         if (isGameStarted)
         {
-            
+
             //Show score and active instructions on server display.
             scoreText.text = score.ToString();
             stars.fillAmount = customerSatisfaction / 100;
@@ -289,14 +286,21 @@ public class GameController : NetworkBehaviour
 
             if (isServer)
             {
-                if ((score % 50 == 10) && isGroupActiviy && isGroupActivityEnabled) //Needs to be changed.
+                int scoreRemaining = (roundMaxScore) - (roundScore - roundStartScore);
+                if ((score % 80 == 70) && isGroupActiviy && isGroupActivityEnabled && (scoreRemaining > playerCount) ) //Needs to be changed.
                 {
                     Debug.Log("Call1");
                     InitiateGroupActivity();
+                    printCompleted = false;
                 }
 
                 else if (groupActivityStarted)
                 {
+                    if (activityNumber == 1)
+                    {
+                        DisplayGroupNfcActivityInstruction();
+                    } else if (activityNumber == 0) {DisplayGroupShakeActivityInstruction();}
+
                     Debug.Log("call2");
 
                     CheckGroupActivity();
@@ -317,10 +321,19 @@ public class GameController : NetworkBehaviour
             {
                 OnRoundComplete();
             }
-            else if (roundTimeLeft < 0 || customerSatisfaction == 0)
+            else if (roundTimeLeft <= 0 || customerSatisfaction <= 0)
             {
-                SetTimerText("0");
+                if (customerSatisfaction <= 0)
+                {
+                    foreach (Player p in playerList)
+                    {
+                        p.gameOverText.text = "TERRIBLE REVIEWS!\n\nGAME OVER!";
+                    }
+                }
+
                 if (isServer) RpcGameOver();
+                SetTimerText("0");
+                roundTimerBar.GetComponent<RectTransform>().localScale = new Vector3(0, 1.09f, 1.09f);
                 gameOverText.transform.SetAsLastSibling();
                 gameOverText.SetActive(true);
                 backButton.SetActive(true);
@@ -330,8 +343,13 @@ public class GameController : NetworkBehaviour
                     PlayGameOver();
                     GameOver();
                 }
+
+                groupShakePanel.SetActive(false);
+                groupRacePanel.SetActive(false);
+
+
             }
-            
+
             else
             {
                 SetTimerText(roundTimeLeft.ToString("F2"));
@@ -401,17 +419,16 @@ public class GameController : NetworkBehaviour
         customerSatisfaction += 2.0f;
         UpdateScoreBar();
     }
-         
+
     public void StartRoundTimer()
     {
-        //roundStartTime = 90;
         roundTimeLeft = roundStartTime;
     }
 
     private void UpdateRoundTimeLeft()
     {
         roundTimeLeft -= Time.deltaTime;
-        if (roundTimeLeft >= 0) roundTimerBar.GetComponent<RectTransform>().localScale = new Vector3(roundTimeLeft / roundStartTime, 1, 1);
+        if (roundTimeLeft >= 0) roundTimerBar.GetComponent<RectTransform>().localScale = new Vector3(roundTimeLeft / roundStartTime, 1.09f, 1.09f);
         //SetTimerText(roundTimeLeft.ToString("F2"));
     }
 
@@ -428,7 +445,7 @@ public class GameController : NetworkBehaviour
     private void UpdateScoreBar()
     {
         scoreBarText.text = (roundScore - roundStartScore).ToString() + " / " + roundMaxScore.ToString();
-        scoreBar.GetComponent<RectTransform>().localScale = new Vector3((float)(roundScore - roundStartScore) / roundMaxScore, 1, 1);
+        scoreBar.GetComponent<RectTransform>().localScale = new Vector3((float)(roundScore - roundStartScore) / roundMaxScore, 1.09f, 1.09f);
     }
 
     private bool IsRoundComplete()
@@ -527,8 +544,8 @@ public class GameController : NetworkBehaviour
         isRoundPaused = false;
         PenultimateAction(false);
         roundMaxScore = CalculateInstructionNumber();
-        customerSatisfaction = 50;
-//        InvokeRepeating("DecreaseCustomerSatisfaction", 1.0f, 1.0f);
+        customerSatisfaction = 60;
+        InvokeRepeating("DecreaseCustomerSatisfaction", 1.0f, 1.0f);
         UpdateScoreBar();
     }
 
@@ -592,17 +609,17 @@ public class GameController : NetworkBehaviour
         var players = FindObjectsOfType<Player>();
         foreach (Player player in players)
         {
-            Debug.Log("Player: " + player.PlayerUserName + " :: " + player.PlayerScore);
+            //Debug.Log("Player: " + player.PlayerUserName + " :: " + player.PlayerScore);
+            //player.roundScoreText.text = player.PlayerScore.ToString();
             if (player.PlayerScore > topScore)
             {
                 topScore = player.PlayerScore;
                 topChef = player.PlayerUserName;
             }
             //gameStateHandler.UpdatePlayerScore(player.PlayerUserName, player.PlayerScore);
-            //player.PlayerScore = 0;
         }
         currentTopChef = topChef;
-        RpcSetTopChef(topChef);        
+        RpcSetTopChef(topChef);
     }
 
     private void PrintInstructionHandler()
@@ -641,7 +658,6 @@ public class GameController : NetworkBehaviour
 
     private void LoadSettings()
     {
-
         roundStartTime = GameSettings.RoundTime;
         playerCount = GameSettings.PlayerCount;
         easyPhoneInteractions = GameSettings.EasyPhoneInteractions;
@@ -654,12 +670,11 @@ public class GameController : NetworkBehaviour
         MinimumInstructionTime = GameSettings.MinimumInstructionTime;
 
         piProb = GameSettings.PhoneInteractionProbability;
-        
     }
-    
+
     private void DecreaseCustomerSatisfaction()
     {
-        customerSatisfaction -= 1;
+        customerSatisfaction -= 0.5f;
         if (customerSatisfaction > 100) customerSatisfaction = 100;
         if (customerSatisfaction < 0) customerSatisfaction = 0;
     }
@@ -700,19 +715,18 @@ public class GameController : NetworkBehaviour
     {
         MusicPlayer.PlayGameOver();
     }
-    
+
     public void GameOver()
     {
         isGameOver = true;
     }
-    
+
     [ClientRpc]
     private void RpcSetTopChef(string topChef)
     {
         Debug.Log("TOP CHEF = " + topChef);
         foreach (var player in playerList)
         {
-            player.roundScoreText.text = player.PlayerScore.ToString();
             if (topChef != null)
             {
                 if (topChef == player.PlayerUserName)
@@ -737,7 +751,6 @@ public class GameController : NetworkBehaviour
 
     private void CheckShake()
     {
-
         bool allReady = true;
         foreach (var player in playerList)
         {
@@ -747,16 +760,17 @@ public class GameController : NetworkBehaviour
         if (allReady)
         {
             AllAreReady();
+
         }
     }
 
     private void CheckNFC()
     {
-//        Debug.Log("list A");
-//        foreach (var VARIABLE in raceWinnersList)
-//        {
-//            Debug.Log(VARIABLE);
-//        }
+        //        Debug.Log("list A");
+        //        foreach (var VARIABLE in raceWinnersList)
+        //        {
+        //            Debug.Log(VARIABLE);
+        //        }
 
         foreach (var player in playerList)
         {
@@ -764,30 +778,33 @@ public class GameController : NetworkBehaviour
             if (player.IsNFCRaceCompleted && !raceWinnersList.Contains(player.PlayerUserName))
             {
                 raceWinnersList.Add(player.PlayerUserName);
+               groupDisplayTasks[playerList.IndexOf(player)].text = InstructionController.getPositionWord(raceWinnersList.IndexOf(player.PlayerUserName));
             }
         }
 
-//        Debug.Log("list B");
-//        foreach (var VARIABLE in raceWinnersList)
-//        {
-//            Debug.Log(VARIABLE);
-//        }
+        //        Debug.Log("list B");
+        //        foreach (var VARIABLE in raceWinnersList)
+        //        {
+        //            Debug.Log(VARIABLE);
+        //        }
 
         if (raceWinnersList.Count == playerCount)
         {
-            //TODO: Get finn to put this list on the board.
+            
+            
             foreach (var player in playerList)
             {
                 for (int i = 0; i < raceWinnersList.Count; i++)
                 {
                     if (player.PlayerUserName == raceWinnersList[i])
                     {
-                        int scoreAdjustment = ( 10 * ( playerCount - i ) );
+                        int scoreAdjustment = (5 * (playerCount - i));
                         player.PlayerScore += scoreAdjustment;
                     }
                     Debug.Log(raceWinnersList[i]);
                 }
             }
+            
             
             AllAreReady();
         }
@@ -803,7 +820,7 @@ public class GameController : NetworkBehaviour
     {
         foreach (var player in playerList)
         {
-            if (player != null) player.activityNumber = number;
+            if (player != null) player.activityNumber = activityNumber;
             else Debug.Log("not player at UpdateActivityNumber");
         }
     }
@@ -811,17 +828,15 @@ public class GameController : NetworkBehaviour
     [Server]
     private void InitiateGroupActivity()
     {
-        
         Debug.Log("initiate");
         Random rand = new Random();
         RpcNfcRaceAssignStation(rand.Next(0, stationCount));
         groupActivityStarted = true;
         RpcSetGroupActivity(true);
         //TODO: HERE
-        isGroupActiviy = false;     
-
+        isGroupActiviy = false;
     }
-    
+
 
     [Server]
     private void CheckGroupActivity()
@@ -829,17 +844,16 @@ public class GameController : NetworkBehaviour
 
         switch (activityNumber)
         {
-            case 0: 
+            case 0:
                 CheckShake();
                 break;
-                    
+
             case 1:
                 //NFC group race
                 CheckNFC();
                 break;
-                    
+
             default:
-                
                 score = 9999;
                 break;
         }
@@ -848,28 +862,27 @@ public class GameController : NetworkBehaviour
     [ClientRpc]
     private void RpcNfcRaceAssignStation(int i)
     {
-        
-        
         foreach (var player in playerList)
         {
             player.nfcStation = i;
             i = (i + 1) % stationCount;
         }
     }
-    
+
     [Server]
     private void ResetGroup()
     {
         RpcResetGroupActivity();
     }
 
-    [Server]
-    private void AllAreReady()
+    public void AllAreReady()
     {
         Debug.Log("All");
 
         score += 10;
         groupActivityStarted = false;
+        
+        
         RpcResetGroupActivity();
         foreach (var player in playerList)
         {
@@ -881,10 +894,12 @@ public class GameController : NetworkBehaviour
         raceWinnersList = new List<string>();
         raceWinnersList.Clear();
         Debug.Log("... Ready");
+        StartCoroutine(LeaveUpLeaderboard(5));
+        groupShakePanel.SetActive(false);
         IncrementGroupActivity();
     }
-    
-        
+
+
     [ClientRpc]
     public void RpcResetGroupActivity()
     {
@@ -899,4 +914,30 @@ public class GameController : NetworkBehaviour
         }
     }
 
+    private void DisplayGroupNfcActivityInstruction()
+    {
+        groupRacePanel.SetActive(true);
+        for (int i = 0; i < playerCount; i++)
+        {
+            if (!playerList[i].IsNFCRaceCompleted)
+            {
+                groupDisplayNames[i].text = playerList[i].PlayerUserName;
+                groupDisplayNames[i].color = playerList[i].PlayerColour;
+                groupDisplayTasks[i].text = playerList[i].validNfcRace;
+                groupDisplayTasks[i].color = playerList[i].PlayerColour;
+            }
+        }
+    }
+    
+    private void DisplayGroupShakeActivityInstruction()
+    {
+        groupShakePanel.SetActive(true);
+    }
+
+    IEnumerator LeaveUpLeaderboard(int waitTime)
+    {
+        yield return new WaitForSeconds(waitTime);
+        groupRacePanel.SetActive(false);
+    }
+    
 }

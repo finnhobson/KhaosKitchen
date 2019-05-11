@@ -42,8 +42,16 @@
             </e>
           </e>
         </e>
+        <e p="ScriptCalculator" t="Include">
+          <e p="Editor" t="Include">
+            <e p="ScriptCalculator.cs" t="Include" />
+          </e>
+          <e p="Readme.txt" t="Include" />
+        </e>
         <e p="Scripts" t="Include">
           <e p="AnimationController.cs" t="Include" />
+          <e p="BackgroundScroll.cs" t="Include" />
+          <e p="ButtonBounce.cs" t="Include" />
           <e p="CameraController.cs" t="Include" />
           <e p="ChefAnimationController.cs" t="Include" />
           <e p="ChefController.cs" t="Include" />
@@ -70,6 +78,7 @@
           <e p="ShowLocalCanvas.cs" t="Include" />
           <e p="SplatScript.cs" t="Include" />
           <e p="Station.cs" t="Include" />
+          <e p="TextWiggle.cs" t="Include" />
         </e>
         <e p="Tests" t="Include">
           <e p="PlayModeTests.asmdef" t="Include" />

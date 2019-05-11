@@ -5,6 +5,7 @@ using UnityEngine.Networking;
 using UnityEngine.Networking.Types;
 using UnityEngine.Networking.Match;
 using System.Collections;
+using System.Collections.Generic;
 
 
 
@@ -28,6 +29,9 @@ public class LobbyManager : NetworkLobbyManager
     public LobbyInfoPanel infoPanel;
     public LobbyCountdownPanel countdownPanel;
     public GameObject addPlayerButton;
+    public GameObject hostButton;
+    public GameObject joinButton;
+    public GameObject background;
 
     protected RectTransform currentPanel;
 
@@ -54,6 +58,10 @@ public class LobbyManager : NetworkLobbyManager
     public Toggle easyPhoneInteractions;
     public Text phoneInteractionText;
 
+    public Text Feedback;
+
+    private static List<string> feedbackList = new List<string>(new string[] { "Pretty much the perfect game", "This game gets 4.7/5 tomatoes - Tomato Critic", "Good game, needs more nuggets and cheese", "The only kitchen game worth your time", "As far as mobile games go, this is suprisingly decent", "The developers have certainly earned a few pints for this", "Graphics to rival any console game", "I don't think these people know how to spell chaos", "Angry birds would be scared if it was still 2010", "This game is powered by coffee, redbull and pro plus", "Space team? Overcooked? Never heard of them", "Look mum I finally made a game!", "Cat in the wall? Now you’re talking my language!", "Brexits a mess, but at least its not Trump", "Basically one step away from photo realism ", "The original NFC capable mobile game!", "KFC is better than McDonalds. Fight me.", "Fun Fact: Our planet is dying!", "This shout out goes to spoons for being an OG", "help me, im trapped in the phone, send rescue" });
+
     void Start()
     {
         Screen.orientation = ScreenOrientation.Portrait;
@@ -67,14 +75,28 @@ public class LobbyManager : NetworkLobbyManager
         DontDestroyOnLoad(gameObject);
 
         SetServerInfo("Offline", "None");
-        
+        background.SetActive(true);
+
+        int quoteNo = UnityEngine.Random.Range(0, feedbackList.Count - 1);
+        Feedback.text = "\"" + feedbackList[quoteNo] + "\"";
+
+
+
 #if UNITY_ANDROID
-        settingsButton.enabled = false;
+        settingsButton.gameObject.SetActive(false);
+        hostButton.gameObject.SetActive(false);
+        joinButton.GetComponent<RectTransform>().localPosition -= new Vector3(0, 60, 0);
+#else
+        //joinButton.gameObject.SetActive(false);
+        //TURN ON FOR GAMESDAY!!!
+
 #endif
     }
 
     public override void OnLobbyClientSceneChanged(NetworkConnection conn)
     {
+        background.SetActive(true);
+
         if (SceneManager.GetSceneAt(0).name == lobbyScene)
         {
             if (topPanel.isInGame)
@@ -109,6 +131,7 @@ public class LobbyManager : NetworkLobbyManager
             topPanel.isInGame = true;
             topPanel.ToggleVisibility(false);
         }
+
     }
 
     public void ChangeTo(RectTransform newPanel)
@@ -384,15 +407,15 @@ public class LobbyManager : NetworkLobbyManager
     public void SetSettings()
     {
         GameSettings.RoundTime = string.IsNullOrEmpty(roundTimeText.text) ? 90 : int.Parse(roundTimeText.text);
-        GameSettings.BaseInstructionNumber = string.IsNullOrEmpty(BaseInstructionNumberText.text) ? 10 : int.Parse(BaseInstructionNumberText.text);
+        GameSettings.BaseInstructionNumber = string.IsNullOrEmpty(BaseInstructionNumberText.text) ? 20 : int.Parse(BaseInstructionNumberText.text);
         GameSettings.InstructionNumberIncreasePerRound = string.IsNullOrEmpty(InstructionNumberIncreasePerRoundText.text) ? 5 : int.Parse(InstructionNumberIncreasePerRoundText.text);
         GameSettings.BaseInstructionTime = string.IsNullOrEmpty(BaseInstructionTimeText.text) ? 15 : int.Parse(BaseInstructionTimeText.text);
         GameSettings.InstructionTimeReductionPerRound = string.IsNullOrEmpty(InstructionTimeReductionPerRoundText.text) ? 2 : int.Parse(InstructionTimeReductionPerRoundText.text);
         GameSettings.InstructionTimeIncreasePerPlayer = string.IsNullOrEmpty(InstructionTimeIncreasePerPlayerText.text) ? 2 : int.Parse(InstructionTimeIncreasePerPlayerText.text);
-        GameSettings.MinimumInstructionTime = string.IsNullOrEmpty(MinimumInstructionTimeText.text) ? 5 : int.Parse(MinimumInstructionTimeText.text);
+        GameSettings.MinimumInstructionTime = string.IsNullOrEmpty(MinimumInstructionTimeText.text) ? 3 : int.Parse(MinimumInstructionTimeText.text);
         GameSettings.PlayerCount = (int)playerCountSlider.value;
         GameSettings.EasyPhoneInteractions = easyPhoneInteractions.isOn;
-        GameSettings.PhoneInteractionProbability = string.IsNullOrEmpty(phoneInteractionText.text) ? 42 : 2*int.Parse(phoneInteractionText.text);
+        GameSettings.PhoneInteractionProbability = string.IsNullOrEmpty(phoneInteractionText.text) ? 12 : 3*int.Parse(phoneInteractionText.text);
 
         s_Singleton.minPlayers = GameSettings.PlayerCount;
     }
