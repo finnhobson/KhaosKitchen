@@ -321,23 +321,29 @@ public class Player : NetworkBehaviour {
     {
         string value = NFCListener.GetValue();
         
-        //Group 1
-        if (value == "BAxnSotfgQ==") return GoodStations[0].GetStationItem(0);
-        if (value == "BPlnSotfgA==") return GoodStations[0].GetStationItem(1);
-        if (value == "BA1nSotfgQ==") return GoodStations[0].GetStationItem(2);
+        //fridge
+        if (value == "BEZoSotfgA==") return GoodStations[0].GetStationItem(0);
+        if (value == "BH5nSotfgA==") return GoodStations[0].GetStationItem(1);
 
-        //nfc 2
-        if (value == "BORnSotfgA==") return GoodStations[1].GetStationItem(0);
+        //cupboard
+        if (value == "BDNoSotfgA==") return GoodStations[1].GetStationItem(0);
         if (value == "BNBnSotfgA==") return GoodStations[1].GetStationItem(1);
-        if (value == "BPhnSotfgA==") return GoodStations[1].GetStationItem(2);
-    //nfc 3
-        if (value == "BF5nSotfgQ==") return BadStations[0].GetStationItem(0);
-        if (value == "BHFnSotfgQ==") return BadStations[0].GetStationItem(1);
-        if (value == "BFVnSotfgA==") return BadStations[0].GetStationItem(2);
-    //nfc 4
-        if (value == "BFZnSotfgA==") return BadStations[1].GetStationItem(0);
-        if (value == "BGlnSotfgA==") return BadStations[1].GetStationItem(1);
-        if (value == "BGpnSotfgA==") return BadStations[1].GetStationItem(2);
+        
+        //prep
+        if (value == "BJJnSotfgA==") return GoodStations[1].GetStationItem(0);
+        if (value == "BFpoSotfgA==") return GoodStations[1].GetStationItem(1);
+        
+        //serve
+        if (value == "BJloSotfgA==") return GoodStations[1].GetStationItem(0);
+        if (value == "BFtoSotfgA==") return GoodStations[1].GetStationItem(1);
+
+        //bin A
+        if (value == "BG9oSotfgA==") return BadStations[0].GetStationItem(0);
+        if (value == "BH1nSotfgA==") return BadStations[0].GetStationItem(1);
+    
+        //bin B
+        if (value == "BINoSotfgA==") return BadStations[1].GetStationItem(0);
+        if (value == "BIRoSotfgA==") return BadStations[1].GetStationItem(1);
         
         return value;
 
