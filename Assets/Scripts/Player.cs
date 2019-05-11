@@ -327,10 +327,10 @@ public class Player : NetworkBehaviour {
 
         //cupboard
         if (value == "BDNoSotfgA==") return GoodStations[1].GetStationItem(0);
-        if (value == "BNBnSotfgA==") return GoodStations[1].GetStationItem(1);
+        if (value == "BJJnSotfgA==") return GoodStations[1].GetStationItem(1);
         
         //prep
-        if (value == "BJJnSotfgA==") return GoodStations[2].GetStationItem(0);
+        if (value == "BG5oSotfgA==") return GoodStations[2].GetStationItem(0);
         if (value == "BFpoSotfgA==") return GoodStations[2].GetStationItem(1);
         
         //serve
@@ -988,7 +988,7 @@ public class Player : NetworkBehaviour {
     {
         nfcValue = NfcCheck();
         Debug.Log("StartNFC");
-        switch ((nfcStation + PlayerScore)%6)
+        switch ( nfcStation )
         {
             case 0:
                 validNfcRace = GoodStations[0].GetItem(nfcValue) ;
@@ -1007,6 +1007,9 @@ public class Player : NetworkBehaviour {
                 break;
             case 5:
                 validNfcRace = BadStations[1].GetItem(nfcValue);
+                break;
+            default:
+                validNfcRace = GoodStations[0].GetItem(nfcValue);
                 break;
         }
 
