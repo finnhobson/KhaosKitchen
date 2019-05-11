@@ -14,21 +14,20 @@ using UnityEngine.Serialization;
 using Random = System.Random;
 
 /*
- * 1. a BAxnSotfgQ==
- *    b BPlnSotfgA==
- *    c BA1nSotfgQ==
  *
- * 2 a BORnSotfgA==
- *   b BNBnSotfgA==
- *   c BPhnSotfgA==
+ *  MILK:
+ *  CHEESE:
+ *  PASTA:
+ *  LENTILS:
+ *  WHISK:
+ *  CHOPPING BOARD:
+ *  SPOON:
+ *  PLATE:
+ *  GLASS:
+ *  FOOD WASTE:
+ *  NTERGALACTIC\nBLACK HOLE:
+ *  PLASTIC:
  *
- * 3 a BF5nSotfgQ==
- *   b BHFnSotfgQ==
- *   c BFVnSotfgA==
- *
- * 4 a BFZnSotfgA==
- *   b BGlnSotfgA==
- *   c BGpnSotfgA==
  *
  *
  * 
@@ -191,7 +190,7 @@ public class Player : NetworkBehaviour {
         if (wait) return;
         //Display score.
 //        scoreText.text = gameController.score.ToString();
-//        scoreText.text = NfcCheck();
+        scoreText.text = NfcCheck();
         
 //        groupMessagePanel.SetActive(isGroupActive);
         if (gameOverPanel.activeSelf) return;
@@ -880,8 +879,8 @@ public class Player : NetworkBehaviour {
 
     private void UpdateScore(int x)
     {
-        scoreText.text = x.ToString();
-        roundScoreText.text = x.ToString();
+//        scoreText.text = x.ToString();
+//        roundScoreText.text = x.ToString();
     }
 
     [Command]
@@ -985,7 +984,7 @@ public class Player : NetworkBehaviour {
     {
         nfcValue = NfcCheck();
         Debug.Log("StartNFC");
-        switch ((nfcStation + PlayerScore)%4)
+        switch ((nfcStation + PlayerScore)%6)
         {
             case 0:
                 validNfcRace = GoodStations[0].GetItem(nfcValue) ;
@@ -994,9 +993,15 @@ public class Player : NetworkBehaviour {
                 validNfcRace = GoodStations[1].GetItem(nfcValue);
                 break;
             case 2:
-                validNfcRace = BadStations[0].GetItem(nfcValue);
+                validNfcRace = GoodStations[2].GetItem(nfcValue);
                 break;
             case 3:
+                validNfcRace = GoodStations[3].GetItem(nfcValue);
+                break;
+            case 4:
+                validNfcRace = BadStations[0].GetItem(nfcValue);
+                break;
+            case 5:
                 validNfcRace = BadStations[1].GetItem(nfcValue);
                 break;
         }

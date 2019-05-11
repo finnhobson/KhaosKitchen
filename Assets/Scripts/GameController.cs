@@ -72,7 +72,7 @@ public class GameController : NetworkBehaviour
     }
 
     [SyncVar] public int fireCount = 0;
-    int stationCount = 4;
+    int stationCount = 6;
 
     public int FireCount
     {
@@ -862,8 +862,6 @@ public class GameController : NetworkBehaviour
     [ClientRpc]
     private void RpcNfcRaceAssignStation(int i)
     {
-
-
         foreach (var player in playerList)
         {
             player.nfcStation = i;

@@ -16,18 +16,18 @@ public class InstructionController : NetworkBehaviour
     private static List<String> verbList = new List<string>(new string[] { "Grab", "Fetch", "Grate", "Grill", "Melt", "Serve", "Stir", "Chop", "Cut", "Mash", "Season", "Flambé", "Bake", "Fry", "Taste", "Microwave", "Tendorise", "Roast", "Cry Into", "Mince", "Juice", "Freeze", "Purée", "Sneeze On", "Dice", "Cube", "Boil", "Brine", "Sous Vide", "Slice", "Poach",  "Deep Fry", "Lick", "Inhale", "Smell" });
     private static List<String> nounList = new List<string>(new string[] { "Minced Beef", "Steak", "Pork Loin", "Ice Cream", "Strawberry", "Bannana", "Toast", "Chocolate", "Pasta", "Bacon", "Tomato", "Sugar", "Salt", "Lettuce", "Sauce", "Mustard", "Sausage", "Apple", "Orange", "Chicken", "Ice Cubes", "Cheese", "Chicken Nuggets", "Brie", "Cheddar", "Camembert", "Wine", "Beer", "Whiskey", "Vodka", "Wasabi", "Salmon", "Tuna", "Mushroom", "Lard", "Bowling Ball", "Burger" });
 
-    private static List<string> fridge = new List<string>( new string[] {"1a", "1b", "1c"});
-    private static List<string> cupboard = new List<string>( new string[] {"2a", "2b", "2c"});
+    private static List<string> fridge = new List<string>( new string[] { "MILK", "CHEESE" } );
+    private static List<string> cupboard = new List<string>( new string[] { "PASTA", "LENTILS" } );
+    private static List<string> prep = new List<string>( new string[] { "WHISK", "CHOPPING BOARD" } );
+    private static List<string> serve = new List<string>( new string[] { "SPOON", "PLATE" } );
     
-    private static List<string> binA = new List<string>( new string[] {"3a", "3b"/*, "3c"*/});
-    private static List<string> binB = new List<string>( new string[] {"4a", "4b", "4c"});
+    private static List<string> binA = new List<string>( new string[] { "GLASS", "FOOD WASTE" } );
+    private static List<string> binB = new List<string>( new string[] { "INTERGALACTIC\nBLACK HOLE", "PLASTIC" } );
     
     private static List<string> WinnersList = new List<string>( new string[] {"WINNER!!","2nd","3rd","4th", "5th", "6th"});
     
-    
-
-    private static List<List<string>> GoodStations = new List<List<string>>{fridge,cupboard};
-    private static List<List<string>> BadStations = new List<List<string>>{binA, binB};
+    private static List<List<string>> GoodStations = new List<List<string>>{ fridge, cupboard, prep, serve };
+    private static List<List<string>> BadStations = new List<List<string>>{ binA, binB };
     
     private static List<String> micInstructions = new List<string>(new string[] { " Waiters won't take the food out fast enough!\n Shout at them to work harder!\n\n (SHOUT INTO THE MIC)", " Your team are being useless!\n Shout some sense into them!\n\n (SHOUT INTO THE MIC)",
                                                                                   " Rats have been spotted in the kitchen!\n Scream to scare them away!\n\n (SHOUT INTO THE MIC)", " Whoops! You just set your chopping board on fire!\n Try to blow it out!\n\n (BLOW INTO THE MIC)", 
