@@ -92,7 +92,7 @@ public class CameraController : MonoBehaviour
             Color[] pixels = backCam.GetPixels();
             foreach (Color pixel in pixels)
             {
-                if (pixel.r < 0.4 && pixel.g < 0.5 && pixel.b > 0.6) blueCount++;
+                if (pixel.r < 0.3 && pixel.g < 0.5 && pixel.b > 0.6) blueCount++;
                 else if (pixel.r > 0.6 && pixel.g > 0.6 && pixel.b < 0.2) yellowCount++;
                 else if (pixel.r < 0.6 && pixel.g > 0.6 && pixel.b < 0.4) greenCount++;
                 else if (pixel.r > 0.7 && pixel.g < 0.3 && pixel.b < 0.3) redCount++;
