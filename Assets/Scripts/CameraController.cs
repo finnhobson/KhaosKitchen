@@ -8,7 +8,7 @@ public class CameraController : MonoBehaviour
     private WebCamTexture backCam;
     public RawImage panel;
     public GameObject colourPanel;
-    public Text R, G, B;
+    public Text R, O, Y, G, B;
     public bool red, orange, yellow, green, blue;
     public Player player;
 
@@ -82,7 +82,7 @@ public class CameraController : MonoBehaviour
 
         if (camAvailable)
         {
-            int pixelCount = 0;
+            //int pixelCount = 0;
             int redCount = 0;
             int orangeCount = 0;
             int yellowCount = 0;
@@ -92,19 +92,45 @@ public class CameraController : MonoBehaviour
             Color[] pixels = backCam.GetPixels();
             foreach (Color pixel in pixels)
             {
-                if (pixel.r > 0.7 && pixel.g < 0.3 && pixel.b < 0.3) redCount++;
-                if (pixel.r > 0.7 && pixel.g > 0.3 && pixel.g < 0.5 && pixel.b < 0.3) orangeCount++;
-                if (pixel.r > 0.7 && pixel.g > 0.7 && pixel.b < 0.2) yellowCount++;
-                if (pixel.r < 0.5 && pixel.g > 0.6 && pixel.b < 0.3) greenCount++;
-                if (pixel.r < 0.3 && pixel.g < 0.5 && pixel.b > 0.6) blueCount++;
-                pixelCount++;
+                if (pixel.r < 0.4 && pixel.g < 0.5 && pixel.b > 0.6) blueCount++;
+                else if (pixel.r > 0.6 && pixel.g > 0.6 && pixel.b < 0.2) yellowCount++;
+                else if (pixel.r < 0.6 && pixel.g > 0.6 && pixel.b < 0.4) greenCount++;
+                else if (pixel.r > 0.7 && pixel.g < 0.3 && pixel.b < 0.3) redCount++;
+                else if (pixel.r > 0.7 && pixel.g > 0.3 && pixel.g < 0.5 && pixel.b < 0.3) orangeCount++;
             }
 
-            if (redCount / pixelCount > 0.3) red = true;
-            if (orangeCount / pixelCount > 0.3) orange = true;
-            if (yellowCount / pixelCount > 0.3) yellow = true;
-            if (greenCount / pixelCount > 0.3) green = true;
-            if (blueCount / pixelCount > 0.3) blue = true;
+            R.text = redCount.ToString();
+            O.text = orangeCount.ToString();
+            Y.text = yellowCount.ToString();
+            G.text = greenCount.ToString();
+            B.text = blueCount.ToString();
+
+            if (redCount > 8000)
+            {
+                red = true;
+                //colourPanel.GetComponent<Image>().color = Color.red;
+            }
+            if (orangeCount > 8000)
+            {
+                orange = true;
+                //colourPanel.GetComponent<Image>().color = new Color(1, 0.5f, 0) ;
+            }
+            if (blueCount > 8000)
+            {
+                blue = true;
+                //colourPanel.GetComponent<Image>().color = Color.blue;
+            }
+            if (yellowCount > 8000)
+            {
+                yellow = true;
+                //colourPanel.GetComponent<Image>().color = Color.yellow;
+            }
+            if (greenCount > 4000)
+            {
+                green = true;
+                //colourPanel.GetComponent<Image>().color = Color.green;
+            }
+            
         }
     }
 }

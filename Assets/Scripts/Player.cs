@@ -569,6 +569,20 @@ public class Player : NetworkBehaviour {
         cameraText.text = text;
     }
 
+    public void OnClickCameraButton()
+    {
+        if (cameraPanel.activeInHierarchy)
+        {
+            cameraPanel.SetActive(false);
+            cameraController.enabled = false;
+        }
+        else
+        {
+            cameraController.enabled = true;
+            cameraPanel.SetActive(true);
+        }
+    }
+
     public void OnClickNfcButton()
     {
         if (isLocalPlayer)
