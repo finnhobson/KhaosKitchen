@@ -80,7 +80,7 @@ public class AnimationController : MonoBehaviour
     private void SpawnCustomers()
     {
 
-        GameObject customer = Instantiate(customerPrefab, new Vector3(-50, 0.5f, -28), transform.rotation);
+        GameObject customer = Instantiate(customerPrefab, new Vector3(-50, 0.5f, -29.5f), transform.rotation);
         customerNumber++;
         GameObject shirt = customer.GetComponent<CustomerController>().shirt;
         Material shirtColour1 = new Material(shirt.GetComponent<MeshRenderer>().material);
@@ -105,7 +105,7 @@ public class AnimationController : MonoBehaviour
             part.GetComponent<MeshRenderer>().material = hatColour1;
         }
 
-        customer = Instantiate(customerPrefab, new Vector3(60, 0.5f, -28), transform.rotation);
+        customer = Instantiate(customerPrefab, new Vector3(60, 0.5f, -29.5f), transform.rotation);
         customerNumber++;
         shirt = customer.GetComponent<CustomerController>().shirt;
         Material shirtColour2 = new Material(shirt.GetComponent<MeshRenderer>().material);

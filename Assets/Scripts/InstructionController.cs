@@ -19,7 +19,7 @@ public class InstructionController : NetworkBehaviour
     private static List<string> fridge = new List<string>( new string[] {"1a", "1b", "1c"});
     private static List<string> cupboard = new List<string>( new string[] {"2a", "2b", "2c"});
     
-    private static List<string> binA = new List<string>( new string[] {"3a", "3b", "3c"});
+    private static List<string> binA = new List<string>( new string[] {"3a", "3b"/*, "3c"*/});
     private static List<string> binB = new List<string>( new string[] {"4a", "4b", "4c"});
     
     private static List<string> WinnersList = new List<string>( new string[] {"Winner","2nd","3rd","4th", "5th", "6th"});
@@ -39,8 +39,7 @@ public class InstructionController : NetworkBehaviour
                                                                                     " Pan set on fire!\n Shake to put it out!\n\n (SHAKE YOUR PHONE)", " We are ten years away from irreversible climate damage!\n This isn't really an instruction, just thought you needed to know, but shake the phone anyway\n\n (SHAKE YOUR PHONE)",
                                                                                     " Your arch nemisis just walked in!\n Shake your fist at them angrily!\n\n (SHAKE YOUR PHONE)"});
 
-    private static List<String> cameraInstructionColours = new List<string>(new string[] { "Red", "Orange", "Yellow", "Green", "Blue"});
-    private static List<String> cameraInstructionText = new List<string>(new string[] { "FIND THE TOMATOES!", "FIND THE ORANGES!", "FIND THE BANANAS!", "FIND THE APPLES!", "FIND THE BLUEBERRIES!" });
+    private static List<String> cameraInstructionText = new List<string>(new string[] { "FIND THE TOMATO!", "FIND THE ORANGE!", "FIND THE BANANAS!", "FIND THE APPLE!", "FIND THE EU FLAG TO REVOKE ARTICLE 50!" });
 
 
     private SyncListString activeButtonActions = new SyncListString();
@@ -241,7 +240,7 @@ public class InstructionController : NetworkBehaviour
                 RpcUpdateInstruction(ActiveInstructions[i], i);
                 RpcStartInstTimer(i);
 
-                int rand = UnityEngine.Random.Range(0, 15);
+                int rand = UnityEngine.Random.Range(0, 12);
                 if (rand == 1)
                 {
                     rand = UnityEngine.Random.Range(0, micInstructions.Count);
@@ -252,17 +251,17 @@ public class InstructionController : NetworkBehaviour
                     rand = UnityEngine.Random.Range(0, shakeInstructions.Count);
                     RpcSetShakePanel(i, shakeInstructions[rand]);
                 }
-                else if (rand == 3 || rand == 4)
+                else if (rand == 3 || rand == 4 || rand == 5 || rand == 6)
                 {
-                    rand = UnityEngine.Random.Range(0, cameraInstructionColours.Count);
-                    RpcSetCameraPanel(i, cameraInstructionColours[rand], cameraInstructionText[rand]);
+                    rand = UnityEngine.Random.Range(0, 5);
+                    RpcSetCameraPanel(i, rand, cameraInstructionText[rand]);
                 }
             }
         }
         if (!match)
         {
             GameController.fireCount++;
-            GameController.customerSatisfaction -= 5;
+            GameController.customerSatisfaction -= 3;
         }
     }
     
@@ -356,7 +355,7 @@ public class InstructionController : NetworkBehaviour
     }
 
     [ClientRpc]
-    public void RpcSetCameraPanel(int playerID, string colour, string text)
+    public void RpcSetCameraPanel(int playerID, int colour, string text)
     {
         Players[playerID].SetCameraPanel(colour, text);
     }

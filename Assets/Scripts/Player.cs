@@ -85,7 +85,7 @@ public class Player : NetworkBehaviour {
     public string topChefPush;
 
     //Extras
-    private string cameraColour;
+    private int cameraColour;
     [SyncVar] private string nfcValue = "";
     private string validNfc = "";
     [SyncVar]public string validNfcRace = "";
@@ -181,6 +181,7 @@ public class Player : NetworkBehaviour {
         nameText.text += PlayerUserName;
         nameText.color = PlayerColour;
         scoreText.color = PlayerColour;
+
         micListener.enabled = false;
         cameraController.enabled = false;
     }
@@ -253,20 +254,20 @@ public class Player : NetworkBehaviour {
             if (cameraPanel.activeInHierarchy)
             {
                 bool cameraBool = false;
-                if (cameraColour == "Red") cameraBool = cameraController.red;
-                if (cameraColour == "Orange") cameraBool = cameraController.orange;
-                if (cameraColour == "Yellow") cameraBool = cameraController.yellow;
-                if (cameraColour == "Green") cameraBool = cameraController.green;
-                if (cameraColour == "Blue") cameraBool = cameraController.blue;
+                if (cameraColour == 0) cameraBool = cameraController.red;
+                if (cameraColour == 1) cameraBool = cameraController.orange;
+                if (cameraColour == 2) cameraBool = cameraController.yellow;
+                if (cameraColour == 3) cameraBool = cameraController.green;
+                if (cameraColour == 4) cameraBool = cameraController.blue;
                 if (cameraBool)
                 {
+                    cameraController.enabled = false;
                     cameraPanel.SetActive(false);
                     cameraController.red = false;
                     cameraController.blue = false;
                     cameraController.green = false;
                     cameraController.orange = false;
                     cameraController.yellow = false;
-                    cameraController.enabled = false;
                     CmdIncreaseScore();
                     StartInstTimer();
                 }
@@ -560,7 +561,7 @@ public class Player : NetworkBehaviour {
         micText.text = text;
     }
 
-    public void SetCameraPanel(string colour, string text)
+    public void SetCameraPanel(int colour, string text)
     {
         cameraController.enabled = true;
         cameraPanel.SetActive(true);
@@ -599,20 +600,6 @@ public class Player : NetworkBehaviour {
         if (isLocalPlayer)
         {
             shakePanel.SetActive(false);
-        }
-    }
-
-    public void OnClickCameraButton()
-    {
-        if (cameraPanel.activeInHierarchy)
-        {
-            cameraPanel.SetActive(false);
-            cameraController.enabled = false;
-        }
-        else
-        {
-            cameraController.enabled = true;
-            cameraPanel.SetActive(true);
         }
     }
 
@@ -749,8 +736,9 @@ public class Player : NetworkBehaviour {
                     {
                         roller.SetActive(true);
                         PlayerScore -= 25;
-                        shopPanel.SetActive(false);
+                        RpcCloseShop();
                     }
+                    else RpcVibrate();
                 }
 
                 if (item == 2)
@@ -766,8 +754,9 @@ public class Player : NetworkBehaviour {
                             s.GetComponent<MeshRenderer>().material = ogreColour;
                         }
                         PlayerScore -= 100;
-                        shopPanel.SetActive(false);
+                        RpcCloseShop();
                     }
+                    else RpcVibrate();
                 }
 
                 if (item == 3)
@@ -782,12 +771,24 @@ public class Player : NetworkBehaviour {
                             part.SetActive(false);
                         }
                         PlayerScore -= 500;
-                        shopPanel.SetActive(false);
+                        RpcCloseShop();
                     }
-                    else Vibrate();
+                    else RpcVibrate();
                 }
             }
         }
+    }
+
+    [ClientRpc]
+    void RpcCloseShop()
+    {
+        shopPanel.SetActive(false);
+    }
+
+    [ClientRpc]
+    void RpcVibrate()
+    {
+        Vibrate();
     }
 
     [Command]

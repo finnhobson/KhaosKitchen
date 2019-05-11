@@ -85,24 +85,24 @@ public class CustomerController : MonoBehaviour
             //MOVING INSIDE RESTAURANT
 
             //LEFT EXIT
-            if (transform.localPosition.x > 17.8 && transform.localPosition.x < 18 && transform.localPosition.z > -28.1 && transform.localPosition.z < -27.9 && junction != 0)
+            if (transform.localPosition.x > 17.8 && transform.localPosition.x < 18 && transform.localPosition.z > -29.6 && transform.localPosition.z < -29.4 && junction != 0)
             {
                 junction = 0;
                 rand = Random.Range(0, 3);
                 if (rand == 0)
                 {
                     x = 0;
-                    z = Random.Range(0.0f, -maxSpeed);
+                    z = Random.Range(-0.02f, -maxSpeed);
                 }
                 if (rand == 1)
                 {
                     z = 0;
-                    x = Random.Range(0.0f, -maxSpeed);
+                    x = Random.Range(-0.02f, -maxSpeed);
                 }
                 if (rand == 2)
                 {
                     x = 0;
-                    z = Random.Range(0.0f, maxSpeed);
+                    z = Random.Range(0.02f, maxSpeed);
                 }
                 /*if (gameController.customerSatisfaction >= 25)
                 {
@@ -118,24 +118,24 @@ public class CustomerController : MonoBehaviour
         
 
             //RIGHT EXIT
-            if (transform.localPosition.x < -17.8 && transform.localPosition.x > -18 && transform.localPosition.z > -28.1 && transform.localPosition.z < -27.9 && junction != 1)
+            if (transform.localPosition.x < -17.8 && transform.localPosition.x > -18 && transform.localPosition.z > -29.6 && transform.localPosition.z < -29.4 && junction != 1)
             {
                 junction = 1;
                 rand = Random.Range(0, 3);
                 if (rand == 0)
                 {
                     x = 0;
-                    z = Random.Range(0.0f, -maxSpeed);
+                    z = Random.Range(-0.02f, -maxSpeed);
                 }
                 if (rand == 1)
                 {
                     z = 0;
-                    x = Random.Range(0.0f, maxSpeed);
+                    x = Random.Range(0.02f, maxSpeed);
                 }
                 if (rand == 2)
                 {
                     x = 0;
-                    z = Random.Range(0.0f, maxSpeed);
+                    z = Random.Range(0.02f, maxSpeed);
                 }
                 /*if (gameController.customerSatisfaction >= 25)
                 {
@@ -157,12 +157,12 @@ public class CustomerController : MonoBehaviour
                 if (z != 0)
                 {
                     z = 0;
-                    x = Random.Range(0.03f, maxSpeed);
+                    x = Random.Range(0.02f, maxSpeed);
                 }
                 else if (x != 0)
                 {
                     x = 0;
-                    z = Random.Range(0.03f, maxSpeed);
+                    z = Random.Range(0.02f, maxSpeed);
                 }
             }
 
@@ -174,13 +174,13 @@ public class CustomerController : MonoBehaviour
                 if (z != 0)
                 {
                     z = 0;
-                    x = Random.Range(-0.03f, -maxSpeed);
+                    x = Random.Range(-0.02f, -maxSpeed);
                 }
                 //Moving in x direction
                 else if (x != 0)
                 {
                     x = 0;
-                    z = Random.Range(0.03f, maxSpeed);
+                    z = Random.Range(0.02f, maxSpeed);
                 }
             }
 
@@ -191,12 +191,12 @@ public class CustomerController : MonoBehaviour
                 if (z != 0)
                 {
                     z = 0;
-                    x = Random.Range(-0.03f, -maxSpeed);
+                    x = Random.Range(-0.02f, -maxSpeed);
                 }
                 else if (x != 0)
                 {
                     x = 0;
-                    z = Random.Range(-0.03f, -maxSpeed);
+                    z = Random.Range(-0.02f, -maxSpeed);
                 }
             }
 
@@ -208,12 +208,12 @@ public class CustomerController : MonoBehaviour
                 if (z != 0)
                 {
                     z = 0;
-                    x = Random.Range(0.03f, maxSpeed);
+                    x = Random.Range(0.02f, maxSpeed);
                 }
                 else if (x != 0)
                 {
                     x = 0;
-                    z = Random.Range(-0.03f, -maxSpeed);
+                    z = Random.Range(-0.02f, -maxSpeed);
                 }
             }
 
@@ -225,17 +225,17 @@ public class CustomerController : MonoBehaviour
                 if (rand == 0)
                 {
                     x = 0;
-                    z = Random.Range(0.0f, -maxSpeed);
+                    z = Random.Range(-0.02f, -maxSpeed);
                 }
                 if (rand == 1)
                 {
                     z = 0;
-                    x = Random.Range(0.0f, maxSpeed);
+                    x = Random.Range(0.02f, maxSpeed);
                 }
                 if (rand == 2)
                 {
                     z = 0;
-                    x = Random.Range(0.0f, -maxSpeed);
+                    x = Random.Range(-0.02f, -maxSpeed);
                 }
 
             }
@@ -248,17 +248,17 @@ public class CustomerController : MonoBehaviour
                 if (rand == 0)
                 {
                     x = 0;
-                    z = Random.Range(0.0f, -maxSpeed);
+                    z = Random.Range(-0.02f, -maxSpeed);
                 }
                 if (rand == 1)
                 {
                     z = 0;
-                    x = Random.Range(0.0f, -maxSpeed);
+                    x = Random.Range(-0.02f, -maxSpeed);
                 }
                 if (rand == 2)
                 {
                     z = 0;
-                    x = Random.Range(0.0f, maxSpeed);
+                    x = Random.Range(0.02f, maxSpeed);
                 }
             }
 
@@ -270,17 +270,17 @@ public class CustomerController : MonoBehaviour
                 if (rand == 0)
                 {
                     x = 0;
-                    z = Random.Range(0.0f, maxSpeed);
+                    z = Random.Range(0.02f, maxSpeed);
                 }
                 if (rand == 1)
                 {
                     z = 0;
-                    x = Random.Range(0.0f, -maxSpeed);
+                    x = Random.Range(-0.02f, -maxSpeed);
                 }
                 if (rand == 2)
                 {
                     z = 0;
-                    x = Random.Range(0.0f, maxSpeed);
+                    x = Random.Range(0.02f, maxSpeed);
                 }
             }
 
@@ -292,71 +292,71 @@ public class CustomerController : MonoBehaviour
                 if (rand == 0)
                 {
                     x = 0;
-                    z = Random.Range(0.0f, maxSpeed);
+                    z = Random.Range(0.02f, maxSpeed);
                 }
                 if (rand == 1)
                 {
                     z = 0;
-                    x = Random.Range(0.0f, -maxSpeed);
+                    x = Random.Range(-0.02f, -maxSpeed);
                 }
                 if (rand == 2)
                 {
                     z = 0;
-                    x = Random.Range(0.0f, maxSpeed);
+                    x = Random.Range(0.02f, maxSpeed);
                 }
             }
 
             //RIGHT MIDDLE 
-            if (transform.localPosition.x < -5.9 && transform.localPosition.x > -6 && transform.localPosition.z > -28.1 && transform.localPosition.z < -28 && junction != 10)
+            if (transform.localPosition.x < -5.9 && transform.localPosition.x > -6 && transform.localPosition.z > -29.6 && transform.localPosition.z < -29.4 && junction != 10)
             {
                 junction = 10;
                 rand = Random.Range(0, 4);
                 if (rand == 0)
                 {
                     x = 0;
-                    z = Random.Range(0.0f, maxSpeed);
+                    z = Random.Range(0.02f, maxSpeed);
                 }
                 if (rand == 1)
                 {
                     x = 0;
-                    z = Random.Range(0.0f, -maxSpeed);
+                    z = Random.Range(-0.02f, -maxSpeed);
                 }
                 if (rand == 2)
                 {
                     z = 0;
-                    x = Random.Range(0.0f, maxSpeed);
+                    x = Random.Range(0.02f, maxSpeed);
                 }
                 if (rand == 3)
                 {
                     z = 0;
-                    x = Random.Range(0.0f, -maxSpeed);
+                    x = Random.Range(-0.02f, -maxSpeed);
                 }
             }
 
             //LEFT MIDDLE 
-            if (transform.localPosition.x < 5.8 && transform.localPosition.x > 6 && transform.localPosition.z > -28.2 && transform.localPosition.z < -28 && junction != 11)
+            if (transform.localPosition.x < 5.8 && transform.localPosition.x > 6 && transform.localPosition.z > -29.6 && transform.localPosition.z < -29.4 && junction != 11)
             {
                 junction = 11;
                 rand = Random.Range(0, 4);
                 if (rand == 0)
                 {
                     x = 0;
-                    z = Random.Range(0.0f, maxSpeed);
+                    z = Random.Range(0.02f, maxSpeed);
                 }
                 if (rand == 1)
                 {
                     x = 0;
-                    z = Random.Range(0.0f, -maxSpeed);
+                    z = Random.Range(-0.02f, -maxSpeed);
                 }
                 if (rand == 2)
                 {
                     z = 0;
-                    x = Random.Range(0.0f, maxSpeed);
+                    x = Random.Range(0.02f, maxSpeed);
                 }
                 if (rand == 3)
                 {
                     z = 0;
-                    x = Random.Range(0.0f, -maxSpeed);
+                    x = Random.Range(-0.02f, -maxSpeed);
                 }
             }
 

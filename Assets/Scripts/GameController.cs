@@ -36,14 +36,6 @@ public class GameController : NetworkBehaviour
 
     [SyncVar] public int score = 0;
 
-    public int Score
-    {
-        get
-        {
-            return score;
-        }
-    }
-
     [SyncVar] private int roundScore = 0;
     [SyncVar] public int roundNumber = 1;
 
@@ -56,6 +48,14 @@ public class GameController : NetworkBehaviour
     //Group activity
     private bool isGroupActiviy = true;
     [SyncVar] public bool isGroupDone;
+
+    public int Score
+    {
+        get
+        {
+            return score;
+        }
+    }
 
     public bool IsGameOver
     {
@@ -118,6 +118,14 @@ public class GameController : NetworkBehaviour
         }
     }
 
+    public int PlayerCount
+    {
+        get
+        {
+            return playerCount;
+        }
+    }
+
     [SyncVar] public int instructionStartTime;
     [SyncVar] public int BaseInstructionNumber;
     [SyncVar] public int InstructionNumberIncreasePerRound;
@@ -127,21 +135,12 @@ public class GameController : NetworkBehaviour
     [SyncVar] public int MinimumInstructionTime;
     [SyncVar] public int playerCount;
 
-
-    public int PlayerCount
-    {
-        get
-        {
-            return playerCount;
-        }
-    }
-
     [SyncVar] public bool easyPhoneInteractions;
 
     //[SyncVar(hook = "SetTopChef")] public string currentTopChef;
     [SyncVar] public string currentTopChef;
 
-    [SyncVar] public float customerSatisfaction = 50;
+    [SyncVar] public float customerSatisfaction = 60;
 
     //Phone interaction probability = 2/x
     [SyncVar] public int piProb = 6;
@@ -175,7 +174,6 @@ public class GameController : NetworkBehaviour
         }
     }
 
-    //Functions-----------------------------------------------------------------------------------------------------
 
     //--------------------------------------------------------------------------------------------------------------
     // FUNCTIONS ---------------------------------------------------------------------------------------------------
@@ -254,13 +252,6 @@ public class GameController : NetworkBehaviour
 
         if (isServer)
         {
-            //            int j = 0;
-            //            foreach (var p in playerList)
-            //            {
-            ////                UserNames.Add(p.PlayerUserName);
-            //                UserNames.Add("PLayer" + j);
-            //                j++;
-            //            }
             gameStateHandler = new GameStateHandler(UserNames); //Instantiate single gameStateHandler object on the server to hold gamestate data 
 
             StartCoroutine(RoundCountdown(10, "3"));
@@ -296,7 +287,7 @@ public class GameController : NetworkBehaviour
             if (isServer)
             {
                 int scoreRemaining = (roundMaxScore) - (roundScore - roundStartScore);
-                if ((score % 50 == 20) && isGroupActiviy && isGroupActivityEnabled && (scoreRemaining > playerCount) )//Needs to be changed.
+                if ((score % 80 == 70) && isGroupActiviy && isGroupActivityEnabled && (scoreRemaining > playerCount) ) //Needs to be changed.
                 {
                     Debug.Log("Call1");
                     InitiateGroupActivity();
@@ -425,13 +416,12 @@ public class GameController : NetworkBehaviour
     {
         score += 10;
         roundScore++;
-        customerSatisfaction += 3.0f;
+        customerSatisfaction += 2.0f;
         UpdateScoreBar();
     }
 
     public void StartRoundTimer()
     {
-        //roundStartTime = 90;
         roundTimeLeft = roundStartTime;
     }
 
@@ -554,7 +544,7 @@ public class GameController : NetworkBehaviour
         isRoundPaused = false;
         PenultimateAction(false);
         roundMaxScore = CalculateInstructionNumber();
-        customerSatisfaction = 50;
+        customerSatisfaction = 60;
         InvokeRepeating("DecreaseCustomerSatisfaction", 1.0f, 1.0f);
         UpdateScoreBar();
     }
@@ -668,7 +658,6 @@ public class GameController : NetworkBehaviour
 
     private void LoadSettings()
     {
-
         roundStartTime = GameSettings.RoundTime;
         playerCount = GameSettings.PlayerCount;
         easyPhoneInteractions = GameSettings.EasyPhoneInteractions;
@@ -681,12 +670,11 @@ public class GameController : NetworkBehaviour
         MinimumInstructionTime = GameSettings.MinimumInstructionTime;
 
         piProb = GameSettings.PhoneInteractionProbability;
-
     }
 
     private void DecreaseCustomerSatisfaction()
     {
-        customerSatisfaction -= 1;
+        customerSatisfaction -= 0.5f;
         if (customerSatisfaction > 100) customerSatisfaction = 100;
         if (customerSatisfaction < 0) customerSatisfaction = 0;
     }
@@ -763,7 +751,6 @@ public class GameController : NetworkBehaviour
 
     private void CheckShake()
     {
-
         bool allReady = true;
         foreach (var player in playerList)
         {
@@ -794,7 +781,6 @@ public class GameController : NetworkBehaviour
                groupDisplayTasks[playerList.IndexOf(player)].text = InstructionController.getPositionWord(raceWinnersList.IndexOf(player.PlayerUserName));
             }
         }
-
 
         //        Debug.Log("list B");
         //        foreach (var VARIABLE in raceWinnersList)
@@ -842,7 +828,6 @@ public class GameController : NetworkBehaviour
     [Server]
     private void InitiateGroupActivity()
     {
-
         Debug.Log("initiate");
         Random rand = new Random();
         RpcNfcRaceAssignStation(rand.Next(0, stationCount));
@@ -850,8 +835,6 @@ public class GameController : NetworkBehaviour
         RpcSetGroupActivity(true);
         //TODO: HERE
         isGroupActiviy = false;
-        
-
     }
 
 
@@ -871,7 +854,6 @@ public class GameController : NetworkBehaviour
                 break;
 
             default:
-
                 score = 9999;
                 break;
         }
@@ -914,7 +896,7 @@ public class GameController : NetworkBehaviour
         raceWinnersList = new List<string>();
         raceWinnersList.Clear();
         Debug.Log("... Ready");
-        StartCoroutine(leaveUpLeaderboard(5));
+        StartCoroutine(LeaveUpLeaderboard(5));
         groupShakePanel.SetActive(false);
         IncrementGroupActivity();
     }
@@ -942,7 +924,9 @@ public class GameController : NetworkBehaviour
             if (!playerList[i].IsNFCRaceCompleted)
             {
                 groupDisplayNames[i].text = playerList[i].PlayerUserName;
+                groupDisplayNames[i].color = playerList[i].PlayerColour;
                 groupDisplayTasks[i].text = playerList[i].validNfcRace;
+                groupDisplayTasks[i].color = playerList[i].PlayerColour;
             }
         }
     }
@@ -952,14 +936,10 @@ public class GameController : NetworkBehaviour
         groupShakePanel.SetActive(true);
     }
 
-    IEnumerator leaveUpLeaderboard(int waitTime)
+    IEnumerator LeaveUpLeaderboard(int waitTime)
     {
         yield return new WaitForSeconds(waitTime);
         groupRacePanel.SetActive(false);
-
-
-            
-
     }
     
 }
