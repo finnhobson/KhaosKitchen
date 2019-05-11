@@ -251,11 +251,11 @@ public class InstructionController : NetworkBehaviour
                     rand = UnityEngine.Random.Range(0, shakeInstructions.Count);
                     RpcSetShakePanel(i, shakeInstructions[rand]);
                 }
-//                else if (rand == 3 || rand == 4 || rand == 5 || rand == 6)
-//                {
-//                    rand = UnityEngine.Random.Range(0, 5);
-//                    RpcSetCameraPanel(i, rand, cameraInstructionText[rand]);
-//                }
+                else if (rand == 3 || rand == 4 || rand == 5 || rand == 6)
+                {
+                    rand = UnityEngine.Random.Range(0, 5);
+                    RpcSetCameraPanel(i, rand, cameraInstructionText[rand]);
+                }
             }
         }
         if (!match)
