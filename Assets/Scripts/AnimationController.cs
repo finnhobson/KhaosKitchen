@@ -44,7 +44,7 @@ public class AnimationController : MonoBehaviour
 
         if (currentRound < gameController.roundNumber && gameController.isGameStarted && !gameController.isRoundPaused)
         {
-            SpawnCustomers();
+            if (customerNumber < 10) SpawnCustomers();
             currentRound = gameController.roundNumber;
             bonusCustomers = false; 
         }
@@ -55,11 +55,6 @@ public class AnimationController : MonoBehaviour
             fireCount = gameController.fireCount;
         }
 
-        if  (gameController.customerSatisfaction > 80 && customerNumber < 20 && bonusCustomers == false && !gameController.isRoundPaused && gameController.isGameStarted)
-        {
-            bonusCustomers = true;
-            SpawnCustomers();
-        }
     }
 
     private IEnumerator SpawnChefs()
