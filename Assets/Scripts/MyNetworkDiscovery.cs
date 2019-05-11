@@ -5,10 +5,17 @@ using UnityEngine;
 
 public class MyNetworkDiscovery : NetworkDiscovery {
 
+    public LobbyManager lobbyManager;
+
+    private void Start()
+    {
+        lobbyManager = GetComponent<LobbyManager>();
+    }
+
     public override void OnReceivedBroadcast(string fromAddress, string data)
     {
-        NetworkManager.singleton.networkAddress = fromAddress;
-        NetworkManager.singleton.StartClient();
+        Debug.Log("Found IP Address: " + fromAddress);
+        lobbyManager.networkAddress = fromAddress;
     }
 
 }
