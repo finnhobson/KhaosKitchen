@@ -786,14 +786,14 @@ public class Player : NetworkBehaviour {
                 {
                     GameObject crown = chef.GetComponent<ChefController>().crown;
                     List<GameObject> hatParts = chef.GetComponent<ChefController>().hat;
-                    if (crown.activeInHierarchy == false && PlayerScore >= 500)
+                    if (crown.activeInHierarchy == false && PlayerScore >= 250)
                     {
                         crown.SetActive(true);
                         foreach (GameObject part in hatParts)
                         {
                             part.SetActive(false);
                         }
-                        PlayerScore -= 500;
+                        PlayerScore -= 250;
                         RpcCloseShop();
                     }
                     else RpcVibrate();

@@ -240,18 +240,18 @@ public class InstructionController : NetworkBehaviour
                 RpcUpdateInstruction(ActiveInstructions[i], i);
                 RpcStartInstTimer(i);
 
-                int rand = UnityEngine.Random.Range(0, 12);
-                if (rand == 1)
+                int rand = UnityEngine.Random.Range(0, 7);
+                if (rand == 0)
                 {
                     rand = UnityEngine.Random.Range(0, micInstructions.Count);
                     RpcSetMicPanel(i, micInstructions[rand]);
                 }
-                else if (rand == 2)
+                else if (rand == 1)
                 {
                     rand = UnityEngine.Random.Range(0, shakeInstructions.Count);
                     RpcSetShakePanel(i, shakeInstructions[rand]);
                 }
-                else if (rand == 3 || rand == 4 || rand == 5 || rand == 6)
+                else if (rand == 2)
                 {
                     rand = UnityEngine.Random.Range(0, 5);
                     RpcSetCameraPanel(i, rand, cameraInstructionText[rand]);
