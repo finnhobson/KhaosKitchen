@@ -330,12 +330,12 @@ public class Player : NetworkBehaviour {
         if (value == "BNBnSotfgA==") return GoodStations[1].GetStationItem(1);
         
         //prep
-        if (value == "BJJnSotfgA==") return GoodStations[1].GetStationItem(0);
-        if (value == "BFpoSotfgA==") return GoodStations[1].GetStationItem(1);
+        if (value == "BJJnSotfgA==") return GoodStations[2].GetStationItem(0);
+        if (value == "BFpoSotfgA==") return GoodStations[2].GetStationItem(1);
         
         //serve
-        if (value == "BJloSotfgA==") return GoodStations[1].GetStationItem(0);
-        if (value == "BFtoSotfgA==") return GoodStations[1].GetStationItem(1);
+        if (value == "BJloSotfgA==") return GoodStations[3].GetStationItem(0);
+        if (value == "BFtoSotfgA==") return GoodStations[3].GetStationItem(1);
 
         //bin A
         if (value == "BG9oSotfgA==") return BadStations[0].GetStationItem(0);
