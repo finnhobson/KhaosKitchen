@@ -14,24 +14,21 @@ using UnityEngine.Serialization;
 using Random = System.Random;
 
 /*
- * 1. a BAxnSotfgQ==
- *    b BPlnSotfgA==
- *    c BA1nSotfgQ==
  *
- * 2 a BORnSotfgA==
- *   b BNBnSotfgA==
- *   c BPhnSotfgA==
- *
- * 3 a BF5nSotfgQ==
- *   b BHFnSotfgQ==
- *   c BFVnSotfgA==
- *
- * 4 a BFZnSotfgA==
- *   b BGlnSotfgA==
- *   c BGpnSotfgA==
- *
- *
- * 
+ *  MILK:                     BEZoSotfgA==
+ *  CHEESE:                   BH5nSotfgA==
+ *  PASTA:                    BDNoSotfgA==
+ *  LENTILS:                  BJJnSotfgA==
+ *  WHISK:                    BG5oSotfgA==
+ *  CHOPPING BOARD:           BFpoSotfgA==
+ *  SPOON:                    BJloSotfgA==
+ *  PLATE:                    BFtoSotfgA==
+ *  GLASS:                    BG9oSotfgA==
+ *  FOOD WASTE:               BH1nSotfgA==
+ *  NTERGALACTIC\nBLACK HOLE: BINoSotfgA==
+ *  PLASTIC:                  BIRoSotfgA== 
+ *  SPARE 1:                  BJhoSotfgA==
+ *  SPARE 2:                  
  */
 public class Player : NetworkBehaviour {
 
@@ -191,7 +188,7 @@ public class Player : NetworkBehaviour {
         if (wait) return;
         //Display score.
 //        scoreText.text = gameController.score.ToString();
-//        scoreText.text = NfcCheck();
+//        instructionText.text = NfcCheck();
         
 //        groupMessagePanel.SetActive(isGroupActive);
         if (gameOverPanel.activeSelf) return;
@@ -324,23 +321,29 @@ public class Player : NetworkBehaviour {
     {
         string value = NFCListener.GetValue();
         
-        //Group 1
-        if (value == "BAxnSotfgQ==") return GoodStations[0].GetStationItem(0);
-        if (value == "BPlnSotfgA==") return GoodStations[0].GetStationItem(1);
-        if (value == "BA1nSotfgQ==") return GoodStations[0].GetStationItem(2);
+        //fridge
+        if (value == "BEZoSotfgA==") return GoodStations[0].GetStationItem(0);
+        if (value == "BH5nSotfgA==") return GoodStations[0].GetStationItem(1);
 
-        //nfc 2
-        if (value == "BORnSotfgA==") return GoodStations[1].GetStationItem(0);
-        if (value == "BNBnSotfgA==") return GoodStations[1].GetStationItem(1);
-        if (value == "BPhnSotfgA==") return GoodStations[1].GetStationItem(2);
-    //nfc 3
-        if (value == "BF5nSotfgQ==") return BadStations[0].GetStationItem(0);
-        if (value == "BHFnSotfgQ==") return BadStations[0].GetStationItem(1);
-        if (value == "BFVnSotfgA==") return BadStations[0].GetStationItem(2);
-    //nfc 4
-        if (value == "BFZnSotfgA==") return BadStations[1].GetStationItem(0);
-        if (value == "BGlnSotfgA==") return BadStations[1].GetStationItem(1);
-        if (value == "BGpnSotfgA==") return BadStations[1].GetStationItem(2);
+        //cupboard
+        if (value == "BDNoSotfgA==") return GoodStations[1].GetStationItem(0);
+        if (value == "BJJnSotfgA==") return GoodStations[1].GetStationItem(1);
+        
+        //prep
+        if (value == "BG5oSotfgA==") return GoodStations[2].GetStationItem(0);
+        if (value == "BFpoSotfgA==") return GoodStations[2].GetStationItem(1);
+        
+        //serve
+        if (value == "BJloSotfgA==") return GoodStations[3].GetStationItem(0);
+        if (value == "BFtoSotfgA==") return GoodStations[3].GetStationItem(1);
+
+        //bin A
+        if (value == "BG9oSotfgA==") return BadStations[0].GetStationItem(0);
+        if (value == "BH1nSotfgA==") return BadStations[0].GetStationItem(1);
+    
+        //bin B
+        if (value == "BINoSotfgA==") return BadStations[1].GetStationItem(0);
+        if (value == "BIRoSotfgA==") return BadStations[1].GetStationItem(1);
         
         return value;
 
@@ -999,7 +1002,7 @@ public class Player : NetworkBehaviour {
     {
         nfcValue = NfcCheck();
         Debug.Log("StartNFC");
-        switch ((nfcStation + PlayerScore)%4)
+        switch ( nfcStation )
         {
             case 0:
                 validNfcRace = GoodStations[0].GetItem(nfcValue) ;
@@ -1008,10 +1011,19 @@ public class Player : NetworkBehaviour {
                 validNfcRace = GoodStations[1].GetItem(nfcValue);
                 break;
             case 2:
-                validNfcRace = BadStations[0].GetItem(nfcValue);
+                validNfcRace = GoodStations[2].GetItem(nfcValue);
                 break;
             case 3:
+                validNfcRace = GoodStations[3].GetItem(nfcValue);
+                break;
+            case 4:
+                validNfcRace = BadStations[0].GetItem(nfcValue);
+                break;
+            case 5:
                 validNfcRace = BadStations[1].GetItem(nfcValue);
+                break;
+            default:
+                validNfcRace = GoodStations[0].GetItem(nfcValue);
                 break;
         }
 
