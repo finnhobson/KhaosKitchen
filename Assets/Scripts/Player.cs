@@ -15,22 +15,20 @@ using Random = System.Random;
 
 /*
  *
- *  MILK:
- *  CHEESE:
- *  PASTA:
- *  LENTILS:
- *  WHISK:
- *  CHOPPING BOARD:
- *  SPOON:
- *  PLATE:
- *  GLASS:
- *  FOOD WASTE:
- *  NTERGALACTIC\nBLACK HOLE:
- *  PLASTIC:
- *
- *
- *
- * 
+ *  MILK:                     BEZoSotfgA==
+ *  CHEESE:                   BH5nSotfgA==
+ *  PASTA:                    BDNoSotfgA==
+ *  LENTILS:                  BJJnSotfgA==
+ *  WHISK:                    BG5oSotfgA==
+ *  CHOPPING BOARD:           BFpoSotfgA==
+ *  SPOON:                    BJloSotfgA==
+ *  PLATE:                    BFtoSotfgA==
+ *  GLASS:                    BG9oSotfgA==
+ *  FOOD WASTE:               BH1nSotfgA==
+ *  NTERGALACTIC\nBLACK HOLE: BINoSotfgA==
+ *  PLASTIC:                  BIRoSotfgA== 
+ *  SPARE 1:                  BJhoSotfgA==
+ *  SPARE 2:                  
  */
 public class Player : NetworkBehaviour {
 
@@ -190,7 +188,7 @@ public class Player : NetworkBehaviour {
         if (wait) return;
         //Display score.
 //        scoreText.text = gameController.score.ToString();
-        instructionText.text = NfcCheck();
+//        instructionText.text = NfcCheck();
         
 //        groupMessagePanel.SetActive(isGroupActive);
         if (gameOverPanel.activeSelf) return;
@@ -879,8 +877,8 @@ public class Player : NetworkBehaviour {
 
     private void UpdateScore(int x)
     {
-//        scoreText.text = x.ToString();
-//        roundScoreText.text = x.ToString();
+        scoreText.text = x.ToString();
+        roundScoreText.text = x.ToString();
     }
 
     [Command]
