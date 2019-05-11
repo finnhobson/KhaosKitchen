@@ -9,6 +9,10 @@ using UnityEngine.Serialization;
 
 public class InstructionController : NetworkBehaviour
 {
+    /*
+     * Random release notes.
+     * 0.4.1
+     */
     public GameController GameController;
     public InstructionHandler InstructionHandler;
     
