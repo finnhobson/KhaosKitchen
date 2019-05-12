@@ -185,17 +185,6 @@ public class Player : NetworkBehaviour {
 
     private void Update()
     {
-        if (!isClient) return;
-
-        if (gameOverPanel.activeSelf) return;
-
-
-        if (roundCompletePanel.activeSelf)
-        {
-            TurnEverythingOff();
-            return;
-        }
-
         if (wait) return;
 
 
@@ -213,6 +202,19 @@ public class Player : NetworkBehaviour {
 
 
         if (groupMessagePanel.activeSelf) return;
+
+        if (!isClient) return;
+
+        if (gameOverPanel.activeSelf) return;
+
+
+        if (roundCompletePanel.activeSelf)
+        {
+            TurnEverythingOff();
+            return;
+        }
+
+        
 
         if (!timerStarted && gameController.isGameStarted)
         {
