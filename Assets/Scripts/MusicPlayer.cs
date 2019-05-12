@@ -17,7 +17,7 @@ public class MusicPlayer : MonoBehaviour
     public AudioClip GameOverClip;
     public AudioClip[] RoundBreaks;
     public AudioClip[] Countdown;
-    public AudioClip TenSecondCountdown;
+
     private float VolumeOneShot = 2f;
     
     //Primitives
@@ -100,8 +100,4 @@ public class MusicPlayer : MonoBehaviour
     }
 
 
-    public void PlayTenSecondCountdown()
-    {
-        BackgroundSource.PlayOneShot(TenSecondCountdown, VolumeOneShot);
-    }
 }

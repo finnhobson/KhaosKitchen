@@ -327,7 +327,7 @@ public class GameController : NetworkBehaviour
             if (RoundTimeLeft <= 10 && tenSec == false)
             {
                 tenSec = true;
-                MusicPlayer.PlayTenSecondCountdown();
+                RpcTenCount();
             }
 
             else if (roundTimeLeft <= 0 || customerSatisfaction <= 0)
@@ -943,5 +943,11 @@ public class GameController : NetworkBehaviour
         yield return new WaitForSeconds(waitTime);
         groupRacePanel.SetActive(false);
     }
-    
+
+    [ClientRpc]
+    private void RpcTenCount()
+    {
+        foreach (Player p in playerList) p.PlayTenSecondCountdown();
+    }
+
 }

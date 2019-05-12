@@ -46,6 +46,7 @@ public class Player : NetworkBehaviour {
     public AudioClip[] correctActions;
     public AudioClip[] incorrectActions;
     public AudioClip[] badNoises;
+    public AudioClip TenSecondCountdown;
     private AudioSource source;
     private int switcher = 0;
     private int failSwitch = 0;
@@ -731,6 +732,13 @@ public class Player : NetworkBehaviour {
     {
         gameController.PrintOut(buttonNumber);
     }
+
+    public void PlayTenSecondCountdown()
+    {
+        source.PlayOneShot(TenSecondCountdown, 2);
+        Vibrate();
+    }
+
 
     private void PlayFailSound()
     {
