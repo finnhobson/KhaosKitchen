@@ -143,7 +143,7 @@ public class Player : NetworkBehaviour {
     [SyncVar] public bool isGroupActive;
     [FormerlySerializedAs("isGroupComplete")] [SyncVar] public bool isGroupActivityPlayerComplete;
     [SyncVar] public bool isShaking;
-    [SyncVar] public int activityNumber = 1;
+    [SyncVar] public int activityNumber = 0;
     [FormerlySerializedAs("isNFCRace")] [SyncVar] public bool isNFCRaceStarted;
     [SyncVar] public int nfcStation;
     [SyncVar] public bool IsNFCRaceCompleted;
@@ -187,9 +187,9 @@ public class Player : NetworkBehaviour {
 
     private void Update()
     {
-        debugText.text = "Start";
+//        debugText.text = "Start";
         if (wait) return;
-        debugText.text = "Second";
+//        debugText.text = "Second";
 
 
 
@@ -200,35 +200,35 @@ public class Player : NetworkBehaviour {
         {
             if (isLocalPlayer)
             {
-                debugText.text = "Inside";
+//                debugText.text = "Inside";
 
                 CheckGroupActivity();
-                debugText.text = "Inside 2";
+//                debugText.text = "Inside 2";
 
                 TurnEverythingOff();
-                debugText.text = "Inside 3";
+//                debugText.text = "Inside 3";
 
             }
         }
 
-        debugText.text = "After";
+//        debugText.text = "After";
 
 
 
 
         if (groupMessagePanel.activeSelf) return;
 
-        debugText.text = "GroupPanel";
+//        debugText.text = "GroupPanel";
 
 
         if (!isClient) return;
 
-        debugText.text = "isClient";
+//        debugText.text = "isClient";
 
 
         if (gameOverPanel.activeSelf) return;
 
-        debugText.text = "gameOver";
+//        debugText.text = "gameOver";
 
         if (roundCompletePanel.activeSelf)
         {
@@ -236,7 +236,7 @@ public class Player : NetworkBehaviour {
             return;
         }
 
-        debugText.text = "roundComplete";
+//        debugText.text = "roundComplete";
 
 
         if (!timerStarted && gameController.isGameStarted)
@@ -331,7 +331,7 @@ public class Player : NetworkBehaviour {
             shakePanel.SetActive(false);
            // micPanel.SetActive(false);
         }
-        debugText.text = "End";
+//        debugText.text = "End";
 
     }
 
@@ -941,36 +941,37 @@ public class Player : NetworkBehaviour {
         switch (activityNumber)
         {
             case 0:
-                //groupMessageText.text = "Look at main screen \n (shaking)";
+                groupMessageText.text = "Look at main screen \n (shaking)";
+                debugText.text = "Shake";
 
                 CmdSetShake(ShakeListener.shaking);
 
                 break;
 
             case 1:
-                debugText.text = "check 1";
+//                debugText.text = "check 1";
 
                 nfcValue = NfcCheck();
-                debugText.text = "check 2";
+//                debugText.text = "check 2";
 
 
                 if (!isNFCRaceStarted)
                 {
                     StartNFCRace();
-                    debugText.text = "check 3";
+//                    debugText.text = "check 3";
                 }
 
                 //                else if (!IsNFCRaceCompleted && isNFCRaceStarted) CmdSetNFCRace(nfcPanel.activeSelf);
                 else if (!IsNFCRaceCompleted && isNFCRaceStarted)
                 {
                     CmdSetNFCRace(validNfcRace.Equals(nfcValue));
-                    debugText.text = "check 4";
+//                    debugText.text = "check 4";
 
                 }
                 else
                 {
                     groupMessageText.text = "DONE!";
-                    debugText.text = "check 5";
+//                    debugText.text = "check 5";
 
                     wait = true;
                 }
@@ -1037,7 +1038,7 @@ public class Player : NetworkBehaviour {
     public void StartNFCRace()
     {
         nfcValue = NfcCheck();
-        debugText.text = "START";
+//        debugText.text = "START";
 
         Debug.Log("StartNFC");
         switch ( nfcStation )
@@ -1067,12 +1068,12 @@ public class Player : NetworkBehaviour {
         groupMessageText.text = "ALL HANDS ON DECK!\n\nLOOK AT THE MAIN SCREEN!";
 
         CmdSetValidNfcRace(validNfcRace);
-         debugText.text = "START 2";
+//         debugText.text = "START 2";
 
 
         IsNFCRaceCompleted = false;
         isNFCRaceStarted = true;
-          debugText.text = "START 3";
+//          debugText.text = "START 3";
 
     }
 
