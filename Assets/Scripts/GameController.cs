@@ -324,10 +324,10 @@ public class GameController : NetworkBehaviour
                 OnRoundComplete();
             }
 
-            if (RoundTimeLeft <= 10.2 && tenSec == false)
+            if (RoundTimeLeft <= 10.4 && tenSec == false)
             {
                 tenSec = true;
-                RpcTenCount();
+                if(isServer) RpcTenCount();
             }
 
             else if (roundTimeLeft <= 0 || customerSatisfaction <= 0)
