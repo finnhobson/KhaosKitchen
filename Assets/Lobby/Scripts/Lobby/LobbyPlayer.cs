@@ -9,7 +9,7 @@ using System.Linq;
 //Any LobbyHook can then grab it and pass those value to the game player prefab (see the Pong Example in the Samples Scenes)
 public class LobbyPlayer : NetworkLobbyPlayer
 {
-    static Color[] Colors = new Color[] { Color.magenta, Color.cyan, Color.blue, Color.green, Color.yellow, Color.white };
+    static Color[] Colors = new Color[] { Color.magenta, Color.cyan, new Color(1, 0.5f, 0), Color.blue, Color.green, Color.yellow, Color.white };
     //used on server to avoid assigning the same color to two player
     static List<int> _colorInUse = new List<int>();
 
