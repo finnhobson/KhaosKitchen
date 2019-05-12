@@ -19,7 +19,8 @@ public class MusicPlayer : MonoBehaviour
     public AudioClip TenSecondCountdown;
 
     private float VolumeOneShot = 2f;
-    
+    private float VolumeLoud = 5f;
+
     //Primitives
     private int NumberOfRoundBreaks;
     private int Switch = 0;
@@ -101,8 +102,6 @@ public class MusicPlayer : MonoBehaviour
 
     public void PlayTenSecondCountdown()
     {
-        BackgroundSource.PlayOneShot(TenSecondCountdown, VolumeOneShot);
+        BackgroundSource.PlayOneShot(TenSecondCountdown, VolumeLoud);
     }
-
-
 }
