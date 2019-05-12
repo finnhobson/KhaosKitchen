@@ -237,12 +237,11 @@ public class InstructionController : NetworkBehaviour
                     rand = UnityEngine.Random.Range(0, shakeInstructions.Count);
                     RpcSetShakePanel(i, shakeInstructions[rand]);
                 }
-                /*
                 else if (rand == 2)
                 {
                     rand = UnityEngine.Random.Range(0, 5);
                     RpcSetCameraPanel(i, rand, cameraInstructionText[rand]);
-                }*/
+                }
             }
         }
 
@@ -266,7 +265,8 @@ public class InstructionController : NetworkBehaviour
             {
                 GameController.RpcResetScoreSteak(i);
                 GameController.IncreaseFireCount();
-                
+                GameController.customerSatisfaction -= 3;
+
                 PickNewInstruction(i, action);
                 RpcUpdateInstruction(ActiveInstructions[i], i);
                 RpcSetNfcPanel(i, "You missed an order! " + System.Environment.NewLine

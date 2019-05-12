@@ -671,7 +671,7 @@ public class GameController : NetworkBehaviour
 
     private void DecreaseCustomerSatisfaction()
     {
-        customerSatisfaction -= 0.5f;
+        customerSatisfaction -= 1;
         if (customerSatisfaction > 100) customerSatisfaction = 100;
         if (customerSatisfaction < 0) customerSatisfaction = 0;
     }

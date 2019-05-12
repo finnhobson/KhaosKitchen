@@ -941,7 +941,8 @@ public class Player : NetworkBehaviour {
         switch (activityNumber)
         {
             case 0:
-                //groupMessageText.text = "Look at main screen \n (shaking)";
+                groupMessageText.text = "Look at main screen \n (shaking)";
+                debugText.text = "Shake";
 
                 CmdSetShake(ShakeListener.shaking);
 
