@@ -226,7 +226,7 @@ public class InstructionController : NetworkBehaviour
                 RpcUpdateInstruction(ActiveInstructions[i], i);
                 RpcStartInstTimer(i);
 
-                /*int rand = UnityEngine.Random.Range(0, 7);
+                int rand = UnityEngine.Random.Range(0, 7);
                 if (rand == 0)
                 {
                     rand = UnityEngine.Random.Range(0, micInstructions.Count);
@@ -241,7 +241,7 @@ public class InstructionController : NetworkBehaviour
                 {
                     rand = UnityEngine.Random.Range(0, 5);
                     RpcSetCameraPanel(i, rand, cameraInstructionText[rand]);
-                }*/
+                }
             }
         }
         if (!match)
