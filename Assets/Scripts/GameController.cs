@@ -324,7 +324,7 @@ public class GameController : NetworkBehaviour
                 OnRoundComplete();
             }
 
-            if (RoundTimeLeft <= 10.4 && tenSec == false)
+            if (RoundTimeLeft <= 11.4 && tenSec == false)
             {
                 tenSec = true;
                 if(isServer) RpcTenCount();
