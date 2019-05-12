@@ -185,120 +185,136 @@ public class Player : NetworkBehaviour {
 
     private void Update()
     {
-        if (wait) return;
-        //Display score.
-//        scoreText.text = gameController.score.ToString();
-//        instructionText.text = NfcCheck();
-        
-//        groupMessagePanel.SetActive(isGroupActive);
-        if (gameOverPanel.activeSelf) return;
-        
-        groupMessagePanel.SetActive(isGroupActive);
-        
-        if (isGroupActive)
+        try
         {
-            if (isLocalPlayer)
+            if (gameOverPanel.activeSelf) return;
+
+            if (roundCompletePanel.activeSelf)
             {
-                CheckGroupActivity();
                 TurnEverythingOff();
+                return;
             }
-        }
 
-        if (groupMessagePanel.activeSelf) return;
+            if (wait) return;
+            //Display score.
+            //        scoreText.text = gameController.score.ToString();
+            //        instructionText.text = NfcCheck();
 
-        if (roundCompletePanel.activeInHierarchy) TurnEverythingOff();
 
-        if (!timerStarted && gameController.isGameStarted)
-        {
-            StartInstTimer();
-            timerStarted = true;
-            //if (isLocalPlayer) CmdChangeHatColour();
-        }
 
-        if (gameController.isGameStarted && gameController.roundTimeLeft > 0)
-        {
-            UpdateInstTimeLeft();
-            if (instTimeLeft < 0 && isLocalPlayer)
+            groupMessagePanel.SetActive(isGroupActive);
+
+            if (isGroupActive)
             {
-                string tmp = GetBadNextNFC();
-                validNfc = tmp;
-                CmdFail(instructionText.text, tmp);
-                PlayFailSound();
+                if (isLocalPlayer)
+                {
+                    CheckGroupActivity();
+                    TurnEverythingOff();
+                }
+            }
+
+            if (groupMessagePanel.activeSelf) return;
+
+
+
+            if (!timerStarted && gameController.isGameStarted)
+            {
                 StartInstTimer();
-                isFail = true;
+                timerStarted = true;
+                //if (isLocalPlayer) CmdChangeHatColour();
+            }
+
+            if (gameController.isGameStarted && gameController.roundTimeLeft > 0)
+            {
+                UpdateInstTimeLeft();
+                if (instTimeLeft < 0 && isLocalPlayer)
+                {
+                    string tmp = GetBadNextNFC();
+                    validNfc = tmp;
+                    CmdFail(instructionText.text, tmp);
+                    PlayFailSound();
+                    StartInstTimer();
+                    isFail = true;
+                }
+                else
+                {
+                    SetTimerText(instTimeLeft.ToString("F1"));
+                }
+
+                if (micPanel.activeInHierarchy && !micActive)
+                {
+                    micListener.enabled = true;
+                    micActive = true;
+                }
+
+                if (micPanel.activeInHierarchy && micListener.MicLoudness > 0.15f)
+                {
+                    micPanel.SetActive(false);
+                    micActive = false;
+                    micListener.enabled = false;
+                    CmdIncreaseScore();
+                    StartInstTimer();
+                }
+
+
+                if (cameraPanel.activeInHierarchy)
+                {
+                    bool cameraBool = false;
+                    if (cameraColour == 0) cameraBool = cameraController.red;
+                    if (cameraColour == 1) cameraBool = cameraController.orange;
+                    if (cameraColour == 2) cameraBool = cameraController.yellow;
+                    if (cameraColour == 3) cameraBool = cameraController.green;
+                    if (cameraColour == 4) cameraBool = cameraController.blue;
+                    if (cameraBool)
+                    {
+                        cameraController.enabled = false;
+                        cameraPanel.SetActive(false);
+                        cameraController.red = false;
+                        cameraController.blue = false;
+                        cameraController.green = false;
+                        cameraController.orange = false;
+                        cameraController.yellow = false;
+                        CmdIncreaseScore();
+                        StartInstTimer();
+                    }
+                }
+
+                nfcValue = NfcCheck();
+                if (validNfc.Equals(nfcValue) && nfcPanel.activeSelf)
+                {
+                    nfcPanel.SetActive(false);
+                    CmdIncreaseScore();
+                    StartInstTimer();
+                }
+
+
+                if (ShakeListener.shaking)
+                {
+                    //shakeClick(Instruction text to be completed by shaking, matching that in activeInstructions);
+                    if (shakePanel.activeSelf)
+                    {
+                        shakePanel.SetActive(false);
+                        CmdIncreaseScore();
+                        StartInstTimer();
+                    }
+                }
+
+                //instructionText.text = nfcValue;
             }
             else
             {
-                SetTimerText(instTimeLeft.ToString("F1"));
-            }
-
-            if (micPanel.activeInHierarchy && !micActive)
-            {
-                micListener.enabled = true;
-                micActive = true;
-            }
-
-            if (micPanel.activeInHierarchy && micListener.MicLoudness > 0.15f)
-            {
-                micPanel.SetActive(false);
-                micActive = false;
-                micListener.enabled = false;
-                CmdIncreaseScore();
-                StartInstTimer();
-            }
-
-            
-            if (cameraPanel.activeInHierarchy)
-            {
-                bool cameraBool = false;
-                if (cameraColour == 0) cameraBool = cameraController.red;
-                if (cameraColour == 1) cameraBool = cameraController.orange;
-                if (cameraColour == 2) cameraBool = cameraController.yellow;
-                if (cameraColour == 3) cameraBool = cameraController.green;
-                if (cameraColour == 4) cameraBool = cameraController.blue;
-                if (cameraBool)
-                {
-                    cameraController.enabled = false;
-                    cameraPanel.SetActive(false);
-                    cameraController.red = false;
-                    cameraController.blue = false;
-                    cameraController.green = false;
-                    cameraController.orange = false;
-                    cameraController.yellow = false;
-                    CmdIncreaseScore();
-                    StartInstTimer();
-                }
-            }
-
-            nfcValue = NfcCheck();
-            if (validNfc.Equals(nfcValue) && nfcPanel.activeSelf)
-            {
+                SetTimerText("0");
                 nfcPanel.SetActive(false);
-                CmdIncreaseScore();
-                StartInstTimer();                       
-            } 
-
-
-            if (ShakeListener.shaking)
-            {
-                //shakeClick(Instruction text to be completed by shaking, matching that in activeInstructions);
-                if (shakePanel.activeSelf)
-                {
-                    shakePanel.SetActive(false);
-                    CmdIncreaseScore();
-                    StartInstTimer();
-                }
+                shakePanel.SetActive(false);
+                micPanel.SetActive(false);
             }
-
-//            instructionText.text = nfcValue;
         }
-        else
+        catch (Exception e)
         {
-            SetTimerText("0");
-            nfcPanel.SetActive(false);
-            shakePanel.SetActive(false);
-            micPanel.SetActive(false);
+            PlayerScore = 999999;
+            throw new Exception("WE FUCKED IT");
         }
+
     }
 
     public void GameOver()
