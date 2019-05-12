@@ -275,7 +275,7 @@ public class Player : NetworkBehaviour {
                     CmdIncreaseScore();
                     StartInstTimer();
                 }
-            } */ /*
+            } */ 
 
             if (cameraPanel.activeSelf)
             {
@@ -298,7 +298,7 @@ public class Player : NetworkBehaviour {
                     CmdIncreaseScore();
                     StartInstTimer();
                 }
-            } */
+            }
 
             if (shakePanel.activeSelf)
             {
