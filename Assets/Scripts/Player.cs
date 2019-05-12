@@ -785,7 +785,7 @@ public class Player : NetworkBehaviour {
                         PlayerScore -= 25;
                         RpcCloseShop();
                     }
-                    else RpcVibrate();
+                    else RpcShopVibrate();
                 }
 
                 if (item == 2)
@@ -803,7 +803,7 @@ public class Player : NetworkBehaviour {
                         PlayerScore -= 100;
                         RpcCloseShop();
                     }
-                    else RpcVibrate();
+                    else RpcShopVibrate();
                 }
 
                 if (item == 3)
@@ -820,7 +820,7 @@ public class Player : NetworkBehaviour {
                         PlayerScore -= 250;
                         RpcCloseShop();
                     }
-                    else RpcVibrate();
+                    else RpcShopVibrate();
                 }
             }
         }
@@ -833,9 +833,9 @@ public class Player : NetworkBehaviour {
     }
 
     [ClientRpc]
-    void RpcVibrate()
+    void RpcShopVibrate()
     {
-        Vibrate();
+        if (shopPanel.activeSelf) Vibrate();
     }
 
     [Command]
