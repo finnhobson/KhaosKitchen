@@ -288,7 +288,7 @@ public class GameController : NetworkBehaviour
             {
                 //(score % (30 * playerCount) == 50)
                 int scoreRemaining = (roundMaxScore) - (roundScore - roundStartScore);
-                if ((score % 40 == 0) && isGroupActiviy && isGroupActivityEnabled && (scoreRemaining > playerCount) ) //Needs to be changed.
+                if ((score % (30 * playerCount) == 50) && isGroupActiviy && isGroupActivityEnabled && (scoreRemaining > playerCount) ) //Needs to be changed.
                 {
                     Debug.Log("Call1");
                     InitiateGroupActivity();
@@ -809,8 +809,8 @@ public class GameController : NetworkBehaviour
 
     private void IncrementGroupActivity()
     {
-    //    activityNumber = (activityNumber + 1) % numberOfGroupActivities;
-    activityNumber = 1;
+    activityNumber = (activityNumber + 1) % numberOfGroupActivities;
+//    activityNumber = 1;
     }
 
     private void RpcUpdateActivityNumber(int number)
