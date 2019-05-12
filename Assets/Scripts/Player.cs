@@ -185,6 +185,7 @@ public class Player : NetworkBehaviour {
 
     private void Update()
     {
+        if (!isClient) return;
         CmdThrowError(PlayerUserName, "Start");
 
         if (gameOverPanel.activeSelf) return;
