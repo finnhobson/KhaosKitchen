@@ -735,7 +735,7 @@ public class Player : NetworkBehaviour {
 
     public void PlayTenSecondCountdown()
     {
-            source.PlayOneShot(TenSecondCountdown, 2);
+            //source.PlayOneShot(TenSecondCountdown, 2);
             Vibrate();
     }
 

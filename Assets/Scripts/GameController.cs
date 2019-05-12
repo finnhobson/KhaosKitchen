@@ -327,7 +327,11 @@ public class GameController : NetworkBehaviour
             if (RoundTimeLeft <= 11.4 && tenSec == false)
             {
                 tenSec = true;
-                if(isServer) RpcTenCount();
+                if (isServer)
+                {
+                    RpcTenCount();
+                    MusicPlayer.PlayTenSecondCountdown();
+                }
             }
 
             else if (roundTimeLeft <= 0 || customerSatisfaction <= 0)

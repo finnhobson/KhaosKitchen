@@ -7,9 +7,8 @@ using UnityEngine.Serialization;
 public class MusicPlayer : MonoBehaviour
 {
     public GameController gameController;
-    /*
-     * Remember to add variance to button sounds.
-     */
+
+        
 
     //GameObjects
     private AudioSource BackgroundSource;
@@ -17,6 +16,7 @@ public class MusicPlayer : MonoBehaviour
     public AudioClip GameOverClip;
     public AudioClip[] RoundBreaks;
     public AudioClip[] Countdown;
+    public AudioClip TenSecondCountdown;
 
     private float VolumeOneShot = 2f;
     
@@ -97,6 +97,11 @@ public class MusicPlayer : MonoBehaviour
     public void PlayCountDown(int count)
     {
         BackgroundSource.PlayOneShot(Countdown[count], VolumeOneShot);
+    }
+
+    public void PlayTenSecondCountdown()
+    {
+        BackgroundSource.PlayOneShot(TenSecondCountdown, VolumeOneShot);
     }
 
 
