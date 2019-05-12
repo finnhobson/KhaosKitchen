@@ -136,6 +136,8 @@ public class GameController : NetworkBehaviour
     [SyncVar] public int MinimumInstructionTime;
     [SyncVar] public int playerCount;
 
+    [SyncVar] private int buzzer; 
+
     [SyncVar] public bool easyPhoneInteractions;
 
     //[SyncVar(hook = "SetTopChef")] public string currentTopChef;
@@ -319,19 +321,31 @@ public class GameController : NetworkBehaviour
                 PenultimateAction(true);
             }
 
-            if (IsRoundComplete())
+            if (roundTimeLeft <= 10.4 && isServer)
             {
-                OnRoundComplete();
-            }
-
-            else if (RoundTimeLeft <= 11.4 && tenSec == false)
-            {
-                tenSec = true;
-                if (isServer)
+                if (!tenSec)
                 {
+                    tenSec = true;
                     RpcTenCount();
                     MusicPlayer.PlayTenSecondCountdown();
                 }
+                else
+                {
+                    if (roundTimeLeft > 5 && (buzzer % 10) == 0)
+                    {
+                        RpcTenCount();
+                    }
+                    else if (roundTimeLeft < 5 && buzzer % 5 == 0)
+                    {
+                        RpcTenCount();
+                    }
+                    buzzer++;
+                }
+            }
+
+            if (IsRoundComplete())
+            {
+                OnRoundComplete();
             }
 
             else if (roundTimeLeft <= 0 || customerSatisfaction <= 0)
@@ -467,6 +481,8 @@ public class GameController : NetworkBehaviour
     private void OnRoundComplete()
     {
         if (!isServer || isRoundPaused) return; //Only need to access this function once per round completion.
+        buzzer = 0;
+        tenSec = false;
         roundNumber++;
         UpdateGamestate();
         isRoundPaused = true;
