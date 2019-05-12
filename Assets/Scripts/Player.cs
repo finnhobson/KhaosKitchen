@@ -57,7 +57,7 @@ public class Player : NetworkBehaviour {
     //Unity GameObjects
     public Text scoreText, instructionText, timerText, gpsText, roundScoreText, topChefText, countdownText, roundNumberText, nameText, micVolumeText, groupMessageText, gameOverText;
     public GameObject nfcPanel, micPanel, shakePanel, gameOverPanel, roundCompletePanel, roundStartPanel, shopPanel, groupMessagePanel, cameraPanel;
-    public Text nfcText, micText, shakeText, cameraText;
+    public Text nfcText, micText, shakeText, cameraText, debug;
     public GameObject nfcOkayButton, micOkayButton, shakeOkayButton;
     public GameObject fullScreenPanel;
     public Text fullScreenPanelText;
@@ -186,18 +186,18 @@ public class Player : NetworkBehaviour {
     private void Update()
     {
         if (!isClient) return;
-        //CmdThrowError(PlayerUserName, "Start");
+        debug.text = "Start";
 
         if (gameOverPanel.activeSelf) return;
 
-        //CmdThrowError(PlayerUserName, "Game Over");
+        debug.text = "Game Over";
 
         if (roundCompletePanel.activeSelf)
         {
             TurnEverythingOff();
             return;
         }
-        //CmdThrowError(PlayerUserName, "Round comp");
+        debug.text = "Round comp";
 
         if (!timerStarted && gameController.isGameStarted)
         {
@@ -209,11 +209,11 @@ public class Player : NetworkBehaviour {
         else if (gameController.isGameStarted && gameController.roundTimeLeft > 0)
         {
             //GROUP ACTIVITY BEFORE WAIT
-            //CmdThrowError(PlayerUserName, "GROUP ACTIVITY BEFORE WAIT");
+            debug.text = "GROUP ACTIVITY BEFORE WAIT";
             if (wait) return;
 
             //GROUP ACTIVITY AFTER WAIT
-            //CmdThrowError(PlayerUserName, "GROUP ACTIVITY AFTER WAIT");
+            debug.text = "GROUP ACTIVITY AFTER WAIT";
 
             groupMessagePanel.SetActive(isGroupActive);
 
@@ -227,13 +227,13 @@ public class Player : NetworkBehaviour {
             }
 
             //GROUP ACTIVITY BEFORE GROUP PANEL
-            //CmdThrowError(PlayerUserName, "GROUP ACTIVITY BEFORE GROUP PANEL");
+            debug.text = "GROUP ACTIVITY BEFORE GROUP PANEL";
 
             if (groupMessagePanel.activeSelf) return;
 
 
             //TIMER SECTION
-            //CmdThrowError(PlayerUserName, "TIMER SECTION");
+            debug.text = "TIMER SECTION";
             UpdateInstTimeLeft();
             if (instTimeLeft < 0 && isLocalPlayer)
             {
@@ -250,7 +250,7 @@ public class Player : NetworkBehaviour {
             }
 
             //PHONE STUFF
-            //CmdThrowError(PlayerUserName, "PHONE STUFF");
+            debug.text = "PHONE STUFF";
             if (micPanel.activeSelf)
             {
                 if (micListener.MicLoudness > 0.15f)
@@ -299,7 +299,7 @@ public class Player : NetworkBehaviour {
             }
 
             //NFC PANEL
-            //CmdThrowError(PlayerUserName, "NFC PANNEL");
+            debug.text = "NFC PANNEL";
 
             if (nfcPanel.activeSelf)
             {
@@ -311,7 +311,7 @@ public class Player : NetworkBehaviour {
                     StartInstTimer();
                 }
             }
-            //CmdThrowError(PlayerUserName, "End");
+            debug.text = "End";
 
         }
         else
