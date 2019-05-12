@@ -1064,6 +1064,7 @@ public class Player : NetworkBehaviour {
                 validNfcRace = GoodStations[0].GetItem(nfcValue);
                 break;
         }
+        groupMessageText.text = "ALL HANDS ON DECK!\n\nLOOK AT THE MAIN SCREEN!";
 
         CmdSetValidNfcRace(validNfcRace);
          debugText.text = "START 2";
