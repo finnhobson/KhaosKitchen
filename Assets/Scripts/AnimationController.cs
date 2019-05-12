@@ -44,7 +44,7 @@ public class AnimationController : MonoBehaviour
 
         if (currentRound < gameController.roundNumber && gameController.isGameStarted && !gameController.isRoundPaused)
         {
-           // if (customerNumber < 10) SpawnCustomers();
+            if (customerNumber < 10) SpawnCustomers();
             currentRound = gameController.roundNumber;
             bonusCustomers = false; 
         }

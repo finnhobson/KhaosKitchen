@@ -57,7 +57,7 @@ public class Player : NetworkBehaviour {
     //Unity GameObjects
     public Text scoreText, instructionText, timerText, gpsText, roundScoreText, topChefText, countdownText, roundNumberText, nameText, micVolumeText, groupMessageText, gameOverText;
     public GameObject nfcPanel, micPanel, shakePanel, gameOverPanel, roundCompletePanel, roundStartPanel, shopPanel, groupMessagePanel, cameraPanel;
-    public Text nfcText, micText, shakeText, cameraText, debug;
+    public Text nfcText, micText, shakeText, cameraText;
     public GameObject nfcOkayButton, micOkayButton, shakeOkayButton;
     public GameObject fullScreenPanel;
     public Text fullScreenPanelText;
@@ -90,7 +90,7 @@ public class Player : NetworkBehaviour {
     public int instTime;
     public bool easyPhoneInteractions = true;
 //    private HashSet<String> validNfc = new HashSet<String>{"Food Waste","Recycling Bin","Window A","Window B"};
-    public MicListener micListener;
+   // public MicListener micListener;
 
     //Timer
     //private int instTime = 30;
@@ -179,25 +179,22 @@ public class Player : NetworkBehaviour {
         nameText.color = PlayerColour;
         scoreText.color = PlayerColour;
 
-        micListener.enabled = false;
+       // micListener.enabled = false;
         cameraController.enabled = false;
     }
 
     private void Update()
     {
         if (!isClient) return;
-        debug.text = "Start";
 
         if (gameOverPanel.activeSelf) return;
 
-        debug.text = "Game Over";
 
         if (roundCompletePanel.activeSelf)
         {
             TurnEverythingOff();
             return;
         }
-        debug.text = "Round comp";
 
         if (!timerStarted && gameController.isGameStarted)
         {
@@ -208,12 +205,10 @@ public class Player : NetworkBehaviour {
 
         else if (gameController.isGameStarted && gameController.roundTimeLeft > 0)
         {
-            //GROUP ACTIVITY BEFORE WAIT
-            debug.text = "GROUP ACTIVITY BEFORE WAIT";
+           
             if (wait) return;
 
-            //GROUP ACTIVITY AFTER WAIT
-            debug.text = "GROUP ACTIVITY AFTER WAIT";
+           
 
             groupMessagePanel.SetActive(isGroupActive);
 
@@ -226,14 +221,11 @@ public class Player : NetworkBehaviour {
                 }
             }
 
-            //GROUP ACTIVITY BEFORE GROUP PANEL
-            debug.text = "GROUP ACTIVITY BEFORE GROUP PANEL";
-
+          
             if (groupMessagePanel.activeSelf) return;
 
 
-            //TIMER SECTION
-            debug.text = "TIMER SECTION";
+           
             UpdateInstTimeLeft();
             if (instTimeLeft < 0 && isLocalPlayer)
             {
@@ -249,9 +241,8 @@ public class Player : NetworkBehaviour {
                 SetTimerText(instTimeLeft.ToString("F1"));
             }
 
-            //PHONE STUFF
-            debug.text = "PHONE STUFF";
-            if (micPanel.activeSelf)
+        
+          /*  if (micPanel.activeSelf)
             {
                 if (micListener.MicLoudness > 0.15f)
                 {
@@ -261,9 +252,9 @@ public class Player : NetworkBehaviour {
                     CmdIncreaseScore();
                     StartInstTimer();
                 }
-            }
+            }*/
 
-            else if (cameraPanel.activeSelf)
+            if (cameraPanel.activeSelf)
             {
                 bool cameraBool = false;
                 if (cameraColour == 0) cameraBool = cameraController.red;
@@ -298,8 +289,6 @@ public class Player : NetworkBehaviour {
                 }
             }
 
-            //NFC PANEL
-            debug.text = "NFC PANNEL";
 
             if (nfcPanel.activeSelf)
             {
@@ -311,7 +300,6 @@ public class Player : NetworkBehaviour {
                     StartInstTimer();
                 }
             }
-            debug.text = "End";
 
         }
         else
@@ -319,7 +307,7 @@ public class Player : NetworkBehaviour {
             SetTimerText("0");
             nfcPanel.SetActive(false);
             shakePanel.SetActive(false);
-            micPanel.SetActive(false);
+           // micPanel.SetActive(false);
         }
     }
 
@@ -581,7 +569,7 @@ public class Player : NetworkBehaviour {
     public void SetMicPanel(string text)
     {
         micPanel.SetActive(true);
-        micListener.enabled = true;
+       // micListener.enabled = true;
         micActive = true;
         micText.text = text;
     }
@@ -1057,7 +1045,7 @@ public class Player : NetworkBehaviour {
         shakePanel.SetActive(false);
         micPanel.SetActive(false);
         micActive = false;
-        micListener.enabled = false;
+        //micListener.enabled = false;
         cameraPanel.SetActive(false);
         cameraController.enabled = false;
         cameraController.red = false;
@@ -1067,11 +1055,7 @@ public class Player : NetworkBehaviour {
         cameraController.yellow = false;
     }
 
-    [Command]
-    private void CmdThrowError(string name, string msg)
-    {
-        throw new Exception(name +" "+ msg);
-    }
+
 
 }
 
