@@ -186,41 +186,18 @@ public class Player : NetworkBehaviour {
     private void Update()
     {
         if (!isClient) return;
-        try
-        {
-            groupMessageText.text = "CUNT";
-        }
-        catch
-        {
-            CmdThrowError(PlayerUserName, "Start");
-        }
+        //CmdThrowError(PlayerUserName, "Start");
 
         if (gameOverPanel.activeSelf) return;
 
-        try
-        {
-            groupMessageText.text = "CUNT";
-        }
-        catch
-        {
-            CmdThrowError(PlayerUserName, "Game Over");
-        }
-
+        //CmdThrowError(PlayerUserName, "Game Over");
 
         if (roundCompletePanel.activeSelf)
         {
             TurnEverythingOff();
             return;
         }
-
-        try
-        {
-            groupMessageText.text = "CUNT";
-        }
-        catch
-        {
-            CmdThrowError(PlayerUserName, "Round comp");
-        }
+        //CmdThrowError(PlayerUserName, "Round comp");
 
         if (!timerStarted && gameController.isGameStarted)
         {
@@ -232,26 +209,11 @@ public class Player : NetworkBehaviour {
         else if (gameController.isGameStarted && gameController.roundTimeLeft > 0)
         {
             //GROUP ACTIVITY BEFORE WAIT
-            try
-            {
-                groupMessageText.text = "CUNT";
-            }
-            catch
-            {
-                CmdThrowError(PlayerUserName, "GROUP ACTIVITY BEFORE WAIT");
-            }
+            //CmdThrowError(PlayerUserName, "GROUP ACTIVITY BEFORE WAIT");
             if (wait) return;
 
             //GROUP ACTIVITY AFTER WAIT
-            try
-            {
-                groupMessageText.text = "CUNT";
-            }
-            catch
-            {
-                CmdThrowError(PlayerUserName, "GROUP ACTIVITY AFTER WAIT");
-
-            }
+            //CmdThrowError(PlayerUserName, "GROUP ACTIVITY AFTER WAIT");
 
             groupMessagePanel.SetActive(isGroupActive);
 
@@ -265,27 +227,13 @@ public class Player : NetworkBehaviour {
             }
 
             //GROUP ACTIVITY BEFORE GROUP PANEL
-            try
-            {
-                groupMessageText.text = "CUNT";
-            }
-            catch
-            {
-                CmdThrowError(PlayerUserName, "GROUP ACTIVITY BEFORE GROUP PANEL");
-            }
+            //CmdThrowError(PlayerUserName, "GROUP ACTIVITY BEFORE GROUP PANEL");
 
             if (groupMessagePanel.activeSelf) return;
 
 
             //TIMER SECTION
-            try
-            {
-                groupMessageText.text = "CUNT";
-            }
-            catch
-            {
-                CmdThrowError(PlayerUserName, "TIMER SECTION");
-            }
+            //CmdThrowError(PlayerUserName, "TIMER SECTION");
             UpdateInstTimeLeft();
             if (instTimeLeft < 0 && isLocalPlayer)
             {
@@ -302,14 +250,7 @@ public class Player : NetworkBehaviour {
             }
 
             //PHONE STUFF
-            try
-            {
-                groupMessageText.text = "CUNT";
-            }
-            catch
-            {
-                CmdThrowError(PlayerUserName, "PHONE STUFF");
-            }
+            //CmdThrowError(PlayerUserName, "PHONE STUFF");
             if (micPanel.activeSelf)
             {
                 if (micListener.MicLoudness > 0.15f)
@@ -358,14 +299,7 @@ public class Player : NetworkBehaviour {
             }
 
             //NFC PANEL
-            try
-            {
-                groupMessageText.text = "CUNT";
-            }
-            catch
-            {
-                CmdThrowError(PlayerUserName, "NFC PANNEL");
-            }
+            //CmdThrowError(PlayerUserName, "NFC PANNEL");
 
             if (nfcPanel.activeSelf)
             {
@@ -377,14 +311,7 @@ public class Player : NetworkBehaviour {
                     StartInstTimer();
                 }
             }
-            try
-            {
-                groupMessageText.text = "CUNT";
-            }
-            catch
-            {
-                CmdThrowError(PlayerUserName, "End");
-            }
+            //CmdThrowError(PlayerUserName, "End");
 
         }
         else
