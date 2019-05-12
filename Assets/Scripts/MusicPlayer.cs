@@ -18,7 +18,7 @@ public class MusicPlayer : MonoBehaviour
     public AudioClip[] Countdown;
     public AudioClip TenSecondCountdown;
 
-    private float VolumeOneShot = 2f;
+    private float VolumeOneShot = 1f;
     private float VolumeLoud = 5f;
 
     //Primitives

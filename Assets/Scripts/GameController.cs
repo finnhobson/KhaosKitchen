@@ -324,7 +324,7 @@ public class GameController : NetworkBehaviour
                 OnRoundComplete();
             }
 
-            if (RoundTimeLeft <= 11.4 && tenSec == false)
+            else if (RoundTimeLeft <= 11.4 && tenSec == false)
             {
                 tenSec = true;
                 if (isServer)
@@ -359,8 +359,6 @@ public class GameController : NetworkBehaviour
 
                 groupShakePanel.SetActive(false);
                 groupRacePanel.SetActive(false);
-
-
             }
 
             else
