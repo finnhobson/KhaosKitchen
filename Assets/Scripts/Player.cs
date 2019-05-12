@@ -185,13 +185,18 @@ public class Player : NetworkBehaviour {
 
     private void Update()
     {
+        CmdThrowError(PlayerUserName, "Start");
+
         if (gameOverPanel.activeSelf) return;
+
+        CmdThrowError(PlayerUserName, "Game Over");
 
         if (roundCompletePanel.activeSelf)
         {
             TurnEverythingOff();
             return;
         }
+        CmdThrowError(PlayerUserName, "Round comp");
 
         if (!timerStarted && gameController.isGameStarted)
         {
@@ -203,9 +208,12 @@ public class Player : NetworkBehaviour {
         else if (gameController.isGameStarted && gameController.roundTimeLeft > 0)
         {
             //GROUP ACTIVITY BEFORE WAIT
+            CmdThrowError(PlayerUserName, "GROUP ACTIVITY BEFORE WAIT");
             if (wait) return;
 
             //GROUP ACTIVITY AFTER WAIT
+            CmdThrowError(PlayerUserName, "GROUP ACTIVITY AFTER WAIT");
+
             groupMessagePanel.SetActive(isGroupActive);
 
             if (isGroupActive)
@@ -218,10 +226,13 @@ public class Player : NetworkBehaviour {
             }
 
             //GROUP ACTIVITY BEFORE GROUP PANEL
+            CmdThrowError(PlayerUserName, "GROUP ACTIVITY BEFORE GROUP PANEL");
+
             if (groupMessagePanel.activeSelf) return;
 
 
             //TIMER SECTION
+            CmdThrowError(PlayerUserName, "TIMER SECTION");
             UpdateInstTimeLeft();
             if (instTimeLeft < 0 && isLocalPlayer)
             {
@@ -238,6 +249,7 @@ public class Player : NetworkBehaviour {
             }
 
             //PHONE STUFF
+            CmdThrowError(PlayerUserName, "PHONE STUFF");
             if (micPanel.activeSelf)
             {
                 if (micListener.MicLoudness > 0.15f)
@@ -276,6 +288,7 @@ public class Player : NetworkBehaviour {
             else if (shakePanel.activeSelf)
             {
                 //shakeClick(Instruction text to be completed by shaking, matching that in activeInstructions);
+                
                 if (ShakeListener.shaking)
                 {
                     shakePanel.SetActive(false);
@@ -285,6 +298,8 @@ public class Player : NetworkBehaviour {
             }
 
             //NFC PANEL
+            CmdThrowError(PlayerUserName, "NFC PANNEL");
+
             if (nfcPanel.activeSelf)
             {
                 nfcValue = NfcCheck();
@@ -295,6 +310,8 @@ public class Player : NetworkBehaviour {
                     StartInstTimer();
                 }
             }
+            CmdThrowError(PlayerUserName, "End");
+
         }
         else
         {
@@ -1068,5 +1085,12 @@ public class Player : NetworkBehaviour {
         cameraController.orange = false;
         cameraController.yellow = false;
     }
+
+    [Command]
+    private void CmdThrowError(string name, string msg)
+    {
+        throw new Exception(name +" "+ msg);
+    }
+
 }
 
