@@ -20,8 +20,8 @@ public class InstructionController : NetworkBehaviour
     private static List<string> prep = new List<string>( new string[] { "WHISK", "CHOPPING BOARD" } );
     private static List<string> serve = new List<string>( new string[] { "SPOON", "PLATE" } );
     
-    private static List<string> binA = new List<string>( new string[] { "GLASS", "FOOD WASTE" } );
-    private static List<string> binB = new List<string>( new string[] { "INTERGALACTIC\nBLACK HOLE", "PLASTIC" } );
+    private static List<string> binA = new List<string>( new string[] { "GLASS BIN", "FOOD WASTE" } );
+    private static List<string> binB = new List<string>( new string[] { "INTERGALACTIC\nBLACK HOLE", "PLASTIC\nRECYCLING" } );
     
     private static List<string> WinnersList = new List<string>( new string[] {"WINNER!!","2nd","3rd","4th", "5th", "6th"});
     
