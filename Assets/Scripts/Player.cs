@@ -196,6 +196,24 @@ public class Player : NetworkBehaviour {
             return;
         }
 
+        if (wait) return;
+
+
+
+        groupMessagePanel.SetActive(isGroupActive);
+
+        if (isGroupActive)
+        {
+            if (isLocalPlayer)
+            {
+                CheckGroupActivity();
+                TurnEverythingOff();
+            }
+        }
+
+
+        if (groupMessagePanel.activeSelf) return;
+
         if (!timerStarted && gameController.isGameStarted)
         {
             StartInstTimer();
@@ -206,23 +224,7 @@ public class Player : NetworkBehaviour {
         else if (gameController.isGameStarted && gameController.roundTimeLeft > 0)
         {
            
-            if (wait) return;
-
-           
-
-            groupMessagePanel.SetActive(isGroupActive);
-
-            if (isGroupActive)
-            {
-                if (isLocalPlayer)
-                {
-                    CheckGroupActivity();
-                    TurnEverythingOff();
-                }
-            }
-
-          
-            if (groupMessagePanel.activeSelf) return;
+         
 
 
            
