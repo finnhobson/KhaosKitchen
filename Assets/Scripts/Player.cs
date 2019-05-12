@@ -735,8 +735,11 @@ public class Player : NetworkBehaviour {
 
     public void PlayTenSecondCountdown()
     {
-        source.PlayOneShot(TenSecondCountdown, 2);
-        Vibrate();
+        if (isLocalPlayer)
+        {
+            source.PlayOneShot(TenSecondCountdown, 2);
+            Vibrate();
+        }
     }
 
 
