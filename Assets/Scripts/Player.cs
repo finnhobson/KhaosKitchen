@@ -669,7 +669,7 @@ public class Player : NetworkBehaviour {
             String window = GetGoodNextNFC();
             validNfc = window;
             ResetScoreStreak();
-            SetNfcPanel(" Great Work!\n Serve dish to " + window + "!\n\n (TAP ON " + window + " NFC)");
+            SetNfcPanel("Great Work!\nGrab the " + window + "!\n\n(TAP ON " + window + " NFC)");
 
         }
     }
@@ -793,14 +793,14 @@ public class Player : NetworkBehaviour {
                     GameObject ogreEars = chef.GetComponent<ChefController>().ogreEars;
                     Material ogreColour = chef.GetComponent<ChefController>().ogreColour;
                     List<GameObject> skin = chef.GetComponent<ChefController>().skin;
-                    if (ogreEars.activeInHierarchy == false && PlayerScore >= 100)
+                    if (ogreEars.activeInHierarchy == false && PlayerScore >= 75)
                     {
                         ogreEars.SetActive(true);
                         foreach (GameObject s in skin)
                         {
                             s.GetComponent<MeshRenderer>().material = ogreColour;
                         }
-                        PlayerScore -= 100;
+                        PlayerScore -= 75;
                         RpcCloseShop();
                     }
                     else RpcShopVibrate();
@@ -810,14 +810,14 @@ public class Player : NetworkBehaviour {
                 {
                     GameObject crown = chef.GetComponent<ChefController>().crown;
                     List<GameObject> hatParts = chef.GetComponent<ChefController>().hat;
-                    if (crown.activeInHierarchy == false && PlayerScore >= 250)
+                    if (crown.activeInHierarchy == false && PlayerScore >= 150)
                     {
                         crown.SetActive(true);
                         foreach (GameObject part in hatParts)
                         {
                             part.SetActive(false);
                         }
-                        PlayerScore -= 250;
+                        PlayerScore -= 150;
                         RpcCloseShop();
                     }
                     else RpcShopVibrate();

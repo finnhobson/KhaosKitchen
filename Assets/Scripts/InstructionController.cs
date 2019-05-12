@@ -18,7 +18,7 @@ public class InstructionController : NetworkBehaviour
     private static List<string> fridge = new List<string>( new string[] { "MILK", "CHEESE" } );
     private static List<string> cupboard = new List<string>( new string[] { "PASTA", "LENTILS" } );
     private static List<string> prep = new List<string>( new string[] { "WHISK", "CHOPPING BOARD" } );
-    private static List<string> serve = new List<string>( new string[] { "SPOON", "PLATE" } );
+    private static List<string> serve = new List<string>( new string[] { "WOODEN SPOON", "PLATE" } );
     
     private static List<string> binA = new List<string>( new string[] { "GLASS BIN", "FOOD WASTE" } );
     private static List<string> binB = new List<string>( new string[] { "INTERGALACTIC\nBLACK HOLE", "PLASTIC\nRECYCLING" } );
@@ -28,15 +28,15 @@ public class InstructionController : NetworkBehaviour
     private static List<List<string>> GoodStations = new List<List<string>>{ fridge, cupboard, prep, serve };
     private static List<List<string>> BadStations = new List<List<string>>{ binA, binB };
     
-    private static List<String> micInstructions = new List<string>(new string[] { " Waiters won't take the food out fast enough!\n Shout at them to work harder!\n\n (SHOUT INTO THE MIC)", " Your team are being useless!\n Shout some sense into them!\n\n (SHOUT INTO THE MIC)",
-                                                                                  " Rats have been spotted in the kitchen!\n Scream to scare them away!\n\n (SHOUT INTO THE MIC)", " Whoops! You just set your chopping board on fire!\n Try to blow it out!\n\n (BLOW INTO THE MIC)", 
-                                                                                  " The person you have a crush on just walked in!\n Shout at them to confess your love!\n\n (SHOUT INTO THE MIC)", " Whoopsie! You've just set yourself on fire!\n Blow the fire out!\n\n (BLOW INTO THE MIC)",
-                                                                                  " The human race is on the brink of extinction!\n Scream in despair!\n\n (SHOUT, SCREAM OR CRY INTO THE MIC"});
+    private static List<String> micInstructions = new List<string>(new string[] { "Waiters won't take the food out fast enough!\n Shout at them to work harder!\n\n(SHOUT INTO THE MIC)", "Your team are being useless!\n Shout some sense into them!\n\n(SHOUT INTO THE MIC)",
+                                                                                  "Rats have been spotted in the kitchen!\n Scream to scare them away!\n\n(SHOUT INTO THE MIC)", " Whoops! You just set your chopping board on fire!\n Try to blow it out!\n\n(BLOW INTO THE MIC)", 
+                                                                                  "The person you have a crush on just walked in!\n Shout at them to confess your love!\n\n(SHOUT INTO THE MIC)", "Whoopsie! You've just set yourself on fire!\n Blow the fire out!\n\n(BLOW INTO THE MIC)",
+                                                                                  "The human race is on the brink of extinction!\n Scream in despair!\n\n(SHOUT, SCREAM OR CRY INTO THE MIC"});
 
-    private static List<String> shakeInstructions = new List<string>(new string[] { " Chef underseasoned the dish!\n Shake to salt the food!\n\n(SHAKE YOUR PHONE)", " The Queen has decided to dine here!\n Better give her a royal wave!\n\n(SHAKE YOUR PHONE)",
-                                                                                    " Food runner dropped the dish!\n Shake some sense into the boy!\n\n (SHAKE YOUR PHONE)", " It's Virgin PornStar Martini time!\n Better shake that cocktail and thank the deveopers!\n\n (SHAKE YOUR PHONE)",
-                                                                                    " Pan set on fire!\n Shake to put it out!\n\n (SHAKE YOUR PHONE)", " We are ten years away from irreversible climate damage!\n Shake to ignore\n\n (SHAKE YOUR PHONE)",
-                                                                                    " Your arch nemisis just walked in!\n Shake your fist at them angrily!\n\n (SHAKE YOUR PHONE)"});
+    private static List<String> shakeInstructions = new List<string>(new string[] { "Chef underseasoned the dish!\nShake to salt the food!\n\n(SHAKE YOUR PHONE)", "The Queen has decided to dine here!\nBetter give her a royal wave!\n\n(SHAKE YOUR PHONE)",
+                                                                                    "Food runner dropped the dish!\nShake some sense into the boy!\n\n(SHAKE YOUR PHONE)", "It's Virgin Pornstar Martini time!\nBetter shake that cocktail!\n\n(SHAKE YOUR PHONE)",
+                                                                                    "Pan set on fire!\nShake to put it out!\n\n(SHAKE YOUR PHONE)", "We are ten years away from irreversible climate damage!\n Shake to ignore\n\n(SHAKE YOUR PHONE)",
+                                                                                    "Your arch nemisis just walked in!\nShake your fist at them angrily!\n\n(SHAKE YOUR PHONE)"});
 
     private static List<String> cameraInstructionText = new List<string>(new string[] { "FIND THE TOMATO!", "FIND THE ORANGE!", "FIND THE BANANAS!", "FIND THE APPLE!", "FIND THE EU FLAG TO REVOKE ARTICLE 50!" });
 
