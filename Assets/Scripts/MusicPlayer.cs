@@ -102,6 +102,6 @@ public class MusicPlayer : MonoBehaviour
 
     public void PlayTenSecondCountdown()
     {
-        BackgroundSource.PlayOneShot(TenSecondCountdown, VolumeOneShot);
+        BackgroundSource.PlayOneShot(TenSecondCountdown, 4f);
     }
 }

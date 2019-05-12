@@ -324,7 +324,7 @@ public class GameController : NetworkBehaviour
                 OnRoundComplete();
             }
 
-            if (RoundTimeLeft <= 10 && tenSec == false)
+            if (RoundTimeLeft <= 10.2 && tenSec == false)
             {
                 tenSec = true;
                 MusicPlayer.PlayTenSecondCountdown();
