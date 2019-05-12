@@ -41,7 +41,7 @@ public class GameController : NetworkBehaviour
 
     [SyncVar] public bool isRoundPaused;
     [SyncVar] public bool isGameStarted;
-    private bool isGroupActivityEnabled = false; // To enable group activities
+    private bool isGroupActivityEnabled = true; // To enable group activities
     private bool isGameOver;
     private bool step;
 
@@ -808,8 +808,8 @@ public class GameController : NetworkBehaviour
 
     private void IncrementGroupActivity()
     {
-        activityNumber = (activityNumber + 1) % numberOfGroupActivities;
-//        activityNumber = 1;
+    //    activityNumber = (activityNumber + 1) % numberOfGroupActivities;
+    activityNumber = 1;
     }
 
     private void RpcUpdateActivityNumber(int number)

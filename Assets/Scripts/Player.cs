@@ -57,7 +57,7 @@ public class Player : NetworkBehaviour {
     //Unity GameObjects
     public Text scoreText, instructionText, timerText, gpsText, roundScoreText, topChefText, countdownText, roundNumberText, nameText, micVolumeText, groupMessageText, gameOverText;
     public GameObject nfcPanel, micPanel, shakePanel, gameOverPanel, roundCompletePanel, roundStartPanel, shopPanel, groupMessagePanel, cameraPanel;
-    public Text nfcText, micText, shakeText, cameraText;
+    public Text nfcText, micText, shakeText, cameraText, debugText;
     public GameObject nfcOkayButton, micOkayButton, shakeOkayButton;
     public GameObject fullScreenPanel;
     public Text fullScreenPanelText;
@@ -185,7 +185,10 @@ public class Player : NetworkBehaviour {
 
     private void Update()
     {
+        debugText.text = "Start";
         if (wait) return;
+        debugText.text = "Second";
+
 
 
 
@@ -195,18 +198,35 @@ public class Player : NetworkBehaviour {
         {
             if (isLocalPlayer)
             {
+                debugText.text = "Inside";
+
                 CheckGroupActivity();
+                debugText.text = "Inside 2";
+
                 TurnEverythingOff();
+                debugText.text = "Inside 3";
+
             }
         }
+
+        debugText.text = "After";
+
+
 
 
         if (groupMessagePanel.activeSelf) return;
 
+        debugText.text = "GroupPanel";
+
+
         if (!isClient) return;
+
+        debugText.text = "isClient";
+
 
         if (gameOverPanel.activeSelf) return;
 
+        debugText.text = "gameOver";
 
         if (roundCompletePanel.activeSelf)
         {
@@ -214,7 +234,8 @@ public class Player : NetworkBehaviour {
             return;
         }
 
-        
+        debugText.text = "roundComplete";
+
 
         if (!timerStarted && gameController.isGameStarted)
         {
@@ -224,12 +245,7 @@ public class Player : NetworkBehaviour {
         }
 
         else if (gameController.isGameStarted && gameController.roundTimeLeft > 0)
-        {
-           
-         
-
-
-           
+        {           
             UpdateInstTimeLeft();
             if (instTimeLeft < 0 && isLocalPlayer)
             {
@@ -256,7 +272,7 @@ public class Player : NetworkBehaviour {
                     CmdIncreaseScore();
                     StartInstTimer();
                 }
-            }*/
+            } */ /*
 
             if (cameraPanel.activeSelf)
             {
@@ -279,9 +295,9 @@ public class Player : NetworkBehaviour {
                     CmdIncreaseScore();
                     StartInstTimer();
                 }
-            }
+            } */
 
-            else if (shakePanel.activeSelf)
+            if (shakePanel.activeSelf)
             {
                 //shakeClick(Instruction text to be completed by shaking, matching that in activeInstructions);
                 
@@ -313,6 +329,8 @@ public class Player : NetworkBehaviour {
             shakePanel.SetActive(false);
            // micPanel.SetActive(false);
         }
+        debugText.text = "End";
+
     }
 
     public void GameOver()
@@ -922,22 +940,36 @@ public class Player : NetworkBehaviour {
         {
             case 0:
                 //groupMessageText.text = "Look at main screen \n (shaking)";
-                groupMessageText.text = "ALL HANDS ON DECK!\n\nLOOK AT THE MAIN SCREEN!";
+
                 CmdSetShake(ShakeListener.shaking);
+
                 break;
 
             case 1:
-                nfcValue = NfcCheck();
+                debugText.text = "check 1";
 
-                if (!isNFCRaceStarted) StartNFCRace();
-//                else if (!IsNFCRaceCompleted && isNFCRaceStarted) CmdSetNFCRace(nfcPanel.activeSelf);
+                nfcValue = NfcCheck();
+                debugText.text = "check 2";
+
+
+                if (!isNFCRaceStarted)
+                {
+                    StartNFCRace();
+                    debugText.text = "check 3";
+                }
+
+                //                else if (!IsNFCRaceCompleted && isNFCRaceStarted) CmdSetNFCRace(nfcPanel.activeSelf);
                 else if (!IsNFCRaceCompleted && isNFCRaceStarted)
                 {
                     CmdSetNFCRace(validNfcRace.Equals(nfcValue));
+                    debugText.text = "check 4";
+
                 }
                 else
                 {
                     groupMessageText.text = "DONE!";
+                    debugText.text = "check 5";
+
                     wait = true;
                 }
              
@@ -1003,6 +1035,8 @@ public class Player : NetworkBehaviour {
     public void StartNFCRace()
     {
         nfcValue = NfcCheck();
+    //    debugText.text = "START";
+
         Debug.Log("StartNFC");
         switch ( nfcStation )
         {
@@ -1030,11 +1064,13 @@ public class Player : NetworkBehaviour {
         }
 
         CmdSetValidNfcRace(validNfcRace);
+        //  debugText.text = "START 2";
+
 
         IsNFCRaceCompleted = false;
-        //groupMessageText.text = (validNfcRace + "\n look at main screen \n (nfc above for testing)");
-        groupMessageText.text = "ALL HANDS ON DECK!\n\nLOOK AT THE MAIN SCREEN!";
         isNFCRaceStarted = true;
+        //   debugText.text = "START 3";
+
     }
 
     [Command]
