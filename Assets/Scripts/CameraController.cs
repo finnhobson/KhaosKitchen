@@ -98,7 +98,7 @@ public class CameraController : MonoBehaviour
                         if (pixel.r > 0.7 && pixel.g < 0.3 && pixel.b < 0.3) redCount++;
                     }
                     R.text = redCount.ToString();
-                    if (redCount > 10000) red = true;
+                    if (redCount > 15000) red = true;
                     break;
                 case 1:
                     foreach (Color pixel in pixels)
@@ -106,7 +106,7 @@ public class CameraController : MonoBehaviour
                         if (pixel.r > 0.7 && pixel.g > 0.3 && pixel.g < 0.5 && pixel.b < 0.3) orangeCount++;
                     }
                     O.text = orangeCount.ToString();
-                    if (orangeCount > 10000) orange = true;
+                    if (orangeCount > 15000) orange = true;
                     break;
                 case 2:
                     foreach (Color pixel in pixels)
@@ -114,7 +114,7 @@ public class CameraController : MonoBehaviour
                         if (pixel.r > 0.6 && pixel.g > 0.6 && pixel.b < 0.2) yellowCount++;
                     }
                     Y.text = yellowCount.ToString();
-                    if (yellowCount > 10000) yellow = true;
+                    if (yellowCount > 15000) yellow = true;
                     break;
                 case 3:
                     foreach (Color pixel in pixels)
@@ -122,7 +122,7 @@ public class CameraController : MonoBehaviour
                         if (pixel.r < 0.6 && pixel.g > 0.6 && pixel.b < 0.4) greenCount++;
                     }
                     G.text = greenCount.ToString();
-                    if (greenCount > 5000) green = true;
+                    if (greenCount > 8000) green = true;
                     break;
                 case 4:
                     foreach (Color pixel in pixels)
