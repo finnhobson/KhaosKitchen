@@ -166,6 +166,8 @@ public class Player : NetworkBehaviour {
         Screen.orientation = ScreenOrientation.Portrait;
         transform.SetAsLastSibling();
 
+        debugText.text = "yes";
+
         if (isLocalPlayer)
         {
             CmdSetNetworkID(PlayerNetworkID);
@@ -1035,7 +1037,7 @@ public class Player : NetworkBehaviour {
     public void StartNFCRace()
     {
         nfcValue = NfcCheck();
-    //    debugText.text = "START";
+        debugText.text = "START";
 
         Debug.Log("StartNFC");
         switch ( nfcStation )
@@ -1064,12 +1066,12 @@ public class Player : NetworkBehaviour {
         }
 
         CmdSetValidNfcRace(validNfcRace);
-        //  debugText.text = "START 2";
+         debugText.text = "START 2";
 
 
         IsNFCRaceCompleted = false;
         isNFCRaceStarted = true;
-        //   debugText.text = "START 3";
+          debugText.text = "START 3";
 
     }
 
