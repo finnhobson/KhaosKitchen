@@ -187,6 +187,15 @@ public class Player : NetworkBehaviour {
     {
         try
         {
+            gameOverPanel.SetActive(true);
+        }
+        catch(Exception e)
+        {
+            throw new NullReferenceException("FUCKED GAME OVER PANEL");
+        }
+
+        try
+        {
             if (gameOverPanel.activeSelf) return;
 
             if (roundCompletePanel.activeSelf)
@@ -199,8 +208,6 @@ public class Player : NetworkBehaviour {
             //Display score.
             //        scoreText.text = gameController.score.ToString();
             //        instructionText.text = NfcCheck();
-
-
 
             groupMessagePanel.SetActive(isGroupActive);
 
@@ -215,8 +222,6 @@ public class Player : NetworkBehaviour {
 
             if (groupMessagePanel.activeSelf) return;
 
-
-
             if (!timerStarted && gameController.isGameStarted)
             {
                 StartInstTimer();
@@ -224,7 +229,7 @@ public class Player : NetworkBehaviour {
                 //if (isLocalPlayer) CmdChangeHatColour();
             }
 
-            if (gameController.isGameStarted && gameController.roundTimeLeft > 0)
+            else if (gameController.isGameStarted && gameController.roundTimeLeft > 0)
             {
                 UpdateInstTimeLeft();
                 if (instTimeLeft < 0 && isLocalPlayer)
@@ -247,7 +252,7 @@ public class Player : NetworkBehaviour {
                     micActive = true;
                 }
 
-                if (micPanel.activeInHierarchy && micListener.MicLoudness > 0.15f)
+                else if (micPanel.activeInHierarchy && micListener.MicLoudness > 0.15f)
                 {
                     micPanel.SetActive(false);
                     micActive = false;
@@ -257,14 +262,15 @@ public class Player : NetworkBehaviour {
                 }
 
 
-                if (cameraPanel.activeInHierarchy)
+                else if (cameraPanel.activeInHierarchy)
                 {
                     bool cameraBool = false;
                     if (cameraColour == 0) cameraBool = cameraController.red;
-                    if (cameraColour == 1) cameraBool = cameraController.orange;
-                    if (cameraColour == 2) cameraBool = cameraController.yellow;
-                    if (cameraColour == 3) cameraBool = cameraController.green;
-                    if (cameraColour == 4) cameraBool = cameraController.blue;
+                    else if (cameraColour == 1) cameraBool = cameraController.orange;
+                    else if (cameraColour == 2) cameraBool = cameraController.yellow;
+                    else if (cameraColour == 3) cameraBool = cameraController.green;
+                    else if (cameraColour == 4) cameraBool = cameraController.blue;
+
                     if (cameraBool)
                     {
                         cameraController.enabled = false;
