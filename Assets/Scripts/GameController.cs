@@ -545,7 +545,7 @@ public class GameController : NetworkBehaviour
         isRoundPaused = false;
         PenultimateAction(false);
         roundMaxScore = CalculateInstructionNumber();
-        customerSatisfaction = 60;
+        if (customerSatisfaction < 60) customerSatisfaction = 60;
         InvokeRepeating("DecreaseCustomerSatisfaction", 1.0f, 1.0f);
         UpdateScoreBar();
     }
