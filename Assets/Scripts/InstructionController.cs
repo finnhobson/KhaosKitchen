@@ -10,7 +10,6 @@ using UnityEngine.Serialization;
 public class InstructionController : NetworkBehaviour
 {
     public GameController GameController;
-    public InstructionHandler InstructionHandler;
     
     //Store of the combinations of instructions possible
     private static List<String> verbList = new List<string>(new string[] { "Grab", "Fetch", "Grate", "Grill", "Melt", "Serve", "Stir", "Chop", "Cut", "Mash", "Season", "Flambé", "Bake", "Fry", "Taste", "Microwave", "Tendorise", "Roast", "Cry Into", "Mince", "Juice", "Freeze", "Purée", "Sneeze On", "Dice", "Cube", "Boil", "Brine", "Sous Vide", "Slice", "Poach",  "Deep Fry", "Lick", "Inhale", "Smell" });
@@ -91,7 +90,6 @@ public class InstructionController : NetworkBehaviour
 
         if (isServer)
         {
-            InstructionHandler = new InstructionHandler();
             SelectButtonActions();  //Create synced list of executables, one for each button in the game.
             SetFirstInstructions(); //Select one instruction per player from Action Button List.
             SetupFinished = true;
@@ -111,8 +109,6 @@ public class InstructionController : NetworkBehaviour
                 player.SetActionButtons(action, i);
 
                 if (!isServer) continue;
-                InstructionHandler.SetButtonNumber(action, i);
-                InstructionHandler.SetButtonPlayerID(action, player.PlayerId);
             }
             
             player.GenerateGoodStation(GoodStations);
@@ -120,11 +116,6 @@ public class InstructionController : NetworkBehaviour
 
             string instruction = ActiveInstructions[player.PlayerId];
             player.SetInstruction(instruction);
-            if (isServer)
-            {
-                InstructionHandler.SetInstructionPlayerID(instruction, player.PlayerId);
-//                players[0].printStations();
-            }
         }          
     }
 
@@ -134,7 +125,6 @@ public class InstructionController : NetworkBehaviour
     [Server]
     public void ResetIC()
     {
-        ClearInstructionHandler();
         SelectButtonActions();  //Create synced list of executables, one for each button in the game
         SetFirstInstructions(); //Select one instruction per player from Action Button List
     }
@@ -186,8 +176,6 @@ public class InstructionController : NetworkBehaviour
 
                 if (ActiveButtonActions.Contains(text)) continue;
                 ActiveButtonActions.Add(text);
-                InstructionHandler.AddValue(text, new Instruction(){IsActive = false, ButtonNumber = 69,  
-                    InstructionPlayerID = 69, ButtonPlayerID = 69, InstructionTimer = 69f} );
                 duplicate = false;
             }
         }
@@ -208,7 +196,6 @@ public class InstructionController : NetworkBehaviour
                 randomIndex = UnityEngine.Random.Range(0, ActiveButtonActions.Count);  /* How do we ensure we do not get a duplicate here? */
             }
             ActiveInstructions.Add(ActiveButtonActions[randomIndex]);
-            InstructionHandler.SetIsActive(ActiveButtonActions[randomIndex]);
         }
     }
     
@@ -230,7 +217,6 @@ public class InstructionController : NetworkBehaviour
 
             match = true;
 
-            DeactivateInstruction(action);
             GameController.CheckAction(i);
             Players[i].PlayerScore++;
 
@@ -240,7 +226,7 @@ public class InstructionController : NetworkBehaviour
                 RpcUpdateInstruction(ActiveInstructions[i], i);
                 RpcStartInstTimer(i);
 
-                int rand = UnityEngine.Random.Range(0, 7);
+                /*int rand = UnityEngine.Random.Range(0, 7);
                 if (rand == 0)
                 {
                     rand = UnityEngine.Random.Range(0, micInstructions.Count);
@@ -255,7 +241,7 @@ public class InstructionController : NetworkBehaviour
                 {
                     rand = UnityEngine.Random.Range(0, 5);
                     RpcSetCameraPanel(i, rand, cameraInstructionText[rand]);
-                }
+                }*/
             }
         }
         if (!match)
@@ -293,8 +279,6 @@ public class InstructionController : NetworkBehaviour
      */
     public void PickNewInstruction(int index, string action)
     {
-        InstructionHandler.InstructionCompleted(action);
-
         int randomIndex = UnityEngine.Random.Range(0, ActiveButtonActions.Count);
         while (ActiveInstructions.Contains(ActiveButtonActions[randomIndex]))
         {
@@ -302,7 +286,6 @@ public class InstructionController : NetworkBehaviour
         }
         
         ActiveInstructions[index] = ActiveButtonActions[randomIndex];
-        InstructionHandler.SetIsActive(ActiveButtonActions[randomIndex]);
     }
     
     [ClientRpc]
@@ -382,34 +365,6 @@ public class InstructionController : NetworkBehaviour
     public void PenultimateAction(bool fromGC)
     {
         isLastActionOfRound = fromGC;
-    }
-   
-    public void PlayerUpdateButton(int buttonNumber, string action, int playerID)
-    {
-        InstructionHandler.SetButtonPlayerID(action, playerID);
-        InstructionHandler.SetButtonNumber(action, buttonNumber);
-//        InstructionHandler.AddValue(action, new Instruction() {IsActive = false, ButtonNumber = buttonNumber, ButtonPlayerID = playerID});
-    }
-
-    public void PlayerUpdateInstruction(string instruction, int playerID)
-    {
-        InstructionHandler.SetInstructionPlayerID(instruction, playerID);
-        InstructionHandler.SetIsActive(instruction);
-    }
-
-    public void PrintInstructionHandler()
-    {
-        InstructionHandler.PrintInstructions();
-    }
-
-    private void ClearInstructionHandler()
-    {
-        InstructionHandler.ClearInstructions();
-    }
-
-    private void DeactivateInstruction(string instruction)
-    {
-        InstructionHandler.SetNotActive(instruction);
     }
 }
 

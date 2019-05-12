@@ -414,7 +414,6 @@ public class Player : NetworkBehaviour {
     public void SetActionButtons(string instruction, int i)
     {
         if (!isLocalPlayer) return;
-        CmdUpdateIHWithButtonData(i, instruction, PlayerId);
 
         switch (i)
         {
@@ -441,7 +440,6 @@ public class Player : NetworkBehaviour {
         if (!isLocalPlayer) return;
         instructionText.text = d;
         if (isGamePaused) return;
-        CmdUpdateIHWithInstructionData(d);
     }
 
     public string GetInstruction()
@@ -671,24 +669,6 @@ public class Player : NetworkBehaviour {
     public void UnpausePlayer()
     {
         isGamePaused = false;
-    }
-
-    /*
-     * Updates instruction button number, playerID.
-     */
-    [Command]
-    public void CmdUpdateIHWithButtonData(int buttonNumber, string action, int playerID)
-    {
-        InstructionController.PlayerUpdateButton(buttonNumber, action, playerID);
-    }
-
-    /*
-    * Updates instruction button number, playerID.
-    */
-    [Command]
-    public void CmdUpdateIHWithInstructionData(string action)
-    {
-        InstructionController.PlayerUpdateInstruction(action, PlayerId);
     }
 
     private void CheckInstruction(string action, int buttonNumber)

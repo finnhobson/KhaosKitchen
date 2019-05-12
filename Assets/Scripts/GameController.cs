@@ -622,10 +622,6 @@ public class GameController : NetworkBehaviour
         RpcSetTopChef(topChef);
     }
 
-    private void PrintInstructionHandler()
-    {
-        InstructionController.PrintInstructionHandler();
-    }
 
     public void PrintOut(int buttonNumber)
     {
