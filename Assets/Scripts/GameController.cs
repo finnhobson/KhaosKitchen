@@ -44,6 +44,7 @@ public class GameController : NetworkBehaviour
     private bool isGroupActivityEnabled = true; // To enable group activities
     private bool isGameOver;
     private bool step;
+    private bool tenSec = false;
 
     //Group activity
     private bool isGroupActiviy = true;
@@ -322,6 +323,13 @@ public class GameController : NetworkBehaviour
             {
                 OnRoundComplete();
             }
+
+            if (RoundTimeLeft <= 10 && tenSec == false)
+            {
+                tenSec = true;
+                MusicPlayer.PlayTenSecondCountdown();
+            }
+
             else if (roundTimeLeft <= 0 || customerSatisfaction <= 0)
             {
                 if (customerSatisfaction <= 0)
