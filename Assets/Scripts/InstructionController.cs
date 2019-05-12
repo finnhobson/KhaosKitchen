@@ -244,6 +244,7 @@ public class InstructionController : NetworkBehaviour
                 }
             }
         }
+
         if (!match)
         {
             GameController.fireCount++;
