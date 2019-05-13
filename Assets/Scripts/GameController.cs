@@ -41,7 +41,7 @@ public class GameController : NetworkBehaviour
 
     [SyncVar] public bool isRoundPaused;
     [SyncVar] public bool isGameStarted;
-    private bool isGroupActivityEnabled = false; // To enable group activities
+    private bool isGroupActivityEnabled = true; // To enable group activities
     private bool isGameOver;
     private bool step;
     private bool tenSec = false;
@@ -321,7 +321,7 @@ public class GameController : NetworkBehaviour
                 PenultimateAction(true);
             }
 
-            if (roundTimeLeft <= 10.4 && roundTimeLeft > 0 && isServer)
+            if (roundTimeLeft <= 10.4 && roundTimeLeft > 0 && isServer && !isGameOver)
             {
                 if (!tenSec)
                 {

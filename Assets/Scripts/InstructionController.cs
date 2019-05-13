@@ -38,7 +38,7 @@ public class InstructionController : NetworkBehaviour
                                                                                     "Pan set on fire!\nShake to put it out!\n\n(SHAKE YOUR PHONE)", "We are ten years away from irreversible climate damage!\n Shake to ignore\n\n(SHAKE YOUR PHONE)",
                                                                                     "Your arch nemisis just walked in!\nShake your fist at them angrily!\n\n(SHAKE YOUR PHONE)"});
 
-    private static List<String> cameraInstructionText = new List<string>(new string[] { "FIND THE TOMATO!", "FIND THE ORANGE!", "FIND THE BANANAS!", "FIND THE APPLE!", "FIND THE EU FLAG TO REVOKE ARTICLE 50!" });
+    private static List<String> cameraInstructionText = new List<string>(new string[] { "FIND THE ORANGE!", "FIND THE BANANAS!", "FIND THE APPLE!", "FIND THE EU FLAG TO REVOKE ARTICLE 50!" });
 
 
     private SyncListString activeButtonActions = new SyncListString();
@@ -226,12 +226,13 @@ public class InstructionController : NetworkBehaviour
                 RpcUpdateInstruction(ActiveInstructions[i], i);
                 RpcStartInstTimer(i);
 
-                int rand = UnityEngine.Random.Range(0, 5);
-               /* if (rand == 0)
+                int rand = 0;
+                //UnityEngine.Random.Range(0, 5);
+                if (rand == 0)
                 {
                     rand = UnityEngine.Random.Range(0, micInstructions.Count);
                     RpcSetMicPanel(i, micInstructions[rand]);
-                }*/
+                }
                 if (rand == 1)
                 {
                     rand = UnityEngine.Random.Range(0, shakeInstructions.Count);
@@ -239,7 +240,7 @@ public class InstructionController : NetworkBehaviour
                 }
                 else if (rand == 2)
                 {
-                    rand = UnityEngine.Random.Range(0, 5);
+                    rand = UnityEngine.Random.Range(0, cameraInstructionText.Count);
                     RpcSetCameraPanel(i, rand, cameraInstructionText[rand]);
                 }
             }
