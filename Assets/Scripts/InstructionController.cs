@@ -226,13 +226,12 @@ public class InstructionController : NetworkBehaviour
                 RpcUpdateInstruction(ActiveInstructions[i], i);
                 RpcStartInstTimer(i);
 
-                int rand = 0;
-                //UnityEngine.Random.Range(0, 5);
-                if (rand == 0)
+                UnityEngine.Random.Range(0, 5);
+                /*if (rand == 0)
                 {
                     rand = UnityEngine.Random.Range(0, micInstructions.Count);
                     RpcSetMicPanel(i, micInstructions[rand]);
-                }
+                }*/
                 if (rand == 1)
                 {
                     rand = UnityEngine.Random.Range(0, shakeInstructions.Count);
