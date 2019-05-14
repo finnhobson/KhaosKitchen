@@ -669,7 +669,7 @@ public class Player : NetworkBehaviour {
             String window = GetGoodNextNFC();
             validNfc = window;
             ResetScoreStreak();
-            SetNfcPanel("Great Work!\nGrab the " + window + "!\n\n(TAP ON " + window + " NFC)");
+            SetNfcPanel("Great Work!\nTap the " + window + "!\n\n(TAP ON " + window + " NFC)");
 
         }
     }
