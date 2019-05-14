@@ -13,7 +13,7 @@ public class InstructionController : NetworkBehaviour
     
     //Store of the combinations of instructions possible
     private static List<String> verbList = new List<string>(new string[] { "Grab", "Fetch", "Grate", "Grill", "Melt", "Serve", "Stir", "Chop", "Cut", "Mash", "Season", "Flambé", "Bake", "Fry", "Taste", "Microwave", "Tendorise", "Roast", "Cry Into", "Mince", "Juice", "Freeze", "Purée", "Sneeze On", "Dice", "Cube", "Boil", "Brine", "Sous Vide", "Slice", "Poach",  "Deep Fry", "Lick", "Inhale", "Smell" });
-    private static List<String> nounList = new List<string>(new string[] { "Minced Beef", "Steak", "Pork Loin", "Ice Cream", "Strawberry", "Bannana", "Toast", "Chocolate", "Pasta", "Bacon", "Tomato", "Sugar", "Salt", "Lettuce", "Sauce", "Mustard", "Sausage", "Apple", "Orange", "Chicken", "Ice Cubes", "Cheese", "Chicken Nuggets", "Brie", "Cheddar", "Camembert", "Wine", "Beer", "Whiskey", "Vodka", "Wasabi", "Salmon", "Tuna", "Mushroom", "Lard", "Bowling Ball", "Burger" });
+    private static List<String> nounList = new List<string>(new string[] { "Minced Beef", "Steak", "Pork Loin", "Ice Cream", "Strawberry", "Bannana", "Toast", "Chocolate", "Pasta", "Bacon", "Tomato", "Sugar", "Salt", "Lettuce", "Sauce", "Mustard", "Sausage", "Apple", "Orange", "Chicken", "Ice Cubes", "Cheese", "Chicken Nuggets", "Brie", "Cheddar", "Camembert", "Wine", "Beer", "Whiskey", "Vodka", "Wasabi", "Salmon", "Tuna", "Mushroom", "Lard", "Burger" });
 
     private static List<string> fridge = new List<string>( new string[] { "MILK IN THE FRIDGE", "CHEESE IN THE FRIDGE" } );
     private static List<string> cupboard = new List<string>( new string[] { "PASTA", "MICROWAVE" } );
