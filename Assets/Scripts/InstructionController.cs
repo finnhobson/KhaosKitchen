@@ -15,13 +15,13 @@ public class InstructionController : NetworkBehaviour
     private static List<String> verbList = new List<string>(new string[] { "Grab", "Fetch", "Grate", "Grill", "Melt", "Serve", "Stir", "Chop", "Cut", "Mash", "Season", "Flambé", "Bake", "Fry", "Taste", "Microwave", "Tendorise", "Roast", "Cry Into", "Mince", "Juice", "Freeze", "Purée", "Sneeze On", "Dice", "Cube", "Boil", "Brine", "Sous Vide", "Slice", "Poach",  "Deep Fry", "Lick", "Inhale", "Smell" });
     private static List<String> nounList = new List<string>(new string[] { "Minced Beef", "Steak", "Pork Loin", "Ice Cream", "Strawberry", "Bannana", "Toast", "Chocolate", "Pasta", "Bacon", "Tomato", "Sugar", "Salt", "Lettuce", "Sauce", "Mustard", "Sausage", "Apple", "Orange", "Chicken", "Ice Cubes", "Cheese", "Chicken Nuggets", "Brie", "Cheddar", "Camembert", "Wine", "Beer", "Whiskey", "Vodka", "Wasabi", "Salmon", "Tuna", "Mushroom", "Lard", "Bowling Ball", "Burger" });
 
-    private static List<string> fridge = new List<string>( new string[] { "MILK (IN THE FRIDGE)", "CHEESE (IN THE FRIDGE)" } );
-    private static List<string> cupboard = new List<string>( new string[] { "PASTA", "LENTILS" } );
-    private static List<string> prep = new List<string>( new string[] { "WHISK", "CHOPPING BOARD" } );
-    private static List<string> serve = new List<string>( new string[] { "WOODEN SPOON", "PLATE" } );
+    private static List<string> fridge = new List<string>( new string[] { "MILK IN THE FRIDGE", "CHEESE IN THE FRIDGE" } );
+    private static List<string> cupboard = new List<string>( new string[] { "PASTA", "MICROWAVE" } );
+    private static List<string> prep = new List<string>( new string[] { "DELIVEROO BAG", "CHOPPING BOARD" } );
+    private static List<string> serve = new List<string>( new string[] { "THE HOB", "PLATE" } );
     
     private static List<string> binA = new List<string>( new string[] { "GLASS BIN", "FOOD WASTE" } );
-    private static List<string> binB = new List<string>( new string[] { "INTERGALACTIC\nBLACK HOLE", "PLASTIC\nRECYCLING" } );
+    private static List<string> binB = new List<string>( new string[] { "SINK", "PLASTIC RECYCLING" } );
     
     private static List<string> WinnersList = new List<string>( new string[] {"WINNER!!","2nd","3rd","4th", "5th", "6th"});
     
@@ -248,7 +248,7 @@ public class InstructionController : NetworkBehaviour
         if (!match)
         {
             GameController.fireCount++;
-            GameController.customerSatisfaction -= 3;
+            GameController.customerSatisfaction -= 5;
         }
     }
     
@@ -265,7 +265,7 @@ public class InstructionController : NetworkBehaviour
             {
                 GameController.RpcResetScoreSteak(i);
                 GameController.IncreaseFireCount();
-                GameController.customerSatisfaction -= 3;
+                GameController.customerSatisfaction -= 5;
 
                 PickNewInstruction(i, action);
                 RpcUpdateInstruction(ActiveInstructions[i], i);

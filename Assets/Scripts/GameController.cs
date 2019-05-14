@@ -168,6 +168,7 @@ public class GameController : NetworkBehaviour
 
     //Indicator variables for the animation controller
     public bool playersInitialised;
+    public bool spawnChefs = false;
 
     public bool PlayersInitialised
     {
@@ -202,6 +203,8 @@ public class GameController : NetworkBehaviour
     private IEnumerator SetupGame(int x)
     {
         yield return new WaitForSecondsRealtime(x);
+
+        spawnChefs = true;
 
         if (isServer)
         {

@@ -793,14 +793,14 @@ public class Player : NetworkBehaviour {
                     GameObject ogreEars = chef.GetComponent<ChefController>().ogreEars;
                     Material ogreColour = chef.GetComponent<ChefController>().ogreColour;
                     List<GameObject> skin = chef.GetComponent<ChefController>().skin;
-                    if (ogreEars.activeInHierarchy == false && PlayerScore >= 75)
+                    if (ogreEars.activeInHierarchy == false && PlayerScore >= 50)
                     {
                         ogreEars.SetActive(true);
                         foreach (GameObject s in skin)
                         {
                             s.GetComponent<MeshRenderer>().material = ogreColour;
                         }
-                        PlayerScore -= 75;
+                        PlayerScore -= 50;
                         RpcCloseShop();
                     }
                     else RpcShopVibrate();
@@ -810,14 +810,14 @@ public class Player : NetworkBehaviour {
                 {
                     GameObject crown = chef.GetComponent<ChefController>().crown;
                     List<GameObject> hatParts = chef.GetComponent<ChefController>().hat;
-                    if (crown.activeInHierarchy == false && PlayerScore >= 150)
+                    if (crown.activeInHierarchy == false && PlayerScore >= 100)
                     {
                         crown.SetActive(true);
                         foreach (GameObject part in hatParts)
                         {
                             part.SetActive(false);
                         }
-                        PlayerScore -= 150;
+                        PlayerScore -= 100;
                         RpcCloseShop();
                     }
                     else RpcShopVibrate();
