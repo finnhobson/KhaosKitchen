@@ -130,7 +130,7 @@ public class CameraController : MonoBehaviour
                         if (pixel.r < 0.3 && pixel.g < 0.5 && pixel.b > 0.6) blueCount++;
                     }
                     B.text = blueCount.ToString();
-                    if (blueCount > 10000) blue = true;
+                    if (blueCount > 5000) blue = true;
                     break;
                 default:
                     Debug.Log("No Colour Chosen");

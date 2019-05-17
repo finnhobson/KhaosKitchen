@@ -44,6 +44,7 @@ public class GameController : NetworkBehaviour
     private bool isGroupActivityEnabled = true; // To enable group activities
     private bool isGameOver;
     private bool step;
+    private bool tenSec = false;
 
     //Group activity
     private bool isGroupActiviy = true;
@@ -135,6 +136,8 @@ public class GameController : NetworkBehaviour
     [SyncVar] public int MinimumInstructionTime;
     [SyncVar] public int playerCount;
 
+    [SyncVar] private int buzzer; 
+
     [SyncVar] public bool easyPhoneInteractions;
 
     //[SyncVar(hook = "SetTopChef")] public string currentTopChef;
@@ -165,6 +168,7 @@ public class GameController : NetworkBehaviour
 
     //Indicator variables for the animation controller
     public bool playersInitialised;
+    public bool spawnChefs = false;
 
     public bool PlayersInitialised
     {
@@ -199,6 +203,8 @@ public class GameController : NetworkBehaviour
     private IEnumerator SetupGame(int x)
     {
         yield return new WaitForSecondsRealtime(x);
+
+        spawnChefs = true;
 
         if (isServer)
         {
@@ -286,6 +292,7 @@ public class GameController : NetworkBehaviour
 
             if (isServer)
             {
+                //(score % (30 * playerCount) == 50)
                 int scoreRemaining = (roundMaxScore) - (roundScore - roundStartScore);
                 if ((score % (30 * playerCount) == 50) && isGroupActiviy && isGroupActivityEnabled && (scoreRemaining > playerCount) ) //Needs to be changed.
                 {
@@ -317,10 +324,33 @@ public class GameController : NetworkBehaviour
                 PenultimateAction(true);
             }
 
+            if (roundTimeLeft <= 10.4 && roundTimeLeft > 0 && isServer && !isGameOver)
+            {
+                if (!tenSec)
+                {
+                    tenSec = true;
+                    RpcTenCount();
+                    MusicPlayer.PlayTenSecondCountdown();
+                }
+                else
+                {
+                    if (roundTimeLeft > 5 && (buzzer % 100) == 0)
+                    {
+                        RpcTenCount();
+                    }
+                    else if (roundTimeLeft < 5 && buzzer % 30 == 0)
+                    {
+                        RpcTenCount();
+                    }
+                    buzzer++;
+                }
+            }
+
             if (IsRoundComplete())
             {
                 OnRoundComplete();
             }
+
             else if (roundTimeLeft <= 0 || customerSatisfaction <= 0)
             {
                 if (customerSatisfaction <= 0)
@@ -346,8 +376,6 @@ public class GameController : NetworkBehaviour
 
                 groupShakePanel.SetActive(false);
                 groupRacePanel.SetActive(false);
-
-
             }
 
             else
@@ -456,6 +484,8 @@ public class GameController : NetworkBehaviour
     private void OnRoundComplete()
     {
         if (!isServer || isRoundPaused) return; //Only need to access this function once per round completion.
+        buzzer = 0;
+        tenSec = false;
         roundNumber++;
         UpdateGamestate();
         isRoundPaused = true;
@@ -544,7 +574,7 @@ public class GameController : NetworkBehaviour
         isRoundPaused = false;
         PenultimateAction(false);
         roundMaxScore = CalculateInstructionNumber();
-        customerSatisfaction = 60;
+        if (customerSatisfaction < 60) customerSatisfaction = 60;
         InvokeRepeating("DecreaseCustomerSatisfaction", 1.0f, 1.0f);
         UpdateScoreBar();
     }
@@ -622,10 +652,6 @@ public class GameController : NetworkBehaviour
         RpcSetTopChef(topChef);
     }
 
-    private void PrintInstructionHandler()
-    {
-        InstructionController.PrintInstructionHandler();
-    }
 
     public void PrintOut(int buttonNumber)
     {
@@ -674,7 +700,7 @@ public class GameController : NetworkBehaviour
 
     private void DecreaseCustomerSatisfaction()
     {
-        customerSatisfaction -= 0.5f;
+        customerSatisfaction -= 1;
         if (customerSatisfaction > 100) customerSatisfaction = 100;
         if (customerSatisfaction < 0) customerSatisfaction = 0;
     }
@@ -812,8 +838,8 @@ public class GameController : NetworkBehaviour
 
     private void IncrementGroupActivity()
     {
-        activityNumber = (activityNumber + 1) % numberOfGroupActivities;
-//        activityNumber = 1;
+    activityNumber = (activityNumber + 1) % numberOfGroupActivities;
+//    activityNumber = 1;
     }
 
     private void RpcUpdateActivityNumber(int number)
@@ -938,5 +964,11 @@ public class GameController : NetworkBehaviour
         yield return new WaitForSeconds(waitTime);
         groupRacePanel.SetActive(false);
     }
-    
+
+    [ClientRpc]
+    private void RpcTenCount()
+    {
+        foreach (Player p in playerList) p.PlayTenSecondCountdown();
+    }
+
 }

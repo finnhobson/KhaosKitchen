@@ -9,8 +9,6 @@
     void CmdAction(string action);
     void CmdFail(string action, string bin);
     void CmdIncreaseScore();
-    void CmdUpdateIHWithButtonData(int buttonNumber, string action, int playerID);
-    void CmdUpdateIHWithInstructionData(string action);
     void DisableOkayButtonsOnPanels();
     void GameOver();
     string GetInstruction();

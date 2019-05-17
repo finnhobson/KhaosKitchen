@@ -60,7 +60,7 @@ public class LobbyManager : NetworkLobbyManager
 
     public Text Feedback;
 
-    private static List<string> feedbackList = new List<string>(new string[] { "Pretty much the perfect game", "This game gets 4.7/5 tomatoes - Tomato Critic", "Food fight? More like loser fight", "Good game, needs more nuggets and cheese", "The only kitchen game worth your time", "As far as mobile games go, this is suprisingly decent", "The developers have certainly earned a few pints for this", "Graphics to rival any console game", "I don't think these people know how to spell chaos", "Angry birds would be scared if it was still 2010", "This game is powered by coffee, redbull and pro plus", "Space team? Overcooked? Never heard of them", "Look mum I finally made a game!", "Cat in the wall? Now you’re talking my language!", "Brexits a mess, but at least its not Trump", "Basically one step away from photo realism ", "The original NFC capable mobile game!", "KFC is better than McDonalds. Fight me.", "Fun Fact: Our planet is dying!", "This shout out goes to spoons for being an OG", "help me, im trapped in the phone, send rescue" });
+    private static List<string> feedbackList = new List<string>(new string[] { "Pretty much the perfect game", "This game gets 4.7/5 tomatoes - Tomato Critic",  "Good game, needs more nuggets and cheese", "The only kitchen game worth your time", "As far as mobile games go, this is suprisingly decent", "The developers have certainly earned a few pints for this", "Graphics to rival any console game", "I don't think these people know how to spell chaos", "Angry birds would be scared if it was still 2010", "This game is powered by coffee, redbull and pro plus", "Space team? Overcooked? Never heard of them", "Look mum I finally made a game!", "Cat in the wall? Now you’re talking my language!", "Brexits a mess, but at least its not Trump", "Basically one step away from photo realism ", "The original NFC capable mobile game!", "KFC is better than McDonalds. Fight me.", "Fun Fact: Our planet is dying!", "This shout out goes to spoons for being an OG", "help me, im trapped in the phone, send rescue" });
 
     void Start()
     {
@@ -408,7 +408,7 @@ public class LobbyManager : NetworkLobbyManager
     {
         GameSettings.RoundTime = string.IsNullOrEmpty(roundTimeText.text) ? 90 : int.Parse(roundTimeText.text);
         GameSettings.BaseInstructionNumber = string.IsNullOrEmpty(BaseInstructionNumberText.text) ? 20 : int.Parse(BaseInstructionNumberText.text);
-        GameSettings.InstructionNumberIncreasePerRound = string.IsNullOrEmpty(InstructionNumberIncreasePerRoundText.text) ? 5 : int.Parse(InstructionNumberIncreasePerRoundText.text);
+        GameSettings.InstructionNumberIncreasePerRound = string.IsNullOrEmpty(InstructionNumberIncreasePerRoundText.text) ? 8 : int.Parse(InstructionNumberIncreasePerRoundText.text);
         GameSettings.BaseInstructionTime = string.IsNullOrEmpty(BaseInstructionTimeText.text) ? 15 : int.Parse(BaseInstructionTimeText.text);
         GameSettings.InstructionTimeReductionPerRound = string.IsNullOrEmpty(InstructionTimeReductionPerRoundText.text) ? 2 : int.Parse(InstructionTimeReductionPerRoundText.text);
         GameSettings.InstructionTimeIncreasePerPlayer = string.IsNullOrEmpty(InstructionTimeIncreasePerPlayerText.text) ? 2 : int.Parse(InstructionTimeIncreasePerPlayerText.text);

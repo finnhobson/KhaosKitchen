@@ -30,7 +30,7 @@ public class AnimationController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (gameController.playersInitialised && !chefsSpawned)
+        if (gameController.spawnChefs && !chefsSpawned)
         {
             StartCoroutine(SpawnChefs());
             chefsSpawned = true;
