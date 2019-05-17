@@ -689,19 +689,18 @@ public class Player : NetworkBehaviour {
         CmdAction(action);
         if (InstructionController.ActiveInstructions.Contains(action))
         {
-            ThisButtonWasPressed(buttonNumber);
+            CorrectButtonPress(buttonNumber);
         }
 
         else
         {
-            ThisButtonWasNotPressed(buttonNumber);
+            WrongButtonPress(buttonNumber);
         }
     }
 
-    private void ThisButtonWasPressed(int buttonNumber)
+    private void CorrectButtonPress(int buttonNumber)
     {
-        //Activate feedback on this button
-//        CmdPrint(buttonNumber);
+        // Activate feedback on this button
         AllButtons[buttonNumber].GetComponent<Image>().color = Color.green;
         CmdIncrementScore();
         
@@ -711,7 +710,7 @@ public class Player : NetworkBehaviour {
         StartCoroutine(ResetButtonColour(0.5f, buttonNumber));
     }
 
-    private void ThisButtonWasNotPressed(int buttonNumber)
+    private void WrongButtonPress(int buttonNumber)
     {
         AllButtons[buttonNumber].GetComponent<Image>().color = Color.red;
 
@@ -727,11 +726,6 @@ public class Player : NetworkBehaviour {
 
     }
 
-    [Command]
-    private void CmdPrint(int buttonNumber)
-    {
-        gameController.PrintOut(buttonNumber);
-    }
 
     public void PlayTenSecondCountdown()
     {
@@ -882,12 +876,6 @@ public class Player : NetworkBehaviour {
 #endif
     }
 
-    [Command]
-    private void CmdPrintName(string name)
-    {
-        Debug.Log(name);
-    }
-
 
     public void BackToMainMenu()
     {
@@ -987,9 +975,7 @@ public class Player : NetworkBehaviour {
                 break;
                     
             default:
-                //
-                Console.WriteLine("Fucked!");
-                i -= 999999999;
+                Debug.Log("Error with group activity number");
                 break;
         }
     }
