@@ -25,11 +25,13 @@ public class CustomerController : MonoBehaviour
     public GameObject shirt;
     public List<GameObject> hatParts;
 
-    // Use this for initialization
+
     void Start()
     {
         gameController = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
+        animationController = GameObject.FindGameObjectWithTag("AnimationController").GetComponent<AnimationController>();
 
+        // Walking Down Path into Restaurant
         if (transform.localPosition.x > xMax + 5)
         {
             x = -maxSpeed;
@@ -47,7 +49,7 @@ public class CustomerController : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
+
     void Update()
     {
         time += Time.deltaTime;
@@ -55,7 +57,7 @@ public class CustomerController : MonoBehaviour
 
         if (!gameController.isRoundPaused && gameController.isGameStarted)
         {
-
+            // Check Customer Rotation
             if (x == 0)
             {
                 if (z > 0)
@@ -80,11 +82,9 @@ public class CustomerController : MonoBehaviour
                 }
 
             }
-        
 
-            //MOVING INSIDE RESTAURANT
-
-            //LEFT EXIT
+            // MOVING INSIDE RESTAURANT
+            // Left Exit
             if (transform.localPosition.x > 17.8 && transform.localPosition.x < 18 && transform.localPosition.z > -29.6 && transform.localPosition.z < -29.4 && junction != 0)
             {
                 bool picked = false;
@@ -111,20 +111,17 @@ public class CustomerController : MonoBehaviour
                     }
                 }             
                 junction = 0;
-                /*if (gameController.customerSatisfaction >= 25)
-                {
-                    
-                }
-                else if (animationController.customerNumber > 1)
+
+                // Leave if low customer satisfaction
+                if (gameController.customerSatisfaction < 20 && animationController.customerNumber > 1)
                 {
                     z = 0;
                     x = maxSpeed;
                     animationController.customerNumber--;
-                }*/
-            }
-        
+                }
+            }  
 
-            //RIGHT EXIT
+            // Right Exit
             if (transform.localPosition.x < -17.8 && transform.localPosition.x > -18 && transform.localPosition.z > -29.6 && transform.localPosition.z < -29.4 && junction != 1)
             {
                 bool picked = false;
@@ -151,20 +148,17 @@ public class CustomerController : MonoBehaviour
                     }
                 }   
                 junction = 1;
-                /*if (gameController.customerSatisfaction >= 25)
-                {
-                    
-                }
-                else if (animationController.customerNumber > 1)
+
+                // Leave if low customer satisfaction
+                if (gameController.customerSatisfaction < 20 && animationController.customerNumber > 1)
                 {
                     z = 0;
                     x = -maxSpeed;
                     animationController.customerNumber--;
-                }*/
+                }
             }
-        
 
-            //TOP RIGHT
+            // Top Right
             if (transform.localPosition.x < -17.8 && transform.localPosition.x > -18 && transform.localPosition.z > -38.2 && transform.localPosition.z < -38 && junction != 2)
             {
                 if (z != 0)
@@ -180,16 +174,14 @@ public class CustomerController : MonoBehaviour
                 junction = 2;
             }
 
-            //TOP LEFT
+            // Top Left
             if (transform.localPosition.x > 17.8 && transform.localPosition.x < 18 && transform.localPosition.z > -38.2 && transform.localPosition.z < -38 && junction != 3)
             {
-                //Moving in z direction
                 if (z != 0)
                 {
                     z = 0;
                     x = -maxSpeed;
                 }
-                //Moving in x direction
                 else if (x != 0)
                 {
                     x = 0;
@@ -198,7 +190,7 @@ public class CustomerController : MonoBehaviour
                 junction = 3;
             }
 
-            //BOTTOM LEFT
+            // Bottom Left
             if (transform.localPosition.x > 17.8 && transform.localPosition.x < 18 && transform.localPosition.z > -20.2 && transform.localPosition.z < -20 && junction != 4)
             {
                 if (z != 0)
@@ -214,10 +206,9 @@ public class CustomerController : MonoBehaviour
                 junction = 4;
             }
 
-            //BOTTOM RIGHT
+            // Bottom Right
             if (transform.localPosition.x < -17.8 && transform.localPosition.x > -18 && transform.localPosition.z > -20.2 && transform.localPosition.z < -20 && junction != 5)
             {
-                //Moving in z direction
                 if (z != 0)
                 {
                     z = 0;
@@ -231,7 +222,7 @@ public class CustomerController : MonoBehaviour
                 junction = 5;
             }
 
-            //BOTTOM RIGHT MIDDLE 
+            // Bottom Right Middle
             if (transform.localPosition.x < -5.8 && transform.localPosition.x > -6 && transform.localPosition.z > -20.2 && transform.localPosition.z < -20 && junction != 6)
             {
                 bool picked = false;
@@ -260,7 +251,7 @@ public class CustomerController : MonoBehaviour
                 junction = 6;
             }
 
-            //BOTTOM LEFT MIDDLE 
+            // Bottom Left Middle 
             if (transform.localPosition.x < 5.8 && transform.localPosition.x > 6 && transform.localPosition.z > -20.2 && transform.localPosition.z < -20 && junction != 7)
             {
                 bool picked = false;
@@ -289,7 +280,7 @@ public class CustomerController : MonoBehaviour
                 junction = 7;
             }
 
-            //TOP LEFT MIDDLE 
+            // Top Left Middle
             if (transform.localPosition.x < 5.8 && transform.localPosition.x > 6 && transform.localPosition.z > -38.2 && transform.localPosition.z < -38 && junction != 8)
             {
                 bool picked = false;
@@ -318,7 +309,7 @@ public class CustomerController : MonoBehaviour
                 junction = 8;
             }
 
-            //TOP RIGHT MIDDLE 
+            // Top Right Middle 
             if (transform.localPosition.x < -5.8 && transform.localPosition.x > -6 && transform.localPosition.z > -38.2 && transform.localPosition.z < -38 && junction != 9)
             {
                 bool picked = false;
@@ -347,7 +338,7 @@ public class CustomerController : MonoBehaviour
                 junction = 9;
             }
 
-            //RIGHT MIDDLE 
+            // Right Middle
             if (transform.localPosition.x < -5.8 && transform.localPosition.x > -6 && transform.localPosition.z > -29.6 && transform.localPosition.z < -29.4 && junction != 10)
             {
                 bool picked = false;
@@ -382,7 +373,7 @@ public class CustomerController : MonoBehaviour
                 junction = 10;
             }
 
-            //LEFT MIDDLE 
+            // Left Middle 
             if (transform.localPosition.x < 5.8 && transform.localPosition.x > 6 && transform.localPosition.z > -29.6 && transform.localPosition.z < -29.4 && junction != 11)
             {
                 bool picked = false;
@@ -420,6 +411,7 @@ public class CustomerController : MonoBehaviour
             transform.localPosition = new Vector3(transform.localPosition.x + x, transform.localPosition.y, transform.localPosition.z + z);
         }
 
+        // Face Camera While Celebrating Complete Round
         else
         {
             transform.localRotation = Quaternion.Euler(0, 0, 0);

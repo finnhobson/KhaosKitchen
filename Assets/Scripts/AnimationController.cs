@@ -141,4 +141,5 @@ public class AnimationController : MonoBehaviour
         float z = UnityEngine.Random.Range(-10, 8);
         Instantiate(firePrefab, new Vector3(x, 0, z), transform.rotation);
     }
+
 }

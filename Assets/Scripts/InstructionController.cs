@@ -87,24 +87,26 @@ public class InstructionController : NetworkBehaviour
     // Initialise InstructionController, called from GameController
     public void ICStart(int playerCount, int numberOfButtons, List<Player> players, GameController gameController)
     {
-        //Assignment ensures that GC has generated values
+        // Assign values from GC
         PlayerCount = playerCount;
         NumberOfButtons = numberOfButtons;
         Players = players;
 
         if (isServer)
         {
-            SelectButtonActions();  //Create synced list of executables, one for each button in the game.
-            SetFirstInstructions(); //Select one instruction per player from Action Button List.
+            // Create synced list of executables, one for each player action button.
+            SelectButtonActions();
+            // Select one instruction per player from ActionButton List.
+            SetFirstInstructions(); 
             SetupFinished = true;
         }
 
         while (!SetupFinished)
         {
-            //Just in case there is a timing issue with the setup.
+            Debug.Log("Waiting for GC to finish setup");
         }
         
-        //Assign actions and instructions to each player.
+        // Assign actions and instructions to each player.
         foreach (var player in Players)
         {
             for (int i = 0; i < NumberOfButtons; i++)
@@ -123,21 +125,22 @@ public class InstructionController : NetworkBehaviour
         }          
     }
 
-    /*
-     * Reset the active instructions and buttons.
-     */
+
+    // Reset the active instructions and buttons.
     [Server]
     public void ResetIC()
     {
-        SelectButtonActions();  //Create synced list of executables, one for each button in the game
-        SetFirstInstructions(); //Select one instruction per player from Action Button List
+        SelectButtonActions();
+        SetFirstInstructions();
     }
 
-    public string getPositionWord(int i)
+
+    public string GetPositionWord(int i)
     {
         if (i >= PlayerCount) return "error";
         return WinnersList[i];
     }
+
 
     [ClientRpc]
     public void RpcResetPlayers()
@@ -155,20 +158,15 @@ public class InstructionController : NetworkBehaviour
         }
     }
 
-    /*
-     * Creates synced list of executable strings, one for each button.
-     */
+
+    // Creates synced list of executable strings, one for each action button
     public void SelectButtonActions()
     {
         ActiveButtonActions.Clear();
-        
-        int randomIndex;
         bool duplicate;
         int verbNo, nounNo;
         string text;
-        
-//        Debug.Log("PlayerCount :: " + PlayerCount + ", NoB :: "  //                  + NumberOfButtons);
-        
+                
         for (int i = 0; i < PlayerCount*NumberOfButtons; i++)
         {
             duplicate = true;
@@ -185,38 +183,35 @@ public class InstructionController : NetworkBehaviour
         }
     }
 
-    /*
-     * Randomly select an instruction per player from ActiveButtonActions and add to ActiveInstruction.
-     * Update same lists on GC.
-     */
+
+    // Randomly select an instruction per player from ActiveButtonActions and add to ActiveInstruction.
     private void SetFirstInstructions()
     {
         ActiveInstructions.Clear();
         for (int i = 0; i < PlayerCount; i++)
         {
-            int randomIndex = UnityEngine.Random.Range(0, ActiveButtonActions.Count);  /* How do we ensure we do not get a duplicate here? */
+            int randomIndex = UnityEngine.Random.Range(0, ActiveButtonActions.Count); 
             while (ActiveInstructions.Contains(ActiveButtonActions[randomIndex]))
             {
-                randomIndex = UnityEngine.Random.Range(0, ActiveButtonActions.Count);  /* How do we ensure we do not get a duplicate here? */
+                randomIndex = UnityEngine.Random.Range(0, ActiveButtonActions.Count);
             }
             ActiveInstructions.Add(ActiveButtonActions[randomIndex]);
         }
     }
     
-    /*
-     * Function called from player when action attempted.
-     * If action is a current instruction then generate new instruction and order GC to handle score.
-     */
+
+    // Function called from player when action attempted.
+    // If action is a current instruction then generate new instruction and order GC to handle score.
     [Server]
     public void CheckAction(string action)
     {
-        if (isRoundPaused) return; //Do nothing when round paused.
+        if (isRoundPaused) return;
         bool match = false;
 
-        //When an action button is pressed by a player-client, check if action matches an active instruction.
+        // When an action button is pressed by a player-client, check if action matches an active instruction.
         for (int i = 0; i < ActiveInstructions.Count; i++)
         {
-            //If match, increment score.
+            // If match, increment score.
             if (action != ActiveInstructions[i]) continue;
 
             match = true;
@@ -256,15 +251,12 @@ public class InstructionController : NetworkBehaviour
         }
     }
     
-    /*
-     * Checks if failed action is a current active instruction, and if so pick new instruction and orders NFC bin.
-     */
+
+    // Checks if failed action is a current active instruction, and if so pick new instruction and orders NFC bin.
     public void FailAction(string action, string bin)
     {
-        //When an action button is pressed by a player-client, check if action matches an active instruction.
         for (int i = 0; i < ActiveInstructions.Count; i++)
         {
-            //If match, increment score.
             if (action == ActiveInstructions[i])
             {
                 GameController.RpcResetScoreSteak(i);
@@ -280,9 +272,8 @@ public class InstructionController : NetworkBehaviour
         }
     }
 
-    /*
-     * New Instruction selected from set of ActiveButtonActions, with no duplicate ensured.
-     */
+
+    // New Instruction selected from set of ActiveButtonActions, with no duplicate ensured.
     public void PickNewInstruction(int index, string action)
     {
         int randomIndex = UnityEngine.Random.Range(0, ActiveButtonActions.Count);
@@ -294,11 +285,13 @@ public class InstructionController : NetworkBehaviour
         ActiveInstructions[index] = ActiveButtonActions[randomIndex];
     }
     
+
     [ClientRpc]
     public void RpcUpdateInstruction(String newInstruction, int playerID)
     {
         Players[playerID].SetInstruction(newInstruction);
     }
+
 
     [ClientRpc]
     public void RpcUpdateButtons(int playerID)
@@ -308,6 +301,7 @@ public class InstructionController : NetworkBehaviour
             Players[i].SetActionButtons(playerID.ToString(), i);
         }
     }
+
 
     [ClientRpc]
     public void RpcSetActionButton(int playerID, string action, int buttonNumber)
@@ -319,17 +313,20 @@ public class InstructionController : NetworkBehaviour
         }
     }
 
+
     [ClientRpc]
     public void RpcStartInstTimer(int playerID)
     {
         Players[playerID].StartInstTimer();
     }
     
+
     [ClientRpc]
     public void RpcSetNfcPanel(int playerID, string text)
     {
         Players[playerID].SetNfcPanel(text);
     }
+
 
     [ClientRpc]
     public void RpcSetMicPanel(int playerID, string text)
@@ -337,17 +334,20 @@ public class InstructionController : NetworkBehaviour
         Players[playerID].SetMicPanel(text);
     }
 
+
     [ClientRpc]
     public void RpcSetShakePanel(int playerID, string text)
     {
         Players[playerID].SetShakePanel(text);
     }
 
+
     [ClientRpc]
     public void RpcSetCameraPanel(int playerID, int colour, string text)
     {
         Players[playerID].SetCameraPanel(colour, text);
     }
+
 
     [ClientRpc]
     public void RpcShowPaused()
@@ -358,15 +358,18 @@ public class InstructionController : NetworkBehaviour
         }
     }
 
+
     public void PauseIC()
     {
         isRoundPaused = true;
     }
     
+
     public void UnPauseIC()
     {
         isRoundPaused = false;
     }
+
 
     public void PenultimateAction(bool fromGC)
     {

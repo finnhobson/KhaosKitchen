@@ -37,7 +37,6 @@ public class Player : NetworkBehaviour
     // GLOBAL VARIABLES --------------------------------------------------------------------------------------------
     //--------------------------------------------------------------------------------------------------------------
 
-
     // Linked Controllers
     public GameController gameController;
     public InstructionController InstructionController;
@@ -94,7 +93,6 @@ public class Player : NetworkBehaviour
     private const int scoreStreakMax = 3;
     public bool isGamePaused;
     private bool isServe = false;
-    private bool micActive = false;
     private bool timerStarted = false;
     [SyncVar] public bool isSetupComplete;
 
@@ -240,7 +238,6 @@ public class Player : NetworkBehaviour
                 if (micListener.MicLoudness > 0.15f)
                 {
                     micPanel.SetActive(false);
-                    micActive = false;
                     micListener.enabled = false;
                     CmdIncreaseScore();
                     StartInstTimer();
@@ -553,7 +550,6 @@ public class Player : NetworkBehaviour
     {
         micPanel.SetActive(true);
         micListener.enabled = true;
-        micActive = true;
         micText.text = text;
     }
 
@@ -1035,7 +1031,6 @@ public class Player : NetworkBehaviour
         nfcPanel.SetActive(false);
         shakePanel.SetActive(false);
         micPanel.SetActive(false);
-        micActive = false;
         micListener.enabled = false;
         cameraPanel.SetActive(false);
         cameraController.enabled = false;

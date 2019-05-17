@@ -807,7 +807,7 @@ public class GameController : NetworkBehaviour
             if (player.IsNFCRaceCompleted && !raceWinnersList.Contains(player.PlayerUserName))
             {
                 raceWinnersList.Add(player.PlayerUserName);
-               groupDisplayTasks[playerList.IndexOf(player)].text = InstructionController.getPositionWord(raceWinnersList.IndexOf(player.PlayerUserName));
+               groupDisplayTasks[playerList.IndexOf(player)].text = InstructionController.GetPositionWord(raceWinnersList.IndexOf(player.PlayerUserName));
             }
         }
 

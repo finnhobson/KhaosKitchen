@@ -90,6 +90,8 @@ public class CameraController : MonoBehaviour
             int blueCount = 0;
 
             Color[] pixels = backCam.GetPixels();
+
+            // Count number of pixels of selected colour in the WebCamTexture
             switch(player.cameraColour)
             {
                 case 0:
