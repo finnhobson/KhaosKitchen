@@ -19,15 +19,14 @@ public class AnimationController : MonoBehaviour
     private bool chefsSpawned = false;
     private int currentRound = 0;
     private int fireCount = 0;
-    private bool bonusCustomers = false;
 
-    // Start is called before the first frame update
+
     void Start()
     {
         Instantiate(kitchenPrefab);
     }
 
-    // Update is called once per frame
+
     void Update()
     {
         if (gameController.spawnChefs && !chefsSpawned)
@@ -46,7 +45,6 @@ public class AnimationController : MonoBehaviour
         {
             if (customerNumber < 10) SpawnCustomers();
             currentRound = gameController.roundNumber;
-            bonusCustomers = false; 
         }
 
         if (fireCount < gameController.fireCount)
@@ -56,6 +54,7 @@ public class AnimationController : MonoBehaviour
         }
 
     }
+
 
     private IEnumerator SpawnChefs()
     {
@@ -72,9 +71,9 @@ public class AnimationController : MonoBehaviour
         }
     }
 
+
     private void SpawnCustomers()
     {
-
         GameObject customer = Instantiate(customerPrefab, new Vector3(-50, 0.5f, -29.5f), transform.rotation);
         customerNumber++;
         GameObject shirt = customer.GetComponent<CustomerController>().shirt;
@@ -125,6 +124,7 @@ public class AnimationController : MonoBehaviour
         }
     }
 
+
     private void DestroyFires()
     {
         var fires = GameObject.FindGameObjectsWithTag("Fire");
@@ -133,6 +133,7 @@ public class AnimationController : MonoBehaviour
             Destroy(fire);
         }
     }
+
 
     private void SpawnFire()
     {

@@ -13,7 +13,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
 using Random = System.Random;
 
-/*
+/*  GAMES DAY NFC CODES:
  *
  *  MILK:                     BEZoSotfgA==
  *  CHEESE:                   BH5nSotfgA==
@@ -30,19 +30,32 @@ using Random = System.Random;
  *  SPARE 1:                  BJhoSotfgA==
  *  SPARE 2:                  
  */
-public class Player : NetworkBehaviour {
 
-    //Custom objects
+public class Player : NetworkBehaviour
+{
+    //--------------------------------------------------------------------------------------------------------------
+    // GLOBAL VARIABLES --------------------------------------------------------------------------------------------
+    //--------------------------------------------------------------------------------------------------------------
+
+
+    // Linked Controllers
     public GameController gameController;
     public InstructionController InstructionController;
     public CameraController cameraController;
 
-    //Buttons
+    // UI Elements
     public Button button1, button2, button3, button4;
     public Button[] AllButtons;
     public Button nfcButton, micButton, shakeButton;
+    public Text scoreText, instructionText, timerText, gpsText, roundScoreText, topChefText, countdownText, roundNumberText, nameText, micVolumeText, groupMessageText, gameOverText;
+    public GameObject nfcPanel, micPanel, shakePanel, gameOverPanel, roundCompletePanel, roundStartPanel, shopPanel, groupMessagePanel, cameraPanel, instBar;
+    public Text nfcText, micText, shakeText, cameraText;
+    public GameObject nfcOkayButton, micOkayButton, shakeOkayButton;
+    public GameObject fullScreenPanel;
+    public Text fullScreenPanelText;
+    public GameObject backgroundPanel;
 
-    //Sound
+    // Audio Variables
     public AudioClip[] correctActions;
     public AudioClip[] incorrectActions;
     public AudioClip[] badNoises;
@@ -55,92 +68,37 @@ public class Player : NetworkBehaviour {
     public float VolumeOfSoundEffects { get; set; }
     private float Volume = 2f;
 
-    //Unity GameObjects
-    public Text scoreText, instructionText, timerText, gpsText, roundScoreText, topChefText, countdownText, roundNumberText, nameText, micVolumeText, groupMessageText, gameOverText;
-    public GameObject nfcPanel, micPanel, shakePanel, gameOverPanel, roundCompletePanel, roundStartPanel, shopPanel, groupMessagePanel, cameraPanel;
-    public Text nfcText, micText, shakeText, cameraText, debugText;
-    public GameObject nfcOkayButton, micOkayButton, shakeOkayButton;
-    public GameObject fullScreenPanel;
-    public Text fullScreenPanelText;
-    public GameObject backgroundPanel;
-
-    //Player
+    // Player information
     [SyncVar] public string PlayerUserName;
     [SyncVar] public Color PlayerColour;
     [SyncVar (hook = "UpdateScore") ] public int PlayerScore;
     [SyncVar] public int PlayerId;
     public uint PlayerNetworkID;
     
+    // NFC Variables
     private List<Station> GoodStations = new List<Station>();
     private List<Station> BadStations = new List<Station>();
-
-    [SyncVar (hook = "DisplayTopChef")] private string topChef;
-    public string TopChef
-    {
-        get { return topChef; }
-        set { topChef = value; }
-    }
-    public string topChefPush;
-
-    //Extras
-    public int cameraColour = -1;
     [SyncVar] private string nfcValue = "";
     private string validNfc = "";
-    [SyncVar]public string validNfcRace = "";
+    [SyncVar] public string validNfcRace = "";
+
+    // Gameplay variables
+    [SyncVar (hook = "DisplayTopChef")] private string topChef;
+    public int cameraColour = -1;
     public int playerCount;
     public int instTime;
     public bool easyPhoneInteractions = true;
-//    private HashSet<String> validNfc = new HashSet<String>{"Food Waste","Recycling Bin","Window A","Window B"};
-   // public MicListener micListener;
-
-    //Timer
-    //private int instTime = 30;
-    public GameObject instBar;
+    public MicListener micListener;
     public float instTimeLeft, instStartTime;
-
-    //Score
     private int scoreStreak = 0;
-
-    public int ScoreStreak
-    {
-        get
-        {
-            return scoreStreak;
-        }
-    }
-
     private const int scoreStreakMax = 3;
-
-    //Booleans
     public bool isGamePaused;
-
-    public bool IsGamePaused
-    {
-        get
-        {
-            return isGamePaused;
-        }
-    }
-
-    private bool isBinA = true;
-    private bool isWindowA = true;
-    private bool isFail = false;
     private bool isServe = false;
-
-    public bool IsServe
-    {
-        get
-        {
-            return isServe;
-        }
-    }
-
     private bool micActive = false;
     private bool timerStarted = false;
     [SyncVar] public bool isSetupComplete;
 
-
-    //Group activity
+    // Group activity variables
     [SyncVar] public bool isGroupActive;
     [FormerlySerializedAs("isGroupComplete")] [SyncVar] public bool isGroupActivityPlayerComplete;
     [SyncVar] public bool isShaking;
@@ -150,7 +108,46 @@ public class Player : NetworkBehaviour {
     [SyncVar] public bool IsNFCRaceCompleted;
     [SyncVar] public bool wait;
 
-    private int i = 0;
+
+    //--------------------------------------------------------------------------------------------------------------
+    // GETTERS FOR UNIT TESTING ------------------------------------------------------------------------------------
+    //--------------------------------------------------------------------------------------------------------------
+
+    public string TopChef
+    {
+        get { return topChef; }
+        set { topChef = value; }
+    }
+
+    public int ScoreStreak
+    {
+        get
+        {
+            return scoreStreak;
+        }
+    }
+
+    public bool IsGamePaused
+    {
+        get
+        {
+            return isGamePaused;
+        }
+    }
+
+    public bool IsServe
+    {
+        get
+        {
+            return isServe;
+        }
+    }
+
+
+    //--------------------------------------------------------------------------------------------------------------
+    // FUNCTIONS ---------------------------------------------------------------------------------------------------
+    //--------------------------------------------------------------------------------------------------------------
+
 
     private void Awake()
     {
@@ -161,14 +158,13 @@ public class Player : NetworkBehaviour {
 
     private void Start()
     {
-        //Link Player GameObject to GameController.
+        // Link Player to GameController + InstructionController.
         gameController = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
         InstructionController = GameObject.FindGameObjectWithTag("InstructionController").GetComponent<InstructionController>();
         Screen.orientation = ScreenOrientation.Portrait;
         transform.SetAsLastSibling();
 
-        debugText.text = "yes";
-
+        // Initialise Player information
         if (isLocalPlayer)
         {
             CmdSetNetworkID(PlayerNetworkID);
@@ -176,77 +172,52 @@ public class Player : NetworkBehaviour {
             CmdSetPlayerReady();        
         }
 
-        StartInstTimer();
         VolumeOfSoundEffects = Volume;
         nameText.text += PlayerUserName;
         nameText.color = PlayerColour;
         scoreText.color = PlayerColour;
 
-       // micListener.enabled = false;
+        micListener.enabled = false;
         cameraController.enabled = false;
+
+        // Start Game
+        StartInstTimer();
     }
+
 
     private void Update()
     {
-//        debugText.text = "Start";
         if (wait) return;
-//        debugText.text = "Second";
 
-
-
-
-        groupMessagePanel.SetActive(isGroupActive);
-
+        // Handle group activity
+        groupMessagePanel.SetActive(isGroupActive);      
         if (isGroupActive)
         {
             if (isLocalPlayer)
             {
-//                debugText.text = "Inside";
-
                 CheckGroupActivity();
-//                debugText.text = "Inside 2";
-
                 TurnEverythingOff();
-//                debugText.text = "Inside 3";
-
             }
         }
 
-//        debugText.text = "After";
-
-
-
-
+        // Early return if group activity, round over or game over
         if (groupMessagePanel.activeSelf) return;
-
-//        debugText.text = "GroupPanel";
-
-
         if (!isClient) return;
-
-//        debugText.text = "isClient";
-
-
         if (gameOverPanel.activeSelf) return;
-
-//        debugText.text = "gameOver";
-
         if (roundCompletePanel.activeSelf)
         {
             TurnEverythingOff();
             return;
         }
 
-//        debugText.text = "roundComplete";
-
-
+        // Start instruction timer
         if (!timerStarted && gameController.isGameStarted)
         {
             StartInstTimer();
             timerStarted = true;
-            //if (isLocalPlayer) CmdChangeHatColour();
         }
 
+        // During a round:
         else if (gameController.isGameStarted && gameController.roundTimeLeft > 0)
         {           
             UpdateInstTimeLeft();
@@ -257,16 +228,15 @@ public class Player : NetworkBehaviour {
                 CmdFail(instructionText.text, tmp);
                 PlayFailSound();
                 StartInstTimer();
-                isFail = true;
             }
             else
             {
                 SetTimerText(instTimeLeft.ToString("F1"));
             }
-
-        
-          /*  if (micPanel.activeSelf)
+            
+            if (micPanel.activeSelf)
             {
+                // Access MicListener
                 if (micListener.MicLoudness > 0.15f)
                 {
                     micPanel.SetActive(false);
@@ -275,10 +245,11 @@ public class Player : NetworkBehaviour {
                     CmdIncreaseScore();
                     StartInstTimer();
                 }
-            } */ 
+            } 
 
             if (cameraPanel.activeSelf)
             {
+                // Access CameraController
                 bool cameraBool = false;
                 if (cameraColour == 0) cameraBool = cameraController.red;
                 else if (cameraColour == 1) cameraBool = cameraController.orange;
@@ -301,9 +272,8 @@ public class Player : NetworkBehaviour {
             }
 
             if (shakePanel.activeSelf)
-            {
-                //shakeClick(Instruction text to be completed by shaking, matching that in activeInstructions);
-                
+            {      
+                // Access ShakeListener
                 if (ShakeListener.shaking)
                 {
                     shakePanel.SetActive(false);
@@ -312,9 +282,9 @@ public class Player : NetworkBehaviour {
                 }
             }
 
-
             if (nfcPanel.activeSelf)
             {
+                // Access NFCListener
                 nfcValue = NfcCheck();
                 if (validNfc.Equals(nfcValue))
                 {
@@ -327,14 +297,15 @@ public class Player : NetworkBehaviour {
         }
         else
         {
+            // Game Over
             SetTimerText("0");
             nfcPanel.SetActive(false);
             shakePanel.SetActive(false);
-           // micPanel.SetActive(false);
+            micPanel.SetActive(false);
         }
-//        debugText.text = "End";
 
     }
+
 
     public void GameOver()
     {
@@ -342,15 +313,18 @@ public class Player : NetworkBehaviour {
         SetTimerText("0");
     }
 
+
     public void SetPlayerId(int assignedId)
     {
         PlayerId = assignedId;
     }
 
+
     public int GetPlayerId()
     {
         return PlayerId;
     }
+
 
     private string NfcCheck()
     {
@@ -381,49 +355,21 @@ public class Player : NetworkBehaviour {
         if (value == "BIRoSotfgA==") return BadStations[1].GetStationItem(1);
         
         return value;
-
-
-
-
-//        if (value == "BFTT4mEzgA==")
-//        {
-//            NFCListener.SetValue("");
-//            return "Food Waste";
-//        } else if (value == "BFXT4mEzgA==")
-//        {
-//            NFCListener.SetValue("");
-//            return "Recycling Bin";
-//        }
-//        else if (value == "BDbT4mEzgA==")
-//        {
-//            NFCListener.SetValue("");
-//            return "Window A";
-//        } 
-//        else if (value == "BBrT4mEzgA==")
-//        {
-//            NFCListener.SetValue("");
-//            return "Window B";
-//        }
-//        else
-//        {
-//            return value;
-//        }
     }
 
-    /**
-     * What is the point of this function when the game controller has already been assigned by tag?
-     **/
+
     public void SetGameController(GameController controller)
     {
         gameController = controller;
     }
+
 
     public void SetInstructionController(InstructionController instructionController)
     {
         InstructionController = instructionController;
     }
 
-    //Assign instructions to each player (NOTE: Currently only works for up to 2 players).
+
     public void SetActionButtons(string instruction, int i)
     {
         if (!isLocalPlayer) return;
@@ -448,6 +394,7 @@ public class Player : NetworkBehaviour {
         }
     }
 
+
     public void SetInstruction(String d)
     {
         if (!isLocalPlayer) return;
@@ -455,16 +402,19 @@ public class Player : NetworkBehaviour {
         if (isGamePaused) return;
     }
 
+
     public string GetInstruction()
     {
         return instructionText.text;
     }
+    
 
     [Command]
     public void CmdAction(string action)
     {
         InstructionController.CheckAction(action);
     }
+
 
     [Command]
     public void CmdFail(string action, string bin)
@@ -473,6 +423,7 @@ public class Player : NetworkBehaviour {
         ResetScoreStreak();
     }
 
+
     [Command]
     public void CmdIncreaseScore()
     {
@@ -480,50 +431,49 @@ public class Player : NetworkBehaviour {
         PlayerScore++;
     }
 
+
     [Command]
     public void CmdIncreasePlayerScore()
     {
         PlayerScore++;
     }
 
+
     public void OnClickButton1()
     {
         if (isLocalPlayer)
         {
             CheckInstruction(button1.GetComponentInChildren<Text>().text, 0);
-            //            CmdAction(button1.GetComponentInChildren<Text>().text);
         }
     }
+
 
     public void OnClickButton2()
     {
         if (isLocalPlayer)
         {
             CheckInstruction(button2.GetComponentInChildren<Text>().text, 1);
-
-            //            CmdAction(button2.GetComponentInChildren<Text>().text);
         }
     }
+
 
     public void OnClickButton3()
     {
         if (isLocalPlayer)
         {
             CheckInstruction(button3.GetComponentInChildren<Text>().text, 2);
-
-            //            CmdAction(button3.GetComponentInChildren<Text>().text);
         }
     }
+
 
     public void OnClickButton4()
     {
         if (isLocalPlayer)
         {
             CheckInstruction(button4.GetComponentInChildren<Text>().text, 3);
-
-            //            CmdAction(button4.GetComponentInChildren<Text>().text);
         }
     }
+
 
     public void NfcClick(string nfcString)
     {
@@ -533,6 +483,7 @@ public class Player : NetworkBehaviour {
         }
     }
 
+
     public void MicClick(string micString)
     {
         if (isLocalPlayer)
@@ -540,6 +491,7 @@ public class Player : NetworkBehaviour {
             CmdAction(micString);
         }
     }
+
 
     public void ShakeClick(string shakeString)
     {
@@ -549,11 +501,13 @@ public class Player : NetworkBehaviour {
         }
     }
 
+
     public void StartInstTimer()
     {
         instStartTime = gameController.CalculateInstructionTime();
         instTimeLeft = instStartTime;
     }
+
 
     private void UpdateInstTimeLeft()
     {
@@ -565,7 +519,7 @@ public class Player : NetworkBehaviour {
         }
         else if (nfcPanel.activeSelf || micPanel.activeSelf || shakePanel.activeSelf || isGamePaused)
         {
-            //panel active so no timer 
+            Debug.Log("Panel active, timer disabled.");
         }
         else
         {
@@ -574,10 +528,12 @@ public class Player : NetworkBehaviour {
         }
     }
 
+
     private void SetTimerText(string text)
     {
         timerText.text = text;
     }
+
 
     public void SetNfcPanel(string text)
     {
@@ -585,19 +541,22 @@ public class Player : NetworkBehaviour {
         nfcText.text = text;
     }
 
+
     public void SetShakePanel(string text)
     {
         shakePanel.SetActive(true);
         shakeText.text = text;
     }
 
+
     public void SetMicPanel(string text)
     {
         micPanel.SetActive(true);
-       // micListener.enabled = true;
+        micListener.enabled = true;
         micActive = true;
         micText.text = text;
     }
+
 
     public void SetCameraPanel(int colour, string text)
     {
@@ -607,11 +566,13 @@ public class Player : NetworkBehaviour {
         cameraText.text = text;
     }
 
+
     public void OnClickRefresh()
     {
         cameraController.enabled = false;
         cameraController.enabled = true;
     }
+
 
     public void OnClickCameraButton()
     {
@@ -627,6 +588,7 @@ public class Player : NetworkBehaviour {
         }
     }
 
+
     public void OnClickNfcButton()
     {
         if (isLocalPlayer)
@@ -634,6 +596,7 @@ public class Player : NetworkBehaviour {
             nfcPanel.SetActive(false);
         }
     }
+
 
     public void OnClickMicButton()
     {
@@ -643,15 +606,18 @@ public class Player : NetworkBehaviour {
         }
     }
 
+
     public void IncreaseScoreStreak()
     {
         scoreStreak++;
     }
 
+
     public void ResetScoreStreak()
     {
         scoreStreak = 0;
     }
+
 
     public void OnClickShakeButton()
     {
@@ -660,6 +626,7 @@ public class Player : NetworkBehaviour {
             shakePanel.SetActive(false);
         }
     }
+
 
     public void ScoreStreakCheck()
     {
@@ -670,19 +637,21 @@ public class Player : NetworkBehaviour {
             validNfc = window;
             ResetScoreStreak();
             SetNfcPanel("Great Work!\nTap the " + window + "!\n\n(TAP ON " + window + " NFC)");
-
         }
     }
+
 
     public void PausePlayer()
     {
         isGamePaused = true;
     }
 
+
     public void UnpausePlayer()
     {
         isGamePaused = false;
     }
+
 
     private void CheckInstruction(string action, int buttonNumber)
     {
@@ -698,6 +667,7 @@ public class Player : NetworkBehaviour {
         }
     }
 
+
     private void CorrectButtonPress(int buttonNumber)
     {
         // Activate feedback on this button
@@ -710,6 +680,7 @@ public class Player : NetworkBehaviour {
         StartCoroutine(ResetButtonColour(0.5f, buttonNumber));
     }
 
+
     private void WrongButtonPress(int buttonNumber)
     {
         AllButtons[buttonNumber].GetComponent<Image>().color = Color.red;
@@ -718,6 +689,7 @@ public class Player : NetworkBehaviour {
 
         StartCoroutine(ResetButtonColour(0.5f, buttonNumber));
     }
+
 
     private IEnumerator ResetButtonColour(float x, int buttonNumber)
     {
@@ -729,8 +701,7 @@ public class Player : NetworkBehaviour {
 
     public void PlayTenSecondCountdown()
     {
-            //source.PlayOneShot(TenSecondCountdown, 2);
-            Vibrate();
+        Vibrate();
     }
 
 
@@ -740,11 +711,13 @@ public class Player : NetworkBehaviour {
         failSwitch = (failSwitch + 1) % numberOfFails;
     }
 
+
     private void PlayCorrectSound()
     {
         source.PlayOneShot(correctActions[switcher], VolumeOfSoundEffects);
         switcher = (switcher + 1) % numberOfButtonSounds;
     }
+
 
     public void DisableOkayButtonsOnPanels()
     {
@@ -762,9 +735,11 @@ public class Player : NetworkBehaviour {
 
     }
 
+
     [Command]
     public void CmdUpdateChefPrefab(int item)
     {
+        // Allows Top Chef to purchase items to modify their chef prefab
         var chefs = GameObject.FindGameObjectsWithTag("ChefPrefab");
         foreach (GameObject chef in chefs)
         {
@@ -820,17 +795,20 @@ public class Player : NetworkBehaviour {
         }
     }
 
+
     [ClientRpc]
     void RpcCloseShop()
     {
         shopPanel.SetActive(false);
     }
 
+
     [ClientRpc]
     void RpcShopVibrate()
     {
         if (shopPanel.activeSelf) Vibrate();
     }
+
 
     [Command]
     public void CmdChangeHatColour()
@@ -852,21 +830,23 @@ public class Player : NetworkBehaviour {
         }
     }
 
+
     public void OnClickShopButton1()
     {
         CmdUpdateChefPrefab(1);
     }
+
 
     public void OnClickShopButton2()
     {
         CmdUpdateChefPrefab(2);
     }
 
+
     public void OnClickShopButton3()
     {
         CmdUpdateChefPrefab(3);
     }
-
 
 
     private void Vibrate()
@@ -883,10 +863,12 @@ public class Player : NetworkBehaviour {
         Application.Quit();
     }
 
+
     private void DisplayTopChef(string topChef)
     {
         topChefText.text = topChef;
     }
+
 
     [Command]
     public void CmdIncrementScore()
@@ -894,6 +876,7 @@ public class Player : NetworkBehaviour {
         PlayerScore++;
     }
     
+
     [Command]
     public void CmdSetNameAndColour(string name, Color colour)
     {
@@ -901,11 +884,13 @@ public class Player : NetworkBehaviour {
         PlayerColour = colour;
     }
     
+
     [Command]
     public void CmdSetPlayerReady()
     {
         isSetupComplete = true;
     }
+
 
     [Command]
     public void CmdSetNetworkID(uint ID)
@@ -913,17 +898,20 @@ public class Player : NetworkBehaviour {
         PlayerNetworkID = ID;
     }
 
+
     private void UpdateScore(int x)
     {
         scoreText.text = x.ToString();
         roundScoreText.text = x.ToString();
     }
 
+
     [Command]
     public void CmdSetShake(bool shake)
     {
         isShaking = shake;
     }
+
 
     [Command]
     public void CmdSetNFCRace(bool isNFCFinished)
@@ -932,48 +920,32 @@ public class Player : NetworkBehaviour {
         if (IsNFCRaceCompleted) validNfcRace = "";
     }
     
+
     private void CheckGroupActivity()
     {
         switch (activityNumber)
         {
             case 0:
                 groupMessageText.text = "ALL HANDS ON DECK!\n\nLOOK AT THE MAIN SCREEN!";
-                debugText.text = "Shake";
-
                 CmdSetShake(ShakeListener.shaking);
-
                 break;
-
             case 1:
-//                debugText.text = "check 1";
-
                 nfcValue = NfcCheck();
-//                debugText.text = "check 2";
-
 
                 if (!isNFCRaceStarted)
                 {
                     StartNFCRace();
-//                    debugText.text = "check 3";
                 }
-
-                //                else if (!IsNFCRaceCompleted && isNFCRaceStarted) CmdSetNFCRace(nfcPanel.activeSelf);
                 else if (!IsNFCRaceCompleted && isNFCRaceStarted)
                 {
                     CmdSetNFCRace(validNfcRace.Equals(nfcValue));
-//                    debugText.text = "check 4";
-
                 }
                 else
                 {
                     groupMessageText.text = "DONE!";
-//                    debugText.text = "check 5";
-
                     wait = true;
                 }
-             
-                break;
-                    
+                break;            
             default:
                 Debug.Log("Error with group activity number");
                 break;
@@ -989,6 +961,7 @@ public class Player : NetworkBehaviour {
         }
     }    
     
+
     public void GenerateBadStation(List<List<string>> stations)
     {
         foreach (var station in stations)
@@ -997,23 +970,6 @@ public class Player : NetworkBehaviour {
         }
     }
 
-    public void PrintStations()
-    {
-        foreach (var station in GoodStations)
-        {
-            foreach (var item in station.GetStationItems())
-            {
-                Debug.Log("Item: " + item);
-            }
-        }
-        foreach (var station in BadStations)
-        {
-            foreach (var item in station.GetStationItems())
-            {
-                Debug.Log("Item: " + item);
-            }
-        }
-    }
 
     private string GetGoodNextNFC()
     {
@@ -1022,6 +978,7 @@ public class Player : NetworkBehaviour {
         return GoodStations[x].GetItem(nfcValue);
     }    
     
+
     private string GetBadNextNFC()
     {
         Random rand = new Random();
@@ -1029,12 +986,11 @@ public class Player : NetworkBehaviour {
         return BadStations[x].GetItem(nfcValue);
     }
 
+
     public void StartNFCRace()
     {
         nfcValue = NfcCheck();
-//        debugText.text = "START";
 
-        Debug.Log("StartNFC");
         switch ( nfcStation )
         {
             case 0:
@@ -1059,17 +1015,13 @@ public class Player : NetworkBehaviour {
                 validNfcRace = GoodStations[0].GetItem(nfcValue);
                 break;
         }
+
         groupMessageText.text = "ALL HANDS ON DECK!\n\nLOOK AT THE MAIN SCREEN!";
-
         CmdSetValidNfcRace(validNfcRace);
-//         debugText.text = "START 2";
-
-
         IsNFCRaceCompleted = false;
         isNFCRaceStarted = true;
-//          debugText.text = "START 3";
-
     }
+
 
     [Command]
     public void CmdSetValidNfcRace(string tmp)
@@ -1077,13 +1029,14 @@ public class Player : NetworkBehaviour {
         validNfcRace = tmp;
     }
 
+
     private void TurnEverythingOff()
     {
         nfcPanel.SetActive(false);
         shakePanel.SetActive(false);
         micPanel.SetActive(false);
         micActive = false;
-        //micListener.enabled = false;
+        micListener.enabled = false;
         cameraPanel.SetActive(false);
         cameraController.enabled = false;
         cameraController.red = false;
@@ -1092,8 +1045,6 @@ public class Player : NetworkBehaviour {
         cameraController.orange = false;
         cameraController.yellow = false;
     }
-
-
 
 }
 

@@ -78,7 +78,6 @@ public class GameController : NetworkBehaviour
     [SyncVar] public int MinimumInstructionTime;
     [SyncVar] public int playerCount;
     [SyncVar] public bool easyPhoneInteractions;
-    [SyncVar] public int piProb = 6;
 
 
 
@@ -229,7 +228,6 @@ public class GameController : NetworkBehaviour
         PlayersInitialisedFromStart();
 
         InstructionController.ICStart(playerCount, numberOfButtons, playerList, this);
-        InstructionController.piProb = piProb;
 
         if (isServer)
         {
@@ -699,7 +697,6 @@ public class GameController : NetworkBehaviour
         InstructionTimeReductionPerRound = GameSettings.InstructionTimeReductionPerRound;
         InstructionTimeIncreasePerPlayer = GameSettings.InstructionTimeIncreasePerPlayer;
         MinimumInstructionTime = GameSettings.MinimumInstructionTime;
-        piProb = GameSettings.PhoneInteractionProbability;
     }
 
 

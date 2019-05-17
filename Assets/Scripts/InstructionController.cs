@@ -9,9 +9,14 @@ using UnityEngine.Serialization;
 
 public class InstructionController : NetworkBehaviour
 {
+    //--------------------------------------------------------------------------------------------------------------
+    // GLOBAL VARIABLES --------------------------------------------------------------------------------------------
+    //--------------------------------------------------------------------------------------------------------------
+    
+    // Linked Controller
     public GameController GameController;
     
-    //Store of the combinations of instructions possible
+    // Possible Instructions + Text
     private static List<String> verbList = new List<string>(new string[] { "Grab", "Fetch", "Grate", "Grill", "Melt", "Serve", "Stir", "Chop", "Cut", "Mash", "Season", "Flambé", "Bake", "Fry", "Taste", "Microwave", "Tendorise", "Roast", "Cry Into", "Mince", "Juice", "Freeze", "Purée", "Sneeze On", "Dice", "Cube", "Boil", "Brine", "Sous Vide", "Slice", "Poach",  "Deep Fry", "Lick", "Inhale", "Smell" });
     private static List<String> nounList = new List<string>(new string[] { "Minced Beef", "Steak", "Pork Loin", "Ice Cream", "Strawberry", "Bannana", "Toast", "Chocolate", "Pasta", "Bacon", "Tomato", "Sugar", "Salt", "Lettuce", "Sauce", "Mustard", "Sausage", "Apple", "Orange", "Chicken", "Ice Cubes", "Cheese", "Chicken Nuggets", "Brie", "Cheddar", "Camembert", "Wine", "Beer", "Whiskey", "Vodka", "Wasabi", "Salmon", "Tuna", "Mushroom", "Lard", "Burger" });
 
@@ -40,11 +45,28 @@ public class InstructionController : NetworkBehaviour
 
     private static List<String> cameraInstructionText = new List<string>(new string[] { "FIND THE TOMATO!", "FIND THE ORANGE!", "FIND THE BANANAS!", "FIND THE APPLE!", "FIND THE EU FLAG TO REVOKE ARTICLE 50!" });
 
-
+    // Active actions + instructions
     private SyncListString activeButtonActions = new SyncListString();
     private SyncListString activeInstructions = new SyncListString();
-    
-    
+
+    // Gameplay Variables
+    public List<Player> Players;
+    public int NumberOfButtons { get; set; }
+    public int PlayerCount { get; set; }
+    [SyncVar] public bool isRoundPaused = false;
+    [SyncVar] public bool isLastActionOfRound = false;
+    [SyncVar] public bool SetupFinished = false;
+
+
+    //--------------------------------------------------------------------------------------------------------------
+    // GETTERS + SETTERS FOR UNIT TESTING --------------------------------------------------------------------------
+    //--------------------------------------------------------------------------------------------------------------
+
+    public bool IsLastActionOfRound
+    {
+        get { return isLastActionOfRound; }
+    }
+
     public SyncListString ActiveButtonActions
     {
         get { return activeButtonActions; }
@@ -56,31 +78,13 @@ public class InstructionController : NetworkBehaviour
         set { activeInstructions = value; }
     }
 
-    //Variables that are generated in GC
-    public List<Player> Players;
-    public int NumberOfButtons { get; set; }
-    public int PlayerCount { get; set; }
 
-    //Booleans
-    [SyncVar] public bool isRoundPaused = false;
-    [SyncVar] public bool isLastActionOfRound = false;
+    //--------------------------------------------------------------------------------------------------------------
+    // FUNCTIONS ---------------------------------------------------------------------------------------------------
+    //--------------------------------------------------------------------------------------------------------------
 
-    public bool IsLastActionOfRound
-    {
-        get
-        {
-            return isLastActionOfRound;
-        }
-    }
 
-    [SyncVar] public bool SetupFinished = false;
-
-    //Phone interaction probability = 2/x
-    [SyncVar] public int piProb = 12;
-
-    /*
-     * Called from GC, this is where the IC is setup. 
-    */
+    // Initialise InstructionController, called from GameController
     public void ICStart(int playerCount, int numberOfButtons, List<Player> players, GameController gameController)
     {
         //Assignment ensures that GC has generated values
@@ -226,12 +230,12 @@ public class InstructionController : NetworkBehaviour
                 RpcUpdateInstruction(ActiveInstructions[i], i);
                 RpcStartInstTimer(i);
 
-                int rand = UnityEngine.Random.Range(0, 4);
-                /*if (rand == 0)
+                int rand = UnityEngine.Random.Range(0, 5);
+                if (rand == 0)
                 {
                     rand = UnityEngine.Random.Range(0, micInstructions.Count);
                     RpcSetMicPanel(i, micInstructions[rand]);
-                }*/
+                }
                 if (rand == 1)
                 {
                     rand = UnityEngine.Random.Range(0, shakeInstructions.Count);
