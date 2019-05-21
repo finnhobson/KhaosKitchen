@@ -24,7 +24,7 @@ public static class GameSettings
      */
 
     private static int baseInstructionNumber = 20;
-    private static int instructionNumberIncreasePerRound = 2;
+    private static int instructionNumberIncreasePerRound = 8;
     private static int baseInstructionTime = 15;
     private static int instructionTimeReductionPerRound = 5;
     private static int instructionTimeIncreasePerPlayer = 2;

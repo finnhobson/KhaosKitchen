@@ -8,7 +8,7 @@ public class CameraController : MonoBehaviour
     private WebCamTexture backCam;
     public RawImage panel;
     public GameObject colourPanel;
-    public Text R, G, B;
+    public Text R, O, Y, G, B;
     public bool red, orange, yellow, green, blue;
     public Player player;
 
@@ -82,7 +82,7 @@ public class CameraController : MonoBehaviour
 
         if (camAvailable)
         {
-            int pixelCount = 0;
+            //int pixelCount = 0;
             int redCount = 0;
             int orangeCount = 0;
             int yellowCount = 0;
@@ -90,21 +90,55 @@ public class CameraController : MonoBehaviour
             int blueCount = 0;
 
             Color[] pixels = backCam.GetPixels();
-            foreach (Color pixel in pixels)
-            {
-                if (pixel.r > 0.7 && pixel.g < 0.3 && pixel.b < 0.3) redCount++;
-                if (pixel.r > 0.7 && pixel.g > 0.3 && pixel.g < 0.5 && pixel.b < 0.3) orangeCount++;
-                if (pixel.r > 0.7 && pixel.g > 0.7 && pixel.b < 0.2) yellowCount++;
-                if (pixel.r < 0.5 && pixel.g > 0.6 && pixel.b < 0.3) greenCount++;
-                if (pixel.r < 0.3 && pixel.g < 0.5 && pixel.b > 0.6) blueCount++;
-                pixelCount++;
-            }
 
-            if (redCount / pixelCount > 0.3) red = true;
-            if (orangeCount / pixelCount > 0.3) orange = true;
-            if (yellowCount / pixelCount > 0.3) yellow = true;
-            if (greenCount / pixelCount > 0.3) green = true;
-            if (blueCount / pixelCount > 0.3) blue = true;
+            // Count number of pixels of selected colour in the WebCamTexture
+            switch(player.cameraColour)
+            {
+                case 0:
+                    foreach (Color pixel in pixels)
+                    {
+                        if (pixel.r > 0.7 && pixel.g < 0.3 && pixel.b < 0.3) redCount++;
+                    }
+                    R.text = redCount.ToString();
+                    if (redCount > 10000) red = true;
+                    break;
+                case 1:
+                    foreach (Color pixel in pixels)
+                    {
+                        if (pixel.r > 0.7 && pixel.g > 0.3 && pixel.g < 0.5 && pixel.b < 0.3) orangeCount++;
+                    }
+                    O.text = orangeCount.ToString();
+                    if (orangeCount > 10000) orange = true;
+                    break;
+                case 2:
+                    foreach (Color pixel in pixels)
+                    {
+                        if (pixel.r > 0.6 && pixel.g > 0.6 && pixel.b < 0.2) yellowCount++;
+                    }
+                    Y.text = yellowCount.ToString();
+                    if (yellowCount > 10000) yellow = true;
+                    break;
+                case 3:
+                    foreach (Color pixel in pixels)
+                    {
+                        if (pixel.r < 0.6 && pixel.g > 0.6 && pixel.b < 0.4) greenCount++;
+                    }
+                    G.text = greenCount.ToString();
+                    if (greenCount > 5000) green = true;
+                    break;
+                case 4:
+                    foreach (Color pixel in pixels)
+                    {
+                        if (pixel.r < 0.3 && pixel.g < 0.5 && pixel.b > 0.6) blueCount++;
+                    }
+                    B.text = blueCount.ToString();
+                    if (blueCount > 5000) blue = true;
+                    break;
+                default:
+                    Debug.Log("No Colour Chosen");
+                    break;
+            }
+          
         }
     }
 }

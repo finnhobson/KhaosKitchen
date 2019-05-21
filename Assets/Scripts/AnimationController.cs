@@ -19,18 +19,17 @@ public class AnimationController : MonoBehaviour
     private bool chefsSpawned = false;
     private int currentRound = 0;
     private int fireCount = 0;
-    private bool bonusCustomers = false;
 
-    // Start is called before the first frame update
+
     void Start()
     {
         Instantiate(kitchenPrefab);
     }
 
-    // Update is called once per frame
+
     void Update()
     {
-        if (gameController.playersInitialised && !chefsSpawned)
+        if (gameController.spawnChefs && !chefsSpawned)
         {
             StartCoroutine(SpawnChefs());
             chefsSpawned = true;
@@ -44,9 +43,8 @@ public class AnimationController : MonoBehaviour
 
         if (currentRound < gameController.roundNumber && gameController.isGameStarted && !gameController.isRoundPaused)
         {
-            SpawnCustomers();
+            if (customerNumber < 10) SpawnCustomers();
             currentRound = gameController.roundNumber;
-            bonusCustomers = false; 
         }
 
         if (fireCount < gameController.fireCount)
@@ -55,12 +53,8 @@ public class AnimationController : MonoBehaviour
             fireCount = gameController.fireCount;
         }
 
-        if  (gameController.customerSatisfaction > 80 && customerNumber < 20 && bonusCustomers == false && !gameController.isRoundPaused && gameController.isGameStarted)
-        {
-            bonusCustomers = true;
-            SpawnCustomers();
-        }
     }
+
 
     private IEnumerator SpawnChefs()
     {
@@ -77,9 +71,9 @@ public class AnimationController : MonoBehaviour
         }
     }
 
+
     private void SpawnCustomers()
     {
-
         GameObject customer = Instantiate(customerPrefab, new Vector3(-50, 0.5f, -29.5f), transform.rotation);
         customerNumber++;
         GameObject shirt = customer.GetComponent<CustomerController>().shirt;
@@ -130,6 +124,7 @@ public class AnimationController : MonoBehaviour
         }
     }
 
+
     private void DestroyFires()
     {
         var fires = GameObject.FindGameObjectsWithTag("Fire");
@@ -139,10 +134,12 @@ public class AnimationController : MonoBehaviour
         }
     }
 
+
     private void SpawnFire()
     {
         float x = UnityEngine.Random.Range(-25, 25);
         float z = UnityEngine.Random.Range(-10, 8);
         Instantiate(firePrefab, new Vector3(x, 0, z), transform.rotation);
     }
+
 }

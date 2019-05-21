@@ -29,7 +29,7 @@ public class ChefController : MonoBehaviour
     public GameObject roller;
     public Material ogreColour;
 
-    // Use this for initialization
+
     void Start()
     {
         gameController = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
@@ -40,7 +40,7 @@ public class ChefController : MonoBehaviour
         transform.localRotation = Quaternion.Euler(0, angle, 0);
     }
 
-    // Update is called once per frame
+
     void Update()
     {
         time += Time.deltaTime;
@@ -96,8 +96,6 @@ public class ChefController : MonoBehaviour
             transform.localRotation = Quaternion.Euler(0, 0, 0);
         }
         else transform.localRotation = Quaternion.Euler(0, 0, 0);
-
-
-
     }
+
 }

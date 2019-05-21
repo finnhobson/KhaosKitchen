@@ -38,6 +38,7 @@ public class GameStateHandler
         set { userProfiles = value; }
     }
 
+
     public GameStateHandler(List<string> userNames)
     {
         RoundNumber = 0;
@@ -51,21 +52,25 @@ public class GameStateHandler
         }
     }
 
+
     public void OnRoundComplete(int score)
     {
         RoundNumber++;
         OverallTeamScore += score;
     }
 
+
     public void UpdatePlayerScore(string userName, int score)
     {
         userProfiles[userName] += score;
     }
 
+
     public int GetPlayerScore(string name)
     {
         return userProfiles[name];
     }
+
 
     public void PrintGameData()
     {
@@ -76,6 +81,5 @@ public class GameStateHandler
             Debug.Log("Player: " + userProfile.Key + ", Score: " + userProfile.Value);
         }
     }
-    
-    
+     
 }

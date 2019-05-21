@@ -6,10 +6,9 @@ using UnityEngine.Serialization;
 
 public class MusicPlayer : MonoBehaviour
 {
-    
-    /*
-     * Remember to add variance to button sounds.
-     */
+    public GameController gameController;
+
+        
 
     //GameObjects
     private AudioSource BackgroundSource;
@@ -17,14 +16,18 @@ public class MusicPlayer : MonoBehaviour
     public AudioClip GameOverClip;
     public AudioClip[] RoundBreaks;
     public AudioClip[] Countdown;
-    private float VolumeOneShot = 2f;
-    
+    public AudioClip TenSecondCountdown;
+
+    private float VolumeOneShot = 1f;
+    private float VolumeLoud = 5f;
+
     //Primitives
     private int NumberOfRoundBreaks;
     private int Switch = 0;
     
     //Booleans
     private bool isRoundPaused = false;
+
 
     public bool IsRoundPaused
     {
@@ -95,5 +98,10 @@ public class MusicPlayer : MonoBehaviour
     public void PlayCountDown(int count)
     {
         BackgroundSource.PlayOneShot(Countdown[count], VolumeOneShot);
+    }
+
+    public void PlayTenSecondCountdown()
+    {
+        BackgroundSource.PlayOneShot(TenSecondCountdown, VolumeLoud);
     }
 }

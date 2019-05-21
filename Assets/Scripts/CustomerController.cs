@@ -25,11 +25,13 @@ public class CustomerController : MonoBehaviour
     public GameObject shirt;
     public List<GameObject> hatParts;
 
-    // Use this for initialization
+
     void Start()
     {
         gameController = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
+        animationController = GameObject.FindGameObjectWithTag("AnimationController").GetComponent<AnimationController>();
 
+        // Walking Down Path into Restaurant
         if (transform.localPosition.x > xMax + 5)
         {
             x = -maxSpeed;
@@ -47,7 +49,7 @@ public class CustomerController : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
+
     void Update()
     {
         time += Time.deltaTime;
@@ -55,7 +57,7 @@ public class CustomerController : MonoBehaviour
 
         if (!gameController.isRoundPaused && gameController.isGameStarted)
         {
-
+            // Check Customer Rotation
             if (x == 0)
             {
                 if (z > 0)
@@ -80,289 +82,336 @@ public class CustomerController : MonoBehaviour
                 }
 
             }
-        
 
-            //MOVING INSIDE RESTAURANT
-
-            //LEFT EXIT
+            // MOVING INSIDE RESTAURANT
+            // Left Exit
             if (transform.localPosition.x > 17.8 && transform.localPosition.x < 18 && transform.localPosition.z > -29.6 && transform.localPosition.z < -29.4 && junction != 0)
             {
+                bool picked = false;
+                while (!picked)
+                {
+                    rand = Random.Range(0, 3);
+                    if (rand == 0 && junction != 3)
+                    {
+                        x = 0;
+                        z = -maxSpeed;
+                        picked = true;
+                    }
+                    if (rand == 1 && junction != 11)
+                    {
+                        z = 0;
+                        x = -maxSpeed;
+                        picked = true;
+                    }
+                    if (rand == 2 && junction != 4)
+                    {
+                        x = 0;
+                        z = maxSpeed;
+                        picked = true;
+                    }
+                }             
                 junction = 0;
-                rand = Random.Range(0, 3);
-                if (rand == 0)
-                {
-                    x = 0;
-                    z = Random.Range(-0.02f, -maxSpeed);
-                }
-                if (rand == 1)
-                {
-                    z = 0;
-                    x = Random.Range(-0.02f, -maxSpeed);
-                }
-                if (rand == 2)
-                {
-                    x = 0;
-                    z = Random.Range(0.02f, maxSpeed);
-                }
-                /*if (gameController.customerSatisfaction >= 25)
-                {
-                    
-                }
-                else if (animationController.customerNumber > 1)
+
+                // Leave if low customer satisfaction
+                if (gameController.customerSatisfaction < 20 && animationController.customerNumber > 1)
                 {
                     z = 0;
                     x = maxSpeed;
                     animationController.customerNumber--;
-                }*/
-            }
-        
+                }
+            }  
 
-            //RIGHT EXIT
+            // Right Exit
             if (transform.localPosition.x < -17.8 && transform.localPosition.x > -18 && transform.localPosition.z > -29.6 && transform.localPosition.z < -29.4 && junction != 1)
             {
+                bool picked = false;
+                while (!picked)
+                {
+                    rand = Random.Range(0, 3);
+                    if (rand == 0 && junction != 2)
+                    {
+                        x = 0;
+                        z = -maxSpeed;
+                        picked = true;
+                    }
+                    if (rand == 1)
+                    {
+                        z = 0;
+                        x = maxSpeed;
+                        picked = true;
+                    }
+                    if (rand == 2 && junction != 5)
+                    {
+                        x = 0;
+                        z = maxSpeed;
+                        picked = true;
+                    }
+                }   
                 junction = 1;
-                rand = Random.Range(0, 3);
-                if (rand == 0)
-                {
-                    x = 0;
-                    z = Random.Range(-0.02f, -maxSpeed);
-                }
-                if (rand == 1)
-                {
-                    z = 0;
-                    x = Random.Range(0.02f, maxSpeed);
-                }
-                if (rand == 2)
-                {
-                    x = 0;
-                    z = Random.Range(0.02f, maxSpeed);
-                }
-                /*if (gameController.customerSatisfaction >= 25)
-                {
-                    
-                }
-                else if (animationController.customerNumber > 1)
+
+                // Leave if low customer satisfaction
+                if (gameController.customerSatisfaction < 20 && animationController.customerNumber > 1)
                 {
                     z = 0;
                     x = -maxSpeed;
                     animationController.customerNumber--;
-                }*/
+                }
             }
-        
 
-            //TOP RIGHT
+            // Top Right
             if (transform.localPosition.x < -17.8 && transform.localPosition.x > -18 && transform.localPosition.z > -38.2 && transform.localPosition.z < -38 && junction != 2)
             {
-                junction = 2;
                 if (z != 0)
                 {
                     z = 0;
-                    x = Random.Range(0.02f, maxSpeed);
+                    x = maxSpeed;
                 }
                 else if (x != 0)
                 {
                     x = 0;
-                    z = Random.Range(0.02f, maxSpeed);
+                    z = maxSpeed;
                 }
+                junction = 2;
             }
 
-            //TOP LEFT
+            // Top Left
             if (transform.localPosition.x > 17.8 && transform.localPosition.x < 18 && transform.localPosition.z > -38.2 && transform.localPosition.z < -38 && junction != 3)
             {
-                junction = 3;
-                //Moving in z direction
                 if (z != 0)
                 {
                     z = 0;
-                    x = Random.Range(-0.02f, -maxSpeed);
+                    x = -maxSpeed;
                 }
-                //Moving in x direction
                 else if (x != 0)
                 {
                     x = 0;
-                    z = Random.Range(0.02f, maxSpeed);
+                    z = maxSpeed;
                 }
+                junction = 3;
             }
 
-            //BOTTOM LEFT
+            // Bottom Left
             if (transform.localPosition.x > 17.8 && transform.localPosition.x < 18 && transform.localPosition.z > -20.2 && transform.localPosition.z < -20 && junction != 4)
             {
-                junction = 4;
                 if (z != 0)
                 {
                     z = 0;
-                    x = Random.Range(-0.02f, -maxSpeed);
+                    x = -maxSpeed;
                 }
                 else if (x != 0)
                 {
                     x = 0;
-                    z = Random.Range(-0.02f, -maxSpeed);
+                    z = -maxSpeed;
                 }
+                junction = 4;
             }
 
-            //BOTTOM RIGHT
+            // Bottom Right
             if (transform.localPosition.x < -17.8 && transform.localPosition.x > -18 && transform.localPosition.z > -20.2 && transform.localPosition.z < -20 && junction != 5)
             {
-                junction = 5;
-                //Moving in z direction
                 if (z != 0)
                 {
                     z = 0;
-                    x = Random.Range(0.02f, maxSpeed);
+                    x = maxSpeed;
                 }
                 else if (x != 0)
                 {
                     x = 0;
-                    z = Random.Range(-0.02f, -maxSpeed);
+                    z = -maxSpeed;
                 }
+                junction = 5;
             }
 
-            //BOTTOM RIGHT MIDDLE 
+            // Bottom Right Middle
             if (transform.localPosition.x < -5.8 && transform.localPosition.x > -6 && transform.localPosition.z > -20.2 && transform.localPosition.z < -20 && junction != 6)
             {
+                bool picked = false;
+                while (!picked)
+                {
+                    rand = Random.Range(0, 2);
+                    if (rand == 0 && junction != 10)
+                    {
+                        x = 0;
+                        z = -maxSpeed;
+                        picked = true;
+                    }
+                    if (rand == 1 && junction != 7)
+                    {
+                        z = 0;
+                        x = maxSpeed;
+                        picked = true;
+                    }
+                    if (rand == 2 && junction != 5)
+                    {
+                        z = 0;
+                        x = -maxSpeed;
+                        picked = true;
+                    }
+                }
                 junction = 6;
-                rand = Random.Range(0, 2);
-                if (rand == 0)
-                {
-                    x = 0;
-                    z = Random.Range(-0.02f, -maxSpeed);
-                }
-                if (rand == 1)
-                {
-                    z = 0;
-                    x = Random.Range(0.02f, maxSpeed);
-                }
-                if (rand == 2)
-                {
-                    z = 0;
-                    x = Random.Range(-0.02f, -maxSpeed);
-                }
-
             }
 
-            //BOTTOM LEFT MIDDLE 
+            // Bottom Left Middle 
             if (transform.localPosition.x < 5.8 && transform.localPosition.x > 6 && transform.localPosition.z > -20.2 && transform.localPosition.z < -20 && junction != 7)
             {
+                bool picked = false;
+                while (!picked)
+                {
+                    rand = Random.Range(0, 3);
+                    if (rand == 0 && junction != 11)
+                    {
+                        x = 0;
+                        z = -maxSpeed;
+                        picked = true;
+                    }
+                    if (rand == 1 && junction != 6)
+                    {
+                        z = 0;
+                        x = -maxSpeed;
+                        picked = true;
+                    }
+                    if (rand == 2 && junction != 4)
+                    {
+                        z = 0;
+                        x = maxSpeed;
+                        picked = true;
+                    }
+                }  
                 junction = 7;
-                rand = Random.Range(0, 3);
-                if (rand == 0)
-                {
-                    x = 0;
-                    z = Random.Range(-0.02f, -maxSpeed);
-                }
-                if (rand == 1)
-                {
-                    z = 0;
-                    x = Random.Range(-0.02f, -maxSpeed);
-                }
-                if (rand == 2)
-                {
-                    z = 0;
-                    x = Random.Range(0.02f, maxSpeed);
-                }
             }
 
-            //TOP LEFT MIDDLE 
+            // Top Left Middle
             if (transform.localPosition.x < 5.8 && transform.localPosition.x > 6 && transform.localPosition.z > -38.2 && transform.localPosition.z < -38 && junction != 8)
             {
+                bool picked = false;
+                while (!picked)
+                {
+                    rand = Random.Range(0, 3);
+                    if (rand == 0 && junction != 11)
+                    {
+                        x = 0;
+                        z = maxSpeed;
+                        picked = true;
+                    }
+                    if (rand == 1 && junction != 9)
+                    {
+                        z = 0;
+                        x = -maxSpeed;
+                        picked = true;
+                    }
+                    if (rand == 2 && junction != 3)
+                    {
+                        z = 0;
+                        x = maxSpeed;
+                        picked = true;
+                    }
+                } 
                 junction = 8;
-                rand = Random.Range(0, 3);
-                if (rand == 0)
-                {
-                    x = 0;
-                    z = Random.Range(0.02f, maxSpeed);
-                }
-                if (rand == 1)
-                {
-                    z = 0;
-                    x = Random.Range(-0.02f, -maxSpeed);
-                }
-                if (rand == 2)
-                {
-                    z = 0;
-                    x = Random.Range(0.02f, maxSpeed);
-                }
             }
 
-            //TOP RIGHT MIDDLE 
+            // Top Right Middle 
             if (transform.localPosition.x < -5.8 && transform.localPosition.x > -6 && transform.localPosition.z > -38.2 && transform.localPosition.z < -38 && junction != 9)
             {
+                bool picked = false;
+                while (!picked)
+                {
+                    rand = Random.Range(0, 3);
+                    if (rand == 0 && junction != 10)
+                    {
+                        x = 0;
+                        z = maxSpeed;
+                        picked = true;
+                    }
+                    if (rand == 1 && junction != 2)
+                    {
+                        z = 0;
+                        x = -maxSpeed;
+                        picked = true;
+                    }
+                    if (rand == 2 && junction != 8)
+                    {
+                        z = 0;
+                        x = maxSpeed;
+                        picked = true;
+                    }
+                }      
                 junction = 9;
-                rand = Random.Range(0, 3);
-                if (rand == 0)
-                {
-                    x = 0;
-                    z = Random.Range(0.02f, maxSpeed);
-                }
-                if (rand == 1)
-                {
-                    z = 0;
-                    x = Random.Range(-0.02f, -maxSpeed);
-                }
-                if (rand == 2)
-                {
-                    z = 0;
-                    x = Random.Range(0.02f, maxSpeed);
-                }
             }
 
-            //RIGHT MIDDLE 
-            if (transform.localPosition.x < -5.9 && transform.localPosition.x > -6 && transform.localPosition.z > -29.6 && transform.localPosition.z < -29.4 && junction != 10)
+            // Right Middle
+            if (transform.localPosition.x < -5.8 && transform.localPosition.x > -6 && transform.localPosition.z > -29.6 && transform.localPosition.z < -29.4 && junction != 10)
             {
+                bool picked = false;
+                while (!picked)
+                {
+                    rand = Random.Range(0, 4);
+                    if (rand == 0 && junction != 6)
+                    {
+                        x = 0;
+                        z = maxSpeed;
+                        picked = true;
+                    }
+                    if (rand == 1 && junction != 9)
+                    {
+                        x = 0;
+                        z = -maxSpeed;
+                        picked = true;
+                    }
+                    if (rand == 2 && junction != 11)
+                    {
+                        z = 0;
+                        x = maxSpeed;
+                        picked = true;
+                    }
+                    if (rand == 3 && junction != 1)
+                    {
+                        z = 0;
+                        x = -maxSpeed;
+                        picked = true;
+                    }
+                }         
                 junction = 10;
-                rand = Random.Range(0, 4);
-                if (rand == 0)
-                {
-                    x = 0;
-                    z = Random.Range(0.02f, maxSpeed);
-                }
-                if (rand == 1)
-                {
-                    x = 0;
-                    z = Random.Range(-0.02f, -maxSpeed);
-                }
-                if (rand == 2)
-                {
-                    z = 0;
-                    x = Random.Range(0.02f, maxSpeed);
-                }
-                if (rand == 3)
-                {
-                    z = 0;
-                    x = Random.Range(-0.02f, -maxSpeed);
-                }
             }
 
-            //LEFT MIDDLE 
+            // Left Middle 
             if (transform.localPosition.x < 5.8 && transform.localPosition.x > 6 && transform.localPosition.z > -29.6 && transform.localPosition.z < -29.4 && junction != 11)
             {
+                bool picked = false;
+                while (!picked)
+                {
+                    rand = Random.Range(0, 4);
+                    if (rand == 0 && junction != 7)
+                    {
+                        x = 0;
+                        z = maxSpeed;
+                        picked = true;
+                    }
+                    if (rand == 1 && junction != 8)
+                    {
+                        x = 0;
+                        z = -maxSpeed;
+                        picked = true;
+                    }
+                    if (rand == 2 && junction != 0)
+                    {
+                        z = 0;
+                        x = maxSpeed;
+                        picked = true;
+                    }
+                    if (rand == 3 && junction != 10)
+                    {
+                        z = 0;
+                        x = -maxSpeed;
+                        picked = true;
+                    }
+                }          
                 junction = 11;
-                rand = Random.Range(0, 4);
-                if (rand == 0)
-                {
-                    x = 0;
-                    z = Random.Range(0.02f, maxSpeed);
-                }
-                if (rand == 1)
-                {
-                    x = 0;
-                    z = Random.Range(-0.02f, -maxSpeed);
-                }
-                if (rand == 2)
-                {
-                    z = 0;
-                    x = Random.Range(0.02f, maxSpeed);
-                }
-                if (rand == 3)
-                {
-                    z = 0;
-                    x = Random.Range(-0.02f, -maxSpeed);
-                }
             }
 
             transform.localPosition = new Vector3(transform.localPosition.x + x, transform.localPosition.y, transform.localPosition.z + z);
         }
 
+        // Face Camera While Celebrating Complete Round
         else
         {
             transform.localRotation = Quaternion.Euler(0, 0, 0);

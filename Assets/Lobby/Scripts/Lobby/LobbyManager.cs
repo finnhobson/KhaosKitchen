@@ -49,7 +49,7 @@ public class LobbyManager : NetworkLobbyManager
     
     protected LobbyHook _lobbyHooks;
     
-    //Game Settings
+    // Game Settings
     public Text roundTimeText, BaseInstructionNumberText, InstructionNumberIncreasePerRoundText, BaseInstructionTimeText, InstructionTimeReductionPerRoundText, InstructionTimeIncreasePerPlayerText, MinimumInstructionTimeText;
 
     public Text playerCountText;
@@ -60,7 +60,7 @@ public class LobbyManager : NetworkLobbyManager
 
     public Text Feedback;
 
-    private static List<string> feedbackList = new List<string>(new string[] { "Pretty much the perfect game", "This game gets 4.7/5 tomatoes - Tomato Critic", "Good game, needs more nuggets and cheese", "The only kitchen game worth your time", "As far as mobile games go, this is suprisingly decent", "The developers have certainly earned a few pints for this", "Graphics to rival any console game", "I don't think these people know how to spell chaos", "Angry birds would be scared if it was still 2010", "This game is powered by coffee, redbull and pro plus", "Space team? Overcooked? Never heard of them", "Look mum I finally made a game!", "Cat in the wall? Now you’re talking my language!", "Brexits a mess, but at least its not Trump", "Basically one step away from photo realism ", "The original NFC capable mobile game!", "KFC is better than McDonalds. Fight me.", "Fun Fact: Our planet is dying!", "This shout out goes to spoons for being an OG", "help me, im trapped in the phone, send rescue" });
+    private static List<string> feedbackList = new List<string>(new string[] { "Pretty much the perfect game", "This game gets 4.7/5 tomatoes - Tomato Critic",  "Good game, needs more nuggets and cheese", "The only kitchen game worth your time", "As far as mobile games go, this is suprisingly decent", "The developers have certainly earned a few pints for this", "Graphics to rival any console game", "I don't think these people know how to spell chaos", "Angry birds would be scared if it was still 2010", "This game is powered by coffee, redbull and pro plus", "Space team? Overcooked? Never heard of them", "Look mum I finally made a game!", "Cat in the wall? Now you’re talking my language!", "Brexits a mess, but at least its not Trump", "Basically one step away from photo realism ", "The original NFC capable mobile game!", "KFC is better than McDonalds. Fight me.", "Fun Fact: Our planet is dying!", "This shout out goes to spoons for being an OG", "help me, im trapped in the phone, send rescue" });
 
     void Start()
     {
@@ -88,8 +88,6 @@ public class LobbyManager : NetworkLobbyManager
         joinButton.GetComponent<RectTransform>().localPosition -= new Vector3(0, 60, 0);
 #else
         //joinButton.gameObject.SetActive(false);
-        //TURN ON FOR GAMESDAY!!!
-
 #endif
     }
 
@@ -127,7 +125,6 @@ public class LobbyManager : NetworkLobbyManager
 
             Destroy(GameObject.Find("MainMenuUI(Clone)"));
 
-            //backDelegate = StopGameClbk;
             topPanel.isInGame = true;
             topPanel.ToggleVisibility(false);
         }
@@ -179,7 +176,7 @@ public class LobbyManager : NetworkLobbyManager
         topPanel.isInGame = false;
     }
 
-    // ----------------- Server management
+    // Server management
 
     public void AddLocalPlayer()
     {
@@ -228,8 +225,6 @@ public class LobbyManager : NetworkLobbyManager
         netMsg.conn.Disconnect();
     }
 
-    //===================
-
     public override void OnStartHost()
     {
         base.OnStartHost();
@@ -239,7 +234,6 @@ public class LobbyManager : NetworkLobbyManager
         SetServerInfo("Hosting", networkAddress);
     }
 
-    //allow to handle the (+) button to add/remove player
     public void OnPlayersNumberModified(int count)
     {
         _playerNumber += count;
@@ -251,10 +245,9 @@ public class LobbyManager : NetworkLobbyManager
         addPlayerButton.SetActive(localPlayerCount < maxPlayersPerConnection && _playerNumber < maxPlayers);
     }
 
-    // ----------------- Server callbacks ------------------
+    // Server callbacks
 
-    //we want to disable the button JOIN if we don't have enough player
-    //But OnLobbyClientConnect isn't called on hosting player. So we override the lobbyPlayer creation
+    // Disable the JOIN button if we don't have enough players
     public override GameObject OnLobbyServerCreateLobbyPlayer(NetworkConnection conn, short playerControllerId)
     {
         GameObject obj = Instantiate(lobbyPlayerPrefab.gameObject) as GameObject;
@@ -303,22 +296,19 @@ public class LobbyManager : NetworkLobbyManager
                 p.ToggleJoinButton(numPlayers >= minPlayers);
             }
         }
-
     }
+
 
     public override bool OnLobbyServerSceneLoadedForPlayer(GameObject lobbyPlayer, GameObject gamePlayer)
     {
-        //This hook allows you to apply state data from the lobby-player to the game-player
-        //just subclass "LobbyHook" and add it to the lobby object.
-
         if (_lobbyHooks)
             _lobbyHooks.OnLobbyServerSceneLoadedForPlayer(this, lobbyPlayer, gamePlayer);
 
         return true;
     }
 
-    // --- Countdown management
 
+    // Countdown management
     public override void OnLobbyServerPlayersReady()
     {
         bool allready = true;
@@ -345,13 +335,15 @@ public class LobbyManager : NetworkLobbyManager
             int newFloorTime = Mathf.FloorToInt(remainingTime);
 
             if (newFloorTime != floorTime)
-            {//to avoid flooding the network of message, we only send a notice to client when the number of plain seconds change.
+            {
+                // To avoid flooding the network of message, we only send a notice to client when the number of plain seconds change.
                 floorTime = newFloorTime;
 
                 for (int i = 0; i < lobbySlots.Length; ++i)
                 {
                     if (lobbySlots[i] != null)
-                    {//there is maxPlayer slots, so some could be == null, need to test it before accessing!
+                    {
+                        // There is maxPlayer slots, so some could be == null, need to test it before accessing!
                         (lobbySlots[i] as LobbyPlayer).RpcUpdateCountdown(floorTime);
                     }
                 }
@@ -371,8 +363,7 @@ public class LobbyManager : NetworkLobbyManager
         ServerChangeScene(playScene);
     }
 
-    // ----------------- Client callbacks ------------------
-
+    // Client callbacks 
     public override void OnClientConnect(NetworkConnection conn)
     {
         base.OnClientConnect(conn);
@@ -382,7 +373,8 @@ public class LobbyManager : NetworkLobbyManager
         conn.RegisterHandler(MsgKicked, KickedMessageHandler);
 
         if (!NetworkServer.active)
-        {//only to do on pure client (not self hosting client)
+        {
+            // Only to do on pure client (not self hosting client)
             ChangeTo(lobbyPanel);
             backDelegate = StopClientClbk;
             SetServerInfo("Client", networkAddress);
@@ -402,13 +394,12 @@ public class LobbyManager : NetworkLobbyManager
         infoPanel.Display("Client error : " + (errorCode == 6 ? "timeout" : errorCode.ToString()), "Close", null);
     }
     
-    // ------------- Game Settings -------------------------------------------------------
-    
+    // Game Settings
     public void SetSettings()
     {
         GameSettings.RoundTime = string.IsNullOrEmpty(roundTimeText.text) ? 90 : int.Parse(roundTimeText.text);
         GameSettings.BaseInstructionNumber = string.IsNullOrEmpty(BaseInstructionNumberText.text) ? 20 : int.Parse(BaseInstructionNumberText.text);
-        GameSettings.InstructionNumberIncreasePerRound = string.IsNullOrEmpty(InstructionNumberIncreasePerRoundText.text) ? 5 : int.Parse(InstructionNumberIncreasePerRoundText.text);
+        GameSettings.InstructionNumberIncreasePerRound = string.IsNullOrEmpty(InstructionNumberIncreasePerRoundText.text) ? 8 : int.Parse(InstructionNumberIncreasePerRoundText.text);
         GameSettings.BaseInstructionTime = string.IsNullOrEmpty(BaseInstructionTimeText.text) ? 15 : int.Parse(BaseInstructionTimeText.text);
         GameSettings.InstructionTimeReductionPerRound = string.IsNullOrEmpty(InstructionTimeReductionPerRoundText.text) ? 2 : int.Parse(InstructionTimeReductionPerRoundText.text);
         GameSettings.InstructionTimeIncreasePerPlayer = string.IsNullOrEmpty(InstructionTimeIncreasePerPlayerText.text) ? 2 : int.Parse(InstructionTimeIncreasePerPlayerText.text);
